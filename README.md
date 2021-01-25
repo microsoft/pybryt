@@ -1,4 +1,6 @@
-# Project
+# Seymour - Python Library
+
+**Auto-assessment python library for teaching and learning**
 
 - The Seymour Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
 
@@ -12,8 +14,14 @@
 
 ### Features
 
-Educators and Institutions can leverage the Seymour Library to integrate autoassessment and reference models to hands on labs and assessments.
+Educators and Institutions can leverage the Seymour Library to integrate auto assessment and reference models to hands on labs and assessments.
 
+- Educators do not have to enforce the structure of the solution;
+- Learner practice the design process,code design and implemented solution;
+- Meaningful & pedagogical feedback to the learners;
+- Analysis of complexity within the learners solution;
+- Plagiarism detection and support for reference solutions;
+- Easy integration into existing organizational or institutional grading infrastructure. 
 ### Testing
 
 > Instructions for testing 
