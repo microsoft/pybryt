@@ -1,3 +1,13 @@
+[![GitHub license](https://img.shields.io/github/license/microsoft/Seymour-library.svg)](https://github.com/microsoft/Seymour-library/blob/master/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/microsoft/Seymour-library.svg)](https://GitHub.com/microsoft/Seymour-library/graphs/contributors/)
+[![GitHub issues](https://img.shields.io/github/issues/microsoft/Seymour-library.svg)](https://GitHub.com/microsoft/Seymour-library/issues/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/microsoft/Seymour-library.svg)](https://GitHub.com/microsoft/Seymour-library/pull/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+[![GitHub watchers](https://img.shields.io/github/watchers/microsoft/Seymour-library.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/microsoft/Seymour-library/watchers/)
+[![GitHub forks](https://img.shields.io/github/forks/microsoft/Seymour-library.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/microsoft/Seymour-library/network/)
+[![GitHub stars](https://img.shields.io/github/stars/microsoft/Seymour-library.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/microsoft/Seymour-library/stargazers/)
+
 # Seymour - Python Library
 
 **Auto-assessment python library for teaching and learning**
