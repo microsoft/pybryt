@@ -12,11 +12,11 @@
 
 **Auto-assessment python library for teaching and learning**
 
-- The pybryt Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
+- The PyBryt Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
 
-- The pybryt Library is a Open Source Python Library - focused on the auto assessment and validation of Python coding.
+- The PyBryt Library is a Open Source Python Library - focused on the auto assessment and validation of Python coding.
 
-- The pybryt library has been developed under open source to support learning and training institutions to auto assess the work completed by learners.
+- The PyBryt library has been developed under open source to support learning and training institutions to auto assess the work completed by learners.
 
 ![](/images/seymourgoals.PNG)
 
