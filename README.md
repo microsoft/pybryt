@@ -1,30 +1,30 @@
-[![GitHub license](https://img.shields.io/github/license/microsoft/Seymour-library.svg)](https://github.com/microsoft/Seymour-library/blob/master/LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/microsoft/Seymour-library.svg)](https://GitHub.com/microsoft/Seymour-library/graphs/contributors/)
-[![GitHub issues](https://img.shields.io/github/issues/microsoft/Seymour-library.svg)](https://GitHub.com/microsoft/Seymour-library/issues/)
-[![GitHub pull-requests](https://img.shields.io/github/issues-pr/microsoft/Seymour-library.svg)](https://GitHub.com/microsoft/Seymour-library/pull/)
+[![GitHub license](https://img.shields.io/github/license/microsoft/pybryt.svg)](https://github.com/microsoft/pybryt/blob/master/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/graphs/contributors/)
+[![GitHub issues](https://img.shields.io/github/issues/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/issues/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/pull/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[![GitHub watchers](https://img.shields.io/github/watchers/microsoft/Seymour-library.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/microsoft/Seymour-library/watchers/)
-[![GitHub forks](https://img.shields.io/github/forks/microsoft/Seymour-library.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/microsoft/Seymour-library/network/)
-[![GitHub stars](https://img.shields.io/github/stars/microsoft/Seymour-library.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/microsoft/Seymour-library/stargazers/)
+[![GitHub watchers](https://img.shields.io/github/watchers/microsoft/pybryt.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/microsoft/pybryt/watchers/)
+[![GitHub forks](https://img.shields.io/github/forks/microsoft/pybryt.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/microsoft/pybryt/network/)
+[![GitHub stars](https://img.shields.io/github/stars/microsoft/pybryt.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/microsoft/pybryt/stargazers/)
 
-# Seymour - Python Library
+# PyBryt - Python Library
 
 **Auto-assessment python library for teaching and learning**
 
-- The Seymour Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
+- The pybryt Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
 
-- The Seymour Library is a Open Source Python Library - focused on the auto assessment and validation of Python coding.
+- The pybryt Library is a Open Source Python Library - focused on the auto assessment and validation of Python coding.
 
-- The Seymour library has been developed under open source to support learning and training institutions to auto assess the work completed by learners.
+- The pybryt library has been developed under open source to support learning and training institutions to auto assess the work completed by learners.
 
 ![](/images/seymourgoals.PNG)
 
-- The Seymour Library will work existing auto grading solution such as [Otter Grader](https://pypi.org/project/otter-grader/), [OkPy](https://pypi.org/project/okpy/) or [Autolab](https://pypi.org/project/autolab/).
+- The PyBryt Library will work existing auto grading solution such as [Otter Grader](https://pypi.org/project/otter-grader/), [OkPy](https://pypi.org/project/okpy/) or [Autolab](https://pypi.org/project/autolab/).
 
 ### Features
 
-Educators and Institutions can leverage the Seymour Library to integrate auto assessment and reference models to hands on labs and assessments.
+Educators and Institutions can leverage the PyBryt Library to integrate auto assessment and reference models to hands on labs and assessments.
 
 - Educators do not have to enforce the structure of the solution;
 - Learner practice the design process,code design and implemented solution;
