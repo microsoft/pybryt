@@ -20,7 +20,7 @@ from .utils import make_secret, pickle_and_hash
 
 
 NBFORMAT_VERSION = 4
-PRUNE_FREQUENCY = 1000
+# PRUNE_FREQUENCY = 1000
 
 
 class ObservedValue:
@@ -90,7 +90,9 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             if event == "line" or event == "return":
 
                 line = linecache.getline(frame.f_code.co_filename, frame.f_lineno)
-                tokens = "".join(char if char.isalnum() or char == '_' else "\n" for char in line).split("\n")
+                tokens = set("".join(char if char.isalnum() or char == '_' else "\n" for char in line).split("\n"))
+                for t in "".join(char if char.isalnum() or char == '_' or char == '.' else "\n" for char in line).split("\n"):
+                    tokens.add(t)
 
                 # for tracking the results of an assignment statement
                 m = re.match(r"\s*(\w+)\s=.*", line)
@@ -100,13 +102,21 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                     vars_not_found[name].append((m.group(1), seen_at))
                 
                 for t in tokens:
-                    if t in frame.f_locals:
-                        val = frame.f_locals[t]
-                        track_value(val, seen_at)
-                            
-                    elif t in frame.f_globals:
-                        val = frame.f_globals[t]
-                        track_value(val, seen_at)
+                    if "." in t:
+                        try:
+                            val = eval(t, frame.f_globals, frame.f_locals)
+                            track_value(val, seen_at)
+                        except:
+                            pass
+
+                    else:
+                        if t in frame.f_locals:
+                            val = frame.f_locals[t]
+                            track_value(val, seen_at)
+                                
+                        elif t in frame.f_globals:
+                            val = frame.f_globals[t]
+                            track_value(val, seen_at)
 
             if event == "return" and type(arg) not in skip_types:
                 track_value(arg, seen_at)
