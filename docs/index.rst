@@ -20,7 +20,7 @@ Educators and institutions can leverage PyBryt to integrate auto-assessment and 
 - Easy integration into existing organizational or institutional grading infrastructure
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :hidden:
 
    reference_implementations

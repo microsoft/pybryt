@@ -43,6 +43,8 @@ apidoc_module_dir = '../pybryt'
 apidoc_output_dir = '.'
 apidoc_excluded_paths = []
 
+add_module_names = False
+
 autosummary_generate = False
 
 # The master toctree document.
@@ -78,9 +80,12 @@ html_theme = 'sphinx_rtd_theme'
 # html_logo = ''
 
 html_theme_options = {
-    'github_url': 'https://github.com/microsoft/pybryt',
+    # 'github_url': 'https://github.com/microsoft/pybryt',
     # 'repository_url': 'https://github.com/microsoft/pybryt',
+    'navigation_depth': 3,
 }
+
+# github_url = 'https://github.com/microsoft'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
