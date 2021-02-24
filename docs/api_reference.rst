@@ -1,8 +1,15 @@
+.. _api:
+
 API Reference
 =============
 
+
 Annotations
 -----------
+
+.. autoclass:: pybryt.Annotation
+   :members:
+   :undoc-members:
 
 .. autoclass:: pybryt.Value
    :members:
@@ -12,12 +19,14 @@ Annotations
    :members:
    :undoc-members:
 
+
 Annotation Results
 ++++++++++++++++++
 
-.. autoclass:: pybryt.annotations.annotation.AnnotationResult
+.. autoclass:: pybryt.AnnotationResult
    :members:
    :undoc-members:
+
 
 Reference Implementations
 -------------------------
@@ -26,12 +35,14 @@ Reference Implementations
    :members:
    :undoc-members:
 
+
 Reference Results
 +++++++++++++++++
 
 .. autoclass:: pybryt.ReferenceResult
    :members:
    :undoc-members:
+
 
 Student Implementations
 -----------------------

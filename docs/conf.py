@@ -82,7 +82,6 @@ html_theme = 'furo'
 html_theme_options = {
     # 'github_url': 'https://github.com/microsoft/pybryt',
     # 'repository_url': 'https://github.com/microsoft/pybryt',
-    'navigation_depth': 3,
 }
 
 # github_url = 'https://github.com/microsoft'
