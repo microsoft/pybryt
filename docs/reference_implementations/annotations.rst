@@ -1,3 +1,5 @@
+.. _annotations:
+
 Annotations
 ===========
 

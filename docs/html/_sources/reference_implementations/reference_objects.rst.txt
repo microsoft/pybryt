@@ -1,9 +1,134 @@
 Reference Implementation Objects
 ================================
 
-The ``__init__`` methods of these subclasses automatically add the instances created to a 
-singleton list that PyBryt maintains, so assigning them to variables or tracking them further is 
-unnecessary unless more advanced reference implementations are being built. This means that when 
-marking up code, as below, creating new variables is unnecessary unless further conditions are to
-be made later down the line.
+The functional unit of PyBryt is a reference implementation. A **reference implenetation** is a set 
+of conditions expected of students' code that determine whether a student has correctly implemented
+some program. They are constructed by creating a series of :ref:`annotations<annotations>` that are
+tracked in a :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>` object.
 
+
+Creating Reference Implementations
+----------------------------------
+
+Reference implemenations can be created by compiling Jupyter Notebooks that have been marked-up
+with annotations. To compile a reference implementation, use 
+:py:meth:`ReferenceImplementation.compile<pybryt.ReferenceImplementation.compile>`, which takes in
+the path to a notebook file:
+
+.. code-block:: python
+
+   pybryt.ReferenceImplementation.compile("reference.ipynb")
+
+There are two ways to mark-up a notebook: by creating annotations and having PyBryt track them 
+automatically (for a single reference), or by tracking annotations in a list (for creating multiple
+reference implementations from a single notebook).
+
+
+Automatic Reference Creation
+++++++++++++++++++++++++++++
+
+To create a single reference implementation from a notebook, create
+:py:class:`Annotation<pybryt.Annotation>` instances (assigning them to variables is not necessary).
+After annotating the notebook, when PyBryt compiles the notebook, it will find all of the 
+annotations.
+
+PyBryt finds the annotations because the ``__init__`` method automatically adds the instances 
+created to a singleton list that PyBryt maintains, so assigning them to variables or tracking them 
+further is unnecessary unless more advanced reference implementations are being built. This means 
+that when marking up code, as below, creating new variables is unnecessary unless further conditions
+are to be made later down the line.
+
+.. code-block:: python
+
+   fibs = np.zeros(n, dtype=int)
+   
+   fibs[0] = 0
+   curr_val = pybryt.Value(fibs)
+   if n == 1:
+       return fibs
+   
+   fibs[1] = 1
+   v = pybryt.Value(fibs)
+   curr_val.before(v)         # not assigned to a variable, but still tracked
+   curr_val = v
+   if n == 2:
+       return fibs
+   
+   for i in range(2, n-1):
+       fibs[i] = fibs[i-1] + fibs[i-2]
+       
+       v = pybryt.Value(fibs)
+       curr_val.before(v)     # not assigned to a variable, but still tracked
+       curr_val = v
+
+
+Custom Reference Creation
++++++++++++++++++++++++++
+
+To create multiple reference implementations from a single notebook, begin by creating 
+:py:class:`Annotation<pybryt.Annotation>` instances and grouping them into lists. These lists will 
+be passed to the :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>` constructor
+to create the reference implementations. *These objects must be assigned to global variables, or 
+PyBryt will not find them.*
+
+As an example, consider the code below, which creates two reference implementations for a Fibonacci
+sequence generator:
+
+.. code-block:: python
+
+   n_fibs = 50
+   first_ref = []
+   second_ref =  []
+   
+
+   # first implementation: dynamic programming
+   fibs = np.zeros(n_fibs, dtype=int)
+   
+   fibs[0] = 0
+   first_ref.append(pybryt.Value(fibs))
+   if n_fibs == 1:
+       return fibs
+   
+   fibs[1] = 1
+   v = pybryt.Value(fibs)
+   first_ref.append(curr_val.before(v))
+   curr_val = v
+   if n_fibs == 2:
+       return fibs
+   
+   for i in range(2, n_fibs-1):
+       fibs[i] = fibs[i-1] + fibs[i-2]
+       
+       v = pybryt.Value(fibs)
+       first_ref.append(curr_val.before(v))
+       curr_val = v
+    
+    final_answer = fibs[-1]
+    
+
+    # second implementation: hash map
+    fib_map = {}
+    def fib(n):
+        if n == 0:
+            return 0
+        
+        if n == 1:
+            return 1
+        
+        if n in fib_map:
+            return fib_map[n]
+        
+        ans = fib(n-1) + fib(n-2)
+        fib_map[n] = ans
+        second_ref.append(pybryt.Value(fib_map))
+        
+        return ans
+    
+
+    # create references
+    ref1 = pybryt.ReferenceImplementation(first_ref)
+    ref2 = pybryt.ReferenceImplementation(second_ref)
+
+
+Interacting with Reference Implementations
+------------------------------------------
