@@ -78,6 +78,12 @@ class Annotation(ABC):
                 pass
         
         _TRACKED_ANNOTATIONS.append(self)
+    
+    @staticmethod
+    def get_tracked_annotations() -> List["Annotation"]:
+        """
+        """
+        return _TRACKED_ANNOTATIONS
 
     @staticmethod
     def reset_tracked_annotations():

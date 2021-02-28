@@ -11,7 +11,7 @@ from typing import Any, List, Optional, Union
 # TODO: add iterable_type invariant
 
 
-class _invariant(ABC):
+class invariant(ABC):
     """
     """
 
@@ -27,7 +27,7 @@ class _invariant(ABC):
 
 # TODO: if hashing, for all strings collect actual string and lowercased version (marked as such), 
 #       and compare against that if this invariant is used. 
-class string_capitalization(_invariant):
+class string_capitalization(invariant):
 
     @staticmethod
     def run(values: List[Any]) -> List[Any]:

@@ -8,7 +8,7 @@ import nbformat
 
 from typing import Any, List, NoReturn, Optional, Tuple, Union
 
-from .annotations import ReferenceImplementation, ReferenceResult
+from .reference import ReferenceImplementation, ReferenceResult
 from .execution import execute_notebook, ObservedValue
 
 

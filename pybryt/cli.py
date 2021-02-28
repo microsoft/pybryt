@@ -4,7 +4,7 @@
 import dill
 import click
 
-from .annotations import ReferenceImplementation
+from .reference import ReferenceImplementation
 
 @click.group()
 def main():

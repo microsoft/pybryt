@@ -6,7 +6,8 @@ import numpy as np
 
 from typing import List, Union
 
-from .annotations import ReferenceImplementation, ReferenceResult, Value
+from .annotations import Value
+from .reference import ReferenceImplementation, ReferenceResult
 
 
 def create_references(student_impls: List["StudentImplementation"], frac=0.25, seed=None, 

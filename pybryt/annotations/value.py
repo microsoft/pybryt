@@ -9,8 +9,9 @@ from copy import copy
 from typing import Any, List, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
-from .invariants import _invariant
+from .invariants import invariant
 from ..execution import ObservedValue
+
 
 class Value(Annotation):
     """
@@ -19,9 +20,9 @@ class Value(Annotation):
     intial_value: Any
     _values: List[Any]
     tol: Union[float, int]
-    invariants: List[_invariant]
+    invariants: List[invariant]
 
-    def __init__(self, value: Any, tol: Union[float, int] = 0, invariants: List[_invariant] = [], **kwargs):
+    def __init__(self, value: Any, tol: Union[float, int] = 0, invariants: List[invariant] = [], **kwargs):
         try:
             dill.dumps(value)
         except Exception as e:

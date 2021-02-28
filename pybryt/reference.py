@@ -10,9 +10,9 @@ import numpy as np
 from copy import deepcopy
 from typing import Any, List, NoReturn, Optional, Union
 
-from .annotation import Annotation, AnnotationResult, _TRACKED_ANNOTATIONS
-from ..execution import ObservedValue
-from ..utils import notebook_to_string
+from .annotations import Annotation, AnnotationResult
+from .execution import ObservedValue
+from .utils import notebook_to_string
 
 class ReferenceImplementation:
     
@@ -78,10 +78,10 @@ class ReferenceImplementation:
             #     annots.append(v)
 
         if not refs:
-            if not _TRACKED_ANNOTATIONS:
+            if not Annotation.get_tracked_annotations():
                 warnings.warn(f"Could not find any reference implementations in {file}")
             else:
-                refs = [cls(deepcopy(_TRACKED_ANNOTATIONS))]
+                refs = [cls(deepcopy(Annotation.get_tracked_annotations()))]
 
         Annotation.reset_tracked_annotations()
         
