@@ -1,4 +1,4 @@
-""""""
+"""Annotations for marking-up reference implementations"""
 
 from . import invariants
 from .annotation import Annotation, AnnotationResult

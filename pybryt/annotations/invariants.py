@@ -1,5 +1,4 @@
-"""
-"""
+"""Invariants for value annotations"""
 
 import numpy as np
 
