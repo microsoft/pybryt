@@ -209,7 +209,8 @@ observed values and timestamps <code class="docutils literal notranslate"><span 
 during execution and the timestamps of those values</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the results of this annotation based on <code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
+<dd class="field-even"><p>the results of this annotation based on
+<code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a></p>
@@ -272,9 +273,11 @@ list.</p>
 <dd><p>a message to relay to the student if satisfied</p>
 </dd></dl>
 </dd></dl>
+<div class="section" id="value-annotations">
+<h3>Value Annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="pybryt.Value">
-<em class="property">class </em><code class="sig-name descname">Value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">tol</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">invariants</span><span class="p">:</span> <span class="n">List<span class="p">[</span>pybryt.annotations.invariants.invariant<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.Value" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">tol</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">invariants</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant">pybryt.annotations.invariants.invariant</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.Value" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.Value.check">
 <code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>pybryt.execution.ObservedValue<span class="p">]</span></span></em><span class="sig-paren">)</span> → pybryt.annotations.annotation.AnnotationResult<a class="headerlink" href="#pybryt.Value.check" title="Permalink to this definition">¶</a></dt>
@@ -288,7 +291,8 @@ observed values and timestamps <code class="docutils literal notranslate"><span 
 during execution and the timestamps of those values</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the results of this annotation based on <code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
+<dd class="field-even"><p>the results of this annotation based on
+<code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a></p>
@@ -319,7 +323,10 @@ children, an empty list.</p>
 <code class="sig-name descname">tol</code><em class="property">: Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></em><a class="headerlink" href="#pybryt.Value.tol" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 </dd></dl>
-<span class="target" id="module-pybryt.annotations.relation"></span><dl class="py class">
+</div>
+<div class="section" id="module-pybryt.annotations.relation">
+<span id="relational-annotations"></span><h3>Relational Annotations<a class="headerlink" href="#module-pybryt.annotations.relation" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
 <dt id="pybryt.annotations.relation.AndAnnotation">
 <em class="property">class </em><code class="sig-name descname">AndAnnotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">annotations</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.AndAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
@@ -378,6 +385,68 @@ children, an empty list.</p>
 <code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>pybryt.execution.ObservedValue<span class="p">]</span></span></em><span class="sig-paren">)</span> → pybryt.annotations.annotation.AnnotationResult<a class="headerlink" href="#pybryt.annotations.relation.XorAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 </dd></dl>
+</div>
+<div class="section" id="module-pybryt.annotations.invariants">
+<span id="invariants"></span><h3>Invariants<a class="headerlink" href="#module-pybryt.annotations.invariants" title="Permalink to this headline">¶</a></h3>
+<p>Invariants for value annotations (available as <code class="xref py py-mod docutils literal notranslate"><span class="pre">pybryt.invariants</span></code>)</p>
+<dl class="py class">
+<dt id="pybryt.annotations.invariants.invariant">
+<em class="property">class </em><code class="sig-name descname">invariant</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.invariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for invariants.</p>
+<p>All subclasses should implement the <a class="reference internal" href="#pybryt.annotations.invariants.invariant.run" title="pybryt.annotations.invariants.invariant.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a> static method for generating
+values that this invariant accepts as “correct”. Invariants have a custom <code class="docutils literal notranslate"><span class="pre">__new__</span></code> method
+that returns the value of calling the <a class="reference internal" href="#pybryt.annotations.invariants.invariant.run" title="pybryt.annotations.invariants.invariant.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a> method, making them
+function as callables.</p>
+<dl class="py method">
+<dt id="pybryt.annotations.invariants.invariant.run">
+<em class="property">abstract static </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> → List<span class="p">[</span>Any<span class="p">]</span><a class="headerlink" href="#pybryt.annotations.invariants.invariant.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of values that this invariant accepts as correct.</p>
+<p>Takes in a list of acceptable values from a <a class="reference internal" href="#pybryt.Value" title="pybryt.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> annotation and
+returns a list of values that would evaluate as “the same” under the conditions of this
+invariant.</p>
+<p>For example, if <code class="docutils literal notranslate"><span class="pre">values</span></code> as a list with a single element, a numpy matrix, and the
+invariant was matrix transposition, this method would return a length-2 list containing the
+original matrix and its transpose.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values</strong> (<code class="docutils literal notranslate"><span class="pre">list[object]</span></code>) – acceptable values, either from the initial constructor call
+of the annotation or from the results of other invariants</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the values that would evaluate as “the same” under the conditions
+of this invariant</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[object]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="pybryt.annotations.invariants.string_capitalization">
+<em class="property">class </em><code class="sig-name descname">string_capitalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.string_capitalization" title="Permalink to this definition">¶</a></dt>
+<dd><p>An invariant that compares strings ignoring capitalization.</p>
+<p>Works by taking in a list of values and lowercasing them if they are strings and leaving them
+unchanged otherwise.</p>
+<dl class="py method">
+<dt id="pybryt.annotations.invariants.string_capitalization.run">
+<em class="property">static </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> → List<span class="p">[</span>Any<span class="p">]</span><a class="headerlink" href="#pybryt.annotations.invariants.string_capitalization.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of values in which all strings have been lowercased.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<code class="docutils literal notranslate"><span class="pre">list[object]</span></code>) – acceptable values, either from the initial constructor call
+of the annotation or from the results of other invariants</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">list[object]</span></code>: the elements of <code class="docutils literal notranslate"><span class="pre">values</span></code> with all strings lowercased</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
 <div class="section" id="annotation-results">
 <h3>Annotation Results<a class="headerlink" href="#annotation-results" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
@@ -628,6 +697,9 @@ present, this is the maximum satisfying timestamp of all child results</p>
             <ul>
 <li><a class="reference internal" href="#">API Reference</a><ul>
 <li><a class="reference internal" href="#annotations">Annotations</a><ul>
+<li><a class="reference internal" href="#value-annotations">Value Annotations</a></li>
+<li><a class="reference internal" href="#module-pybryt.annotations.relation">Relational Annotations</a></li>
+<li><a class="reference internal" href="#module-pybryt.annotations.invariants">Invariants</a></li>
 <li><a class="reference internal" href="#annotation-results">Annotation Results</a></li>
 </ul>
 </li>

@@ -38,6 +38,7 @@ extensions = [
 # extension configurations
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
+# napoleon_use_param = True
 
 apidoc_module_dir = '../pybryt'
 apidoc_output_dir = '.'

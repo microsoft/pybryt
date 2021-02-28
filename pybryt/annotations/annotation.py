@@ -133,7 +133,8 @@ class Annotation(ABC):
                 during execution and the timestamps of those values
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation based on 
+            ``observed_values``
         """
         ...
 

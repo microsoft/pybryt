@@ -11,11 +11,27 @@ Annotations
    :members:
    :undoc-members:
 
+
+Value Annotations
++++++++++++++++++
+
 .. autoclass:: pybryt.Value
    :members:
    :undoc-members:
 
+
+Relational Annotations
+++++++++++++++++++++++
+
 .. automodule:: pybryt.annotations.relation
+   :members:
+   :undoc-members:
+
+
+Invariants
+++++++++++
+
+.. automodule:: pybryt.annotations.invariants
    :members:
    :undoc-members:
 
