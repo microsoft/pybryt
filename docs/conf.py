@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'PyBryt'
-copyright = '2021, Chris Pyles'
+copyright = '2021, Microsoft'
 author = 'Chris Pyles'
 
 
