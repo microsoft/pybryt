@@ -187,37 +187,37 @@ before the array containing the <span class="math notranslate nohighlight">\(n\)
 <p>To enforce such a constraint, the <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class defines a
 <code class="docutils literal notranslate"><span class="pre">before</span></code> method that asserts that one annotation occurs before another:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="sd">"""</span>
-<span class="sd">Compute and return an array of the first n Fibonacci numbers using dynamic programming.</span>
+    <span class="sd">"""</span>
+<span class="sd">    Compute and return an array of the first n Fibonacci numbers using dynamic programming.</span>
 
-<span class="sd">Args:</span>
+<span class="sd">    Args:</span>
 <span class="sd">    n (``int``): the number of Fibonacci numbers to return</span>
 
-<span class="sd">Returns:</span>
+<span class="sd">    Returns:</span>
 <span class="sd">    ``np.ndarray``: the first ``n`` Fibonacci numbers</span>
-<span class="sd">"""</span>
-<span class="n">fibs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">fibs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
-<span class="n">fibs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">curr_val</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">fibs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">curr_val</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fibs</span>
+
+    <span class="n">fibs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
+    <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fibs</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span> <span class="c1"># array of first n Fibonacci numbrs</span>
+        <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>     <span class="c1"># check that first n-1 Fib numbers come before first n</span>
+        <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>           <span class="c1"># update curr_val for next iteration</span>
+
     <span class="k">return</span> <span class="n">fibs</span>
-
-<span class="n">fibs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
-<span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>
-<span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">fibs</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-
-    <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span> <span class="c1"># array of first n Fibonacci numbrs</span>
-    <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>     <span class="c1"># check that first n-1 Fib numbers come before first n</span>
-    <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>           <span class="c1"># update curr_val for next iteration</span>
-
-<span class="k">return</span> <span class="n">fibs</span>
 </pre></div>
 </div>
 <p>In the example above, updating a pointer <code class="docutils literal notranslate"><span class="pre">curr_val</span></code> in the loop allows us to create a <code class="docutils literal notranslate"><span class="pre">before</span></code>

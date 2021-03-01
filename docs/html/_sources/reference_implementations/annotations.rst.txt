@@ -78,38 +78,38 @@ To enforce such a constraint, the :py:class:`Annotation<pybryt.Annotation>` clas
 
 .. code-block:: python
 
-   def fib(n):
-   """
-   Compute and return an array of the first n Fibonacci numbers using dynamic programming.
+    def fib(n):
+        """
+        Compute and return an array of the first n Fibonacci numbers using dynamic programming.
 
-   Args:
-       n (``int``): the number of Fibonacci numbers to return
+        Args:
+        n (``int``): the number of Fibonacci numbers to return
 
-   Returns:
-       ``np.ndarray``: the first ``n`` Fibonacci numbers
-   """
-   fibs = np.zeros(n, dtype=int)
-   
-   fibs[0] = 0
-   curr_val = pybryt.Value(fibs)
-   if n == 1:
-       return fibs
-   
-   fibs[1] = 1
-   v = pybryt.Value(fibs)
-   curr_val.before(v)
-   curr_val = v
-   if n == 2:
-       return fibs
-   
-   for i in range(2, n-1):
-       fibs[i] = fibs[i-1] + fibs[i-2]
-       
-       v = pybryt.Value(fibs) # array of first n Fibonacci numbrs
-       curr_val.before(v)     # check that first n-1 Fib numbers come before first n
-       curr_val = v           # update curr_val for next iteration
-   
-   return fibs
+        Returns:
+        ``np.ndarray``: the first ``n`` Fibonacci numbers
+        """
+        fibs = np.zeros(n, dtype=int)
+
+        fibs[0] = 0
+        curr_val = pybryt.Value(fibs)
+        if n == 1:
+            return fibs
+
+        fibs[1] = 1
+        v = pybryt.Value(fibs)
+        curr_val.before(v)
+        curr_val = v
+        if n == 2:
+            return fibs
+
+        for i in range(2, n-1):
+            fibs[i] = fibs[i-1] + fibs[i-2]
+
+            v = pybryt.Value(fibs) # array of first n Fibonacci numbrs
+            curr_val.before(v)     # check that first n-1 Fib numbers come before first n
+            curr_val = v           # update curr_val for next iteration
+
+        return fibs
 
 In the example above, updating a pointer ``curr_val`` in the loop allows us to create a ``before`` 
 condition such that we ensure the student followed the correct dynamic programming algorithm by 

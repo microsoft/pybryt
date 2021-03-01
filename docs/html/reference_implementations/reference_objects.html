@@ -146,13 +146,20 @@ the path to a notebook file:</p>
 <p>There are two ways to mark-up a notebook: by creating annotations and having PyBryt track them
 automatically (for a single reference), or by tracking annotations in a list (for creating multiple
 reference implementations from a single notebook).</p>
+<p>When compiling a notebook, PyBryt executes all of the code in the notebook and searches the
+resulting global environment for instances of the
+<a class="reference internal" href="../api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> class. If it finds them, it
+collects them into a list and returns the list of reference implementations (or a single reference
+implementation if only one is found). If it doesn’t find any reference implementations, it takes all
+of the annotations <a class="reference internal" href="#tracked-annotations"><span class="std std-ref">tracked by</span></a> PyBryt and turns those into a single
+reference implementation.</p>
 <div class="section" id="automatic-reference-creation">
 <h3>Automatic Reference Creation<a class="headerlink" href="#automatic-reference-creation" title="Permalink to this headline">¶</a></h3>
 <p>To create a single reference implementation from a notebook, create
 <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> instances (assigning them to variables is not necessary).
 After annotating the notebook, when PyBryt compiles the notebook, it will find all of the
 annotations.</p>
-<p>PyBryt finds the annotations because the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method automatically adds the instances
+<p id="tracked-annotations">PyBryt finds the annotations because the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method automatically adds the instances
 created to a singleton list that PyBryt maintains, so assigning them to variables or tracking them
 further is unnecessary unless more advanced reference implementations are being built. This means
 that when marking up code, as below, creating new variables is unnecessary unless further conditions
@@ -216,31 +223,33 @@ sequence generator:</p>
     <span class="n">first_ref</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>
 
- <span class="n">final_answer</span> <span class="o">=</span> <span class="n">fibs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">final_answer</span> <span class="o">=</span> <span class="n">fibs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 
- <span class="c1"># second implementation: hash map</span>
- <span class="n">fib_map</span> <span class="o">=</span> <span class="p">{}</span>
- <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-         <span class="k">return</span> <span class="mi">0</span>
+<span class="c1"># second implementation: hash map</span>
+<span class="n">fib_map</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
 
-     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-         <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
 
-     <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">fib_map</span><span class="p">:</span>
-         <span class="k">return</span> <span class="n">fib_map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">fib_map</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fib_map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
 
-     <span class="n">ans</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-     <span class="n">fib_map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">ans</span>
-     <span class="n">second_ref</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fib_map</span><span class="p">))</span>
+    <span class="n">ans</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">fib_map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">ans</span>
+    <span class="n">second_ref</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fib_map</span><span class="p">))</span>
 
-     <span class="k">return</span> <span class="n">ans</span>
+    <span class="k">return</span> <span class="n">ans</span>
+
+<span class="n">final_answer</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n_fibs</span><span class="p">)</span>
 
 
- <span class="c1"># create references</span>
- <span class="n">ref1</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="n">first_ref</span><span class="p">)</span>
- <span class="n">ref2</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="n">second_ref</span><span class="p">)</span>
+<span class="c1"># create references</span>
+<span class="n">ref1</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="n">first_ref</span><span class="p">)</span>
+<span class="n">ref2</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="n">second_ref</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
