@@ -15,7 +15,7 @@ Annotations
 Value Annotations
 +++++++++++++++++
 
-.. autoclass:: pybryt.Value
+.. automodule:: pybryt.annotations.value
    :members:
    :undoc-members:
 

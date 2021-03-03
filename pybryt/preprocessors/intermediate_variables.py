@@ -38,7 +38,8 @@ class UnassignedVarWrapper(ast.NodeTransformer):
             curr = node.parent
             body_child = None
             while not isinstance(curr, ast.Module):#hasattr(curr.parent, "body"):
-                if hasattr(curr.parent, "body") and body_child is None:
+                if hasattr(curr.parent, "body") and not (hasattr(curr.parent, "test") and \
+                        curr.parent.test == curr) and body_child is None:
                     body_child = curr
                 
                 # don't perform if in a comprehension
@@ -50,9 +51,9 @@ class UnassignedVarWrapper(ast.NodeTransformer):
                 curr = curr.parent
             
             curr = body_child
+            is_else = False
             try:
                 idx = curr.parent.body.index(curr)
-                is_else = False
             except ValueError:
                 if isinstance(curr.parent, ast.If):
                     idx = curr.parent.orelse.index(curr)

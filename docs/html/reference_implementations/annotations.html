@@ -141,14 +141,14 @@ complex boolean logic surrounding the presence, or lack thereof, of those values
 <p>All annotations are created by instaniating subclasses of the abstract
 <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class. Consider the most basic kind of annotation:
 expecting a specific value to appear while executing the student’s code. To create a value
-annotation, create an instance of <a class="reference internal" href="../api_reference.html#pybryt.Value" title="pybryt.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a>. The constructor takes in the
+annotation, create an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code>. The constructor takes in the
 value that you are expecting to see in the student’s code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that when an instance of <a class="reference internal" href="../api_reference.html#pybryt.Value" title="pybryt.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> is created, <code class="xref py py-meth docutils literal notranslate"><span class="pre">copy.copy()</span></code> is
+<p>Note that when an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> is created, <code class="xref py py-meth docutils literal notranslate"><span class="pre">copy.copy()</span></code> is
 called on the argument passed to it, so values don’t need to worry about being affected by
 mutability.</p>
 <div class="section" id="numerical-tolerance">
@@ -224,7 +224,7 @@ before the array containing the <span class="math notranslate nohighlight">\(n\)
 condition such that we ensure the student followed the correct dynamic programming algorithm by
 checking each update to the <code class="docutils literal notranslate"><span class="pre">fibs</span></code> array.</p>
 <p>Temporal annotations are satisfied when the student’s code satisfies all of the child
-<a class="reference internal" href="../api_reference.html#pybryt.Value" title="pybryt.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> annotations and when the first annotation (the one calling
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotations and when the first annotation (the one calling
 <a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a>) has a timestamp greater than or equal to the
 timestamp of the second annotation.</p>
 <p>Note that <a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a> returns an instance of the
