@@ -1,12 +1,14 @@
 """
 """
 
+__all__ = ["Value", "Attribute"]
+
 import dill
 import numpy as np
 
 from collections import Iterable
 from copy import copy
-from typing import Any, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
@@ -101,3 +103,53 @@ class Value(Annotation):
                     return True
 
         return False
+
+
+class _AttrValue(Value):
+
+    _object: Any
+    _attr: str
+
+    def __init__(self, obj: Any, attr: str, **kwargs):
+        self._object = obj
+        self._attr = attr
+        val = getattr(obj, attr)
+        super().__init__(val, **kwargs)
+    
+    def check(self, observed_values: List[ObservedValue]) -> AnnotationResult:
+        """
+        """
+        vals = [t for t in observed_values if hasattr(t[0], self._attr)]
+        attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
+        res = super().check(attrs)
+        satisfier = vals[attrs.index(res.value)]
+        return AnnotationResult(None, self, value=satisfier, children=[res])
+
+
+class Attribute(Annotation):
+    """
+    """
+
+    _annotations: List[_AttrValue]
+
+    def __init__(self, obj: Any, attrs: Union[str, List[str]], **kwargs):
+        if isinstance(attrs, str):
+            attrs = [attrs]
+        if not isinstance(attrs, list) and not all(isinstance(a, str) for a in attrs):
+            raise TypeError(f"Invalid type for argument 'attrs': {type(attrs)}")
+                
+        self._annotations = []
+        for attr in attrs:
+            if not hasattr(obj, attr):
+                raise AttributeError(f"{obj} has not attribute '{attr}'")
+            self._annotations.append(_AttrValue(obj, attr, **kwargs))
+
+    @property
+    def children(self):
+        return self._annotations
+
+    def check(self, observed_values: List[ObservedValue]) -> AnnotationResult:
+        """
+        """
+        results = [v.check(observed_values) for v in self._annotations]        
+        return AnnotationResult(None, self, children=results)
