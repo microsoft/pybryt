@@ -32,7 +32,7 @@ class UnassignedVarWrapper(ast.NodeTransformer):
             getattr(parent, attr)[idx] = node
         return ret
 
-    def visit_Call(self, node):
+    def transform_unassigned_node(self, node):
         if not isinstance(node.parent, ast.Assign):
             vn = get_varname()
             curr = node.parent
@@ -81,6 +81,12 @@ class UnassignedVarWrapper(ast.NodeTransformer):
             for n in ast.iter_child_nodes(node):
                 self.visit(n)
         return node
+    
+    def visit_Call(self, node):
+        return self.transform_unassigned_node(node)
+    
+    def visit_BinOp(self, node):
+        return self.transform_unassigned_node(node)
 
 
 class IntermediateVariablePreprocessor():
