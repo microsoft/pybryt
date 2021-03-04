@@ -48,6 +48,12 @@ class StudentImplementation:
         bits = dill.dumps(self)
         return base64.b64encode(bits).decode("ascii")
 
+    @staticmethod
+    def load(file: str) -> Union['StudentImplementation']:
+        with open(file, "rb") as f:
+            instance = dill.load(f)
+        return instance
+
     @classmethod
     def loads(cls, data: str) -> "StudentImplementation":
         return dill.loads(base64.b64decode(data.encode("ascii")))
