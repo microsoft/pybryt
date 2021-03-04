@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Reference Implementations" href="reference_implementations/index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" />
 
     <meta name="generator" content="sphinx-3.1.2, furo 2021.02.21.beta25"/>
         <title>Home - PyBryt documentation</title>
@@ -107,12 +107,12 @@
   <input type="hidden" name="area" value="default">
 </form><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="reference_implementations/index.html">Reference Implementations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference_implementations/annotations.html">Annotations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference_implementations/invariants.html">Invariants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference_implementations/reference_objects.html">Reference Implementation Objects</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="reference_implementations.html">Reference Implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 </ul>
 
@@ -143,18 +143,26 @@
 <li><p>Plagiarism detection and support for reference implementations</p></li>
 <li><p>Easy integration into existing organizational or institutional grading infrastructure</p></li>
 </ul>
+<p>PyBryt’s core auto-assessment behavior operates by comparing a student’s implementation of some
+programming problem to a series of reference implementations provided by an instructor. A
+<strong>reference implementation</strong> defines a pattern of values, and conditions on those values, to look
+for in students’ code.</p>
+<p>A reference implementation is created by annotating code written or found by an instructor and
+executing this code to create a <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a>
+object. Annotations are created by creating instances of subclasses of the abstract
+<a class="reference internal" href="api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class.</p>
 </div>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="reference_implementations/index.html">
+          <a class="next-page" href="annotations/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Reference Implementations</div>
+                <div class="title">Annotations</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
