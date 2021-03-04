@@ -144,3 +144,28 @@ sequence generator:
 
 Interacting with Reference Implementations
 ------------------------------------------
+
+The :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>` class defines an API for 
+working with reference implementations. The core method for reconciling a student implementation,
+encoded as a list of 2-tuples, is 
+:py:meth:`ReferenceImplementation.run<pybryt.ReferenceImplementation.run>`. This method is 
+abstracted away by the :py:meth:`StudentImplementation.check<pybryt.StudentImplementation.check>`
+method, which calls it for that student implementation.
+
+
+.. _storing_refs:
+
+Storing Reference Implementations
+---------------------------------
+
+Reference implementation objects can be saved to a file by calling 
+:py:meth:`ReferenceImplementation.dump<pybryt.ReferenceImplementation.dump>`, which takes in the 
+path to the file and uses the ``dill`` library to serialize the object. To load a reference 
+implementation, or a list of reference implementations, from a file, use the static method
+:py:meth:`ReferenceImplementation.load<pybryt.ReferenceImplementation.load>`.
+
+.. code-block:: python
+
+    ref = pybryt.ReferenceImplementation([...])
+    ref.dump() # defaults to filename 'reference.pkl'
+    ref = pybryt.ReferenceImplementation.load('reference.pkl')

@@ -12,6 +12,7 @@ PyBryt Documentation
 
    annotations/index
    reference_implementations
+   student_implementations
    api_reference
 
 PyBryt is an open source  Python auto-assessment library for teaching and learning. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals. PyBryt is designed to work with existing autograding solutions and workflows such as `Otter Grader`_, `OkPy`_, and `Autolab`_.

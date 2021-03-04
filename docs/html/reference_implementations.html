@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="api_reference.html" /><link rel="prev" title="Invariants" href="annotations/invariants.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Student Implementations" href="student_implementations.html" /><link rel="prev" title="Invariants" href="annotations/invariants.html" />
 
     <meta name="generator" content="sphinx-3.1.2, furo 2021.02.21.beta25"/>
         <title>Reference Implementations - PyBryt documentation</title>
@@ -113,6 +113,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Reference Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 </ul>
 
@@ -256,6 +257,25 @@ sequence generator:</p>
 </div>
 <div class="section" id="interacting-with-reference-implementations">
 <h2>Interacting with Reference Implementations<a class="headerlink" href="#interacting-with-reference-implementations" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> class defines an API for
+working with reference implementations. The core method for reconciling a student implementation,
+encoded as a list of 2-tuples, is
+<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.run" title="pybryt.ReferenceImplementation.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code></a>. This method is
+abstracted away by the <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.check" title="pybryt.StudentImplementation.check"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code></a>
+method, which calls it for that student implementation.</p>
+</div>
+<div class="section" id="storing-reference-implementations">
+<span id="storing-refs"></span><h2>Storing Reference Implementations<a class="headerlink" href="#storing-reference-implementations" title="Permalink to this headline">¶</a></h2>
+<p>Reference implementation objects can be saved to a file by calling
+<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.dump" title="pybryt.ReferenceImplementation.dump"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.dump</span></code></a>, which takes in the
+path to the file and uses the <code class="docutils literal notranslate"><span class="pre">dill</span></code> library to serialize the object. To load a reference
+implementation, or a list of reference implementations, from a file, use the static method
+<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.load" title="pybryt.ReferenceImplementation.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.load</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">([</span><span class="o">...</span><span class="p">])</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span> <span class="c1"># defaults to filename 'reference.pkl'</span>
+<span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'reference.pkl'</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -263,12 +283,12 @@ sequence generator:</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api_reference.html">
+          <a class="next-page" href="student_implementations.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">API Reference</div>
+                <div class="title">Student Implementations</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -320,6 +340,7 @@ sequence generator:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#interacting-with-reference-implementations">Interacting with Reference Implementations</a></li>
+<li><a class="reference internal" href="#storing-reference-implementations">Storing Reference Implementations</a></li>
 </ul>
 </li>
 </ul>
