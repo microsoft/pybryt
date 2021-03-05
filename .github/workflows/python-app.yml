@@ -26,12 +26,12 @@ jobs:
         conda init --all
         
     - name: Set up environment
-      shell: $SHELL -l {0}
+      shell: bash -l {0}
       run: |
         conda env create -f environment.yml
         source activate pybryt-dev
         
     - name: Run pytest
-      shell: $SHELL -l {0}
+      shell: bash -l {0}
       run: |
         pytest tests
