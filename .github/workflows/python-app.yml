@@ -21,7 +21,8 @@ jobs:
       run: |
         wget -nv -O /tmp/miniconda_install.sh "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh"
         chmod +x /tmp/miniconda_install.sh
-        /tmp/miniconda_install.sh -b
+        /tmp/miniconda_install.sh -b -p $HOME/miniconda
+        export PATH="$HOME/miniconda/bin:$PATH"
         conda init --all
         
     - name: Set up environment
