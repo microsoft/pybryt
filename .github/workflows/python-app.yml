@@ -17,22 +17,29 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Set up conda
-      shell: bash {0}
-      run: |
-        wget -nv -O /tmp/miniconda_install.sh "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh"
-        chmod +x /tmp/miniconda_install.sh
-        /tmp/miniconda_install.sh -b -p $HOME/miniconda
-        export PATH="$HOME/miniconda/bin:$PATH"
-        conda init --all
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
         
-    - name: Set up environment
-      shell: bash {0}
+    - name: Install dependencies
       run: |
-        conda env create -f environment.yml
-        conda activate pybryt-dev
+        $CONDA/bin/conda env update -f environment.yml 
+        $CONDA/bin/conda activate pybryt-dev
+    
+#     - name: Set up conda
+#       run: |
+#         wget -nv -O /tmp/miniconda_install.sh "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh"
+#         chmod +x /tmp/miniconda_install.sh
+#         /tmp/miniconda_install.sh -b -p $HOME/miniconda
+#         export PATH="$HOME/miniconda/bin:$PATH"
+#         conda init --all
+        
+#     - name: Set up environment
+#       run: |
+#         conda env create -f environment.yml
+#         conda activate pybryt-dev
         
     - name: Run pytest
-      shell: bash {0}
       run: |
         pytest tests
