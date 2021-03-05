@@ -1,0 +1,34 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up conda
+      run: |
+        wget -nv -O /tmp/miniconda_install.sh "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh"
+        chmod +x /tmp/miniconda_install.sh
+        /tmp/miniconda_install.sh
+        conda init --all
+        
+    - name: Set up environment
+      run: |
+        conda env create -f environment.yml
+        conda activate pybryt-dev
+        
+    - name: Run pytest
+      run: |
+        pytest tests
