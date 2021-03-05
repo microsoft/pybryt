@@ -28,7 +28,7 @@ jobs:
     - name: Set up environment
       run: |
         conda env create -f environment.yml
-        conda activate pybryt-dev
+        source activate pybryt-dev
         
     - name: Run pytest
       run: |
