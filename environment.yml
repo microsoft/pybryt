@@ -1,4 +1,7 @@
 dependencies:
   - python=3.8
   - pip:
+    - -r file:requirements.txt
     - pytest
+    - -r file:docs/requirements.txt
+ 
