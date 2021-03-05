@@ -24,6 +24,7 @@ jobs:
         /tmp/miniconda_install.sh -b -p $HOME/miniconda
         export PATH="$HOME/miniconda/bin:$PATH"
         conda init --all
+        exec $SHELL
         
     - name: Set up environment
       run: |
