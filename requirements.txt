@@ -1,3 +1,4 @@
+IPython
 nbconvert
 nbformat
 numpy
