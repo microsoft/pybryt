@@ -24,8 +24,7 @@ jobs:
         
     - name: Install dependencies
       run: |
-        $CONDA/bin/conda env update -f environment.yml 
-        $CONDA/bin/conda activate pybryt-dev
+        $CONDA/bin/conda env update -f environment.yml -n base
     
 #     - name: Set up conda
 #       run: |
