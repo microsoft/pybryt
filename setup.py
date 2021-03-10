@@ -16,7 +16,7 @@ setuptools.setup(
 	name = "pybryt",
 	version = version,
 	author = "Chris Pyles",
-	author_email = "cpyles@berkeley.edu",
+	author_email = "pybryt-support@microsoft.com",
 	description = "Python auto-assessment library",
 	long_description = long_description,
 	long_description_content_type = "text/markdown",
