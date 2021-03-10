@@ -279,10 +279,40 @@ list.</p>
 <dl class="py class">
 <dt id="pybryt.annotations.value.Attribute">
 <em class="property">class </em><code class="sig-name descname">Attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">attrs</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Attribute" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><p>Annotation for asserting that an object has an attribute value matching that of another object.</p>
+<p>Uses a <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotation to check there exists an object in the
+students’ code which as a specific attribute, or a series of attributes, with values matching
+those in the object passed to the constructor. The constructor taks in the object in question
+and the name of the attribute(s) being studied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the object being checked</p></li>
+<li><p><strong>attrs</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">list[str]</span></code>) – the attribute or attributes that should be checked</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
 <dt id="pybryt.annotations.value.Attribute.check">
 <code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">observed_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>pybryt.execution.ObservedValue<span class="p">]</span></span></em><span class="sig-paren">)</span> → pybryt.annotations.annotation.AnnotationResult<a class="headerlink" href="#pybryt.annotations.value.Attribute.check" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Checks whether any of the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code> has all of the required attributes,
+each matching the values expected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>observed_values</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">float]]</span></code>) – a list of tuples of values observed
+during execution and the timestamps of those values</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the results of this annotation based on
+<code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Attribute.children">
 <em class="property">property </em><code class="sig-name descname">children</code><a class="headerlink" href="#pybryt.annotations.value.Attribute.children" title="Permalink to this definition">¶</a></dt>
@@ -298,11 +328,28 @@ children, an empty list.</p>
 <dl class="py class">
 <dt id="pybryt.annotations.value.Value">
 <em class="property">class </em><code class="sig-name descname">Value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">tol</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">invariants</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant">pybryt.annotations.invariants.invariant</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Value" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><p>Annotation class for asserting that a value should be observed.</p>
+<p>Indicates that a value passed to the constructor should be observed while tracing through the
+students’ code. Values can be of any type that is picklable by <code class="docutils literal notranslate"><span class="pre">dill</span></code>. Values can specify a
+list of <a class="reference internal" href="annotations/invariants.html#invariants"><span class="std std-ref">invariants</span></a> that will allow objects to be considered “equal.” For
+values that support arithemtic operators, absolute tolerances can be specified as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the value that should be observed</p></li>
+<li><p><strong>tol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional) – absolute tolerance for numeric values</p></li>
+<li><p><strong>invariants</strong> (<code class="docutils literal notranslate"><span class="pre">list[invariant]</span></code>) – invariants for
+this value</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
 <dt id="pybryt.annotations.value.Value.check">
-<code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>pybryt.execution.ObservedValue<span class="p">]</span></span></em><span class="sig-paren">)</span> → pybryt.annotations.annotation.AnnotationResult<a class="headerlink" href="#pybryt.annotations.value.Value.check" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs the check on the condition asserted by this annotation and returns a results object.</p>
-<p>Checks that the condition required by this annotation is met using the list of tuples of
+<code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">observed_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Tuple<span class="p">[</span>Any<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> → pybryt.annotations.annotation.AnnotationResult<a class="headerlink" href="#pybryt.annotations.value.Value.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the value tracked by this annotation occurs in the list of observed values.</p>
+<p>Checks that the value under the conditions of its invariants occurs in the list of tuples of
 observed values and timestamps <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>. Creates and returns an
 <a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a> object with the results of this check.</p>
 <dl class="field-list simple">
@@ -333,15 +380,18 @@ children, an empty list.</p>
 <dl class="py attribute">
 <dt id="pybryt.annotations.value.Value.intial_value">
 <code class="sig-name descname">intial_value</code><em class="property">: Any</em><a class="headerlink" href="#pybryt.annotations.value.Value.intial_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>a copy of the value passed to the constructor</p>
+</dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.annotations.value.Value.invariants">
 <code class="sig-name descname">invariants</code><em class="property">: List<span class="p">[</span>invariant<span class="p">]</span></em><a class="headerlink" href="#pybryt.annotations.value.Value.invariants" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>the invariants for this value</p>
+</dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.annotations.value.Value.tol">
 <code class="sig-name descname">tol</code><em class="property">: Union<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span></em><a class="headerlink" href="#pybryt.annotations.value.Value.tol" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>absolute tolerance for numeric values</p>
+</dd></dl>
 </dd></dl>
 </div>
 <div class="section" id="module-pybryt.annotations.relation">
