@@ -20,23 +20,22 @@ from .utils import make_secret, pickle_and_hash
 
 
 NBFORMAT_VERSION = 4
-# PRUNE_FREQUENCY = 1000
 
 
-class ObservedValue:
-    """
-    """
+# class ObservedValue:
+#     """
+#     """
 
-    timestamp: float
-    value: Any
-    fn_name: str
-    filename: str
+#     timestamp: float
+#     value: Any
+#     fn_name: str
+#     filename: str
 
-    def __init__(self, value: Any, fn_name: str = None, filename: str = None, timestamp: float = None):
-        self.value = value
-        self.fn_name = fn_name
-        self.filename = filename
-        self.timestamp = timestamp
+#     def __init__(self, value: Any, fn_name: str = None, filename: str = None, timestamp: float = None):
+#         self.value = value
+#         self.fn_name = fn_name
+#         self.filename = filename
+#         self.timestamp = timestamp
 
 
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
@@ -70,7 +69,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
     def track_value(val, seen_at):
         if type(val) in skip_types:
             return
-        # observed.append(ObservedValue(copy(val), frame.f_code.co_name, frame.f_code.co_filename, seen_at))
+
         try:
             h = pickle_and_hash(val)
         except:

@@ -1,5 +1,4 @@
-"""
-"""
+"""PyBryt plugin for Otter-Grader"""
 
 import os
 import dill
@@ -23,6 +22,7 @@ from ..utils import save_notebook
 
 class OtterPlugin(AbstractOtterPlugin):
     """
+    Plugin for Otter-Grader.
     """
 
     IMPORTABLE_NAME = "pybryt.integrations.otter.OtterPlugin"

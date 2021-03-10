@@ -11,7 +11,6 @@ from copy import deepcopy
 from typing import Any, List, NoReturn, Optional, Union
 
 from .annotations import Annotation, AnnotationResult
-from .execution import ObservedValue
 from .utils import notebook_to_string
 
 class ReferenceImplementation:
@@ -32,7 +31,7 @@ class ReferenceImplementation:
             instance = dill.load(f)
         return instance
 
-    def run(self, observed_values: List[ObservedValue], group: Optional[str] = None) -> 'ReferenceResult':        
+    def run(self, observed_values: List[Tuple[Any, float]], group: Optional[str] = None) -> 'ReferenceResult':        
         if group is not None:
             annots = []
             for ann in self.annotations:

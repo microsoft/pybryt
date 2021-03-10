@@ -12,7 +12,6 @@ from typing import Any, Dict, List, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
-from ..execution import ObservedValue
 
 
 class Value(Annotation):
@@ -229,7 +228,7 @@ class Attribute(Annotation):
     def children(self):
         return self._annotations
 
-    def check(self, observed_values: List[ObservedValue]) -> AnnotationResult:
+    def check(self, observed_values: List[Tuple[Any, float]]) -> AnnotationResult:
         """
         Checks whether any of the values in ``observed_values`` has all of the required attributes,
         each matching the values expected.

@@ -4,9 +4,6 @@ from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import Any, Dict, List, NoReturn, Optional, Tuple
 
-# from .relation import Before
-# from ..execution import ObservedValue
-
 
 _TRACKED_ANNOTATIONS = []
 _GROUP_INDICES = {}

@@ -9,7 +9,7 @@ import nbformat
 from typing import Any, List, NoReturn, Optional, Tuple, Union
 
 from .reference import ReferenceImplementation, ReferenceResult
-from .execution import execute_notebook, ObservedValue
+from .execution import execute_notebook
 
 
 NBFORMAT_VERSION = 4
