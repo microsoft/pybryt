@@ -3,5 +3,6 @@ dependencies:
   - pip:
     - -r file:requirements.txt
     - pytest
+    - codecov
     - -r file:docs/requirements.txt
  

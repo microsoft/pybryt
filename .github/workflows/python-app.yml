@@ -28,4 +28,8 @@ jobs:
         
     - name: Run pytest
       run: |
-        $CONDA/bin/pytest tests
+        $CONDA/bin/coverage run -m pytest tests
+
+    - name: Upload coverage
+      run: |
+        $CONDA/bin/codecov
