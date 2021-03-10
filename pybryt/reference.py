@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 
 from copy import deepcopy
-from typing import Any, List, NoReturn, Optional, Union
+from typing import Any, List, NoReturn, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
 from .utils import notebook_to_string
