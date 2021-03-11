@@ -1,13 +1,14 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python application
+name: Build documentation
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "Run tests" ]
     branches: [ main, dev ]
-  pull_request:
-    branches: [ main, dev ]
+    types:
+      - completed
 
 jobs:
   build:
@@ -25,11 +26,17 @@ jobs:
     - name: Install dependencies
       run: |
         $CONDA/bin/conda env update -f environment.yml -n base
+        $CONDA/bin/pip install -r docs/requirements.txt
         
-    - name: Run pytest
+    - name: Build documentation
+      working-directory: ./docs
       run: |
-        $CONDA/bin/coverage run -m pytest tests
+        make html
 
-    - name: Upload coverage
-      run: |
-        $CONDA/bin/codecov
+    - name: Commit documntation
+      uses: EndBug/add-and-commit@v7.0.0
+      with:
+        author_name: github-actions
+        author_email: 41898282+github-actions[bot]@users.noreply.github.com
+        add: "docs/html"
+        message: "builds docs for $GITHUB_SHA"
