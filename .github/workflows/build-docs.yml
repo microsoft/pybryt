@@ -39,4 +39,4 @@ jobs:
         author_name: github-actions
         author_email: 41898282+github-actions[bot]@users.noreply.github.com
         add: "docs/html"
-        message: "builds docs for $GITHUB_SHA"
+        message: "build docs for $GITHUB_SHA"
