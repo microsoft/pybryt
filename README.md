@@ -22,7 +22,7 @@
 
 - The PyBryt Library will work existing auto grading solution such as [Otter Grader](https://pypi.org/project/otter-grader/), [OkPy](https://pypi.org/project/okpy/) or [Autolab](https://pypi.org/project/autolab/).
 
-### Features
+## Features
 
 Educators and Institutions can leverage the PyBryt Library to integrate auto assessment and reference models to hands on labs and assessments.
 
@@ -32,9 +32,11 @@ Educators and Institutions can leverage the PyBryt Library to integrate auto ass
 - Analysis of complexity within the learners solution;
 - Plagiarism detection and support for reference solutions;
 - Easy integration into existing organizational or institutional grading infrastructure. 
-### Testing
+
+## Testing
 
 > Instructions for testing 
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

@@ -1,0 +1,334 @@
+"""Abstract base class for annotations and annotation results class"""
+
+from abc import ABC, abstractmethod
+from collections import OrderedDict
+from typing import Any, Dict, List, NoReturn, Optional, Tuple
+
+
+_TRACKED_ANNOTATIONS = []
+_GROUP_INDICES = {}
+
+
+class Annotation(ABC):
+    """
+    Abstract base class for annotating a reference implementation.
+
+    Defines an API and global configurations for all annotations used for marking-up reference
+    implementations. All instances of this class, or any of its subclasses, are added to a singleton
+    list that PyBryt maintains to track all annotations for simple reference creation. Supports
+    bitwise logical operators and contains methods for creating relational annotations (see
+    :py:class:`RelationalAnnotation<pybryt.RelationalAnnotation>`).
+
+    Args:
+        name (``str``, optional): the name of the annotation
+        limit (``int``, optional): the maximum number of annotations with name ``name`` to track
+            in ``_TRACKED_ANNOTATIONS``
+        group (``str``, optional): the name of the group that this annotation belongs to
+        success_message (``str``, optional): a message to relay to the student if satisfied
+        failure_message (``str``, optional): a message to relay to the student if not satisfied
+    """
+
+    name: Optional[str]
+    """the name of the annotation"""
+    
+    limit: Optional[int]
+    """the maximum number of annotations with this name to track in :obj:`_TRACKED_ANNOTATIONS`"""
+    
+    group: Optional[str]
+    """the name of the group that this annotation belongs to"""
+    
+    success_message: Optional[str]
+    """a message to relay to the student if satisfied"""
+    
+    failure_message: Optional[str]
+    """a message to relay to the student if not satisfied"""
+
+    def __init__(
+        self, name: Optional[str] = None, limit: Optional[int] = None, group: Optional[str] = None, 
+        success_message: Optional[str] = None, failure_message: Optional[str] = None, **kwargs,
+    ):
+        self.name = name
+        self.limit = limit
+        self.group = group
+        self.success_message = success_message
+        self.failure_message = failure_message
+        
+        self._track()
+
+    def __repr__(self):
+        ret = f"pybryt.{self.__class__.__name__}"
+        return ret
+    
+    def _track(self) -> NoReturn:
+        """
+        Tracks this annotation in ``_TRACKED_ANNOTATIONS`` and updates ``_GROUP_INDICES`` with the
+        index of the annotation if ``self.group`` is present. If the annotation has children
+        (returned by ``self.children``), the children are removed from ``_TRACKED_ANNOTATIONS``.
+        """
+        global _GROUP_INDICES, _TRACKED_ANNOTATIONS
+
+        idx = len(_TRACKED_ANNOTATIONS)
+        if self.name is None:
+            if self.limit is not None:
+                raise TypeError("'limit' passed without 'name'") 
+        else:
+            if self.name not in _GROUP_INDICES:
+                _GROUP_INDICES[self.name] = []
+            if self.limit is not None and len(_GROUP_INDICES[self.name]) >= self.limit:
+                return
+            else:
+                _GROUP_INDICES[self.name].append(idx)
+        
+        for child in self.children:
+            try:
+                _TRACKED_ANNOTATIONS.remove(child)
+            except ValueError:
+                pass
+        
+        _TRACKED_ANNOTATIONS.append(self)
+    
+    @staticmethod
+    def get_tracked_annotations() -> List["Annotation"]:
+        """
+        Returns the list of tracked annotations.
+
+        Returns:
+            ``list[Annotation]``: the list of tracked annotations
+        """
+        return _TRACKED_ANNOTATIONS
+
+    @staticmethod
+    def reset_tracked_annotations():
+        """
+        Resets the list of tracked annotations and the mapping of group names to indices in that
+        list.
+        """
+        global _GROUP_INDICES, _TRACKED_ANNOTATIONS
+        _TRACKED_ANNOTATIONS.clear()
+        _GROUP_INDICES.clear()
+
+    @property
+    @abstractmethod
+    def children(self) -> List["Annotation"]:
+        """
+        ``list[Annotation]``: the child annotations of this annotation. If this annotation has no 
+        children, an empty list.
+        """
+        ...
+
+    @abstractmethod
+    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+        """
+        Runs the check on the condition asserted by this annotation and returns a results object.
+
+        Checks that the condition required by this annotation is met using the list of tuples of
+        observed values and timestamps ``observed_values``. Creates and returns an 
+        :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
+
+        Args:
+            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+                during execution and the timestamps of those values
+        
+        Returns:
+            :py:class:`AnnotationResult`: the results of this annotation based on 
+            ``observed_values``
+        """
+        ...
+
+    def before(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
+        """
+        Creates an annotation asserting that this annotation is satisfied before another (i.e. that
+        the satisfying timestamp of this annotation is less than or equal to that of 
+        ``other_annotation``).
+
+        Args:
+            other_annotation (``Annotation``): the annotation that should be satisfied after this 
+                one
+            kwargs: other keyword arguments passed to the ``BeforeAnnotation`` constructor
+        
+        Returns:
+            ``BeforeAnnotation``: the annotation asserting the before condition
+        """
+        return BeforeAnnotation(self, other_annotation, **kwargs)
+
+    def after(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
+        """
+        Creates an annotation asserting that this annotation is satisfied after another (i.e. that
+        the satisfying timestamp of this annotation is greater than or equal to that of 
+        ``other_annotation``).
+
+        Args:
+            other_annotation (``Annotation``): the annotation that should be satisfied before this 
+                one
+            kwargs: other keyword arguments passed to the ``BeforeAnnotation`` constructor
+        
+        Returns:
+            ``BeforeAnnotation``: the annotation asserting the before condition
+        """
+        return BeforeAnnotation(other_annotation, self, **kwargs)
+
+    def __and__(self, other_annotation: "Annotation") -> "AndAnnotation":
+        """
+        Overrides the ``&`` operator for annotations to return an 
+        :py:class`AndAnnotation<pybryt.AndAnnotation>`, asserting that both annotations should be 
+        satisfied.
+
+        Args:
+            other_annotation (``Annotation``): the other annotation
+
+        Returns:
+            ``AndAnnotation``: the annotation asserting the and condition
+        """
+        return AndAnnotation(self, other_annotation)
+
+    def __or__(self, other_annotation: "Annotation") -> "OrAnnotation":
+        """
+        Overrides the ``|`` operator for annotations to return an 
+        :py:class`OrAnnotation<pybryt.OrAnnotation>`, asserting that either annotation should be 
+        satisfied.
+
+        Args:
+            other_annotation (``Annotation``): the other annotation
+
+        Returns:
+            ``OrAnnotation``: the annotation asserting the and condition
+        """
+        return OrAnnotation(self, other_annotation)
+
+    def __xor__(self, other_annotation: "Annotation") -> "XorAnnotation":
+        """
+        Overrides the ``^`` operator for annotations to return an 
+        :py:class`XorAnnotation<pybryt.XorAnnotation>`, asserting that either annotation but not 
+        both should be satisfied.
+
+        Args:
+            other_annotation (``Annotation``): the other annotation
+
+        Returns:
+            ``XorAnnotation``: the annotation asserting the xor condition
+        """
+        return XorAnnotation(self, other_annotation)
+
+    def __invert__(self) -> "NotAnnotation":
+        """
+        Overrides the ``~`` operator for annotations to return an 
+        :py:class`NotAnnotation<pybryt.NotAnnotation>`, asserting that this annotation should *not*
+        be satisfied.
+
+        Args:
+            other_annotation (``Annotation``): the other annotation
+
+        Returns:
+            ``NotAnnotation``: the annotation asserting the and condition
+        """
+        return NotAnnotation(self)
+
+
+class AnnotationResult:
+    """
+    Class that manages and defines an API for interacting with the results of an annotation.
+
+    Created when an annotation calls its :py:meth:`check<pybryt.Annotation.check` method and 
+    wrangles the results of that annotation. Contains fields for tracking child annotation results,
+    values satisfying annotations, and messages returned by this annotation and its children.
+
+    Args:
+        satisfied (``bool`` or ``None``): whether the condition of the annotation was satisfied; if
+            child annotation results should be used to determine this value, set to ``None``
+        annotation (:py:class:`Annotation`): the annotation that this result is for
+        value (``object``, optional): the value that satisfied the condition of this annotation
+        timestamp (``float``, optional): the timestamp at which this annotation was satisfied
+        children (``list[AnnotationResult]``, optional): child annotation results of this annotation
+            result
+    """
+
+    _satisfied: Optional[bool]
+    """
+    whether the condition of the annotation was satisfied; if child annotation results should be 
+    used to determine this value, set to ``None``
+    """
+
+    annotation: Annotation
+    """the annotation that this result is for"""
+
+    value: Any
+    """the value that satisfied the condition of this annotation"""
+
+    timestamp: float
+    """the timestamp at which this annotation was satisfied"""
+
+    children: Optional[List["AnnotationResult"]]
+    """child annotation results of this annotation result"""
+
+
+    def __init__(
+        self, satisfied: Optional[bool], annotation: Annotation, value: Any = None, timestamp: float = -1, 
+        children: Optional[List["AnnotationResult"]] = None,
+    ):
+        self._satisfied = satisfied
+        self.annotation = annotation
+        self.value = value
+        self.timestamp = timestamp
+        self.children = children
+
+    def __repr__(self):
+        return f"AnnotationResult(satisfied={self.satisfied}, annotation={self.annotation})"
+
+    @property
+    def satisfied(self) -> bool:
+        """
+        ``bool``: whether this annotation was satisfied
+        """
+        if self._satisfied is not None:
+            return self._satisfied
+        elif self.children is not None:
+            return all(c.satisfied for c in self.children)
+        else:
+            return bool(self._satisfied)
+
+    @property
+    def satisfied_at(self) -> float:
+        """
+        ``float``: the timestamp at which this annotation was satisfied; if child results are 
+        present, this is the maximum satisfying timestamp of all child results
+        """
+        if self.children is not None:
+            return max(c.satisfied_at for c in self.children)
+        return self.timestamp
+
+    @property
+    def name(self):
+        """
+        ``str`` or ``None``: the name of the annotation that these results track
+        """
+        return self.annotation.name
+    
+    @property
+    def group(self):
+        """
+        ``str`` or ``None``: the group name of the annotation that these results track
+        """
+        return self.annotation.group
+
+    @property
+    def messages(self) -> List[Tuple[str, Optional[str], bool]]: # (message, name, satisfied)
+        """
+        ``list[tuple[str, Optional[str], bool]]``: The messages returned by this annotation and its 
+        children based on whether or not the annotations were satisfied. A list of tuples where the 
+        first element is the message, the second is the name of the annotation (or ``None`` if no 
+        name is  present), and the third is whether the annotation was satisfied.
+        """
+        messages = []
+        if self.children:
+            for c in self.children:
+                messages.extend(c.messages)
+        
+        if self.satisfied and self.annotation.success_message:
+            messages.append((self.annotation.success_message, self.annotation.name, True))
+        elif not self.satisfied and self.annotation.failure_message:
+            messages.append((self.annotation.failure_message, self.annotation.name, False))
+
+        return messages
+
+
+from .relation import *

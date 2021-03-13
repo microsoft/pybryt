@@ -1,0 +1,8 @@
+dependencies:
+  - python=3.8
+  - pip:
+    - -r file:requirements.txt
+    - pytest
+    - codecov
+    - -r file:docs/requirements.txt
+ 

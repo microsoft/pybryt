@@ -1,0 +1,7 @@
+IPython
+nbconvert
+nbformat
+numpy
+dill
+click
+astunparse

@@ -1,0 +1,42 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Build documentation
+
+on:
+  workflow_run:
+    workflows: [ "Run tests" ]
+    branches: [ main, dev ]
+    types:
+      - completed
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+        
+    - name: Install dependencies
+      run: |
+        $CONDA/bin/conda env update -f environment.yml -n base
+        $CONDA/bin/pip install -r docs/requirements.txt
+        
+    - name: Build documentation
+      working-directory: ./docs
+      run: |
+        make html
+
+    - name: Commit documntation
+      uses: EndBug/add-and-commit@v7.0.0
+      with:
+        author_name: github-actions
+        author_email: 41898282+github-actions[bot]@users.noreply.github.com
+        add: "docs/html"
+        message: "build docs for $GITHUB_SHA"
