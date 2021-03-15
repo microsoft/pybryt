@@ -45,7 +45,7 @@ class Annotation(ABC):
 
     def __init__(
         self, name: Optional[str] = None, limit: Optional[int] = None, group: Optional[str] = None, 
-        success_message: Optional[str] = None, failure_message: Optional[str] = None, **kwargs,
+        success_message: Optional[str] = None, failure_message: Optional[str] = None,
     ):
         self.name = name
         self.limit = limit
