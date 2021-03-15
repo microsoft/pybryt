@@ -13,6 +13,7 @@ from typing import Any, List, NoReturn, Optional, Tuple, Union
 from .annotations import Annotation, AnnotationResult
 from .utils import notebook_to_string
 
+
 class ReferenceImplementation:
     
     annotations: List[Annotation]

@@ -1,5 +1,4 @@
-"""
-"""
+"""Command-line interface for PyBryt"""
 
 from .cli import main as cli
 

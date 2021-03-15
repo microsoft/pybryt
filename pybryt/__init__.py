@@ -1,5 +1,4 @@
-"""
-"""
+"""Auto-assessment library for Python"""
 
 from .annotations import *
 from .reference import ReferenceImplementation, ReferenceResult

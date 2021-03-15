@@ -1,5 +1,4 @@
-"""
-"""
+"""Submission execution internals for PyBryt"""
 
 import os
 import re
@@ -22,51 +21,39 @@ from .utils import make_secret, pickle_and_hash
 NBFORMAT_VERSION = 4
 
 
-# class ObservedValue:
-#     """
-#     """
-
-#     timestamp: float
-#     value: Any
-#     fn_name: str
-#     filename: str
-
-#     def __init__(self, value: Any, fn_name: str = None, filename: str = None, timestamp: float = None):
-#         self.value = value
-#         self.fn_name = fn_name
-#         self.filename = filename
-#         self.timestamp = timestamp
-
-
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
         Tuple[List[Tuple[Any, float]], Callable[[FrameType, str, Any], Callable]]:
     """
+    Creates a list to collect observed values and a trace function.
+
+    Any types in ``skip_types`` won't be tracked by the trace function. The trace function by 
+    default only traces inside IPython but can be set to trace inside specific files using the
+    ``addl_filenames`` argument, which should be a list absolute paths to files that should also be
+    traced inside of.
+
+    Args:
+        skip_types (``list[type]``, optional): object types not to track
+        addl_filenames (``list[str]``, optional): filenames to trace inside of in addition to 
+            IPython
+        
+    Returns:
+        ``tuple[list[tuple[object, float]], callable[[frame, str, object], callable]]``: the list
+        of tuples of observed objects and their timestamps, and the trace function
     """
     observed = []
     vars_not_found = {}
     hashes = set()
-    # prune_pickup_idx = [0]
-    # next_prune = [PRUNE_FREQUENCY]
-
-    # def prune_observations():
-    #     to_delete = []
-    #     for i in range(prune_pickup_idx[0], len(observed)):
-    #         try:
-    #             h = pickle_and_hash(observed[i])
-    #             if h in hashes[0]:
-    #                 to_delete.append(i)
-    #             else:
-    #                 hashes[0] |= set([h])
-    #         except:
-    #             to_delete.append(i)
-        
-    #     to_delete.reverse()
-    #     for i in to_delete:
-    #         observed.pop(i)
-        
-    #     prune_pickup_idx[0] = len(observed)
 
     def track_value(val, seen_at):
+        """
+        Tracks a value in ``observed``. Checks that the value has not already been tracked by 
+        pickling it and hashing the pickled object and comparing it to ``hashes``. If pickling is
+        unsuccessful, the value is not tracked.
+
+        Args:
+            val (``object``): the object to be tracked
+            seen_at (``float``): the timestamp at which the value was seen
+        """
         if type(val) in skip_types:
             return
 
@@ -81,6 +68,9 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
     # TODO: a way to track the cell of execution
     def collect_intermidiate_results(frame: FrameType, event: str, arg: Any):
+        """
+        Trace function for PyBryt.
+        """
         seen_at = time.time()
 
         name = frame.f_code.co_filename + frame.f_code.co_name
@@ -134,10 +124,6 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                 elif t in frame.f_globals:
                     val = frame.f_globals[t]
                     track_value(val, timestamp)
-        
-        # if len(observed) >= next_prune[0]:
-        #     prune_observations()
-        #     next_prune[0] = len(observed) + PRUNE_FREQUENCY
 
         return collect_intermidiate_results
 
@@ -147,6 +133,22 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], output: Optional[str] = None) -> \
         Tuple[float, float, List[Tuple[Any, float]]]:
     """
+    Executes a submission using ``nbconvert`` and returns the memory footprint.
+
+    Takes in a notebook object and preprocesses it before running it through the 
+    ``nbconvert.ExecutePreprocessor`` to execute it. The notebook writes the memory footprint, a 
+    list of observed values and their timestamps, to a file, which is loaded using ``dill`` by this
+    function. Errors during execution are ignored, and the executed notebook can be written to a 
+    file using the ``output`` argument.
+
+    Args:
+        nb (``nbformat.NotebookNode``): the notebook to be executed
+        addl_filenames (``list[str]``, optional): a list of additional files to trace inside
+        output (``str``, optional): a file path at which to write the executed notebook
+
+    Returns:
+        ``tuple[float, float, list[tuple[object, float]]]``: the execution start time, end time, and 
+        the memory footprint
     """
     preprocessor = IntermediateVariablePreprocessor()
     nb = preprocessor.preprocess(nb)

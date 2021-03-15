@@ -1,5 +1,4 @@
-"""
-"""
+"""Command-line interface for PyBryt"""
 
 import dill
 import click

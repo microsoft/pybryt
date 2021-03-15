@@ -1,3 +1,5 @@
+"""Intermediate variable preprocessor for PyBryt submissions"""
+
 import ast
 import astunparse
 import nbformat
@@ -12,10 +14,10 @@ class UnassignedVarWrapper(ast.NodeTransformer):
     AST node transformer that creates intermediate variables for any calls in nested expressions
 
     Transforms an AST such that every ``Call`` or ``BinOp`` which does not have an ``Assign`` as its 
-    parent is added to the AST in the closest parent node with a ``body`` as an intermediate variable. 
-    The node is replaced with a ``Name`` of the new variable name. Any nodes who have a parent node 
-    that is an instance of any node type in ``UnassignedVarWrapper._skip_node_types`` is not 
-    transformed.
+    parent is added to the AST in the closest parent node with a ``body`` as an intermediate v
+    ariable. The node is replaced with a ``Name`` of the new variable name. Any nodes who have a 
+    parent node that is an instance of any node type in ``UnassignedVarWrapper._skip_node_types`` 
+    is not transformed.
 
     Attrs:
         insertions (``list[tuple[ast.Node, str, int, ast.Node]]``): a tuple of insertions to make in 
@@ -76,7 +78,7 @@ class UnassignedVarWrapper(ast.NodeTransformer):
 
         Returns:
             ``ast.Node``: an untransformed node if no transformation was required or the new 
-                ``Name`` node to be inserted into the AST if transformation was required.
+            ``Name`` node to be inserted into the AST if transformation was required.
         """
         if not isinstance(node.parent, ast.Assign):
             vn = self.get_varname()
@@ -159,7 +161,7 @@ class IntermediateVariablePreprocessor():
             nb (``nbformat.NotebookNode``): the notebook to be preprocessed
 
         Returns:
-            nb (``nbformat.NotebookNode``): the updated notebook
+            ``nbformat.NotebookNode``: the updated notebook
         """
         # code = notebook_to_string(nb)
         transformer_mgr = TransformerManager()
