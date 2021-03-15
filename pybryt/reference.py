@@ -15,8 +15,16 @@ from .utils import notebook_to_string
 
 
 class ReferenceImplementation:
+    """
+    A reference implementation class for managing collections of annotations. Defines methods for
+    creating, running, and storing reference implementations.
+
+    Args:
+        annotations (``list[Annotation]``): the annotations comprising this reference implementation
+    """
     
     annotations: List[Annotation]
+    """the annotations comprising this reference implementation"""
 
     def __init__(self, annotations: List[Annotation]):
         if not isinstance(annotations, list):
@@ -27,12 +35,50 @@ class ReferenceImplementation:
         self.annotations = annotations
 
     @staticmethod
-    def load(file: str) -> Union[List['ReferenceImplementation'], 'ReferenceImplementation']:
+    def load(file: str) -> 'ReferenceImplementation':
+        """
+        Unpickles a reference implementation from a file.
+
+        Args:
+            file (``str``): the path to the file
+        
+        Returns:
+            :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>`: the unpickled
+            reference implementation
+        """
         with open(file, "rb") as f:
             instance = dill.load(f)
+        if not isinstance(instance, ReferenceImplementation):
+            raise TypeError(f"Unpickled reference implementation has type {type(instance)}")
         return instance
+    
+    def dump(self, dest: str = "reference.pkl") -> NoReturn:
+        """
+        Pickles this reference implementation to a file.
+
+        Args:
+            dest (``str``, optional): the path to the file
+        """
+        with open(dest, "wb+") as f:
+            dill.dump(self, f)
 
     def run(self, observed_values: List[Tuple[Any, float]], group: Optional[str] = None) -> 'ReferenceResult':        
+        """
+        Runs the annotations tracked by this reference implementation against a memory footprint.
+
+        Can run only specific annotations by specifying the ``group`` argument. Returns a 
+        :py:class:`ReferenceResult<pybryt.ReferenceResult>` object.
+
+        Args:
+            observed_values (``list[tuple[object, float]]``): the memory footprint
+            group (``str``, optional): if specified, only annotations in this group will be run
+
+        Returns:
+            :py:class:`ReferenceResult<pybryt.ReferenceResult>`: the results of this check
+
+        Raises:
+            ``ValueError``: if ``group`` is specified but there are no annotations with that group
+        """
         if group is not None:
             annots = []
             for ann in self.annotations:
@@ -50,12 +96,13 @@ class ReferenceImplementation:
         
         return ReferenceResult(self, results, group=group)
 
-    def dump(self, dest: str = "reference.pkl") -> NoReturn:
-        with open(dest, "wb+") as f:
-            dill.dump(self, f)
-
     @classmethod
     def compile(cls, file: str) -> Union['ReferenceImplementation', List['ReferenceImplementation']]:
+        """
+        Compiles a notebook or Python script into a single or list of reference implementations.
+
+        
+        """
         Annotation.reset_tracked_annotations()
 
         ext = os.path.splitext(file)[1]
