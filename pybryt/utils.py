@@ -15,14 +15,26 @@ from IPython.display import display, Javascript
 
 
 def pickle_and_hash(obj: Any) -> str:
+    """
+    Uses ``dill`` to pickle an object and returns the SHA-512 hash of the returned bytes.
+
+    Args:
+        obj (``object``): the object to pickle and hash
+    
+    Returns:
+        ``str``: the hex digest of the SHA-512 hash of the pickled object
+    """
     s = dill.dumps(obj)
     return hashlib.sha512(s).hexdigest()
 
 
 def filter_pickleable_list(lst: List[Any]) -> NoReturn:
     """
-    """
+    Removes all elements from a list that cannot be pickled with ``dill``.
 
+    Args:
+        lst (``list[object]``): the list to filter
+    """
     to_delete = []
     for i, v in enumerate(lst):
         try:
@@ -37,8 +49,15 @@ def filter_pickleable_list(lst: List[Any]) -> NoReturn:
 
 def notebook_to_string(nb_path: Union[str, nbformat.NotebookNode]) -> str:
     """
-    """
+    Converts a Jupyter Notebook to a string of executable Python code.
+
+    Args:
+        nb_path (``str`` or ``nbformat.NotebookNode``): the path to the notebook or the notebook
+            in-memory
     
+    Returns:
+        ``str``: the string of all Python code from the notebook
+    """   
     if isinstance(nb_path, str):
         with open(nb_path) as f:
             nb = json.load(f)
@@ -62,23 +81,21 @@ def notebook_to_string(nb_path: Union[str, nbformat.NotebookNode]) -> str:
 
 def make_secret(size=6, chars=string.ascii_uppercase + string.digits):
     """
-    Used to generate a dynamic variable name for grading functions
-
-    This function generates a random name using the given length and character set.
+    This function generates a random string using the given length and character set.
     
     Args:
-        size (``int``): length of output name
-        chars (``str``, optional): set of characters used to create function name
+        size (``int``, optional): the length of output name
+        chars (``str``, optional): the set of characters used to create function name
     
     Returns:
-        ``str``: randomized string name for grading function
+        ``str``: randomly-generated string
     """
     return ''.join(random.choice(chars) for _ in range(size))
 
 
 def save_notebook(filename, timeout=10):
     """
-    Force-saves a Jupyter notebook by displaying JavaScript.
+    Force-saves a Jupyter Notebook by displaying JavaScript.
 
     Args:
         filename (``str``): path to notebook file being saved
