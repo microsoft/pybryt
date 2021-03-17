@@ -1,5 +1,4 @@
-"""
-"""
+"""Reference implementations for PyBryt"""
 
 import os
 import dill
@@ -101,7 +100,16 @@ class ReferenceImplementation:
         """
         Compiles a notebook or Python script into a single or list of reference implementations.
 
+        Creates a reference implementation by executing a Jupyter Notebook or Python script and 
+        collecting all :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>` objects
+        created, if any, or all :py:class:`Annotation<pybryt.Annotation>` objects otherwise.
+
+        Args:
+            file (``str``): path to the file to be executed
         
+        Returns:
+            ``ReferenceImplementation`` or ``list[ReferenceImplementation]``: the reference(s) 
+            created by executing the file
         """
         Annotation.reset_tracked_annotations()
 
@@ -121,8 +129,6 @@ class ReferenceImplementation:
         for _, v in env.items():
             if isinstance(v, cls):
                 refs.append(v)
-            # if isinstance(v, Annotation):
-            #     annots.append(v)
 
         if not refs:
             if not Annotation.get_tracked_annotations():
@@ -139,13 +145,30 @@ class ReferenceImplementation:
 
 class ReferenceResult:
     """
+    Class for wrangling and managing the results of a reference implementation. Collects a series of
+    :py:class:`AnnotationResult<pybryt.AnnotationResult>` objects and provides an API for managing
+    those results collectively.
+
+    Args:
+        reference (``ReferenceImplementation``): the reference implementation
+        annotation_results (``list[AnnotationResult]``): the annotation results from running the
+            reference implementation
+        group (``str``, optional): the name of the group of annotations executed, if applicable
     """
 
     reference: ReferenceImplementation
-    results: List[AnnotationResult]
-    group: Optional[str]
+    """the reference implementation executed"""
 
-    def __init__(self, reference, annotation_results: List[AnnotationResult], group=None):
+    results: List[AnnotationResult]
+    """the annotation results from running the reference implementation"""
+
+    group: Optional[str]
+    """the name of the group of annotations executed, if applicable"""
+
+    def __init__(
+        self, reference: ReferenceImplementation, annotation_results: List[AnnotationResult], 
+        group: Optional[str] = None
+    ):
         self.reference = reference
         self.results = annotation_results
         self.group = group
@@ -156,10 +179,18 @@ class ReferenceResult:
 
     @property
     def correct(self):
+        """
+        ``bool``: whether the reference implementation was satisfied
+        """
         return all(r.satisfied for r in self.results)
 
     @property
     def messages(self):
+        """
+        ``list[str]``: the list of messages returned by all annotations in the reference 
+        implementation; if ``self.group`` is not ``None``, only messages from annotations in that
+        group are returned
+        """
         messages = []
         message_names = {}
         for r in self.results:
@@ -178,5 +209,10 @@ class ReferenceResult:
 
     def to_array(self):
         """
+        Converts this result into a numpy array of integers, where ``1`` indicates a satisfied 
+        annotation and ``0`` is unsatisfied.
+
+        Returns:
+            ``numpy.ndarray``: indicator array for the passage of annotations
         """
         return np.array([r.satisfied for r in self.results], dtype=int)
