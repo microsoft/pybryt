@@ -31,7 +31,7 @@ jobs:
     - name: Build documentation
       working-directory: ./docs
       run: |
-        make html
+        make html SPHINXBUILD=$CONDA/bin/sphinx-build
 
     - name: Commit documntation
       uses: EndBug/add-and-commit@v7.0.0
