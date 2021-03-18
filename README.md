@@ -10,16 +10,11 @@
 
 # PyBryt - Python Library
 
-**Auto-assessment python library for teaching and learning**
+PyBryt is an auto-assessment Python library for teaching and learning.
 
 - The PyBryt Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
-
 - The PyBryt Library is a Open Source Python Library - focused on the auto assessment and validation of Python coding.
-
-- The PyBryt library has been developed under open source to support learning and training institutions to auto assess the work completed by learners.
-
-![](/images/seymourgoals.PNG)
-
+- The PyBryt library has been developed under open source to support learning and training institutions to auto assess the work completed by learners.<br>![](/images/seymourgoals.PNG)
 - The PyBryt Library will work existing auto grading solution such as [Otter Grader](https://pypi.org/project/otter-grader/), [OkPy](https://pypi.org/project/okpy/) or [Autolab](https://pypi.org/project/autolab/).
 
 ## Features
@@ -41,7 +36,8 @@ Educators and Institutions can leverage the PyBryt Library to integrate auto ass
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+the rights to use your contribution. For details, visit 
+[https://cla.opensource.microsoft.com](https://cla.opensource.microsoft.com).
 
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
