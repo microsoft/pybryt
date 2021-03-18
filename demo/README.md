@@ -1,8 +1,10 @@
 # PyBryt Demo
 
-To run the demos install pybryt first
+To run the demos, first install PyBryt with `pip`:
+
 ```
 pip install pybryt
 ```
 
-and launch the index.ipynb in each of the directories under `demo` from Jupyter Notebook.
+and then launch the `index.ipynb` notebook in each of the directories under `demo` from Jupyter 
+Notebook, which demonstrates the process of using PyBryt to assess student submissions.
