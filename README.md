@@ -3,6 +3,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/issues/)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/pull/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![GitHub Actions](https://github.com/microsoft/pybryt/actions/workflows/run-tests.yml/badge.svg)](https://github.com/microsoft/pybryt/actions/workflows/run-tests.yml)
+[![codecov](https://codecov.io/gh/microsoft/pybryt/branch/main/graph/badge.svg?token=PFVA425I3X)](https://codecov.io/gh/microsoft/pybryt)
 
 [![GitHub watchers](https://img.shields.io/github/watchers/microsoft/pybryt.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/microsoft/pybryt/watchers/)
 [![GitHub forks](https://img.shields.io/github/forks/microsoft/pybryt.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/microsoft/pybryt/network/)
