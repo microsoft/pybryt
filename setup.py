@@ -20,7 +20,7 @@ setuptools.setup(
 	description = "Python auto-assessment library",
 	long_description = long_description,
 	long_description_content_type = "text/markdown",
-	url = "https://github.com/microsoft.pybryt",
+	url = "https://github.com/microsoft/pybryt",
 	license = "MIT",
 	packages = setuptools.find_packages(exclude=["test"]),
 	classifiers = [
