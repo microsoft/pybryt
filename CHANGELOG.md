@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file, and this pr
 
 ## Unreleased
 
+* Changed timestamp to step counter in execution trace function
+
 ## 0.0.1 - 2021-03-21
 
 * Initial release
