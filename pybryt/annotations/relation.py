@@ -46,7 +46,7 @@ class RelationalAnnotation(Annotation):
         return self._annotations
 
     @abstractmethod
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         ...
 
 
@@ -66,13 +66,13 @@ class BeforeAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         """
         Checks that all child annotations are satisfied by the values in ``observed_values`` and
         that the timestamps of the satisfying values occur in non-decreasing order.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -105,12 +105,12 @@ class AndAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         """
         Checks that all child annotations are satisfied by the values in ``observed_values``.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -135,12 +135,12 @@ class OrAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         """
         Checks that any of the child annotations are satisfied by the values in ``observed_values``.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -169,13 +169,13 @@ class XorAnnotation(RelationalAnnotation):
         super().__init__(*annotations)
         assert len(self._annotations) == 2, "Cannot use xor with more than two annotations"
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         """
         Checks that one child annotation is satisfied and one is not by the values in 
         ``observed_values``.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -201,12 +201,12 @@ class NotAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         """
         Checks that the child annotation is not satisfied by the values in ``observed_values``.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:

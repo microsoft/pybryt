@@ -29,14 +29,11 @@ class StudentImplementation:
     nb: nbformat.NotebookNode
     """the submission notebook"""
 
-    values: List[Tuple[Any, float]]
+    values: List[Tuple[Any, int]]
     """the memory footprint (a list of tuples of objects and their timestamps)"""
 
-    start: float
-    """execution start time"""
-
-    end: float
-    """execution end time"""
+    steps: int
+    """number of execution steps"""
 
     def __init__(
         self, path_or_nb: Union[str, nbformat.NotebookNode], addl_filenames: List[str] = [],
@@ -60,7 +57,7 @@ class StudentImplementation:
                 execution
             output (``str``, optional): a path at which to write executed notebook
         """
-        self.start, self.end, self.values = execute_notebook(
+        self.steps, self.values = execute_notebook(
             self.nb, addl_filenames=addl_filenames, output=output
         )
 

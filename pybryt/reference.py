@@ -61,7 +61,7 @@ class ReferenceImplementation:
         with open(dest, "wb+") as f:
             dill.dump(self, f)
 
-    def run(self, observed_values: List[Tuple[Any, float]], group: Optional[str] = None) -> 'ReferenceResult':        
+    def run(self, observed_values: List[Tuple[Any, int]], group: Optional[str] = None) -> 'ReferenceResult':        
         """
         Runs the annotations tracked by this reference implementation against a memory footprint.
 
@@ -69,7 +69,7 @@ class ReferenceImplementation:
         :py:class:`ReferenceResult<pybryt.ReferenceResult>` object.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): the memory footprint
+            observed_values (``list[tuple[object, int]]``): the memory footprint
             group (``str``, optional): if specified, only annotations in this group will be run
 
         Returns:
