@@ -117,7 +117,7 @@ class Annotation(ABC):
         ...
 
     @abstractmethod
-    def check(self, observed_values: List[Tuple[Any, float]]) -> "AnnotationResult":
+    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         """
         Runs the check on the condition asserted by this annotation and returns a results object.
 
@@ -126,7 +126,7 @@ class Annotation(ABC):
         :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -237,7 +237,7 @@ class AnnotationResult:
             child annotation results should be used to determine this value, set to ``None``
         annotation (:py:class:`Annotation`): the annotation that this result is for
         value (``object``, optional): the value that satisfied the condition of this annotation
-        timestamp (``float``, optional): the timestamp at which this annotation was satisfied
+        timestamp (``int``, optional): the step counter value at which this annotation was satisfied
         children (``list[AnnotationResult]``, optional): child annotation results of this annotation
             result
     """
@@ -254,15 +254,15 @@ class AnnotationResult:
     value: Any
     """the value that satisfied the condition of this annotation"""
 
-    timestamp: float
-    """the timestamp at which this annotation was satisfied"""
+    timestamp: int
+    """the step counter value at which this annotation was satisfied"""
 
     children: Optional[List["AnnotationResult"]]
     """child annotation results of this annotation result"""
 
 
     def __init__(
-        self, satisfied: Optional[bool], annotation: Annotation, value: Any = None, timestamp: float = -1, 
+        self, satisfied: Optional[bool], annotation: Annotation, value: Any = None, timestamp: int = -1, 
         children: Optional[List["AnnotationResult"]] = None,
     ):
         self._satisfied = satisfied
@@ -287,9 +287,9 @@ class AnnotationResult:
             return bool(self._satisfied)
 
     @property
-    def satisfied_at(self) -> float:
+    def satisfied_at(self) -> int:
         """
-        ``float``: the timestamp at which this annotation was satisfied; if child results are 
+        ``int``: the step counter value at which this annotation was satisfied; if child results are 
         present, this is the maximum satisfying timestamp of all child results
         """
         if self.children is not None:

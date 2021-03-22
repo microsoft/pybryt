@@ -67,7 +67,7 @@ class Value(Annotation):
     def children(self):
         return []
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> AnnotationResult:
+    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
         Checks that the value tracked by this annotation occurs in the list of observed values.
 
@@ -76,7 +76,7 @@ class Value(Annotation):
         :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -90,7 +90,7 @@ class Value(Annotation):
         first_satisfier = satisfied.index(True)
         return AnnotationResult(True, self, observed_values[first_satisfier][0], observed_values[first_satisfier][1])
 
-    def _check_observed_value(self, observed_value: Tuple[Any, float]) -> bool:
+    def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
 
@@ -98,7 +98,7 @@ class Value(Annotation):
         resulting values match and of the values in ``self._values``.
 
         Args:
-            observed_value (``tuple[object, float]``): the observed value tuple
+            observed_value (``tuple[object, int]``): the observed value tuple
 
         Returns:
             ``bool``: whether the value matched
@@ -174,13 +174,13 @@ class _AttrValue(Value):
         val = getattr(obj, attr)
         super().__init__(val, **kwargs)
     
-    def check(self, observed_values: List[Tuple[Any, float]]) -> AnnotationResult:
+    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
         Checks whether any of the values in ``observed_values`` has an attribute matching the value
         in this annotation.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:
@@ -228,13 +228,13 @@ class Attribute(Annotation):
     def children(self):
         return self._annotations
 
-    def check(self, observed_values: List[Tuple[Any, float]]) -> AnnotationResult:
+    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
         Checks whether any of the values in ``observed_values`` has all of the required attributes,
         each matching the values expected.
 
         Args:
-            observed_values (``list[tuple[object, float]]``): a list of tuples of values observed
+            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
                 during execution and the timestamps of those values
         
         Returns:

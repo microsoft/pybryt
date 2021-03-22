@@ -2,7 +2,6 @@
 
 import os
 import re
-import time
 import tempfile
 import linecache
 import dill
@@ -22,7 +21,7 @@ NBFORMAT_VERSION = 4
 
 
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
-        Tuple[List[Tuple[Any, float]], Callable[[FrameType, str, Any], Callable]]:
+        Tuple[List[Tuple[Any, int]], Callable[[FrameType, str, Any], Callable]]:
     """
     Creates a list to collect observed values and a trace function.
 
@@ -37,14 +36,15 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             IPython
         
     Returns:
-        ``tuple[list[tuple[object, float]], callable[[frame, str, object], callable]]``: the list
+        ``tuple[list[tuple[object, int]], callable[[frame, str, object], callable]]``: the list
         of tuples of observed objects and their timestamps, and the trace function
     """
     observed = []
     vars_not_found = {}
     hashes = set()
+    counter = [0]
 
-    def track_value(val, seen_at):
+    def track_value(val, seen_at=None):
         """
         Tracks a value in ``observed``. Checks that the value has not already been tracked by 
         pickling it and hashing the pickled object and comparing it to ``hashes``. If pickling is
@@ -52,7 +52,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
         Args:
             val (``object``): the object to be tracked
-            seen_at (``float``): the timestamp at which the value was seen
+            seen_at (``int``, optional): an overriding step counter value
         """
         if type(val) in skip_types:
             return
@@ -61,6 +61,10 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             h = pickle_and_hash(val)
         except:
             return
+        
+        if seen_at is None:
+            seen_at = counter[0]
+            counter[0] += 1
         
         if h not in hashes:
             observed.append((copy(val), seen_at))
@@ -71,8 +75,6 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         """
         Trace function for PyBryt.
         """
-        seen_at = time.time()
-
         name = frame.f_code.co_filename + frame.f_code.co_name
         
         if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
@@ -82,48 +84,49 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                 tokens = set("".join(char if char.isalnum() or char == '_' else "\n" for char in line).split("\n"))
                 for t in "".join(char if char.isalnum() or char == '_' or char == '.' else "\n" for char in line).split("\n"):
                     tokens.add(t)
-
-                # for tracking the results of an assignment statement
-                m = re.match(r"\s*(\w+)\s=.*", line)
-                if m:
-                    if name not in vars_not_found:
-                        vars_not_found[name] = []
-                    vars_not_found[name].append((m.group(1), seen_at))
                 
                 for t in tokens:
                     if "." in t:
                         try:
                             val = eval(t, frame.f_globals, frame.f_locals)
-                            track_value(val, seen_at)
+                            track_value(val)
                         except:
                             pass
 
                     else:
                         if t in frame.f_locals:
                             val = frame.f_locals[t]
-                            track_value(val, seen_at)
+                            track_value(val)
                                 
                         elif t in frame.f_globals:
                             val = frame.f_globals[t]
-                            track_value(val, seen_at)
+                            track_value(val)
+                
+                # for tracking the results of an assignment statement
+                m = re.match(r"\s*(\w+)\s=.*", line)
+                if m:
+                    if name not in vars_not_found:
+                        vars_not_found[name] = []
+                    vars_not_found[name].append((m.group(1), counter[0]))
+                    counter[0] += 1
 
             if event == "return" and type(arg) not in skip_types:
-                track_value(arg, seen_at)
+                track_value(arg)
 
         elif (frame.f_back.f_code.co_filename.startswith("<ipython") or \
                 frame.f_back.f_code.co_filename in addl_filenames) and event == "return":
-            track_value(arg, seen_at)
+            track_value(arg)
 
         if event == "return" and name in vars_not_found:
             varnames = vars_not_found.pop(name)
-            for t, timestamp in varnames:
+            for t, step in varnames:
                 if t in frame.f_locals:
                     val = frame.f_locals[t]
-                    track_value(val, timestamp)
+                    track_value(val, step)
 
                 elif t in frame.f_globals:
                     val = frame.f_globals[t]
-                    track_value(val, timestamp)
+                    track_value(val, step)
 
         return collect_intermidiate_results
 
@@ -131,7 +134,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
 
 def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], output: Optional[str] = None) -> \
-        Tuple[float, float, List[Tuple[Any, float]]]:
+        Tuple[int, List[Tuple[Any, int]]]:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -147,8 +150,8 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
         output (``str``, optional): a file path at which to write the executed notebook
 
     Returns:
-        ``tuple[float, float, list[tuple[object, float]]]``: the execution start time, end time, and 
-        the memory footprint
+        ``tuple[int, list[tuple[object, int]]]``: the number of execution steps and the memory 
+        footprint
     """
     preprocessor = IntermediateVariablePreprocessor()
     nb = preprocessor.preprocess(nb)
@@ -177,9 +180,7 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
 
     ep = ExecutePreprocessor(timeout=1200, allow_errors=True)
 
-    execution_start = time.time()
     ep.preprocess(nb)
-    execution_end = time.time()
 
     if output:
         with open(output, "w+") as f:
@@ -190,4 +191,6 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
 
     os.remove(observed_fp)
 
-    return execution_start, execution_end, observed
+    n_steps = max([t[1] for t in observed])
+
+    return n_steps, observed
