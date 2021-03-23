@@ -6,7 +6,7 @@ __all__ = ["Value", "Attribute"]
 import dill
 import numpy as np
 
-from collections import Iterable
+from collections.abc import Iterable
 from copy import copy
 from typing import Any, Dict, List, Tuple, Union
 
@@ -134,6 +134,9 @@ class Value(Annotation):
                         continue
                 else:
                     try:
+                        if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
+                                or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
+                            continue
                         res = value == other_value
                     except (ValueError, TypeError) as e:
                         continue

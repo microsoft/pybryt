@@ -10,7 +10,7 @@ from collections.abc import Iterable
 from functools import lru_cache
 from unittest import mock
 
-from pybryt import Attribute, Value
+from pybryt import Annotation, Attribute, Value
 from pybryt.utils import pickle_and_hash
 
 
@@ -19,13 +19,14 @@ def check_obj_attributes(obj, attrs):
     """
     for k, v in attrs.items():
         if k.endswith("__len"):
-            assert len(getattr(obj, k[:-5])) == v
+            assert len(getattr(obj, k[:-5])) == v, \
+                f"Attr '{k}' is wrong: expected {v} but got {len(getattr(obj, k))}"
         else:
             is_eq = getattr(obj, k) == v
             if isinstance(is_eq, np.ndarray):
-                assert is_eq.all()
+                assert is_eq.all(), f"Attr '{k}' is wrong: expected {v} but got {getattr(obj, k)}"
             else:
-                assert is_eq
+                assert is_eq, f"Attr '{k}' is wrong: expected {v} but got {getattr(obj, k)}"
 
 
 @lru_cache(1)
@@ -74,6 +75,9 @@ def test_value_annotation():
 
     v = Value(-1) # does not occur in mfp
     res = v.check(mfp)
+
+    # check __repr__
+    assert repr(v) == "pybryt.Value", "wrong __repr__"
 
     # check attributes of BeforeAnnotation and AnnotationResult
     check_obj_attributes(v, {"children__len": 0})
@@ -135,8 +139,8 @@ def test_before_annotation():
 
     v1 = Value(val1)
     v2 = Value(val2)
+    
     v = v1.before(v2)
-
     res = v.check(mfp)
 
     # check attributes of BeforeAnnotation and AnnotationResult
@@ -149,3 +153,83 @@ def test_before_annotation():
         "timestamp": -1,
         "satisfied_at": ts2,
     })
+
+    v = v2.after(v1)
+    res = v.check(mfp)
+
+    # check attributes of BeforeAnnotation and AnnotationResult
+    check_obj_attributes(v, {"children": (v1, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts2,
+    })
+
+    v = v1.after(v2)
+    res = v.check(mfp)
+
+    # check attributes of BeforeAnnotation and AnnotationResult
+    check_obj_attributes(v, {"children": (v2, v1)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+
+def test_name_group_limit():
+    """
+    """
+    mfp = generate_memory_footprint()
+    val, ts = mfp[2]
+
+    Annotation.reset_tracked_annotations()
+    vs = []
+    for _ in range(100):
+        vs.append(Value(val, name="foo", limit=11))
+    
+    tracked = Annotation.get_tracked_annotations()
+    assert len(tracked) == 11, "Too many tracked annotations"
+    assert tracked == vs[:11], "Wrong tracked annotations"
+    assert all(v.name == "foo" and v.limit == 11 for v in vs)
+
+    v1 = Value(mfp[0][0], group="bar")
+    v2 = Value(mfp[1][0], group="bar")
+    check_obj_attributes(v1, {"group": "bar"})
+    check_obj_attributes(v2, {"group": "bar"})
+
+    # check error raising
+    with pytest.raises(TypeError):
+        Value(1, limit=5)
+
+
+def test_get_reset_tracked_annotations():
+    """
+    """
+    tracked = Annotation.get_tracked_annotations()
+    Annotation.reset_tracked_annotations()
+    assert len(tracked) == 0
+
+    v1 = Value(1)
+    v2 = Value(2)
+    assert len(tracked) == 2
+
+    v3 = Value(3)
+    assert len(tracked) == 3
+
+    v4 = v3.before(v2)
+    assert len(tracked) == 2
+    
+    assert v1 in tracked
+    assert v2 not in tracked
+    assert v3 not in tracked
+    assert v4 in tracked
+
+    Annotation.reset_tracked_annotations()
+    assert len(tracked) == 0

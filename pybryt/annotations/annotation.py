@@ -290,8 +290,11 @@ class AnnotationResult:
     def satisfied_at(self) -> int:
         """
         ``int``: the step counter value at which this annotation was satisfied; if child results are 
-        present, this is the maximum satisfying timestamp of all child results
+        present, this is the maximum satisfying timestamp of all child results; if this annotation
+        was not satisfied, returns -1
         """
+        if not self.satisfied:
+            return -1
         if self.children is not None:
             return max(c.satisfied_at for c in self.children)
         return self.timestamp
