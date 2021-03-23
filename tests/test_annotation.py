@@ -57,6 +57,8 @@ def test_value_annotation():
         v = Value(val)
         res = v.check(mfp)
 
+        assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
+
         h = pickle_and_hash(val)
 
         # check attributes of BeforeAnnotation and AnnotationResult
