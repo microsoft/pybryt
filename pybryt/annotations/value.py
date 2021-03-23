@@ -190,7 +190,7 @@ class _AttrValue(Value):
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
         attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
         res = super().check(attrs)
-        satisfier = vals[attrs.index(res.value)]
+        satisfier = vals[attrs.index((res.value, res.timestamp))][0]
         return AnnotationResult(None, self, value=satisfier, children=[res])
 
 

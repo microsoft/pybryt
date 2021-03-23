@@ -251,7 +251,7 @@ class AnnotationResult:
     annotation: Annotation
     """the annotation that this result is for"""
 
-    value: Any
+    _value: Any
     """the value that satisfied the condition of this annotation"""
 
     timestamp: int
@@ -267,7 +267,7 @@ class AnnotationResult:
     ):
         self._satisfied = satisfied
         self.annotation = annotation
-        self.value = value
+        self._value = value
         self.timestamp = timestamp
         self.children = children
 
@@ -297,18 +297,27 @@ class AnnotationResult:
         return self.timestamp
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         ``str`` or ``None``: the name of the annotation that these results track
         """
         return self.annotation.name
     
     @property
-    def group(self):
+    def group(self) -> Optional[str]:
         """
         ``str`` or ``None``: the group name of the annotation that these results track
         """
         return self.annotation.group
+
+    @property
+    def value(self) -> Any:
+        """
+        ``object``: the value that satisfied the condition of this annotation
+        """
+        if self._value is None and self.children is not None:
+            return [c.value for c in self.children if c.value is not None][0]
+        return self._value
 
     @property
     def messages(self) -> List[Tuple[str, Optional[str], bool]]: # (message, name, satisfied)
