@@ -78,6 +78,8 @@ def test_value_annotation():
     v = Value(-1) # does not occur in mfp
     res = v.check(mfp)
 
+    assert repr(res) == "AnnotationResult(satisfied=False, annotation=pybryt.Value)"
+
     # check __repr__
     assert repr(v) == "pybryt.Value", "wrong __repr__"
 
@@ -201,10 +203,22 @@ def test_name_group_limit():
     assert tracked == vs[:11], "Wrong tracked annotations"
     assert all(v.name == "foo" and v.limit == 11 for v in vs)
 
+    res = vs[-1].check(mfp)
+    check_obj_attributes(res, {
+        "name": "foo",
+        "group": None,
+    })
+
     v1 = Value(mfp[0][0], group="bar")
     v2 = Value(mfp[1][0], group="bar")
     check_obj_attributes(v1, {"group": "bar"})
     check_obj_attributes(v2, {"group": "bar"})
+
+    res = v1.check(mfp)
+    check_obj_attributes(res, {
+        "name": None,
+        "group": "bar",
+    })
 
     # check error raising
     with pytest.raises(TypeError):
