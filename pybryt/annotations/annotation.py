@@ -315,8 +315,8 @@ class AnnotationResult:
         """
         ``object``: the value that satisfied the condition of this annotation
         """
-        if self._value is None and self.children is not None:
-            return [c.value for c in self.children if c.value is not None][0]
+        if self._value is None and self.children is not None and len(self.children) == 1:
+            return self.children[0].value
         return self._value
 
     @property
