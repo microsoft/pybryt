@@ -215,7 +215,7 @@ class Attribute(Annotation):
     def __init__(self, obj: Any, attrs: Union[str, List[str]], **kwargs):
         if isinstance(attrs, str):
             attrs = [attrs]
-        if not isinstance(attrs, list) and not all(isinstance(a, str) for a in attrs):
+        if not isinstance(attrs, list) or not all(isinstance(a, str) for a in attrs):
             raise TypeError(f"Invalid type for argument 'attrs': {type(attrs)}")
                 
         self._annotations = []

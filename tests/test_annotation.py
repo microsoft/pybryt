@@ -14,9 +14,6 @@ from pybryt import Attribute, Value
 from pybryt.utils import pickle_and_hash
 
 
-START_TIMESTAMP = 1614904732.51892
-
-
 def check_obj_attributes(obj, attrs):
     """
     """
@@ -116,6 +113,16 @@ def test_attribute_annotation():
         "satisfied_at": ts,
         "value": val,
     })
+
+    # check error raising
+    with pytest.raises(TypeError):
+        Attribute(val, ["T", 1])
+    
+    with pytest.raises(TypeError):
+        Attribute(val, 1)
+
+    with pytest.raises(AttributeError):
+        Attribute(val, "foo")
 
 
 def test_before_annotation():
