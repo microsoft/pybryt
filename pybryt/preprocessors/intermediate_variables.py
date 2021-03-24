@@ -29,7 +29,8 @@ class UnassignedVarWrapper(ast.NodeTransformer):
 
     def __init__(self):
         super().__init__()
-        self.insertions = [] # list of (parent, attr, idx, node)
+        self.insertions = [] # list of (parent, attr, idx, node, orig_node, name_node)
+        self.overwrites = [] # list of (parent, attr, index, node)
 
     @staticmethod
     def add_parents(root):
@@ -52,9 +53,11 @@ class UnassignedVarWrapper(ast.NodeTransformer):
         Returns:
             ``str``: the variable name
         """
-        return f"var_{make_secret()}"
-    
-    def visit(self, root, *args, **kwargs):
+        name = f"var_{make_secret()}"
+        # self.created_names.add(name)
+        return name
+
+    def visit(self, root, *args, top_level=False, **kwargs):
         """
         Visits each node in the tree to transform all ``Call`` nodes and then performs the node
         insertions specified in ``self.insertions``. Arguments and return values are the same as 
@@ -62,8 +65,16 @@ class UnassignedVarWrapper(ast.NodeTransformer):
         """
         self.root = root
         ret = super().visit(root, *args, **kwargs)
-        for parent, attr, idx, node in self.insertions:
-            getattr(parent, attr)[idx] = node
+        if top_level:
+            for parent, attr, idx, node in self.overwrites:
+                if idx is None:
+                    setattr(parent, attr, node)
+                else:
+                    getattr(parent, attr)[idx] = node
+            self.fix_bool_ops()
+#             self.insertions.reverse()
+            for parent, attr, idx, node, _, body_child, _ in self.insertions:
+                getattr(parent, attr).insert(getattr(parent, attr).index(body_child), node)
         return ret
 
     def transform_unassigned_node(self, node):
@@ -80,23 +91,35 @@ class UnassignedVarWrapper(ast.NodeTransformer):
             ``ast.Node``: an untransformed node if no transformation was required or the new 
             ``Name`` node to be inserted into the AST if transformation was required.
         """
+        for n in ast.iter_child_nodes(node):
+            self.visit(n)
+
         if not isinstance(node.parent, ast.Assign):
             vn = self.get_varname()
             curr = node.parent
+
+            for attr in dir(curr):
+                if getattr(curr, attr) == node:
+                    overwrite_attr = attr
+                    overwrite_index = None
+                    break
+                elif isinstance(getattr(curr, attr), list) and node in getattr(curr, attr):
+                    overwrite_attr = attr
+                    overwrite_index = getattr(curr, attr).index(node)
+
             body_child = None
-            while not isinstance(curr, ast.Module):#hasattr(curr.parent, "body"):
+            while not isinstance(curr, ast.Module):
                 if hasattr(curr.parent, "body") and not (hasattr(curr.parent, "test") and \
-                        curr.parent.test == curr) and body_child is None:
+                        curr.parent.test == curr) and body_child is None and \
+                        not (isinstance(curr.parent, ast.For) and curr.parent.iter == curr):
                     body_child = curr
-                
+
                 # don't perform if in a comprehension
                 if any(isinstance(curr, t) for t in type(self)._skip_node_types):
-                    # for n in ast.iter_child_nodes(node):
-                    #     self.visit(n)
                     return node
-                
+
                 curr = curr.parent
-            
+
             curr = body_child
             is_else = False
             try:
@@ -107,35 +130,57 @@ class UnassignedVarWrapper(ast.NodeTransformer):
                     is_else = True
                 else:
                     raise
-            
+
             curr = curr.parent
             new_assign = ast.Assign([ast.Name(vn, ctx=ast.Load())], node, ctx=ast.Load())
             new_assign.parent = curr
-            if is_else:
-                curr.orelse.insert(idx, new_assign)
-                self.insertions.append((curr, "orelse", idx, new_assign))
-            else:
-                curr.body.insert(idx, new_assign)
-                self.insertions.append((curr, "body", idx, new_assign))
 
             new_name = ast.Name(vn, ctx=ast.Load())
             new_name.parent = node.parent
             node.parent = new_assign
 
+            if is_else:
+#                 curr.orelse.insert(idx, new_assign)
+                self.insertions.append((curr, "orelse", idx, new_assign, node, body_child, new_name))
+            else:
+#                 curr.body.insert(idx, new_assign)
+                self.insertions.append((curr, "body", idx, new_assign, node, body_child, new_name))
+
             self.visit(new_assign)
 
+            self.overwrites.append((new_name.parent, overwrite_attr, overwrite_index, new_name))
+
             return new_name
-        else:
-            for n in ast.iter_child_nodes(node):
-                self.visit(n)
+
         return node
-    
+
+    def fix_bool_ops(self):
+        """
+        """
+        for i, (parent, attr, idx, node, orig_node, body_child, name_node) in enumerate(self.insertions):
+            if isinstance(name_node.parent, ast.BoolOp):
+                try:
+                    idx = name_node.parent.values.index(orig_node)
+                except ValueError:
+                    idx = name_node.parent.values.index(name_node)
+                if idx > 0:
+                    conds = name_node.parent.values[:idx]                    
+                    op = name_node.parent.op
+                    new_bool = ast.BoolOp(op, conds)
+                    if isinstance(op, ast.Or):
+                        new_bool = ast.UnaryOp(ast.Not(), new_bool)
+                    new_if = ast.If(new_bool, [node], [])
+                    new_bool.parent = new_if
+                    node.parent = new_if
+                    new_if.parent = parent
+                    self.insertions[i] = (parent, attr, idx, new_if, orig_node, body_child, name_node)
+
     def visit_Call(self, node):
         """
         Transforms all ``Call`` nodes if necessary.
         """
         return self.transform_unassigned_node(node)
-    
+
     def visit_BinOp(self, node):
         """
         Transforms all ``BinOp`` nodes if necessary.

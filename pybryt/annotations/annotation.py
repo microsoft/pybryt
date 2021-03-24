@@ -251,7 +251,7 @@ class AnnotationResult:
     annotation: Annotation
     """the annotation that this result is for"""
 
-    value: Any
+    _value: Any
     """the value that satisfied the condition of this annotation"""
 
     timestamp: int
@@ -267,7 +267,7 @@ class AnnotationResult:
     ):
         self._satisfied = satisfied
         self.annotation = annotation
-        self.value = value
+        self._value = value
         self.timestamp = timestamp
         self.children = children
 
@@ -290,25 +290,37 @@ class AnnotationResult:
     def satisfied_at(self) -> int:
         """
         ``int``: the step counter value at which this annotation was satisfied; if child results are 
-        present, this is the maximum satisfying timestamp of all child results
+        present, this is the maximum satisfying timestamp of all child results; if this annotation
+        was not satisfied, returns -1
         """
+        if not self.satisfied:
+            return -1
         if self.children is not None:
             return max(c.satisfied_at for c in self.children)
         return self.timestamp
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         ``str`` or ``None``: the name of the annotation that these results track
         """
         return self.annotation.name
     
     @property
-    def group(self):
+    def group(self) -> Optional[str]:
         """
         ``str`` or ``None``: the group name of the annotation that these results track
         """
         return self.annotation.group
+
+    @property
+    def value(self) -> Any:
+        """
+        ``object``: the value that satisfied the condition of this annotation
+        """
+        if self._value is None and self.children is not None and len(self.children) == 1:
+            return self.children[0].value
+        return self._value
 
     @property
     def messages(self) -> List[Tuple[str, Optional[str], bool]]: # (message, name, satisfied)

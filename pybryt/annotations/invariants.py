@@ -3,7 +3,7 @@
 import numpy as np
 
 from abc import ABC, abstractmethod
-from collections import Iterable
+from collections.abc import Iterable
 from typing import Any, List, Optional, Union
 # from enum import Enum, auto
 

@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file, and this pr
 ## Unreleased
 
 * Changed timestamp to step counter in execution trace function
+* Fixed ``UnassignedVarWrapper`` so that variables in boolean operations are only evaluated when
+  necessary
 
 ## 0.0.1 - 2021-03-21
 
