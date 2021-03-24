@@ -53,9 +53,7 @@ class UnassignedVarWrapper(ast.NodeTransformer):
         Returns:
             ``str``: the variable name
         """
-        name = f"var_{make_secret()}"
-        # self.created_names.add(name)
-        return name
+        return f"var_{make_secret()}"
 
     def visit(self, root, *args, top_level=False, **kwargs):
         """
@@ -72,7 +70,6 @@ class UnassignedVarWrapper(ast.NodeTransformer):
                 else:
                     getattr(parent, attr)[idx] = node
             self.fix_bool_ops()
-#             self.insertions.reverse()
             for parent, attr, idx, node, _, body_child, _ in self.insertions:
                 getattr(parent, attr).insert(getattr(parent, attr).index(body_child), node)
         return ret
@@ -94,7 +91,7 @@ class UnassignedVarWrapper(ast.NodeTransformer):
         for n in ast.iter_child_nodes(node):
             self.visit(n)
 
-        if not isinstance(node.parent, ast.Assign):
+        if not isinstance(node.parent, ast.Assign) and not isinstance(node.parent, ast.Module):
             vn = self.get_varname()
             curr = node.parent
 
@@ -140,10 +137,8 @@ class UnassignedVarWrapper(ast.NodeTransformer):
             node.parent = new_assign
 
             if is_else:
-#                 curr.orelse.insert(idx, new_assign)
                 self.insertions.append((curr, "orelse", idx, new_assign, node, body_child, new_name))
             else:
-#                 curr.body.insert(idx, new_assign)
                 self.insertions.append((curr, "body", idx, new_assign, node, body_child, new_name))
 
             self.visit(new_assign)
@@ -208,7 +203,6 @@ class IntermediateVariablePreprocessor():
         Returns:
             ``nbformat.NotebookNode``: the updated notebook
         """
-        # code = notebook_to_string(nb)
         transformer_mgr = TransformerManager()
         for cell in nb['cells']:
             if cell['cell_type'] == 'code':
@@ -217,11 +211,9 @@ class IntermediateVariablePreprocessor():
                 tree = ast.parse(code)
                 transformer = UnassignedVarWrapper()
                 transformer.add_parents(tree)
-                tree = transformer.visit(tree)
+                tree = transformer.visit(tree, top_level=True)
                 tree = ast.fix_missing_locations(tree)
                 code = astunparse.unparse(tree)
                 cell['source'] = code
 
-        # nb = nbformat.v4.new_notebook()
-        # nb['cells'].append(nbformat.v4.new_code_cell(code))
         return nb
