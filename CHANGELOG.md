@@ -3,7 +3,11 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.0.3 - 2021-03-24
+
+* Patched bug in ``UnassignedVarWrapper`` from fix in v0.0.2
+
+## 0.0.2 - 2021-03-23
 
 * Changed timestamp to step counter in execution trace function
 * Fixed ``UnassignedVarWrapper`` so that variables in boolean operations are only evaluated when
