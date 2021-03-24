@@ -765,7 +765,8 @@ name is  present), and the third is whether the annotation was satisfied.</p>
 <dt id="pybryt.AnnotationResult.satisfied_at">
 <em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">satisfied_at</span></code><a class="headerlink" href="#pybryt.AnnotationResult.satisfied_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>the step counter value at which this annotation was satisfied; if child results are
-present, this is the maximum satisfying timestamp of all child results</p>
+present, this is the maximum satisfying timestamp of all child results; if this annotation
+was not satisfied, returns -1</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
@@ -777,10 +778,15 @@ present, this is the maximum satisfying timestamp of all child results</p>
 <code class="sig-name descname"><span class="pre">timestamp</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pybryt.AnnotationResult.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>the step counter value at which this annotation was satisfied</p>
 </dd></dl>
-<dl class="py attribute">
+<dl class="py method">
 <dt id="pybryt.AnnotationResult.value">
-<code class="sig-name descname"><span class="pre">value</span></code><em class="property"><span class="pre">:</span> <span class="pre">Any</span></em><a class="headerlink" href="#pybryt.AnnotationResult.value" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">value</span></code><a class="headerlink" href="#pybryt.AnnotationResult.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>the value that satisfied the condition of this annotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 </dd></dl>
 </div>
