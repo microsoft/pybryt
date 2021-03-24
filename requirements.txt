@@ -6,3 +6,4 @@ dill
 click
 astunparse
 Cython
+ipykernel
