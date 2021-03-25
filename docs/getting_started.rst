@@ -34,7 +34,7 @@ Next, create a virtual environment, update pip and then install ``pybryt``:
 
 .. code-block:: console
 
-    py -3-m venv .venv
+    py -3 -m venv .venv
     .\venv\scripts\activate.ps1
     pip install -U pip
     pip install pybryt
