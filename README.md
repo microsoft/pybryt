@@ -30,6 +30,10 @@ Educators and Institutions can leverage the PyBryt Library to integrate auto ass
 - Plagiarism detection and support for reference solutions;
 - Easy integration into existing organizational or institutional grading infrastructure. 
 
+## Getting Started
+
+See the [Getting Started](https://microsoft.github.io/pybryt/html/getting_started.html) page on the pybryt documentation for steps to install and use pybryt for the first time.
+
 ## Testing
 
 > Instructions for testing 

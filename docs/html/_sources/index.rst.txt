@@ -10,6 +10,7 @@ PyBryt Documentation
    :maxdepth: 3
    :hidden:
 
+   getting_started
    annotations/index
    reference_implementations
    student_implementations

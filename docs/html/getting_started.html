@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Getting Started" href="getting_started.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" /><link rel="prev" title="PyBryt Documentation" href="index.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Home - PyBryt documentation</title>
+        <title>Getting Started - PyBryt documentation</title>
       <link rel="stylesheet" href="_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
@@ -86,10 +86,10 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">PyBryt  documentation</div></a>
+      <a href="index.html"><div class="brand">PyBryt  documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -97,7 +97,7 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
   <span class="sidebar-brand-text">PyBryt  documentation</span>
@@ -107,8 +107,8 @@
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+  <ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
@@ -129,48 +129,78 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="pybryt-documentation">
-<h1>PyBryt Documentation<a class="headerlink" href="#pybryt-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+        <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installing-pybryt">
+<h2>Installing pybryt<a class="headerlink" href="#installing-pybryt" title="Permalink to this headline">¶</a></h2>
+<p>You can install pybyrt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.</p>
+<div class="section" id="installing-inside-an-existing-jupyter-notebook">
+<h3>Installing inside an existing Jupyter Notebook<a class="headerlink" href="#installing-inside-an-existing-jupyter-notebook" title="Permalink to this headline">¶</a></h3>
+<p>You can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
+
+<span class="kn">import</span> <span class="nn">pybryt</span>
+</pre></div>
 </div>
-<p>PyBryt is an open source  Python auto-assessment library for teaching and learning. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals. PyBryt is designed to work with existing autograding solutions and workflows such as <a class="reference external" href="https://otter-grader.readthedocs.io">Otter Grader</a>, <a class="reference external" href="https://okpy.org">OkPy</a>, and <a class="reference external" href="https://autolab.readthedocs.io/">Autolab</a>.</p>
-<img alt="_images/pybryt_goals.png" src="_images/pybryt_goals.png"/>
-<p>Educators and institutions can leverage PyBryt to integrate auto-assessment and reference models to hands-on labs and assessments.</p>
-<ul class="simple">
-<li><p>Educators do not have to enforce the structure of the solution</p></li>
-<li><p>Learners practice the design process, code design, and solution implementation</p></li>
-<li><p>Meaningful pedagogical feedback to the learners</p></li>
-<li><p>Analysis of complexity within the learner’s solution</p></li>
-<li><p>Plagiarism detection and support for reference implementations</p></li>
-<li><p>Easy integration into existing organizational or institutional grading infrastructure</p></li>
-</ul>
-<p>PyBryt’s core auto-assessment behavior operates by comparing a student’s implementation of some
-programming problem to a series of reference implementations provided by an instructor. A
-<strong>reference implementation</strong> defines a pattern of values, and conditions on those values, to look
-for in students’ code.</p>
-<p>A reference implementation is created by annotating code written or found by an instructor and
-executing this code to create a <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a>
-object. Annotations are created by creating instances of subclasses of the abstract
-<a class="reference internal" href="api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class.</p>
+<p>Or, for a conda environment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
+
+<span class="kn">import</span> <span class="nn">pybryt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-on-windows-powershell">
+<h3>Installing on Windows PowerShell<a class="headerlink" href="#installing-on-windows-powershell" title="Permalink to this headline">¶</a></h3>
+<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>.</p>
+<p>Next, create a virtual environment, update pip and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">py -3-m venv .venv</span>
+<span class="go">.\venv\scripts\activate.ps1</span>
+<span class="go">pip install -U pip</span>
+<span class="go">pip install pybryt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-on-macos-or-linux-command-line">
+<h3>Installing on macOS or Linux command-line<a class="headerlink" href="#installing-on-macos-or-linux-command-line" title="Permalink to this headline">¶</a></h3>
+<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>.</p>
+<p>Next, create a virtual environment, update pip and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3.8 -m venv .venv</span>
+<span class="go">source .venv/bin/activate</span>
+<span class="go">pip install -U pip</span>
+<span class="go">pip install pybryt</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="getting_started.html">
+          <a class="next-page" href="annotations/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Getting Started</div>
+                <div class="title">Annotations</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          
+          <a class="prev-page" href="index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
         </div>
 
         <div class="related-information">
@@ -181,7 +211,7 @@ object. Annotations are created by creating instances of subclasses of the abstr
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="_sources/index.rst.txt"
+            <a class="muted-link" href="_sources/getting_started.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -189,8 +219,32 @@ object. Annotations are created by creating instances of subclasses of the abstr
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#installing-pybryt">Installing pybryt</a><ul>
+<li><a class="reference internal" href="#installing-inside-an-existing-jupyter-notebook">Installing inside an existing Jupyter Notebook</a></li>
+<li><a class="reference internal" href="#installing-on-windows-powershell">Installing on Windows PowerShell</a></li>
+<li><a class="reference internal" href="#installing-on-macos-or-linux-command-line">Installing on macOS or Linux command-line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
