@@ -1,3 +1,4 @@
+[![PyPI](https://img.shields.io/pypi/v/pybryt)](https://pypi.org/project/pybryt/)
 [![GitHub license](https://img.shields.io/github/license/microsoft/pybryt.svg)](https://github.com/microsoft/pybryt/blob/main/LICENSE)
 [![GitHub contributors](https://img.shields.io/github/contributors/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/graphs/contributors/)
 [![GitHub issues](https://img.shields.io/github/issues/microsoft/pybryt.svg)](https://GitHub.com/microsoft/pybryt/issues/)
@@ -29,6 +30,10 @@ Educators and Institutions can leverage the PyBryt Library to integrate auto ass
 - Analysis of complexity within the learners solution;
 - Plagiarism detection and support for reference solutions;
 - Easy integration into existing organizational or institutional grading infrastructure. 
+
+## Getting Started
+
+See the [Getting Started](https://microsoft.github.io/pybryt/html/getting_started.html) page on the pybryt documentation for steps to install and use pybryt for the first time.
 
 ## Testing
 
