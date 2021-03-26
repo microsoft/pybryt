@@ -249,3 +249,42 @@ def test_get_reset_tracked_annotations():
 
     Annotation.reset_tracked_annotations()
     assert len(tracked) == 0
+
+
+def test_messages():
+    """
+    """
+    mfp = generate_memory_footprint()
+
+    val1, ts1 = mfp[0]
+    val2, ts2 = mfp[1]
+
+    v1 = Value(val1, success_message="m1", failure_message="m2")
+    v2 = Value(val2)
+    
+    v = v1.before(v2)
+    res = v.check(mfp)
+
+    assert len(res.messages) == 1, "Too many messages"
+    assert res.messages[0] == ("m1", None, True), "Wrong message"
+
+    v.failure_message = "m3"
+    res = v.check(mfp)
+
+    assert len(res.messages) == 1, "Too many messages"
+    assert res.messages[0] == ("m1", None, True), "Wrong message"
+
+    res = v.check([])
+
+    assert len(res.messages) == 2, "Wrong number of messages"
+    assert res.messages[0] == ("m2", None, False), "Wrong message"
+    assert res.messages[1] == ("m3", None, False), "Wrong message"
+
+    v2.name = "v2"
+    v2.failure_message = "m4"
+    res = v.check([])
+
+    assert len(res.messages) == 3, "Wrong number of messages"
+    assert res.messages[0] == ("m2", None, False), "Wrong message"
+    assert res.messages[1] == ("m4", "v2", False), "Wrong message"
+    assert res.messages[2] == ("m3", None, False), "Wrong message"
