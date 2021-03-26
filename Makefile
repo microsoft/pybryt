@@ -4,7 +4,7 @@
 
 release:
 	rm dist/* || :
-	echo '__version__ = "$(version)"' > pybryt/version.py
+	echo '__version__ = "$(VERSION)"' > pybryt/version.py
 	python3 setup.py sdist bdist_wheel
 	python3 -m twine upload dist/*
-	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(version)' $(version)
+	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(VERSION)' $(VERSION)
