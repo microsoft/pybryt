@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.0.4 - 2921-03-25
+
+* Added Cython and ipykernel to installation dependencies
+
 ## 0.0.3 - 2021-03-24
 
 * Patched bug in ``UnassignedVarWrapper`` from fix in v0.0.2
