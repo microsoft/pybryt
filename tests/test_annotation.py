@@ -1,6 +1,4 @@
-"""
-Tests for PyBryt annotations
-"""
+"""Tests for PyBryt annotations"""
 
 import time
 import pytest

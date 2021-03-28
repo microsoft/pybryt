@@ -110,7 +110,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                     vars_not_found[name].append((m.group(1), counter[0]))
                     counter[0] += 1
 
-            if event == "return" and type(arg) not in skip_types:
+            if event == "return":
                 track_value(arg)
 
         elif (frame.f_back.f_code.co_filename.startswith("<ipython") or \
