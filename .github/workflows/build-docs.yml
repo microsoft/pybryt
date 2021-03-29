@@ -31,10 +31,6 @@ jobs:
         from_branch: main
         target_branch: gh-pages
         github_token: ${{ github.token }}
-
-    - uses: actions/checkout@v2
-      with:
-        ref: gh-pages
         
     - name: Install dependencies
       run: |
@@ -53,3 +49,4 @@ jobs:
         author_email: 41898282+github-actions[bot]@users.noreply.github.com
         add: "docs/html"
         message: "build docs for $(git rev-parse --short HEAD)"
+        branch: gh-pages
