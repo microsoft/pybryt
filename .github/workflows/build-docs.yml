@@ -48,5 +48,5 @@ jobs:
         author_name: github-actions
         author_email: 41898282+github-actions[bot]@users.noreply.github.com
         add: "docs/html"
-        message: "build docs for $(git rev-parse --short HEAD)"
+        message: "build docs for ${{ github.sha }}"
         branch: gh-pages
