@@ -1,6 +1,6 @@
 # Makefile for PyBryt
-# to generate a release, use `make release` with the `version` argument:
-#   $ make release version=0.0.1
+# to generate a release, use `make release` with the `VERSION` argument:
+#   $ make release VERSION=0.0.1
 
 release:
 	rm dist/* || :
