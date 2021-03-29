@@ -31,6 +31,10 @@ jobs:
         from_branch: main
         target_branch: gh-pages
         github_token: ${{ github.token }}
+
+    - uses: actions/checkout@v2
+      with:
+        ref: gh-pages
         
     - name: Install dependencies
       run: |
