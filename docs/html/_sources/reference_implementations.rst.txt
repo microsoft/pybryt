@@ -72,7 +72,7 @@ are to be made later down the line.
         curr_val = v
 
 
-Custom Reference Creation
+Manual Reference Creation
 +++++++++++++++++++++++++
 
 To create multiple reference implementations from a single notebook, begin by creating 
