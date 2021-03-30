@@ -12,7 +12,7 @@ def check_obj_attributes(obj, attrs):
     for k, v in attrs.items():
         if k.endswith("__len"):
             assert len(getattr(obj, k[:-5])) == v, \
-                f"Attr '{k}' is wrong: expected {v} but got {len(getattr(obj, k))}"
+                f"Attr '{k}' length is wrong: expected {v} but got {len(getattr(obj, k[:-5]))}"
         else:
             attr = getattr(obj, k)
             if isinstance(attr, (np.ndarray, float, np.generic, int)):

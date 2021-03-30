@@ -61,6 +61,241 @@ def test_before_annotation():
     })
 
 
+def test_and_annotation():
+    """
+    """
+    mfp = generate_memory_footprint()
+
+    val1, ts1 = mfp[0]
+    val2, ts2 = mfp[1]
+
+    v1 = Value(val1)
+    v2 = Value(val2)
+    
+    v = v1 & v2
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts2,
+    })
+
+    v3 = Value([])
+    v = v1 & v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, v3)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+    v4 = Value(6.02e+23)
+    v = v4 & v2
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v4, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+    v = v4 & v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v4, v3)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+
+def test_or_annotation():
+    """
+    """
+    mfp = generate_memory_footprint()
+
+    val1, ts1 = mfp[0]
+    val2, ts2 = mfp[1]
+
+    v1 = Value(val1)
+    v2 = Value(val2)
+    
+    v = v1 | v2
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts2,
+    })
+
+    v3 = Value([])
+    v = v1 | v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, v3)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts1,
+    })
+
+    v4 = Value(6.02e+23)
+    v = v4 | v2
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v4, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts2,
+    })
+
+    v = v4 | v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v4, v3)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+
+def test_xor_annotation():
+    """
+    """
+    mfp = generate_memory_footprint()
+
+    val1, ts1 = mfp[0]
+    val2, ts2 = mfp[1]
+
+    v1 = Value(val1)
+    v2 = Value(val2)
+    
+    v = v1 ^ v2
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+    v3 = Value([])
+    v = v1 ^ v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, v3)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts1,
+    })
+
+    v4 = Value(6.02e+23)
+    v = v4 ^ v2
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v4, v2)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": ts2,
+    })
+
+    v = v4 ^ v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v4, v3)})
+    check_obj_attributes(res, {
+        "children__len": 2,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+
+def test_not_annotation():
+    """
+    """
+    mfp = generate_memory_footprint()
+
+    val1, ts1 = mfp[0]
+    val2, ts2 = mfp[1]
+
+    v1 = Value(val1)
+    v = ~v1
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v1, )})
+    check_obj_attributes(res, {
+        "children__len": 1,
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+    v3 = Value([])
+    v = ~v3
+    res = v.check(mfp)
+
+    check_obj_attributes(v, {"children": (v3, )})
+    check_obj_attributes(res, {
+        "children__len": 1,
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": v,
+        "timestamp": -1,
+        "satisfied_at": -1,
+    })
+
+
 def test_constructor_errors():
     """
     """
