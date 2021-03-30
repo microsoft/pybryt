@@ -1,4 +1,4 @@
-""""""
+"""Tests for PyBryt execution internals"""
 
 import numpy as np
 
@@ -7,6 +7,7 @@ from unittest import mock
 from pybryt.execution import create_collector, execute_notebook
 
 from .utils import AttrDict
+
 
 def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals={}, f_back=None):
     """
