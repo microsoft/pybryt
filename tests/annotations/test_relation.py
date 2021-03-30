@@ -1,15 +1,6 @@
 """Tests for PyBryt relational annotations"""
 
-import time
-import pytest
-import numpy as np
-
-from collections.abc import Iterable
-from functools import lru_cache
-from unittest import mock
-
 from pybryt import *
-from pybryt.utils import pickle_and_hash
 
 from .utils import *
 

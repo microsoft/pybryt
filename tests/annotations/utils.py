@@ -3,6 +3,8 @@
 import time
 import numpy as np
 
+from functools import lru_cache
+
 
 def check_obj_attributes(obj, attrs):
     """

@@ -2,10 +2,7 @@
 
 import time
 import pytest
-import numpy as np
 
-from collections.abc import Iterable
-from functools import lru_cache
 from unittest import mock
 
 from pybryt import *
