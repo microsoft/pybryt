@@ -64,6 +64,5 @@ def test_before_annotation():
 def test_constructor_errors():
     """
     """
-
     with pytest.raises(ValueError):
         AndAnnotation([Value(1), "not an annotation"])
