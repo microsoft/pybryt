@@ -14,7 +14,11 @@ def check_obj_attributes(obj, attrs):
             assert len(getattr(obj, k[:-5])) == v, \
                 f"Attr '{k}' is wrong: expected {v} but got {len(getattr(obj, k))}"
         else:
-            is_eq = getattr(obj, k) == v
+            attr = getattr(obj, k)
+            if isinstance(attr, (np.ndarray, float, np.generic, int)):
+                is_eq = np.allclose(attr, v)
+            else:
+                is_eq = attr == v
             if isinstance(is_eq, np.ndarray):
                 assert is_eq.all(), f"Attr '{k}' is wrong: expected {v} but got {getattr(obj, k)}"
             else:
@@ -25,15 +29,16 @@ def check_obj_attributes(obj, attrs):
 def generate_memory_footprint():
     """
     """
-    np.random.seed(42)    
-    return [
-        (np.random.uniform(-100, 100, size=(100, 100)), time.time_ns()),
-        (4.0, time.time_ns()),
-        (list(range(100))[::-1], time.time_ns()),
-        (1, time.time_ns()),
-        (np.e, time.time_ns()),
-        (None, time.time_ns()),
-        (None, time.time_ns()),
-        (np.random.normal(size=102), time.time_ns()),
-        (4.0, time.time_ns()),
+    np.random.seed(42)
+    objs = [
+        np.random.uniform(-100, 100, size=(100, 100)),
+        4.0,
+        list(range(100))[::-1],
+        1,
+        np.e,
+        None,
+        None,
+        np.random.normal(size=102),
+        4.0,
     ]
+    return [(o, i) for i, o in enumerate(objs)]

@@ -1,5 +1,7 @@
 """Tests for PyBryt relational annotations"""
 
+import pytest
+
 from pybryt import *
 
 from .utils import *
@@ -57,3 +59,11 @@ def test_before_annotation():
         "timestamp": -1,
         "satisfied_at": -1,
     })
+
+
+def test_constructor_errors():
+    """
+    """
+
+    with pytest.raises(ValueError):
+        AndAnnotation([Value(1), "not an annotation"])
