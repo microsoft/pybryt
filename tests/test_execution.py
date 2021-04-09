@@ -35,8 +35,11 @@ def test_trace_function():
     frame = generate_mocked_frame("<ipython-abc123>", "foo", 3)
     observed, cir = create_collector()
 
-    cir(frame, "return", np.random.uniform(-100, 100, size=(100, 100)))
+    arr = np.random.uniform(-100, 100, size=(100, 100))
+    cir(frame, "return", arr)
     assert len(observed) == 1
+    assert np.allclose(observed[0][0], arr)
+    assert observed[0][1] == 1
 
     # test value in skip_types
     cir(frame, "return", type(1))
@@ -48,3 +51,31 @@ def test_trace_function():
         cir(frame, "return", 1)
     
     assert len(observed) == 1
+
+    frame = generate_mocked_frame(
+        "<ipython-abc123>", "foo", 3, {"data": arr}
+    )
+
+    # check line processing working
+    with mock.patch("linecache.getline") as mocked_linecache:
+
+        # check eval call for attributes
+        mocked_linecache.return_value = "data.T"
+        cir(frame, "line", None)
+        assert len(observed) == 2
+        assert np.allclose(observed[1][0], arr.T)
+        assert observed[1][1] == 4
+
+        # check failed eval call for attributes
+        mocked_linecache.return_value = "data.doesnt_exist"
+        cir(frame, "line", None)
+        assert len(observed) == 2
+
+        # check looking in frame locals + globals
+        frame.f_globals["more_data"] = np.random.uniform(-100, 100, size=(100, 100))
+        frame.f_locals["more_data"] = np.random.uniform(-100, 100, size=(100, 100))
+        mocked_linecache.return_value = "more_data"
+        cir(frame, "line", None)
+        assert len(observed) == 3
+        assert np.allclose(observed[2][0], frame.f_locals["more_data"])
+        assert observed[2][1] == 6

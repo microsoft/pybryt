@@ -61,10 +61,9 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             h = pickle_and_hash(val)
         except:
             return
-        
+
         if seen_at is None:
             seen_at = counter[0]
-            counter[0] += 1
         
         if h not in hashes:
             observed.append((copy(val), seen_at))
@@ -76,7 +75,8 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         Trace function for PyBryt.
         """
         name = frame.f_code.co_filename + frame.f_code.co_name
-        
+        counter[0] += 1 # increment step counter
+
         if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
             if event == "line" or event == "return":
 
@@ -84,6 +84,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                 tokens = set("".join(char if char.isalnum() or char == '_' else "\n" for char in line).split("\n"))
                 for t in "".join(char if char.isalnum() or char == '_' or char == '.' else "\n" for char in line).split("\n"):
                     tokens.add(t)
+                tokens = sorted(tokens) # sort for stable ordering
                 
                 for t in tokens:
                     if "." in t:
@@ -108,7 +109,6 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                     if name not in vars_not_found:
                         vars_not_found[name] = []
                     vars_not_found[name].append((m.group(1), counter[0]))
-                    counter[0] += 1
 
             if event == "return":
                 track_value(arg)
