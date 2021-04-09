@@ -1,12 +1,19 @@
 """Tests for PyBryt execution internals"""
 
+import os
+import re
+import dill
+import random
+import tempfile
+import nbformat
 import numpy as np
+import pkg_resources
 
 from unittest import mock
 
-from pybryt.execution import create_collector, execute_notebook
+from pybryt.execution import create_collector, execute_notebook, NBFORMAT_VERSION
 
-from .utils import AttrDict
+from .utils import assert_notebook_contents_equal, assert_values_equal, AttrDict
 
 
 def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals={}, f_back=None):
@@ -25,6 +32,20 @@ def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals
         "f_back": f_back,
         "f_code": code,
     })
+
+
+def generate_test_notebook():
+    """
+    """
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(
+        "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\n%matplotlib inline"
+        ))
+    nb.cells.append(nbformat.v4.new_code_cell(
+        "np.random.seed(42)\nx = np.random.uniform(size=1000)\ny = np.random.normal(size=1000)"
+    ))
+    nb.cells.append(nbformat.v4.new_code_cell("df = pd.DataFrame({'x': x, 'y': y})"))
+    return nb
 
 
 def test_trace_function():
@@ -129,3 +150,37 @@ def test_trace_function():
     assert len(observed) == 8
     assert np.allclose(observed[7][0], np.exp(arr))
     assert observed[7][1] == 14
+
+
+def test_notebook_execution():
+    """
+    """
+    random.seed(42)
+    nb = generate_test_notebook()
+
+    nb_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_output.ipynb"))
+    expected_nb = nbformat.read(nb_filename, as_version=NBFORMAT_VERSION)
+
+    observed_fn = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_observed.pkl"))
+    with open(observed_fn, "rb") as f:
+        expected_observed = dill.load(f)
+
+    with tempfile.NamedTemporaryFile("w+") as ntf:
+        with tempfile.NamedTemporaryFile(delete=False) as observed_ntf: # deletion in handled by PyBryt
+            expected_nb['cells'][-1].source = re.sub(
+                r'(open\(")[\w/\\]+(",)', rf"\1{observed_ntf.name}\2", expected_nb['cells'][-1].source, 
+                flags=re.MULTILINE
+            )
+
+            with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
+                mocked_tempfile.return_value = (None, observed_ntf.name)
+
+                n_steps, observed = execute_notebook(nb, output=ntf.name)
+                output_nb = nbformat.read(ntf.name, as_version=NBFORMAT_VERSION)
+
+                assert_notebook_contents_equal(output_nb, expected_nb)
+                for oi, ei in zip(observed, expected_observed):
+                    assert len(oi) == len(ei) == 2
+                    assert_values_equal(oi[0], ei[0])
+                    
+                assert n_steps == max(t[1] for t in observed)

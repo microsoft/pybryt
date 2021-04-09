@@ -13,4 +13,4 @@ test:
 	pytest tests
 
 testcov:
-	coverage run --source=. -m pytest tests && coverage html
+	coverage run --source=. -m pytest tests -v && coverage html

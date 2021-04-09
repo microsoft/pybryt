@@ -2,13 +2,13 @@
 
 import os
 import re
-import tempfile
 import linecache
 import dill
 import nbformat
 
 from nbconvert.preprocessors import ExecutePreprocessor
 from copy import copy
+from tempfile import mkstemp
 from types import FrameType, FunctionType, ModuleType
 from typing import Any, List, Tuple, Callable, Optional
 from textwrap import dedent
@@ -157,7 +157,7 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
     nb = preprocessor.preprocess(nb)
 
     secret = make_secret()
-    _, observed_fp = tempfile.mkstemp()
+    _, observed_fp = mkstemp()
 
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
