@@ -13,7 +13,7 @@ from unittest import mock
 
 from pybryt.execution import create_collector, execute_notebook, NBFORMAT_VERSION
 
-from .utils import assert_notebook_contents_equal, assert_values_equal, AttrDict
+from .utils import assert_notebook_contents_equal, AttrDict, check_values_equal
 
 
 def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals={}, f_back=None):
@@ -181,6 +181,6 @@ def test_notebook_execution():
                 assert_notebook_contents_equal(output_nb, expected_nb)
                 for oi, ei in zip(observed, expected_observed):
                     assert len(oi) == len(ei) == 2
-                    assert_values_equal(oi[0], ei[0])
+                    assert check_values_equal(oi[0], ei[0])
                     
                 assert n_steps == max(t[1] for t in observed)

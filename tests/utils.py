@@ -3,7 +3,6 @@
 import numpy as np
 import pandas as pd
 
-
 class AttrDict(dict):
 
     def __getattr__(self, attr):
@@ -19,14 +18,14 @@ def assert_notebook_contents_equal(nb1, nb2):
         assert c1.get("outputs", []) == c2.get("outputs", []), f"{c1}\n\n{c2}"
 
 
-def assert_values_equal(v1, v2):
+def check_values_equal(v1, v2):
     """
     """
     if isinstance(v1, np.ndarray) and isinstance(v2, np.ndarray):
-        assert np.allclose(v1, v2), f"{v1}\n\n{v2}"
+        return np.allclose(v1, v2), f"{v1}\n\n{v2}"
     elif isinstance(v1, pd.DataFrame) or isinstance(v2, pd.DataFrame):
-        assert (v1 == v2).all().all(), f"{v1}\n\n{v2}"
+        return (v1 == v2).all().all(), f"{v1}\n\n{v2}"
     elif isinstance(v1, (np.ndarray, pd.Series)) or isinstance(v2, (np.ndarray, pd.Series)):
-        assert (v1 == v2).all(), f"{v1}\n\n{v2}"
+        return (v1 == v2).all(), f"{v1}\n\n{v2}"
     else:
-        assert v1 == v2, f"{v1}\n\n{v2}"
+        return v1 == v2, f"{v1}\n\n{v2}"
