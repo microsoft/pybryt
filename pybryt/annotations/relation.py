@@ -45,6 +45,21 @@ class RelationalAnnotation(Annotation):
         """
         return self._annotations
 
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this annotation is equal to another object.
+
+        For an object to equal a relational annotation, it must also be a relational annotation of
+        the same type and have the same child annotations.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return isinstance(other, type(self)) and self.children == other.children
+
     @abstractmethod
     def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         ...
