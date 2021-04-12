@@ -9,14 +9,13 @@ import numpy as np
 import pkg_resources
 import pytest
 
-from functools import lru_cache
 from textwrap import dedent
 from unittest import mock
 
 from pybryt import ReferenceImplementation, Value
+from pybryt.execution import execute_notebook
 
 
-@lru_cache(1)
 def generate_reference_notebook():
     """
     """
@@ -27,11 +26,11 @@ def generate_reference_notebook():
     nb.cells.append(nbformat.v4.new_code_cell(dedent("""\
         def median(S):
             sorted_S = sorted(S) 
-            pybryt.Value(sorted_S, name="sorted", limit=5, success_message="SUCCESS: Sorted the sample correctly", 
+            pybryt.Value(sorted_S, name="sorted", group="median", limit=5, success_message="SUCCESS: Sorted the sample correctly", 
                         failure_message="ERROR: The sample was not sorted")
             
             size_of_set = len(S) 
-            pybryt.Value(size_of_set, success_message = "SUCCESS: Computed the size of the sample", 
+            pybryt.Value(size_of_set, name="size", group="median", success_message = "SUCCESS: Computed the size of the sample", 
                         failure_message="ERROR: Did not capture the size of the set to determine if it is odd or even")
             
             middle = size_of_set // 2
@@ -48,13 +47,13 @@ def generate_reference_notebook():
         for _ in range(10):
             vals = [np.random.randint(-1000, 1000) for _ in range(np.random.randint(1, 1000))]
             val = median(vals)
-            pybryt.Value(val, success_message="SUCCESS: computed the correct median", 
+            pybryt.Value(val, name="median", group="median", success_message="SUCCESS: computed the correct median", 
                 failure_message="ERROR: failed to compute the median")
     """)))
     return nb
 
 
-def test_reference_implementation():
+def test_reference_construction():
     """
     """
     nb = generate_reference_notebook()
@@ -137,3 +136,63 @@ def test_construction_errors():
 
         with pytest.warns(UserWarning, match=f"Could not find any reference implementations in {ntf.name}"):
             ReferenceImplementation.compile(ntf.name)
+
+
+def test_run_and_results():
+    """
+    """
+    nb = generate_reference_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(dedent("""\
+        vals = [np.random.randint(-1000, 1000) for _ in range(np.random.randint(1, 1000))]
+        val = median(vals)
+        # this annotation is not in the 'median' group
+        pybryt.Value(val, success_message="SUCCESS: computed the correct median x2", 
+            failure_message="ERROR: failed to compute the median")
+    """)))
+    ref = ReferenceImplementation.compile(nb)
+    _, vals = execute_notebook(nb)
+    
+    res = ref.run(vals)
+    assert len(res.results) == 27
+    assert res.reference is ref
+    assert res.correct is True
+    assert (res.to_array() == np.ones(27)).all()
+    assert repr(res).startswith("ReferenceResult([\n") and len(repr(res).split("\n")) == 29
+    assert res.messages == [
+        'SUCCESS: Sorted the sample correctly', 
+        'SUCCESS: Computed the size of the sample', 
+        'SUCCESS: computed the correct median',
+        'SUCCESS: computed the correct median x2',
+    ]
+
+    res = ref.run(vals, group="median")
+    assert len(res.results) == 26
+    assert res.reference is ref
+    assert res.correct is True
+    assert (res.to_array() == np.ones(26)).all()
+    assert repr(res).startswith("ReferenceResult([\n") and len(repr(res).split("\n")) == 28
+    assert res.messages == [
+        'SUCCESS: Sorted the sample correctly', 
+        'SUCCESS: Computed the size of the sample', 
+        'SUCCESS: computed the correct median',
+    ]
+
+    nb.cells.insert(2, nbformat.v4.new_code_cell("import numpy as np\ndef median(S):\n    return np.median(S)"))
+    _, vals = execute_notebook(nb)
+    
+    res = ref.run(vals)
+    assert len(res.results) == 27
+    assert res.reference is ref
+    assert res.correct is False
+    assert (res.to_array() == np.array([0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 
+        1, 1, 1, 1, 1, 1, 1])).all()
+    assert repr(res).startswith("ReferenceResult([\n") and len(repr(res).split("\n")) == 29
+    assert res.messages == [
+        'ERROR: The sample was not sorted',
+        'ERROR: Did not capture the size of the set to determine if it is odd or even',
+        'SUCCESS: computed the correct median',
+        'SUCCESS: computed the correct median x2',
+    ]
+
+    with pytest.raises(ValueError, match="Group 'foo' not found"):
+        ref.run(vals, group="foo")

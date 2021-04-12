@@ -7,7 +7,7 @@ import dill
 import nbformat
 
 from nbconvert.preprocessors import ExecutePreprocessor
-from copy import copy
+from copy import copy, deepcopy
 from tempfile import mkstemp
 from types import FrameType, FunctionType, ModuleType
 from typing import Any, List, Tuple, Callable, Optional
@@ -153,6 +153,7 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
         ``tuple[int, list[tuple[object, int]]]``: the number of execution steps and the memory 
         footprint
     """
+    nb = deepcopy(nb)
     preprocessor = IntermediateVariablePreprocessor()
     nb = preprocessor.preprocess(nb)
 

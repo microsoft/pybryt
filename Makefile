@@ -9,8 +9,11 @@ release:
 	python3 -m twine upload dist/*
 	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(VERSION)' $(VERSION)
 
+TESTPATH="tests"
+PYTESTOPTS="-v"
+
 test:
-	pytest tests
+	pytest $(TESTPATH) $(PYTESTOPTS)
 
 testcov:
-	coverage run --source=. -m pytest tests -v && coverage html
+	coverage run --source=. -m pytest $(TESTPATH) $(PYTESTOPTS) && coverage html
