@@ -1,14 +1,17 @@
 """"""
 
 import os
+import dill
 import base64
 import tempfile
 import nbformat
 import numpy as np
 import pkg_resources
+import pytest
 
 from functools import lru_cache
 from textwrap import dedent
+from unittest import mock
 
 from pybryt import ReferenceImplementation, Value
 
@@ -70,8 +73,6 @@ def test_reference_implementation():
     # test construction from .py file w/ ReferenceImplementation objects
     ref2_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref2.pkl"))
     expected_ref2 = ReferenceImplementation.load(ref2_filename)
-    # with open(ref2_filename, "rb") as f:
-    #     expected_ref2 = f.read()
 
     with tempfile.NamedTemporaryFile("w+", suffix=".py") as ntf:
         ntf.write(dedent("""\
@@ -108,9 +109,31 @@ def test_reference_implementation():
         
         ref2 = more_refs[0]
         assert ref2 == expected_ref2
-        # with tempfile.NamedTemporaryFile() as ntf2:
-        #     ref2.dump(ntf2.name)
-        #     contents = ntf2.read()
-        #     assert contents == expected_ref2
 
-    # TODO: test constructor/compile errors/warnings
+
+def test_construction_errors():
+    """
+    """
+    with pytest.raises(TypeError, match="annotations should be a list of Annotations"):
+        ReferenceImplementation(set())
+
+    with pytest.raises(TypeError, match="Found non-annotation in annotations"):
+        ReferenceImplementation([Value(1), Value(2), 3, Value(4)])
+
+    # check that you can't load something that isn't a ReferenceImplementation
+    with tempfile.NamedTemporaryFile() as ntf:
+        dill.dump([], ntf)
+
+        ntf.seek(0)
+
+        with pytest.raises(TypeError, match="Unpickled reference implementation has type <class 'list'>"):
+            ReferenceImplementation.load(ntf.name)
+
+    # check that loading an empty reference implementation gives an error
+    with tempfile.NamedTemporaryFile(mode="w+", suffix=".ipynb") as ntf:
+        nbformat.write(nbformat.v4.new_notebook(), ntf)
+
+        ntf.seek(0)
+
+        with pytest.warns(UserWarning, match=f"Could not find any reference implementations in {ntf.name}"):
+            ReferenceImplementation.compile(ntf.name)
