@@ -61,13 +61,13 @@ def test_reference_construction():
     ref = ReferenceImplementation.compile(nb)
 
     ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
-    with open(ref_filename, "rb") as f:
-        expected_ref = f.read()
+    expected_ref = ReferenceImplementation.load(ref_filename)
 
     with tempfile.NamedTemporaryFile() as ntf:
         ref.dump(ntf.name)
-        contents = ntf.read()
-        assert contents == expected_ref
+        second_ref = ReferenceImplementation.load(ntf.name)
+        assert ref == second_ref
+        assert ref == expected_ref
 
     # test construction from .py file w/ ReferenceImplementation objects
     ref2_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref2.pkl"))
