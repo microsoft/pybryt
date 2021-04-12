@@ -135,6 +135,19 @@ class Annotation(ABC):
         """
         ...
 
+    @abstractmethod
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this annotation is equal to another object.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return self is other
+
     def before(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
         """
         Creates an annotation asserting that this annotation is satisfied before another (i.e. that

@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
+# from ..utils import check_values_equal
 
 
 class Value(Annotation):
@@ -89,6 +90,22 @@ class Value(Annotation):
 
         first_satisfier = satisfied.index(True)
         return AnnotationResult(True, self, observed_values[first_satisfier][0], observed_values[first_satisfier][1])
+    
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this annotation is equal to another object.
+
+        To be equal to a ``Value``, the other object must also be a ``Value`` object, have the same
+        set of invariants, the same tolerance, and the same initial value.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return isinstance(other, type(self)) and self.invariants == other.invariants and \
+            self.check_values_equal(self.initial_value, other.initial_value) and self.tol == other.tol
 
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
@@ -111,47 +128,54 @@ class Value(Annotation):
             for other_value in other_values:
                 # if type(value) != type(other_value):
                 #     continue
-
-                # else:
-                if hasattr(value, 'shape'):
-                    try:
-                        if value.shape != other_value.shape:
-                            continue
-                    except AttributeError:
-                        continue
-
-                try:
-                    ub, lb = value + self.tol, value - self.tol
-                    numeric = True
-                
-                except:
-                    numeric = False
-
-                if numeric:
-                    try:
-                        res = np.logical_and(ub >= other_value, other_value >= lb)
-                    except (ValueError, TypeError) as e:
-                        continue
-                else:
-                    try:
-                        if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
-                                or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
-                            continue
-                        res = value == other_value
-                    except (ValueError, TypeError) as e:
-                        continue
-
-                if isinstance(res, Iterable):
-                    try:
-                        res = all(res)
-                    except ValueError as e:
-                        if isinstance(res, np.ndarray):
-                            res = res.all()
-                        else:
-                            raise e
-
-                if res:
+                if self.check_values_equal(value, other_value, self.tol):
                     return True
+
+        return False
+
+    @staticmethod
+    def check_values_equal(value, other_value, tol=0):
+        """
+        """
+        if hasattr(value, 'shape'):
+            try:
+                if value.shape != other_value.shape:
+                    return False
+            except AttributeError:
+                return False
+
+        try:
+            ub, lb = value + tol, value - tol
+            numeric = True
+        
+        except:
+            numeric = False
+
+        if numeric:
+            try:
+                res = np.logical_and(ub >= other_value, other_value >= lb)
+            except (ValueError, TypeError) as e:
+                return False
+        else:
+            try:
+                if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
+                        or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
+                    return False
+                res = value == other_value
+            except (ValueError, TypeError) as e:
+                return False
+
+        if isinstance(res, Iterable):
+            try:
+                res = all(res)
+            except ValueError as e:
+                if isinstance(res, np.ndarray):
+                    res = res.all()
+                else:
+                    raise e
+
+        if res:
+            return True
 
         return False
 
@@ -176,6 +200,23 @@ class _AttrValue(Value):
         self._attr = attr
         val = getattr(obj, attr)
         super().__init__(val, **kwargs)
+    
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this annotation is equal to another object.
+
+        To be equal to a ``_AttrValue``, the other object must also be a ``_AttrValue`` object, have
+        equal underlying ``Value`` annotations, have equal source objects, and have the same 
+        ``_attr``.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return super().__eq__(other) and self.check_values_equal(self._object, other._object) and \
+            self._attr == other._attr
     
     def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
@@ -230,6 +271,21 @@ class Attribute(Annotation):
     @property
     def children(self):
         return self._annotations
+    
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this annotation is equal to another object.
+
+        To be equal to an ``Attribute``, the other object must also be an ``Attribute`` object and
+        have equal child annotations.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return isinstance(other, type(self)) and self.children == other.children
 
     def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """

@@ -44,7 +44,7 @@ class StudentImplementation:
         elif isinstance(path_or_nb, nbformat.NotebookNode):
             self.nb = path_or_nb
         else:
-            raise ValueError(f"path_or_nb is of unsupported type {type(path_or_nb)}")
+            raise TypeError(f"path_or_nb is of unsupported type {type(path_or_nb)}")
 
         self._execute(addl_filenames=addl_filenames, output=output)
 
@@ -132,7 +132,7 @@ class StudentImplementation:
         elif isinstance(ref, list):
             return [r.run(self.values, group=group) for r in ref]
         else:
-            raise ValueError(f"check cannot take values of type '{type(ref)}'")
+            raise TypeError(f"check cannot take values of type {type(ref)}")
     
     def check_plagiarism(self, student_impls: List["StudentImplementation"], **kwargs) -> List[ReferenceResult]:
         """

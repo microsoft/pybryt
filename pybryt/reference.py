@@ -4,6 +4,7 @@ import os
 import dill
 import json
 import warnings
+import nbformat
 import numpy as np
 
 from copy import deepcopy
@@ -32,6 +33,21 @@ class ReferenceImplementation:
             raise TypeError("Found non-annotation in annotations")
         
         self.annotations = annotations
+
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this reference implementation is equal to another object.
+
+        For an object to equal a reference implementation, it must also be a reference 
+        implementation and have the same annotations as this reference implementation.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return isinstance(other, type(self)) and self.annotations == other.annotations
 
     @staticmethod
     def load(file: str) -> 'ReferenceImplementation':
@@ -96,7 +112,8 @@ class ReferenceImplementation:
         return ReferenceResult(self, results, group=group)
 
     @classmethod
-    def compile(cls, file: str) -> Union['ReferenceImplementation', List['ReferenceImplementation']]:
+    def compile(cls, path_or_nb: Union[str, nbformat.NotebookNode]) -> \
+            Union['ReferenceImplementation', List['ReferenceImplementation']]:
         """
         Compiles a notebook or Python script into a single or list of reference implementations.
 
@@ -105,7 +122,7 @@ class ReferenceImplementation:
         created, if any, or all :py:class:`Annotation<pybryt.Annotation>` objects otherwise.
 
         Args:
-            file (``str``): path to the file to be executed
+            path_or_nb (``str`` or ``nbformat.NotebookNode``): the file to be executed
         
         Returns:
             ``ReferenceImplementation`` or ``list[ReferenceImplementation]``: the reference(s) 
@@ -113,13 +130,11 @@ class ReferenceImplementation:
         """
         Annotation.reset_tracked_annotations()
 
-        ext = os.path.splitext(file)[1]
-        if ext == ".ipynb":
-            source = notebook_to_string(file)
-
-        else:
-            with open(file) as f:
+        if isinstance(path_or_nb, str) and os.path.splitext(path_or_nb)[1] != ".ipynb":
+            with open(path_or_nb) as f:
                 source = f.read()
+        else:
+            source = notebook_to_string(path_or_nb)
 
         env = {}
         exec(source, env)
@@ -132,7 +147,8 @@ class ReferenceImplementation:
 
         if not refs:
             if not Annotation.get_tracked_annotations():
-                warnings.warn(f"Could not find any reference implementations in {file}")
+                warnings.warn(f"Could not find any reference implementations in " \
+                    f"{path_or_nb if isinstance(path_or_nb, str) else 'the provided notebook'}")
             else:
                 refs = [cls(deepcopy(Annotation.get_tracked_annotations()))]
 
