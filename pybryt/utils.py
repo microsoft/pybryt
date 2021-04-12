@@ -11,7 +11,7 @@ import nbformat
 
 from typing import Any, List, NoReturn, Union
 from IPython import get_ipython
-from IPython.display import display, Javascript
+from IPython.display import publish_display_data
 
 
 def pickle_and_hash(obj: Any) -> str:
@@ -108,7 +108,7 @@ def save_notebook(filename, timeout=10):
         f = open(filename, "rb")
         md5 = hashlib.md5(f.read()).hexdigest()
         start = time.time_ns()
-        display(Javascript("Jupyter.notebook.save_checkpoint();"))
+        publish_display_data({"application/javascript": "Jupyter.notebook.save_checkpoint();"})
         
         curr = md5
         while curr == md5 and time.time_ns() - start <= timeout * 10**9:
