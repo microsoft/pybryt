@@ -20,4 +20,4 @@ test:
 	pytest $(TESTPATH) $(PYTESTOPTS)
 
 testcov:
-	coverage run --source=pybryt -m pytest $(TESTPATH) $(PYTESTOPTS) && coverage html
+	coverage run --source=. -m pytest $(TESTPATH) $(PYTESTOPTS) && coverage html
