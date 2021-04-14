@@ -33,6 +33,11 @@ jobs:
       run: |
         $CONDA/bin/conda env update -f environment.yml -n base
         $CONDA/bin/pip install -r docs/requirements.txt
+
+    - name: Checkout to gh-pages
+      uses: actions/checkout@v2
+      with:
+        ref: gh-pages
         
     - name: Build documentation
       working-directory: ./docs
@@ -47,10 +52,6 @@ jobs:
 #         add: "docs/html"
 #         message: "build docs for ${{ github.sha }}"
 #         branch: gh-pages
-    - name: Checkout to gh-pages
-      uses: actions/checkout@v2
-      with:
-        ref: gh-pages
 
     - name: Commit documentation
       run: |
