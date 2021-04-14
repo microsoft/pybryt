@@ -3,4 +3,4 @@
 Invariants
 ==========
 
-This page is current under construction.
+This page is currently under construction.

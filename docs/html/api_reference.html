@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
 
-    <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
+    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
         <title>API Reference - PyBryt documentation</title>
-      <link rel="stylesheet" href="_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
     <link rel="stylesheet" href="_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
     
@@ -370,6 +370,10 @@ during execution and the timestamps of those values</p>
 </dd>
 </dl>
 </dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.value.Value.check_values_equal">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">check_values_equal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Value.check_values_equal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Value.children">
 <em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#pybryt.annotations.value.Value.children" title="Permalink to this definition">¶</a></dt>
@@ -811,14 +815,14 @@ creating, running, and storing reference implementations.</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.ReferenceImplementation.compile">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.ReferenceImplementation.compile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.ReferenceImplementation.compile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compiles a notebook or Python script into a single or list of reference implementations.</p>
 <p>Creates a reference implementation by executing a Jupyter Notebook or Python script and
 collecting all <a class="reference internal" href="#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> objects
 created, if any, or all <a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> objects otherwise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – path to the file to be executed</p>
+<dd class="field-odd"><p><strong>path_or_nb</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">nbformat.NotebookNode</span></code>) – the file to be executed</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the reference(s)
