@@ -4,6 +4,7 @@ import os
 import re
 import linecache
 import dill
+import inspect
 import nbformat
 
 from nbconvert.preprocessors import ExecutePreprocessor
@@ -18,6 +19,8 @@ from .utils import make_secret, pickle_and_hash
 
 
 NBFORMAT_VERSION = 4
+TRACING_VARNAME = "__PYBRYT_TRACING__"
+TRACING_FUNC = None
 
 
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
@@ -133,6 +136,38 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
     return observed, collect_intermidiate_results
 
 
+def _currently_tracing():
+    """
+    """
+    frame = inspect.currentframe()
+    while frame is not None:
+        if TRACING_VARNAME in frame.f_globals and frame.f_globals[TRACING_VARNAME]:
+            return True
+        frame = frame.f_back
+    return False
+
+
+def tracing_off():
+    """
+    """
+    global TRACING_FUNC
+    if not _currently_tracing():
+        return
+    frame = inspect.currentframe().f_back
+    TRACING_FUNC = frame.f_trace
+    frame.f_trace = None
+
+
+def tracing_on():
+    """
+    """
+    global TRACING_FUNC
+    if not _currently_tracing() or TRACING_FUNC is None:
+        return
+    frame = inspect.currentframe().f_back
+    frame.f_trace = TRACING_FUNC
+
+
 def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], output: Optional[str] = None) -> \
         Tuple[int, List[Tuple[Any, int]]]:
     """
@@ -165,6 +200,7 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
         from pybryt.execution import create_collector
         observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
         sys.settrace(cir)
+        {TRACING_VARNAME} = True
     """))
 
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
