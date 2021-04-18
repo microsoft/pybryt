@@ -168,8 +168,8 @@ def tracing_on():
     frame.f_trace = TRACING_FUNC
 
 
-def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], output: Optional[str] = None) -> \
-        Tuple[int, List[Tuple[Any, int]]]:
+def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
+        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]]]:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -181,6 +181,7 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
 
     Args:
         nb (``nbformat.NotebookNode``): the notebook to be executed
+        nb_path (``str``): path to the notebook ``nb``
         addl_filenames (``list[str]``, optional): a list of additional files to trace inside
         output (``str``, optional): a file path at which to write the executed notebook
 
@@ -215,7 +216,8 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
     nb['cells'].insert(0, first_cell)
     nb['cells'].append(last_cell)
 
-    ep = ExecutePreprocessor(timeout=1200, allow_errors=True)
+    nb_dir = os.path.split(nb_path)[0]
+    ep = ExecutePreprocessor(timeout=1200, resources={"metadata": {"path": nb_dir}}, allow_errors=True)
 
     ep.preprocess(nb)
 
