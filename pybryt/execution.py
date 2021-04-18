@@ -155,7 +155,10 @@ def tracing_off():
         return
     frame = inspect.currentframe().f_back
     TRACING_FUNC = frame.f_trace
-    frame.f_trace = None
+    print(TRACING_FUNC)
+    vn = f"sys_{make_secret()}"
+    # frame.f_trace = None
+    exec(f"import sys as {vn}\n{vn}.settrace(None)", frame.f_globals, frame.f_locals)
 
 
 def tracing_on():
@@ -165,7 +168,10 @@ def tracing_on():
     if not _currently_tracing() or TRACING_FUNC is None:
         return
     frame = inspect.currentframe().f_back
-    frame.f_trace = TRACING_FUNC
+    vn = f"cir_{make_secret()}"
+    vn2 = f"sys_{make_secret()}"
+    frame.f_globals[vn] = TRACING_FUNC
+    exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)
 
 
 def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
@@ -195,6 +201,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
 
     secret = make_secret()
     _, observed_fp = mkstemp()
+    nb_dir = os.path.abspath(os.path.split(nb_path)[0])
 
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
@@ -202,6 +209,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
         observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
         sys.settrace(cir)
         {TRACING_VARNAME} = True
+        %cd {nb_dir}
     """))
 
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
@@ -216,8 +224,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     nb['cells'].insert(0, first_cell)
     nb['cells'].append(last_cell)
 
-    nb_dir = os.path.split(nb_path)[0]
-    ep = ExecutePreprocessor(timeout=1200, resources={"metadata": {"path": nb_dir}}, allow_errors=True)
+    ep = ExecutePreprocessor(timeout=1200, allow_errors=True)
 
     ep.preprocess(nb)
 
