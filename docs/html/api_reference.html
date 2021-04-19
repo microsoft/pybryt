@@ -845,7 +845,7 @@ created by executing the file</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.ReferenceImplementation.load">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.reference.ReferenceImplementation</span><a class="headerlink" href="#pybryt.ReferenceImplementation.load" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.ReferenceImplementation.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpickles a reference implementation from a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1087,6 +1087,11 @@ implementation</p>
 <dd><p>the submission notebook</p>
 </dd></dl>
 <dl class="py attribute">
+<dt id="pybryt.StudentImplementation.nb_path">
+<code class="sig-name descname"><span class="pre">nb_path</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.StudentImplementation.nb_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>the path to the notebook file</p>
+</dd></dl>
+<dl class="py attribute">
 <dt id="pybryt.StudentImplementation.steps">
 <code class="sig-name descname"><span class="pre">steps</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pybryt.StudentImplementation.steps" title="Permalink to this definition">¶</a></dt>
 <dd><p>number of execution steps</p>
@@ -1097,6 +1102,49 @@ implementation</p>
 <dd><p>the memory footprint (a list of tuples of objects and their timestamps)</p>
 </dd></dl>
 </dd></dl>
+<div class="section" id="module-pybryt.execution">
+<span id="execution"></span><h3>Execution<a class="headerlink" href="#module-pybryt.execution" title="Permalink to this headline">¶</a></h3>
+<p>Submission execution internals for PyBryt</p>
+<dl class="py function">
+<dt id="pybryt.execution.tracing_off">
+<code class="sig-name descname"><span class="pre">tracing_off</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns off PyBryt’s tracing if tracing is occurring in this call stack. If PyBryt is not tracing,
+takes no action.</p>
+<p>This method can be used in students’ notebooks to include code that shouldn’t be traced as part
+of the submission, e.g. demo code or ungraded code. In the example below, the call that creates
+<code class="docutils literal notranslate"><span class="pre">x2</span></code> is traced but the one to create <code class="docutils literal notranslate"><span class="pre">x3</span></code> is not.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="n">a</span>
+
+<span class="n">x2</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">pybryt</span><span class="o">.</span><span class="n">tracing_off</span><span class="p">()</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt id="pybryt.execution.tracing_on">
+<code class="sig-name descname"><span class="pre">tracing_on</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns tracing on if PyBryt was tracing the call stack. If PyBryt is not tracing or
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">tracing_off</span></code> has not been called, no action is taken.</p>
+<p>This method can be used in students’ notebooks to turn tracing back on after deactivating tracing
+for ungraded code In the example below, <code class="docutils literal notranslate"><span class="pre">x4</span></code> is traced because <code class="docutils literal notranslate"><span class="pre">tracing_on</span></code> is used after
+<code class="docutils literal notranslate"><span class="pre">tracing_off</span></code> and the creation of <code class="docutils literal notranslate"><span class="pre">x3</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="n">a</span>
+
+<span class="n">x2</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">pybryt</span><span class="o">.</span><span class="n">tracing_off</span><span class="p">()</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">pybryt</span><span class="o">.</span><span class="n">tracing_on</span><span class="p">()</span>
+
+<span class="n">x4</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+</div>
 </div>
 </div>
 
@@ -1158,7 +1206,10 @@ implementation</p>
 <li><a class="reference internal" href="#reference-results">Reference Results</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#student-implementations">Student Implementations</a></li>
+<li><a class="reference internal" href="#student-implementations">Student Implementations</a><ul>
+<li><a class="reference internal" href="#module-pybryt.execution">Execution</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
