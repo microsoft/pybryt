@@ -1,9 +1,12 @@
 """Submission execution internals for PyBryt"""
 
+__all__ = ["tracing_off", "tracing_on"]
+
 import os
 import re
 import linecache
 import dill
+import inspect
 import nbformat
 
 from nbconvert.preprocessors import ExecutePreprocessor
@@ -18,6 +21,8 @@ from .utils import make_secret, pickle_and_hash
 
 
 NBFORMAT_VERSION = 4
+TRACING_VARNAME = "__PYBRYT_TRACING__"
+TRACING_FUNC = None
 
 
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
@@ -133,8 +138,84 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
     return observed, collect_intermidiate_results
 
 
-def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], output: Optional[str] = None) -> \
-        Tuple[int, List[Tuple[Any, int]]]:
+def _currently_tracing():
+    """
+    Determines whether PyBryt is actively tracing the current call stack by looking at the parent
+    frames and determining if ``__PYBRYT_TRACING__`` exists and is ``True`` in any of their globals.
+
+    Returns:
+        ``bool``: if PyBryt is currently tracing
+    """
+    frame = inspect.currentframe()
+    while frame is not None:
+        if TRACING_VARNAME in frame.f_globals and frame.f_globals[TRACING_VARNAME]:
+            return True
+        frame = frame.f_back
+    return False
+
+
+def tracing_off():
+    """
+    Turns off PyBryt's tracing if tracing is occurring in this call stack. If PyBryt is not tracing,
+    takes no action.
+
+    This method can be used in students' notebooks to include code that shouldn't be traced as part
+    of the submission, e.g. demo code or ungraded code. In the example below, the call that creates
+    ``x2`` is traced but the one to create ``x3`` is not.
+
+    .. code-block:: python
+
+        def pow(x, a):
+            return x ** a
+
+        x2 = pow(x, 2)
+
+        pybryt.tracing_off()
+        x3 = pow(x, 3)
+    """
+    global TRACING_FUNC
+    if not _currently_tracing():
+        return
+    frame = inspect.currentframe().f_back
+    TRACING_FUNC = frame.f_trace
+    vn = f"sys_{make_secret()}"
+    exec(f"import sys as {vn}\n{vn}.settrace(None)", frame.f_globals, frame.f_locals)
+
+
+def tracing_on():
+    """
+    Turns tracing on if PyBryt was tracing the call stack. If PyBryt is not tracing or
+    :py:meth:`tracing_off<pybryt.tracing_off>` has not been called, no action is taken.
+
+    This method can be used in students' notebooks to turn tracing back on after deactivating tracing
+    for ungraded code In the example below, ``x4`` is traced because ``tracing_on`` is used after
+    ``tracing_off`` and the creation of ``x3``.
+
+    .. code-block:: python
+
+        def pow(x, a):
+            return x ** a
+
+        x2 = pow(x, 2)
+
+        pybryt.tracing_off()
+        x3 = pow(x, 3)
+        pybryt.tracing_on()
+
+        x4 = pow(x, 4)
+    """
+    global TRACING_FUNC
+    if not _currently_tracing() or TRACING_FUNC is None:
+        return
+    frame = inspect.currentframe().f_back
+    vn = f"cir_{make_secret()}"
+    vn2 = f"sys_{make_secret()}"
+    frame.f_globals[vn] = TRACING_FUNC
+    exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)
+
+
+def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
+        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]]]:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -146,6 +227,7 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
 
     Args:
         nb (``nbformat.NotebookNode``): the notebook to be executed
+        nb_path (``str``): path to the notebook ``nb``
         addl_filenames (``list[str]``, optional): a list of additional files to trace inside
         output (``str``, optional): a file path at which to write the executed notebook
 
@@ -159,12 +241,15 @@ def execute_notebook(nb: nbformat.NotebookNode, addl_filenames: List[str] = [], 
 
     secret = make_secret()
     _, observed_fp = mkstemp()
+    nb_dir = os.path.abspath(os.path.split(nb_path)[0])
 
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
         from pybryt.execution import create_collector
         observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
         sys.settrace(cir)
+        {TRACING_VARNAME} = True
+        %cd {nb_dir}
     """))
 
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\

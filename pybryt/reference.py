@@ -50,7 +50,7 @@ class ReferenceImplementation:
         return isinstance(other, type(self)) and self.annotations == other.annotations
 
     @staticmethod
-    def load(file: str) -> 'ReferenceImplementation':
+    def load(file: str) -> Union['ReferenceImplementation', List['ReferenceImplementation']]:
         """
         Unpickles a reference implementation from a file.
 
@@ -63,7 +63,7 @@ class ReferenceImplementation:
         """
         with open(file, "rb") as f:
             instance = dill.load(f)
-        if not isinstance(instance, ReferenceImplementation):
+        if not isinstance(instance, (ReferenceImplementation, list)):
             raise TypeError(f"Unpickled reference implementation has type {type(instance)}")
         return instance
     
