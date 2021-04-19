@@ -29,6 +29,9 @@ class StudentImplementation:
     nb: nbformat.NotebookNode
     """the submission notebook"""
 
+    nb_path: str
+    """the path to the notebook file"""
+
     values: List[Tuple[Any, int]]
     """the memory footprint (a list of tuples of objects and their timestamps)"""
 
@@ -41,8 +44,10 @@ class StudentImplementation:
     ):
         if isinstance(path_or_nb, str):
             self.nb = nbformat.read(path_or_nb, as_version=NBFORMAT_VERSION)
+            self.nb_path = path_or_nb
         elif isinstance(path_or_nb, nbformat.NotebookNode):
             self.nb = path_or_nb
+            self.nb_path = ""
         else:
             raise TypeError(f"path_or_nb is of unsupported type {type(path_or_nb)}")
 
@@ -58,7 +63,7 @@ class StudentImplementation:
             output (``str``, optional): a path at which to write executed notebook
         """
         self.steps, self.values = execute_notebook(
-            self.nb, addl_filenames=addl_filenames, output=output
+            self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
         )
 
     def dump(self, dest: str = "student.pkl") -> NoReturn:

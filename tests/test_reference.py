@@ -121,11 +121,11 @@ def test_construction_errors():
 
     # check that you can't load something that isn't a ReferenceImplementation
     with tempfile.NamedTemporaryFile() as ntf:
-        dill.dump([], ntf)
+        dill.dump(1, ntf)
 
         ntf.seek(0)
 
-        with pytest.raises(TypeError, match="Unpickled reference implementation has type <class 'list'>"):
+        with pytest.raises(TypeError, match="Unpickled reference implementation has type <class 'int'>"):
             ReferenceImplementation.load(ntf.name)
 
     # check that loading an empty reference implementation gives an error
@@ -150,7 +150,7 @@ def test_run_and_results():
             failure_message="ERROR: failed to compute the median")
     """)))
     ref = ReferenceImplementation.compile(nb)
-    _, vals = execute_notebook(nb)
+    _, vals = execute_notebook(nb, "")
     
     res = ref.run(vals)
     assert len(res.results) == 27
@@ -178,7 +178,7 @@ def test_run_and_results():
     ]
 
     nb.cells.insert(2, nbformat.v4.new_code_cell("import numpy as np\ndef median(S):\n    return np.median(S)"))
-    _, vals = execute_notebook(nb)
+    _, vals = execute_notebook(nb, "")
     
     res = ref.run(vals)
     assert len(res.results) == 27
