@@ -66,3 +66,11 @@ Student Implementations
 .. autoclass:: pybryt.StudentImplementation
    :members:
    :undoc-members:
+
+
+Execution
++++++++++
+
+.. automodule:: pybryt.execution
+   :members:
+   :undoc-members:
