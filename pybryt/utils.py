@@ -108,7 +108,11 @@ def save_notebook(filename, timeout=10):
         f = open(filename, "rb")
         md5 = hashlib.md5(f.read()).hexdigest()
         start = time.time_ns()
-        publish_display_data({"application/javascript": "Jupyter.notebook.save_checkpoint();"})
+        publish_display_data({"application/javascript": """
+            if (typeof Jupyter !== "undefined") {
+                Jupyter.notebook.save_notebook();
+            }
+        """})
         
         curr = md5
         while curr == md5 and time.time_ns() - start <= timeout * 10**9:
