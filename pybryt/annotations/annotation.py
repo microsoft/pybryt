@@ -296,13 +296,13 @@ class AnnotationResult:
     timestamp: int
     """the step counter value at which this annotation was satisfied"""
 
-    children: Optional[List["AnnotationResult"]]
+    children: List["AnnotationResult"]
     """child annotation results of this annotation result"""
 
 
     def __init__(
         self, satisfied: Optional[bool], annotation: Annotation, value: Any = None, timestamp: int = -1, 
-        children: Optional[List["AnnotationResult"]] = None,
+        children: List["AnnotationResult"] = [],
     ):
         self._satisfied = satisfied
         self.annotation = annotation
@@ -320,7 +320,7 @@ class AnnotationResult:
         """
         if self._satisfied is not None:
             return self._satisfied
-        elif self.children is not None:
+        elif self.children:
             return all(c.satisfied for c in self.children)
         else:
             return bool(self._satisfied)
@@ -334,7 +334,7 @@ class AnnotationResult:
         """
         if not self.satisfied:
             return -1
-        if self.children is not None:
+        if self.children:
             return max(c.satisfied_at for c in self.children)
         return self.timestamp
 
@@ -357,7 +357,7 @@ class AnnotationResult:
         """
         ``object``: the value that satisfied the condition of this annotation
         """
-        if self._value is None and self.children is not None and len(self.children) == 1:
+        if self._value is None and self.children and len(self.children) == 1:
             return self.children[0].value
         return self._value
 
@@ -370,9 +370,8 @@ class AnnotationResult:
         name is  present), and the third is whether the annotation was satisfied.
         """
         messages = []
-        if self.children:
-            for c in self.children:
-                messages.extend(c.messages)
+        for c in self.children:
+            messages.extend(c.messages)
         
         if self.satisfied and self.annotation.success_message:
             messages.append((self.annotation.success_message, self.annotation.name, True))
@@ -380,6 +379,23 @@ class AnnotationResult:
             messages.append((self.annotation.failure_message, self.annotation.name, False))
 
         return messages
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this annotation result's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the annotation, whether it was satisfied, when it was satisfied,
+        and any child results.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        return {
+            "satisfied": self.satisfied,
+            "satisfied_at": self.satisfied_at,
+            "annotation": self.annotation.to_dict(),
+            "children": [c.to_dict() for c in self.children],
+        }
 
 
 from .relation import *

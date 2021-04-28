@@ -28,7 +28,7 @@ def test_value_annotation():
         # check attributes of BeforeAnnotation and AnnotationResult
         check_obj_attributes(v, {"children__len": 0})
         check_obj_attributes(res, {
-            "children": None,
+            "children": [],
             "satisfied": True,
             "_satisfied": True,
             "annotation": v,
@@ -50,7 +50,7 @@ def test_value_annotation():
     # check attributes of BeforeAnnotation and AnnotationResult
     check_obj_attributes(v, {"children__len": 0})
     check_obj_attributes(res, {
-        "children": None,
+        "children": [],
         "satisfied": False,
         "_satisfied": False,
         "annotation": v,
