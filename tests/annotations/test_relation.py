@@ -63,7 +63,7 @@ def test_before_annotation():
                 'tol': 0
             }
         ], 
-        'type': 'before'
+        'type': 'before',
     }
 
     v = v2.after(v1)
