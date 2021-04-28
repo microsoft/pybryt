@@ -8,7 +8,7 @@ import nbformat
 import numpy as np
 
 from copy import deepcopy
-from typing import Any, List, NoReturn, Optional, Tuple, Union
+from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
 from .utils import notebook_to_string
@@ -222,6 +222,21 @@ class ReferenceResult:
                         message_names[msg[1]] = len(messages)
                         messages.append(msg[0])
         return messages
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this reference result's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the group name run, if present, and the dictionary representations
+        of all child annotation results.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        return {
+            "group": self.group,
+            "results": [ar.to_dict() for ar in self.results],
+        }
 
     def to_array(self):
         """

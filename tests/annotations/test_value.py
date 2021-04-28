@@ -15,6 +15,7 @@ def test_value_annotation():
     """
     """
     mfp = generate_memory_footprint()
+    Annotation.reset_tracked_annotations()
 
     seen = {}
     for val, ts in mfp:
@@ -28,7 +29,7 @@ def test_value_annotation():
         # check attributes of BeforeAnnotation and AnnotationResult
         check_obj_attributes(v, {"children__len": 0})
         check_obj_attributes(res, {
-            "children": None,
+            "children": [],
             "satisfied": True,
             "_satisfied": True,
             "annotation": v,
@@ -42,6 +43,17 @@ def test_value_annotation():
     v = Value(-1) # does not occur in mfp
     res = v.check(mfp)
 
+    assert v.to_dict() == {
+        "name": "Annotation 10",
+        "children": [],
+        "success_message": None,
+        "failure_message": None,
+        "limit": None,
+        "group": None,
+        "invariants": [],
+        "tol": 0,
+        "type": "value",
+    }
     assert repr(res) == "AnnotationResult(satisfied=False, annotation=pybryt.Value)"
 
     # check __repr__
@@ -50,7 +62,7 @@ def test_value_annotation():
     # check attributes of BeforeAnnotation and AnnotationResult
     check_obj_attributes(v, {"children__len": 0})
     check_obj_attributes(res, {
-        "children": None,
+        "children": [],
         "satisfied": False,
         "_satisfied": False,
         "annotation": v,
@@ -69,6 +81,7 @@ def test_attribute_annotation():
     """
     """
     mfp = generate_memory_footprint()
+    Annotation.reset_tracked_annotations()
     val, ts = mfp[0]
 
     v = Attribute(val, "T")
@@ -85,6 +98,32 @@ def test_attribute_annotation():
         "satisfied_at": ts,
         "value": val,
     })
+
+    assert v.to_dict() == {
+        "name": "Annotation 2",
+        "children": [
+            {
+                'name': 
+                'Annotation 1', 
+                'group': None, 
+                'limit': None, 
+                'success_message': None, 
+                'failure_message': None, 
+                'children': [], 
+                'invariants': [], 
+                'tol': 0,
+                "type": None,
+            }
+        ],
+        "success_message": None,
+        "failure_message": None,
+        "limit": None,
+        "group": None,
+        "invariants": [],
+        "tol": 0,
+        "type": "attribute",
+        "attributes": ['T'],
+    }
 
     # check error raising
     with pytest.raises(TypeError):

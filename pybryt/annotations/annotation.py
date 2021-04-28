@@ -7,6 +7,7 @@ from typing import Any, Dict, List, NoReturn, Optional, Tuple
 
 _TRACKED_ANNOTATIONS = []
 _GROUP_INDICES = {}
+_ANNOTATION_COUNTER = 0
 
 
 class Annotation(ABC):
@@ -28,7 +29,7 @@ class Annotation(ABC):
         failure_message (``str``, optional): a message to relay to the student if not satisfied
     """
 
-    name: Optional[str]
+    name: str
     """the name of the annotation"""
     
     limit: Optional[int]
@@ -47,7 +48,12 @@ class Annotation(ABC):
         self, name: Optional[str] = None, limit: Optional[int] = None, group: Optional[str] = None, 
         success_message: Optional[str] = None, failure_message: Optional[str] = None,
     ):
-        self.name = name
+        global _ANNOTATION_COUNTER
+        _ANNOTATION_COUNTER += 1
+        if name is not None:
+            self.name = name
+        else:
+            self.name = f"Annotation {_ANNOTATION_COUNTER}"
         self.limit = limit
         self.group = group
         self.success_message = success_message
@@ -103,9 +109,10 @@ class Annotation(ABC):
         Resets the list of tracked annotations and the mapping of group names to indices in that
         list.
         """
-        global _GROUP_INDICES, _TRACKED_ANNOTATIONS
+        global _ANNOTATION_COUNTER, _GROUP_INDICES, _TRACKED_ANNOTATIONS
         _TRACKED_ANNOTATIONS.clear()
         _GROUP_INDICES.clear()
+        _ANNOTATION_COUNTER = 0
 
     @property
     @abstractmethod
@@ -236,6 +243,32 @@ class Annotation(ABC):
         """
         return NotAnnotation(self)
 
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this annotation's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the annotation's name, group, limit number, success message, and
+        failure message.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        type_name = type(self).__name__
+        if type_name.endswith("Annotation"):
+            type_name = type_name[:-len("Annotation")]
+        type_name = type_name.lower()
+        if type_name.startswith("_"):
+            type_name = None
+        return {
+            "name": self.name,
+            "group": self.group,
+            "limit": self.limit,
+            "success_message": self.success_message,
+            "failure_message": self.failure_message,
+            "children": [c.to_dict() for c in self.children],
+            "type": type_name,
+        }
+
 
 class AnnotationResult:
     """
@@ -270,13 +303,13 @@ class AnnotationResult:
     timestamp: int
     """the step counter value at which this annotation was satisfied"""
 
-    children: Optional[List["AnnotationResult"]]
+    children: List["AnnotationResult"]
     """child annotation results of this annotation result"""
 
 
     def __init__(
         self, satisfied: Optional[bool], annotation: Annotation, value: Any = None, timestamp: int = -1, 
-        children: Optional[List["AnnotationResult"]] = None,
+        children: List["AnnotationResult"] = [],
     ):
         self._satisfied = satisfied
         self.annotation = annotation
@@ -294,7 +327,7 @@ class AnnotationResult:
         """
         if self._satisfied is not None:
             return self._satisfied
-        elif self.children is not None:
+        elif self.children:
             return all(c.satisfied for c in self.children)
         else:
             return bool(self._satisfied)
@@ -308,7 +341,7 @@ class AnnotationResult:
         """
         if not self.satisfied:
             return -1
-        if self.children is not None:
+        if self.children:
             return max(c.satisfied_at for c in self.children)
         return self.timestamp
 
@@ -331,7 +364,7 @@ class AnnotationResult:
         """
         ``object``: the value that satisfied the condition of this annotation
         """
-        if self._value is None and self.children is not None and len(self.children) == 1:
+        if self._value is None and self.children and len(self.children) == 1:
             return self.children[0].value
         return self._value
 
@@ -344,9 +377,8 @@ class AnnotationResult:
         name is  present), and the third is whether the annotation was satisfied.
         """
         messages = []
-        if self.children:
-            for c in self.children:
-                messages.extend(c.messages)
+        for c in self.children:
+            messages.extend(c.messages)
         
         if self.satisfied and self.annotation.success_message:
             messages.append((self.annotation.success_message, self.annotation.name, True))
@@ -354,6 +386,23 @@ class AnnotationResult:
             messages.append((self.annotation.failure_message, self.annotation.name, False))
 
         return messages
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this annotation result's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the annotation, whether it was satisfied, when it was satisfied,
+        and any child results.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        return {
+            "satisfied": self.satisfied,
+            "satisfied_at": self.satisfied_at,
+            "annotation": self.annotation.to_dict(),
+            "children": [c.to_dict() for c in self.children],
+        }
 
 
 from .relation import *
