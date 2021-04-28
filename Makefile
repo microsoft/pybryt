@@ -6,8 +6,10 @@
 # the `testcov` target can be used to build a local copy of the code coverage in HTML
 #   $ make testcov
 
-TESTPATH="tests"
-PYTESTOPTS="-v"
+PYTEST        = pytest
+TESTPATH      = tests
+PYTESTOPTS    = -v
+COVERAGE      = coverage
 
 release:
 	rm dist/* || :
@@ -17,7 +19,10 @@ release:
 	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(VERSION)' $(VERSION)
 
 test:
-	pytest $(TESTPATH) $(PYTESTOPTS)
+	$(PYTEST) $(TESTPATH) $(PYTESTOPTS)
 
 testcov:
-	coverage run --source=. -m pytest $(TESTPATH) $(PYTESTOPTS) && coverage html
+	$(COVERAGE) run --source=pybryt -m pytest $(TESTPATH) $(PYTESTOPTS) 
+
+covhtml: testcov
+	$(COVERAGE) html

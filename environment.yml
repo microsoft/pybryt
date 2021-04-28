@@ -6,5 +6,6 @@ dependencies:
     - pytest
     - codecov
     - matplotlib
+    - otter-grader
     - -r file:docs/requirements.txt
  
