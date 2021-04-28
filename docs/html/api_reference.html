@@ -263,7 +263,7 @@ children, an empty list.</p>
 </dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.Annotation.name">
-<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.Annotation.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.Annotation.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>the name of the annotation</p>
 </dd></dl>
 <dl class="py method">
@@ -276,6 +276,21 @@ list.</p>
 <dt id="pybryt.Annotation.success_message">
 <code class="sig-name descname"><span class="pre">success_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.Annotation.success_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>a message to relay to the student if satisfied</p>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.Annotation.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.Annotation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
+<p>Output dictionary contains the annotation’s name, group, limit number, success message, and
+failure message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 </dd></dl>
 <div class="section" id="module-pybryt.annotations.value">
@@ -325,6 +340,23 @@ children, an empty list.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.value.Attribute.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.value.Attribute.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
+<p>Output dictionary contains the annotation’s name, group, limit number, success message, and
+failure message, as well as an <code class="docutils literal notranslate"><span class="pre">invariants</span></code> key with a list of the names of all invariants
+used in this value annotation, a <code class="docutils literal notranslate"><span class="pre">tol</span></code> key with this annotation’s tolerance, and a key for
+the attributes being checked. This dictionary does <em>not</em> contain the value being tracked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -394,6 +426,23 @@ children, an empty list.</p>
 <dt id="pybryt.annotations.value.Value.invariants">
 <code class="sig-name descname"><span class="pre">invariants</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><span class="pre">pybryt.annotations.invariants.invariant</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.value.Value.invariants" title="Permalink to this definition">¶</a></dt>
 <dd><p>the invariants for this value</p>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.value.Value.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.value.Value.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
+<p>Output dictionary contains the annotation’s name, group, limit number, success message, and
+failure message, as well as an <code class="docutils literal notranslate"><span class="pre">invariants</span></code> key with a list of the names of all invariants
+used in this value annotation and a <code class="docutils literal notranslate"><span class="pre">tol</span></code> key with this annotation’s tolerance. This
+dictionary does <em>not</em> contain the value being tracked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.annotations.value.Value.tol">
@@ -695,7 +744,7 @@ of the annotation or from the results of other invariants</p>
 <h3>Annotation Results<a class="headerlink" href="#annotation-results" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="pybryt.AnnotationResult">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">AnnotationResult</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satisfied</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pybryt.annotations.annotation.Annotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.AnnotationResult" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">AnnotationResult</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satisfied</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pybryt.annotations.annotation.Annotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.AnnotationResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class that manages and defines an API for interacting with the results of an annotation.</p>
 <p>Created when an annotation calls its <code class="xref py py-meth docutils literal notranslate"><span class="pre">check&lt;pybryt.Annotation.check()</span></code> method and
 wrangles the results of that annotation. Contains fields for tracking child annotation results,
@@ -720,7 +769,7 @@ result</p></li>
 </dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.AnnotationResult.children">
-<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.AnnotationResult.children" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.AnnotationResult.children" title="Permalink to this definition">¶</a></dt>
 <dd><p>child annotation results of this annotation result</p>
 </dd></dl>
 <dl class="py method">
@@ -782,6 +831,21 @@ was not satisfied, returns -1</p>
 <dt id="pybryt.AnnotationResult.timestamp">
 <code class="sig-name descname"><span class="pre">timestamp</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pybryt.AnnotationResult.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>the step counter value at which this annotation was satisfied</p>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.AnnotationResult.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.AnnotationResult.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this annotation result’s details to a JSON-friendly dictionary format.</p>
+<p>Output dictionary contains the annotation, whether it was satisfied, when it was satisfied,
+and any child results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.AnnotationResult.value">
@@ -951,6 +1015,21 @@ annotation and <code class="docutils literal notranslate"><span class="pre">0</s
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.ReferenceResult.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.ReferenceResult.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this reference result’s details to a JSON-friendly dictionary format.</p>
+<p>Output dictionary contains the group name run, if present, and the dictionary representations
+of all child annotation results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
 </dd>
 </dl>
 </dd></dl>
