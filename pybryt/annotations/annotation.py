@@ -7,6 +7,7 @@ from typing import Any, Dict, List, NoReturn, Optional, Tuple
 
 _TRACKED_ANNOTATIONS = []
 _GROUP_INDICES = {}
+_ANNOTATION_COUNTER = 0
 
 
 class Annotation(ABC):
@@ -28,7 +29,7 @@ class Annotation(ABC):
         failure_message (``str``, optional): a message to relay to the student if not satisfied
     """
 
-    name: Optional[str]
+    name: str
     """the name of the annotation"""
     
     limit: Optional[int]
@@ -47,7 +48,12 @@ class Annotation(ABC):
         self, name: Optional[str] = None, limit: Optional[int] = None, group: Optional[str] = None, 
         success_message: Optional[str] = None, failure_message: Optional[str] = None,
     ):
-        self.name = name
+        global _ANNOTATION_COUNTER
+        _ANNOTATION_COUNTER += 1
+        if name is not None:
+            self.name = name
+        else:
+            self.name = f"Annotation {_ANNOTATION_COUNTER}"
         self.limit = limit
         self.group = group
         self.success_message = success_message
@@ -103,9 +109,10 @@ class Annotation(ABC):
         Resets the list of tracked annotations and the mapping of group names to indices in that
         list.
         """
-        global _GROUP_INDICES, _TRACKED_ANNOTATIONS
+        global _ANNOTATION_COUNTER, _GROUP_INDICES, _TRACKED_ANNOTATIONS
         _TRACKED_ANNOTATIONS.clear()
         _GROUP_INDICES.clear()
+        _ANNOTATION_COUNTER = 0
 
     @property
     @abstractmethod
@@ -235,6 +242,26 @@ class Annotation(ABC):
             ``NotAnnotation``: the annotation asserting the and condition
         """
         return NotAnnotation(self)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this annotation's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the annotation's name, group, limit number, success message, and
+        failure message. For value annotations, this dictionary does *not* contain the value being
+        tracked.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        return {
+            "name": self.name,
+            "group": self.group,
+            "limit": self.limit,
+            "success_message": self.success_message,
+            "failure_message": self.failure_message,
+            "children": [c.to_dict() for c in self.children],
+        }
 
 
 class AnnotationResult:
