@@ -203,8 +203,9 @@ def test_run_and_results():
         d.pop("satisfied_at")
 
     res_dict = res.to_dict()
-    for d in res_dict["results"]:
-        d.pop("satisfied_at")
+
+    # check satisfied_at field here since they won't match up
+    assert all(isinstance(d.pop("satisfied_at", None), int) for d in res_dict["results"])
 
     assert res_dict == expected_res_dict
 

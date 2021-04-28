@@ -99,7 +99,6 @@ def test_attribute_annotation():
         "value": val,
     })
 
-    print(v.to_dict())
     assert v.to_dict() == {
         "name": "Annotation 2",
         "children": [
@@ -113,7 +112,7 @@ def test_attribute_annotation():
                 'children': [], 
                 'invariants': [], 
                 'tol': 0,
-                "type": "_attrvalue",
+                "type": None,
             }
         ],
         "success_message": None,
