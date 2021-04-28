@@ -248,8 +248,7 @@ class Annotation(ABC):
         Converts this annotation's details to a JSON-friendly dictionary format.
 
         Output dictionary contains the annotation's name, group, limit number, success message, and
-        failure message. For value annotations, this dictionary does *not* contain the value being
-        tracked.
+        failure message.
 
         Returns:
             ``dict[str, object]``: the dictionary representation of this annotation

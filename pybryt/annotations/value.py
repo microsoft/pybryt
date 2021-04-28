@@ -68,6 +68,26 @@ class Value(Annotation):
     def children(self):
         return []
 
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this annotation's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the annotation's name, group, limit number, success message, and
+        failure message, as well as an ``invariants`` key with a list of the names of all invariants
+        used in this value annotation and a ``tol`` key with this annotation's tolerance. This 
+        dictionary does *not* contain the value being tracked.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        relation_name = type(self).__name__.rstrip("Annotation").lower()
+        d = super().to_dict()
+        d.update({
+            "invariants": [inv.__name__ for inv in self.invariants],
+            "tol": self.tol,
+        })
+        return d
+
     def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
         Checks that the value tracked by this annotation occurs in the list of observed values.
