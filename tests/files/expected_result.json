@@ -1,0 +1,437 @@
+{
+  "group": null,
+  "results": [
+    {
+      "satisfied": false,
+      "satisfied_at": -1,
+      "annotation": {
+        "name": "sorted",
+        "group": "median",
+        "limit": 5,
+        "success_message": "SUCCESS: Sorted the sample correctly",
+        "failure_message": "ERROR: The sample was not sorted",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76386,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 74312,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": false,
+      "satisfied_at": -1,
+      "annotation": {
+        "name": "sorted",
+        "group": "median",
+        "limit": 5,
+        "success_message": "SUCCESS: Sorted the sample correctly",
+        "failure_message": "ERROR: The sample was not sorted",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": false,
+      "satisfied_at": -1,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 74108,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": false,
+      "satisfied_at": -1,
+      "annotation": {
+        "name": "sorted",
+        "group": "median",
+        "limit": 5,
+        "success_message": "SUCCESS: Sorted the sample correctly",
+        "failure_message": "ERROR: The sample was not sorted",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 77164,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 80397,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": false,
+      "satisfied_at": -1,
+      "annotation": {
+        "name": "sorted",
+        "group": "median",
+        "limit": 5,
+        "success_message": "SUCCESS: Sorted the sample correctly",
+        "failure_message": "ERROR: The sample was not sorted",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76558,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 74097,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": false,
+      "satisfied_at": -1,
+      "annotation": {
+        "name": "sorted",
+        "group": "median",
+        "limit": 5,
+        "success_message": "SUCCESS: Sorted the sample correctly",
+        "failure_message": "ERROR: The sample was not sorted",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76507,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 85141,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 77177,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 74063,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76800,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 90797,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76864,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 93500,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76644,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76393,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 76387,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 98210,
+      "annotation": {
+        "name": "median",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 77003,
+      "annotation": {
+        "name": "size",
+        "group": "median",
+        "limit": null,
+        "success_message": "SUCCESS: Computed the size of the sample",
+        "failure_message": "ERROR: Did not capture the size of the set to determine if it is odd or even",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    },
+    {
+      "satisfied": true,
+      "satisfied_at": 116655,
+      "annotation": {
+        "name": "Annotation 33",
+        "group": null,
+        "limit": null,
+        "success_message": "SUCCESS: computed the correct median x2",
+        "failure_message": "ERROR: failed to compute the median",
+        "children": [],
+        "type": "value",
+        "invariants": [],
+        "tol": 0
+      },
+      "children": []
+    }
+  ]
+}

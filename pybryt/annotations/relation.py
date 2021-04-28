@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 from abc import abstractmethod
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from .annotation import Annotation, AnnotationResult
 
