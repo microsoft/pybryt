@@ -2,6 +2,7 @@
 
 import os
 import dill
+import json
 import base64
 import tempfile
 import nbformat
@@ -193,6 +194,19 @@ def test_run_and_results():
         'SUCCESS: computed the correct median',
         'SUCCESS: computed the correct median x2',
     ]
+
+    res_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_result.json"))
+    with open(res_filename) as f:
+        expected_res_dict = json.load(f)
+
+    for d in expected_res_dict["results"]:
+        d.pop("satisfied_at")
+
+    res_dict = res.to_dict()
+    for d in res_dict["results"]:
+        d.pop("satisfied_at")
+
+    assert res_dict == expected_res_dict
 
     with pytest.raises(ValueError, match="Group 'foo' not found"):
         ref.run(vals, group="foo")
