@@ -80,7 +80,6 @@ class Value(Annotation):
         Returns:
             ``dict[str, object]``: the dictionary representation of this annotation
         """
-        relation_name = type(self).__name__.rstrip("Annotation").lower()
         d = super().to_dict()
         d.update({
             "invariants": [inv.__name__ for inv in self.invariants],
@@ -275,18 +274,29 @@ class Attribute(Annotation):
     """
 
     _annotations: List[_AttrValue]
+    _invariants: List[invariant]
+    _tol: float
 
     def __init__(self, obj: Any, attrs: Union[str, List[str]], **kwargs):
         if isinstance(attrs, str):
             attrs = [attrs]
         if not isinstance(attrs, list) or not all(isinstance(a, str) for a in attrs):
             raise TypeError(f"Invalid type for argument 'attrs': {type(attrs)}")
-                
+
+        name = kwargs.pop("name", None)
+        success_message = kwargs.pop("success_message", None)
+        failure_message = kwargs.pop("failure_message", None)
         self._annotations = []
         for attr in attrs:
             if not hasattr(obj, attr):
                 raise AttributeError(f"{obj} has not attribute '{attr}'")
             self._annotations.append(_AttrValue(obj, attr, **kwargs))
+        
+        self._invariants = kwargs.pop("invariants", [])
+        self._tol = kwargs.pop("tol", 0)
+    
+        super().__init__(name=name, success_message=success_message, failure_message=failure_message,
+            **kwargs)
 
     @property
     def children(self):
@@ -306,6 +316,26 @@ class Attribute(Annotation):
             ``bool``: whether the objects are equal
         """
         return isinstance(other, type(self)) and self.children == other.children
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts this annotation's details to a JSON-friendly dictionary format.
+
+        Output dictionary contains the annotation's name, group, limit number, success message, and
+        failure message, as well as an ``invariants`` key with a list of the names of all invariants
+        used in this value annotation, a ``tol`` key with this annotation's tolerance, and a key for 
+        the attributes being checked. This dictionary does *not* contain the value being tracked.
+
+        Returns:
+            ``dict[str, object]``: the dictionary representation of this annotation
+        """
+        d = super().to_dict()
+        d.update({
+            "invariants": [inv.__name__ for inv in self._invariants],
+            "tol": self._tol,
+            "attributes": [av._attr for av in self._annotations],
+        })
+        return d
 
     def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """

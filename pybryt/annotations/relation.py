@@ -64,25 +64,6 @@ class RelationalAnnotation(Annotation):
     def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
         ...
 
-    def to_dict(self) -> Dict[str, Any]:
-        """
-        Converts this annotation's details to a JSON-friendly dictionary format.
-
-        Output dictionary contains the annotation's name, group, limit number, success message, and
-        failure message, as well as a ``relational`` key indicating that this is a relational annotation 
-        and a ``relation`` key with the name of the relation type.
-
-        Returns:
-            ``dict[str, object]``: the dictionary representation of this annotation
-        """
-        relation_name = type(self).__name__.rstrip("Annotation").lower()
-        d = super().to_dict()
-        d.update({
-            "relational": True,
-            "relation": relation_name,
-        })
-        return d
-
 
 class BeforeAnnotation(RelationalAnnotation):
     """

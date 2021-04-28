@@ -253,6 +253,10 @@ class Annotation(ABC):
         Returns:
             ``dict[str, object]``: the dictionary representation of this annotation
         """
+        try:
+            type_name = type(self).__name__.rstrip("Annotation").lower()
+        except:
+            type_name = None
         return {
             "name": self.name,
             "group": self.group,
@@ -260,6 +264,7 @@ class Annotation(ABC):
             "success_message": self.success_message,
             "failure_message": self.failure_message,
             "children": [c.to_dict() for c in self.children],
+            "type": type_name,
         }
 
 
@@ -390,11 +395,13 @@ class AnnotationResult:
         Returns:
             ``dict[str, object]``: the dictionary representation of this annotation
         """
+        type_name = type(self).__name__.rstrip("Annotation").lower()
         return {
             "satisfied": self.satisfied,
             "satisfied_at": self.satisfied_at,
             "annotation": self.annotation.to_dict(),
             "children": [c.to_dict() for c in self.children],
+            "type": type_name,
         }
 
 
