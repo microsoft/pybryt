@@ -28,7 +28,7 @@ jobs:
         
     - name: Run pytest
       run: |
-        $CONDA/bin/coverage run -m pytest tests
+        make testcov COVERAGE=$CONDA/bin/coverage
 
     - name: Upload coverage
       run: |

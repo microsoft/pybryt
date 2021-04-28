@@ -44,15 +44,6 @@ jobs:
       run: |
         make html SPHINXBUILD=$CONDA/bin/sphinx-build
 
-#     - name: Commit documntation
-#       uses: EndBug/add-and-commit@v7.0.0
-#       with:
-#         author_name: github-actions
-#         author_email: 41898282+github-actions[bot]@users.noreply.github.com
-#         add: "docs/html"
-#         message: "build docs for ${{ github.sha }}"
-#         branch: gh-pages
-
     - name: Commit documentation
       run: |
         git config --global user.name "github-actions"

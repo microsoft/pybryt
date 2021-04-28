@@ -4,16 +4,16 @@ import os
 import dill
 import shutil
 import base64
-import pathlib
 import itertools
 import warnings
 import nbformat
 
 from glob import glob
+from otter.assign.assignment import Assignment
 from otter.plugins import AbstractOtterPlugin
 from otter.test_files import GradingResults
 from otter.utils import get_source
-from typing import List, NoReturn, Union
+from typing import Any, Dict, List, NoReturn, Optional, Union
 
 from .. import ReferenceImplementation, StudentImplementation
 from ..execution import NBFORMAT_VERSION
@@ -30,7 +30,15 @@ class OtterPlugin(AbstractOtterPlugin):
     _generate_report = None
     _student_impl = None
 
-    def during_assign(self, assignment):
+    def during_assign(self, assignment: Assignment) -> NoReturn:
+        """
+        This event runs during ``otter assign`` and compiles the list of references indicated in the
+        plugin config, placing the pickled reference implementations in the otuput directories. The
+        stem of the filename for each reference is kept the same.
+
+        Args:
+            assignment (``otter.assign.assignment.Assignment``): the assignment configurations
+        """
         self._cached_refs = []
         for fn in self.plugin_config["references"]:
             ref = ReferenceImplementation.compile(fn)
@@ -39,14 +47,25 @@ class OtterPlugin(AbstractOtterPlugin):
             
             self._cached_refs.extend(ref)
             
-            agp = assignment.result / 'autograder' / (pathlib.Path(fn).stem + ".pkl")
+            ref_fn = os.path.splitext(os.path.split(fn)[1])[0] + ".pkl"
+            agp = assignment.result / 'autograder' / ref_fn
             with open(agp, "wb+") as f:
                 dill.dump(ref, f)
             
-            stp = assignment.result / 'student' / (pathlib.Path(fn).stem + ".pkl")
+            stp = assignment.result / 'student' / ref_fn
             shutil.copy(str(agp), str(stp))
 
-    def during_generate(self, otter_config, assignment):
+    def during_generate(self, otter_config: Dict[str, Any], assignment: Assignment) -> NoReturn:
+        """
+        This event runs during ``otter generate`` and, if ``otter assign`` was run, adds the cached
+        reference implementations from that run or compiles the indicated references if it was not
+        into the ``otter_config`` as a base-64-encoded string.
+
+        Args:
+            otter_config (``dict``): the grading configurations
+            assignment (``otter.assign.assignment.Assignment``): the assignment configurations; 
+                should be set to ``None`` if ``otter assign`` was not run
+        """
         if assignment is not None:
             cwd = os.getcwd()
             os.chdir(assignment.master.parent)
@@ -69,18 +88,20 @@ class OtterPlugin(AbstractOtterPlugin):
         if assignment is not None:
             os.chdir(cwd)
 
-    def _generate_impl_report(self, refs, group=None):
+    def _generate_impl_report(self, refs: List[ReferenceImplementation], group: Optional[str] = None) -> NoReturn:
+        """
+        Generates and caches a student implementation from the submission path being graded as well
+        as a report of what reference(s) were satisfied, if any, and the messages received from 
+        those references.
+
+        Args:
+            refs (``list[ReferenceImplementation]``): the reference implementations to check against
+            group (``str``, optional): a specific question group to run
+        """
         nb = nbformat.read(self.submission_path, as_version=NBFORMAT_VERSION)
         self._remove_plugin_calls(nb)
 
         stu = StudentImplementation(nb)
-        # # if self.plugin_config.get("student_cache_dir") is not None:
-        #     fn = os.path.splitext(os.path.basename(self.submission_path))[0] + ".pkl"
-        #     fp = self._cache_student_impl(stu, fn)
-        #     cache = f"Student implementation cached at: {fp}\n"
-        # else:
-        #     cache = ""
-        
         results = stu.check(refs, group=group)
 
         correct = [r.correct for r in results]
@@ -104,38 +125,47 @@ class OtterPlugin(AbstractOtterPlugin):
         self._student_impl = stu
     
     def _cache_student_impl(self, results: GradingResults, stu: StudentImplementation) -> NoReturn:
-        # path = self.plugin_config.get("student_cache_dir")
-        # if path is None or not os.path.isabs(path):
-        #     raise ValueError(f"Invalid student implementation cache directory: {path}")
-        # elif not os.path.isdir(path):
-        #     raise ValueError(f"Student implementation cache directory does not exist or is a file: {path}")
-        # fn = filename
-        # fp = os.path.join(path, fn)
-        # i = 1
-        # while os.path.exists(fp):
-        #     stem, ext = os.path.splitext(filename)
-        #     fn = stem + f"-{i}" + ext
-        #     fp = os.path.join(path, fn)
-        #     i += 1
-        
-        # stu.dump(dest=fp)
+        """
+        Caches the student implementation object as a base-64-encoded string in the grading results
+        to be retrieved outside of the grading process.
+
+        Args:
+            results (``otter.test_files.GradingResults``): the grading results
+            stu (``StudentImplementation``): the student implementation to cache
+        """
         encoded_stu = stu.dumps()
         data = results.get_plugin_data(self.IMPORTABLE_NAME, {})
         data["cached_student_impl"] = encoded_stu
         results.set_plugin_data(self.IMPORTABLE_NAME, data)
 
     @classmethod
-    def _remove_plugin_calls(cls, nb):
+    def _remove_plugin_calls(cls, nb: Dict[str, Any]) -> NoReturn:
         """
+        Removes calls to this Otter plugin from a notebook to ensure that a loop isn't created.
+        Modifies the notebook in-place.
+
+        Args:
+            nb (``dict``): the notebook to remove calls from
         """
         for cell in nb['cells']:
             source = get_source(cell)
             for i in range(len(source)):
-                if f".run_plugin(\"{cls.IMPORTABLE_NAME}\"" in source[i] or f".add_plugin_files(\"{cls.IMPORTABLE_NAME}\"" in source[i]:
+                if f".run_plugin(\"{cls.IMPORTABLE_NAME}\"" in source[i] or \
+                        f".add_plugin_files(\"{cls.IMPORTABLE_NAME}\"" in source[i]:
                     source[i] = "# " + source[i]
             cell["source"] = "\n".join(source)
 
-    def from_notebook(self, *ref_paths, group=None):
+    def from_notebook(self, *ref_paths: str, group: Optional[str] = None) -> NoReturn:
+        """
+        This event runs when ``otter.Notebook.run_plugin`` is called to execute this plugin. It
+        attempts to force-save the notebook and then loads the references indicated and generates
+        an implementation report by running the references against the student's notebook. Prints
+        the generated report to stdout.
+
+        Args:
+            *ref_paths (``str``): paths to reference implementation files
+            group (``str``, optional): a specific question group to run
+        """
         saved = save_notebook(self.submission_path)
         if not saved:
             warnings.warn(
@@ -154,8 +184,13 @@ class OtterPlugin(AbstractOtterPlugin):
         self._generate_impl_report(refs, group=group)
         print(self._generated_report)
     
-    def notebook_export(self, dest="student.pkl"):
+    def notebook_export(self, dest: str = "student.pkl") -> List[str]:
         """
+        Dumps the cached student implementation from a called to ``from_notebook`` into a file and
+        returns the path to that file for exporting in the zip file.
+
+        Args:
+            dest (``str``, optional): the path at which to write the student implementation file
         """
         if self._student_impl is not None:
             self._student_impl.dump(dest)
@@ -163,11 +198,27 @@ class OtterPlugin(AbstractOtterPlugin):
             raise RuntimeError("Could not find a cached student implementation to export")
         return [dest]
 
-    def before_execution(self, submission):
+    def before_execution(self, submission: Dict[str, Any]) -> dict:
+        """
+        Preprocessor for removing calls to the PyBryt plugin from a notebook before it is executed.
+
+        Args:
+            submission (``dict``): the submission notebook
+        
+        Returns:
+            ``dict``: the modified submission notebook
+        """
         self._remove_plugin_calls(submission)
         return submission
 
-    def after_grading(self, results):
+    def after_grading(self, results: GradingResults) -> NoReturn:
+        """
+        Generates an implementation report and caches the student implementation in the grading 
+        results.
+
+        Args:
+            results (``otter.test_files.GradingResults``): the grading results
+        """
         if self._student_impl is None:
             ref_bytes = base64.b64decode(self.plugin_config["reference_bytes"])
             refs = dill.loads(ref_bytes)
@@ -175,7 +226,14 @@ class OtterPlugin(AbstractOtterPlugin):
         
         self._cache_student_impl(results, self._student_impl)
 
-    def generate_report(self):
+    def generate_report(self) -> str:
+        """
+        Returns the cached report, if present; otherwise, generates the implementation report and
+        returns it.
+
+        Returns:
+            ``str``: the implementation report
+        """
         if self._generated_report is None:
             ref_bytes = base64.b64decode(self.plugin_config["reference_bytes"])
             refs = dill.loads(ref_bytes)
@@ -187,6 +245,15 @@ class OtterPlugin(AbstractOtterPlugin):
     def load_cached_implementations(cls, results: Union[GradingResults, List[GradingResults]]) -> \
             Union[StudentImplementation, List[StudentImplementation]]:
         """
+        Loads any student implementations cached in the provided grading results.
+
+        Args:
+            results (``otter.test_files.GradingResults`` or ``list[otter.test_files.GradingResults]``):
+                one or more grading results
+        
+        Returns:
+            ``Union[StudentImplementation, List[StudentImplementation]]``: a student implementation,
+            if a single result was passed, or a list thereof
         """
         if isinstance(results, GradingResults):
             data = results.get_plugin_data(cls.IMPORTABLE_NAME)["cached_student_impl"]
