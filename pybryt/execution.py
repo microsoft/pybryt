@@ -59,20 +59,22 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             val (``object``): the object to be tracked
             seen_at (``int``, optional): an overriding step counter value
         """
-        if type(val) in skip_types:
-            return
-
         try:
+            if type(val) in skip_types:
+                return
+
             h = pickle_and_hash(val)
+
+            if seen_at is None:
+                seen_at = counter[0]
+            
+            if h not in hashes:
+                observed.append((copy(val), seen_at))
+                hashes.add(h)
+
+        # if something fails, don't track
         except:
             return
-
-        if seen_at is None:
-            seen_at = counter[0]
-        
-        if h not in hashes:
-            observed.append((copy(val), seen_at))
-            hashes.add(h)
 
     # TODO: a way to track the cell of execution
     def collect_intermidiate_results(frame: FrameType, event: str, arg: Any):
