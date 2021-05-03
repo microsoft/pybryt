@@ -25,7 +25,7 @@ class UnassignedVarWrapper(ast.NodeTransformer):
             done by running ``getattr(parent, attr).insert(idx, node)``
     """
 
-    _skip_node_types = [ast.ListComp, ast.SetComp, ast.GeneratorExp, ast.DictComp, ast.Lambda]
+    _skip_node_types = [ast.ListComp, ast.SetComp, ast.GeneratorExp, ast.DictComp, ast.Lambda, ast.withitem]
 
     def __init__(self):
         super().__init__()

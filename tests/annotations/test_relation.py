@@ -11,6 +11,7 @@ def test_before_annotation():
     """
     """
     mfp = generate_memory_footprint()
+    Annotation.reset_tracked_annotations()
 
     val1, ts1 = mfp[0]
     val2, ts2 = mfp[1]
@@ -31,6 +32,39 @@ def test_before_annotation():
         "timestamp": -1,
         "satisfied_at": ts2,
     })
+
+    assert v.to_dict() == {
+        'name': 'Annotation 3', 
+        'group': None, 
+        'limit': None, 
+        'success_message': None, 
+        'failure_message': None, 
+        'children': [
+            {
+                'name': 'Annotation 1', 
+                'group': None, 
+                'limit': None, 
+                'success_message': None, 
+                'failure_message': None, 
+                'children': [], 
+                'type': 'value', 
+                'invariants': [], 
+                'tol': 0
+            }, {
+                'name': 
+                'Annotation 2', 
+                'group': None, 
+                'limit': None, 
+                'success_message': None, 
+                'failure_message': None, 
+                'children': [], 
+                'type': 'value', 
+                'invariants': [], 
+                'tol': 0
+            }
+        ], 
+        'type': 'before',
+    }
 
     v = v2.after(v1)
     res = v.check(mfp)

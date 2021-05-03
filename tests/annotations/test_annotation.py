@@ -37,14 +37,11 @@ def test_name_group_limit():
     check_obj_attributes(v2, {"group": "bar"})
 
     res = v1.check(mfp)
+    print(res.name)
     check_obj_attributes(res, {
-        "name": None,
+        "name": "Annotation 101",
         "group": "bar",
     })
-
-    # check error raising
-    with pytest.raises(TypeError):
-        Value(1, limit=5)
 
 
 def test_get_reset_tracked_annotations():
@@ -77,6 +74,7 @@ def test_messages():
     """
     """
     mfp = generate_memory_footprint()
+    Annotation.reset_tracked_annotations()
 
     val1, ts1 = mfp[0]
     val2, ts2 = mfp[1]
@@ -88,28 +86,28 @@ def test_messages():
     res = v.check(mfp)
 
     assert len(res.messages) == 1, "Too many messages"
-    assert res.messages[0] == ("m1", None, True), "Wrong message"
+    assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
 
     v.failure_message = "m3"
     res = v.check(mfp)
 
     assert len(res.messages) == 1, "Too many messages"
-    assert res.messages[0] == ("m1", None, True), "Wrong message"
+    assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
 
     res = v.check([])
 
     assert len(res.messages) == 2, "Wrong number of messages"
-    assert res.messages[0] == ("m2", None, False), "Wrong message"
-    assert res.messages[1] == ("m3", None, False), "Wrong message"
+    assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"
+    assert res.messages[1] == ("m3", 'Annotation 3', False), "Wrong message"
 
     v2.name = "v2"
     v2.failure_message = "m4"
     res = v.check([])
 
     assert len(res.messages) == 3, "Wrong number of messages"
-    assert res.messages[0] == ("m2", None, False), "Wrong message"
+    assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"
     assert res.messages[1] == ("m4", "v2", False), "Wrong message"
-    assert res.messages[2] == ("m3", None, False), "Wrong message"
+    assert res.messages[2] == ("m3", 'Annotation 3', False), "Wrong message"
 
 
 def test_bitwise_ops():
