@@ -2,6 +2,8 @@
 
 __all__ = ["complexities", "ComplexityAnnotation", "TimeComplexity"]
 
+from typing import Any, List, Tuple
+
 from . import complexities
 from ..annotation import Annotation, AnnotationResult
 from ...execution import TimeComplexityResult
@@ -26,6 +28,18 @@ class ComplexityAnnotation(Annotation):
         children, an empty list.
         """
         return []
+    
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether this annotation is equal to another object.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return type(self) is type(other) and self.name == other.name and self.complexity is other.complexity
 
 
 class TimeComplexity(ComplexityAnnotation):
@@ -49,7 +63,7 @@ class TimeComplexity(ComplexityAnnotation):
             ``observed_values``
         """
         complexity_data = {}
-        for v, ts in observed_values.items():
+        for v, ts in observed_values:
             if not isinstance(v, TimeComplexityResult) or v.name != self.name:
                 continue
 
@@ -58,8 +72,9 @@ class TimeComplexity(ComplexityAnnotation):
         best_cls, best_res = None, None
         for cplx in complexities.complexity_classes:
             res = cplx(complexity_data)
+            print(res)
 
             if best_res is None or res < best_res:
                 best_cls, best_res = cplx, res
 
-        return AnnotationResult(best_cls is self.complexity, self)
+        return AnnotationResult(best_cls is self.complexity, self, value=best_cls)
