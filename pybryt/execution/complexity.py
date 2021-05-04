@@ -7,14 +7,15 @@ from typing import Union
 
 class TimeComplexityResult:
 
-    def __init__(self, n, start, stop):
+    def __init__(self, name, n, start, stop):
+        self.name = name
         self.n = n
         self.start = start
         self.stop = stop
 
 
 @contextmanager
-def check_time_complexity(n: Union[int, float, Sized]):
+def check_time_complexity(name: str, n: Union[int, float, Sized]):
     """
     """
     if isinstance(n, float):
@@ -37,4 +38,4 @@ def check_time_complexity(n: Union[int, float, Sized]):
 
     if curr_steps is not None:
         end_steps = counter[0]
-        observed.append((TimeComplexityResult(n, curr_steps, end_steps), end_steps))
+        observed.append((TimeComplexityResult(name, n, curr_steps, end_steps), end_steps))
