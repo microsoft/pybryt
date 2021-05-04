@@ -7,6 +7,7 @@ from ..utils import make_secret
 TRACING_VARNAME = "__PYBRYT_TRACING__"
 TRACING_FUNC = None
 
+
 def _currently_tracing():
     """
     Determines whether PyBryt is actively tracing the current call stack by looking at the parent

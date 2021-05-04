@@ -1,6 +1,6 @@
 """Submission execution internals for PyBryt"""
 
-__all__ = ["tracing_off", "tracing_on"]
+__all__ = ["check_time_complexity", "tracing_off", "tracing_on"]
 
 import os
 import re
@@ -175,7 +175,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
         from pybryt.execution import create_collector
-        observed_{secret}, _, cir = create_collector(addl_filenames={addl_filenames})
+        observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
         sys.settrace(cir)
         {TRACING_VARNAME} = True
         %cd {nb_dir}
