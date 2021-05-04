@@ -5,6 +5,9 @@ from contextlib import contextmanager
 from typing import Union
 
 
+_TRACKING_DISABLED = False
+
+
 class TimeComplexityResult:
 
     def __init__(self, name, n, start, stop):
@@ -18,6 +21,7 @@ class TimeComplexityResult:
 def check_time_complexity(name: str, n: Union[int, float, Sized]):
     """
     """
+    global _TRACKING_DISABLED
     if isinstance(n, float):
         n = int(n)
     if isinstance(n, Sized):
@@ -33,7 +37,9 @@ def check_time_complexity(name: str, n: Union[int, float, Sized]):
     if _COLLECTOR_RET is not None:
         observed, counter, _ = _COLLECTOR_RET
         curr_steps = counter[0]
-    
+
+    _TRACKING_DISABLED = True
+
     yield
 
     if curr_steps is not None:

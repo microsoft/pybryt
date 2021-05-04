@@ -9,6 +9,9 @@ from ..annotation import Annotation, AnnotationResult
 from ...execution import TimeComplexityResult
 
 
+EPS = 1e-6 # a value to set a slight preference for simpler methods
+
+
 class ComplexityAnnotation(Annotation):
     """
     """
@@ -72,9 +75,8 @@ class TimeComplexity(ComplexityAnnotation):
         best_cls, best_res = None, None
         for cplx in complexities.complexity_classes:
             res = cplx(complexity_data)
-            print(res)
 
-            if best_res is None or res < best_res:
+            if best_res is None or res < best_res - EPS:
                 best_cls, best_res = cplx, res
 
         return AnnotationResult(best_cls is self.complexity, self, value=best_cls)
