@@ -16,13 +16,14 @@ from types import FrameType, FunctionType, ModuleType
 from typing import Any, List, Tuple, Callable, Optional
 from textwrap import dedent
 
-from .preprocessors import IntermediateVariablePreprocessor
-from .utils import make_secret, pickle_and_hash
+from .complexity import check_time_complexity, TimeComplexityResult
+from .tracing import TRACING_VARNAME, tracing_off, tracing_on
+from ..preprocessors import IntermediateVariablePreprocessor
+from ..utils import make_secret, pickle_and_hash
 
 
 NBFORMAT_VERSION = 4
-TRACING_VARNAME = "__PYBRYT_TRACING__"
-TRACING_FUNC = None
+_COLLECTOR_RET = None
 
 
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
@@ -44,6 +45,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         ``tuple[list[tuple[object, int]], callable[[frame, str, object], callable]]``: the list
         of tuples of observed objects and their timestamps, and the trace function
     """
+    global _COLLECTOR_RET
     observed = []
     vars_not_found = {}
     hashes = set()
@@ -137,83 +139,8 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
         return collect_intermidiate_results
 
+    _COLLECTOR_RET = (observed, counter, collect_intermidiate_results)
     return observed, collect_intermidiate_results
-
-
-def _currently_tracing():
-    """
-    Determines whether PyBryt is actively tracing the current call stack by looking at the parent
-    frames and determining if ``__PYBRYT_TRACING__`` exists and is ``True`` in any of their globals.
-
-    Returns:
-        ``bool``: if PyBryt is currently tracing
-    """
-    frame = inspect.currentframe()
-    while frame is not None:
-        if TRACING_VARNAME in frame.f_globals and frame.f_globals[TRACING_VARNAME]:
-            return True
-        frame = frame.f_back
-    return False
-
-
-def tracing_off():
-    """
-    Turns off PyBryt's tracing if tracing is occurring in this call stack. If PyBryt is not tracing,
-    takes no action.
-
-    This method can be used in students' notebooks to include code that shouldn't be traced as part
-    of the submission, e.g. demo code or ungraded code. In the example below, the call that creates
-    ``x2`` is traced but the one to create ``x3`` is not.
-
-    .. code-block:: python
-
-        def pow(x, a):
-            return x ** a
-
-        x2 = pow(x, 2)
-
-        pybryt.tracing_off()
-        x3 = pow(x, 3)
-    """
-    global TRACING_FUNC
-    if not _currently_tracing():
-        return
-    frame = inspect.currentframe().f_back
-    TRACING_FUNC = frame.f_trace
-    vn = f"sys_{make_secret()}"
-    exec(f"import sys as {vn}\n{vn}.settrace(None)", frame.f_globals, frame.f_locals)
-
-
-def tracing_on():
-    """
-    Turns tracing on if PyBryt was tracing the call stack. If PyBryt is not tracing or
-    :py:meth:`tracing_off<pybryt.tracing_off>` has not been called, no action is taken.
-
-    This method can be used in students' notebooks to turn tracing back on after deactivating tracing
-    for ungraded code In the example below, ``x4`` is traced because ``tracing_on`` is used after
-    ``tracing_off`` and the creation of ``x3``.
-
-    .. code-block:: python
-
-        def pow(x, a):
-            return x ** a
-
-        x2 = pow(x, 2)
-
-        pybryt.tracing_off()
-        x3 = pow(x, 3)
-        pybryt.tracing_on()
-
-        x4 = pow(x, 4)
-    """
-    global TRACING_FUNC
-    if not _currently_tracing() or TRACING_FUNC is None:
-        return
-    frame = inspect.currentframe().f_back
-    vn = f"cir_{make_secret()}"
-    vn2 = f"sys_{make_secret()}"
-    frame.f_globals[vn] = TRACING_FUNC
-    exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)
 
 
 def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
@@ -248,7 +175,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
         from pybryt.execution import create_collector
-        observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
+        observed_{secret}, _, cir = create_collector(addl_filenames={addl_filenames})
         sys.settrace(cir)
         {TRACING_VARNAME} = True
         %cd {nb_dir}
