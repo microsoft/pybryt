@@ -80,25 +80,25 @@ class logarithmic(complexity):
 
     @staticmethod
     def transform_n(n: np.ndarray) -> np.ndarray:
-        return np.vstack((np.ones(len(n)), np.log(n))).T
+        return np.vstack((np.ones(len(n)), np.log2(n))).T
 
 
 class linearithmic(complexity):
 
     @staticmethod
     def transform_n(n: np.ndarray) -> np.ndarray:
-        return np.vstack((np.ones(len(n)), n * np.log(n))).T
+        return np.vstack((np.ones(len(n)), n * np.log2(n))).T
 
 
-class exponential(complexity):
+# class exponential(complexity):
 
-    @staticmethod
-    def transform_n(n: np.ndarray) -> np.ndarray:
-        return np.vstack((np.ones(len(n)), n)).T
+#     @staticmethod
+#     def transform_n(n: np.ndarray) -> np.ndarray:
+#         return np.vstack((np.ones(len(n)), n)).T
 
-    @staticmethod
-    def transform_t(t: np.ndarray) -> np.ndarray:
-        return np.log(t)
+#     @staticmethod
+#     def transform_t(t: np.ndarray) -> np.ndarray:
+#         return np.log2(t)
 
 
-complexity_classes = [constant, linear, quadratic, cubic, logarithmic, linearithmic, exponential]
+complexity_classes = [constant, linear, quadratic, cubic, logarithmic, linearithmic]#, exponential]

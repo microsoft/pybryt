@@ -1,11 +1,15 @@
 """"""
 
+import time
+
 from collections.abc import Sized
 from contextlib import contextmanager
 from typing import Union
 
+from .tracing import _get_tracing_frame, tracing_off, tracing_on
 
-_TRACKING_DISABLED = False
+
+# _TRACKING_DISABLED = False
 
 
 class TimeComplexityResult:
@@ -60,7 +64,7 @@ def check_time_complexity(name: str, n: Union[int, float, Sized]):
         n (``int``, ``float``, or ``collections.abc.Sized``): the length of the input being checked
             or the input itself (if it implements the ``__len__`` method) for simplicity
     """
-    global _TRACKING_DISABLED
+    # global _TRACKING_DISABLED
     if isinstance(n, float):
         n = int(n)
     if isinstance(n, Sized):
@@ -71,16 +75,17 @@ def check_time_complexity(name: str, n: Union[int, float, Sized]):
         except:
             raise TypeError(f"n has invalid type {type(n)}")
 
-    from . import _COLLECTOR_RET
-    curr_steps = None
-    if _COLLECTOR_RET is not None:
-        observed, counter, _ = _COLLECTOR_RET
-        curr_steps = counter[0]
-
-    _TRACKING_DISABLED = True
+    # _TRACKING_DISABLED = True
+    tracing_off()
+    start = time.time_ns()
 
     yield
 
-    if curr_steps is not None:
-        end_steps = counter[0]
-        observed.append((TimeComplexityResult(name, n, curr_steps, end_steps), end_steps))
+    end = time.time_ns()
+
+    from . import _COLLECTOR_RET
+    if _COLLECTOR_RET is not None:
+        observed, counter, _ = _COLLECTOR_RET
+        observed.append((TimeComplexityResult(name, n, start, end), counter[0]))
+
+    tracing_on()

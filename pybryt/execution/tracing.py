@@ -24,7 +24,18 @@ def _currently_tracing():
     return False
 
 
-def tracing_off():
+def _get_tracing_frame():
+    """
+    """
+    frame = inspect.currentframe()
+    while frame is not None:
+        if TRACING_VARNAME in frame.f_globals and frame.f_globals[TRACING_VARNAME]:
+            return frame
+        frame = frame.f_back
+    return None
+
+
+def tracing_off(frame=None):
     """
     Turns off PyBryt's tracing if tracing is occurring in this call stack. If PyBryt is not tracing,
     takes no action.
@@ -46,13 +57,13 @@ def tracing_off():
     global TRACING_FUNC
     if not _currently_tracing():
         return
-    frame = inspect.currentframe().f_back
+    frame = _get_tracing_frame()
     TRACING_FUNC = frame.f_trace
     vn = f"sys_{make_secret()}"
     exec(f"import sys as {vn}\n{vn}.settrace(None)", frame.f_globals, frame.f_locals)
 
 
-def tracing_on():
+def tracing_on(frame=None):
     """
     Turns tracing on if PyBryt was tracing the call stack. If PyBryt is not tracing or
     :py:meth:`tracing_off<pybryt.tracing_off>` has not been called, no action is taken.
@@ -77,7 +88,7 @@ def tracing_on():
     global TRACING_FUNC
     if not _currently_tracing() or TRACING_FUNC is None:
         return
-    frame = inspect.currentframe().f_back
+    frame = _get_tracing_frame()
     vn = f"cir_{make_secret()}"
     vn2 = f"sys_{make_secret()}"
     frame.f_globals[vn] = TRACING_FUNC
