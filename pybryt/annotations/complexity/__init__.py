@@ -14,6 +14,18 @@ EPS = 1e-6 # a value to set a slight preference for simpler methods
 
 class ComplexityAnnotation(Annotation):
     """
+    Abstract base class for annotations that assert a condition on the complexity of a student's code.
+
+    All complexity annotations should inherit from this class, which defines a constructor that
+    takes in a complexity class and any necessary keyword arguments. Note that all compelxity
+    annotations require a ``name`` keyword argument so that they can be matched with their results
+    from the student's memory footprint.
+
+    Args:
+        complexity (:py:class:`complexity<pybryt.complexities.complexity>`): the complexity class
+            being asserted
+        **kwargs: additional keyword arguments passed to the 
+            :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
     def __init__(self, complexity: complexities.complexity, **kwargs):
@@ -36,6 +48,9 @@ class ComplexityAnnotation(Annotation):
         """
         Checks whether this annotation is equal to another object.
 
+        A complexity annotation equals another object if it is also a complexity annotation of the
+        same type, has the same name, and has the same complexity assertion.
+
         Args:
             other (``object``): the object to compare to
 
@@ -47,15 +62,27 @@ class ComplexityAnnotation(Annotation):
 
 class TimeComplexity(ComplexityAnnotation):
     """
+    Annotation for asserting the time complexity of a block of student code.
+
+    Time complexity here is defined as the number of execution steps taken while executing the
+    code block, which is determined using the number of calls to PyBryt's trace function. Use the
+    :py:obj:`check_time_complexity<pybryt.check_time_complexity>` context manager to check time
+    complexity in student's code. The ``name`` of this annotation should be the same as the ``name``
+    passed to the context manager or this annotation will not be able to find the results of the 
+    check.
     """
 
     def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
-        Runs the check on the condition asserted by this annotation and returns a results object.
+        Checks the time complexity of a block of student code and returns a results object.
 
-        Checks that the condition required by this annotation is met using the list of tuples of
-        observed values and timestamps ``observed_values``. Creates and returns an 
-        :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
+        Finds all instances of the :py:class:`TimeComplexityResult<pybryt.execution.TimeComplexityResult>` 
+        class in the student's memory footprint and selects all those with matching names. Collects
+        the timing data from each into a dictionary and runs each complexity class in
+        :py:obj:`complexities.complexity_classes<pybryt.complexities.complexity_classes>` against
+        this data. Returns a result indicating whether the closest-matched complexity class was the
+        one asserted in this annotation's ``complexity`` field. The ``value`` of the result object
+        is set to the matching complexity class.
 
         Args:
             observed_values (``list[tuple[object, int]]``): a list of tuples of values observed

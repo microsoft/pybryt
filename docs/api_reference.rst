@@ -28,6 +28,22 @@ Relational Annotations
    :undoc-members:
 
 
+Complexity Annotations
+++++++++++++++++++++++
+
+.. automodule:: pybryt.annotations.complexity
+   :members:
+   :undoc-members:
+
+
+Complexity Classes
+??????????????????
+
+.. automodule:: pybryt.annotations.complexity.complexities
+   :members:
+   :undoc-members:
+
+
 Invariants
 ++++++++++
 
