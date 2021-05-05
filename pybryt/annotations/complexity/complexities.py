@@ -43,21 +43,62 @@ class complexity(ABC):
         t = cls.transform_t(t)
 
         _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
+        if len(resid) == 0:
+            return np.inf
         return resid[0]
 
 
 class constant(complexity):
 
     @staticmethod
-    def transform_n(n):
+    def transform_n(n: np.ndarray) -> np.ndarray:
         return np.ones((len(n), 1))
 
 
 class linear(complexity):
 
     @staticmethod
-    def transform_n(n):
+    def transform_n(n: np.ndarray) -> np.ndarray:
         return np.vstack((np.ones(len(n)), n)).T
 
 
-complexity_classes = [constant, linear]
+class quadratic(complexity):
+
+    @staticmethod
+    def transform_n(n: np.ndarray) -> np.ndarray:
+        return np.vstack((np.ones(len(n)), n * n)).T
+
+
+class cubic(complexity):
+
+    @staticmethod
+    def transform_n(n: np.ndarray) -> np.ndarray:
+        return np.vstack((np.ones(len(n)), n * n * n)).T
+
+
+class logarithmic(complexity):
+
+    @staticmethod
+    def transform_n(n: np.ndarray) -> np.ndarray:
+        return np.vstack((np.ones(len(n)), np.log(n))).T
+
+
+class linearithmic(complexity):
+
+    @staticmethod
+    def transform_n(n: np.ndarray) -> np.ndarray:
+        return np.vstack((np.ones(len(n)), n * np.log(n))).T
+
+
+class exponential(complexity):
+
+    @staticmethod
+    def transform_n(n: np.ndarray) -> np.ndarray:
+        return np.vstack((np.ones(len(n)), n)).T
+
+    @staticmethod
+    def transform_t(t: np.ndarray) -> np.ndarray:
+        return np.log(t)
+
+
+complexity_classes = [constant, linear, quadratic, cubic, logarithmic, linearithmic, exponential]
