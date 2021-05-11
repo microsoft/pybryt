@@ -102,7 +102,6 @@ class TimeComplexity(ComplexityAnnotation):
         best_cls, best_res = None, None
         for cplx in complexities.complexity_classes:
             res = cplx(complexity_data)
-            print(res)
 
             if best_res is None or res < best_res - EPS:
                 best_cls, best_res = cplx, res
