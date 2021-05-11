@@ -4,6 +4,7 @@ import inspect
 
 from ..utils import make_secret
 
+
 TRACING_VARNAME = "__PYBRYT_TRACING__"
 TRACING_FUNC = None
 
