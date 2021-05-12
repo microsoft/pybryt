@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+* Changed tracing function to only increment step counter when tracing student code
+
 ## 0.0.5 - 2021-05-04
 
 * Changed `pybryt.utils.save_notebook` to use `IPython.display.publish_display_data` instead of 
