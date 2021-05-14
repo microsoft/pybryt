@@ -9,7 +9,9 @@ import inspect
 from contextlib import contextmanager
 from typing import Any, List, NoReturn, Optional, Tuple, Union
 
-from .execution import create_collector, _currently_tracing, execute_notebook, tracing_off, tracing_on
+from .execution import (
+    create_collector, _currently_tracing, execute_notebook, tracing_off, tracing_on, TRACING_VARNAME
+)
 from .reference import ReferenceImplementation, ReferenceResult
 
 
@@ -198,12 +200,14 @@ def check(ref, **kwargs):
 
     observed, cir = create_collector(**kwargs)
     frame = inspect.currentframe().f_back.f_back
+    frame.f_globals[TRACING_VARNAME] = True
 
-    tracing_on(frame=frame, tracing_func=cir)
+    tracing_on(tracing_func=cir)
 
     yield
 
-    tracing_off(frame=frame, save_func=False)
+    tracing_off(save_func=False)
+    frame.f_globals[TRACING_VARNAME] = False
 
     stu = StudentImplementation.from_footprint(observed, max(t[1] for t in observed))
     res = stu.check(ref)

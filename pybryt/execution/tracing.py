@@ -1,5 +1,6 @@
 """"""
 
+import sys
 import inspect
 
 from ..utils import make_secret
@@ -88,7 +89,7 @@ def tracing_on(frame=None, tracing_func=None):
         x4 = pow(x, 4)
     """
     global TRACING_FUNC
-    if (not _currently_tracing() and tracing_func is None) or (TRACING_FUNC is None and tracing_func is None):
+    if not _currently_tracing() or (TRACING_FUNC is None and tracing_func is None):
         return
     if TRACING_FUNC is not None and tracing_func is None:
         tracing_func = TRACING_FUNC
