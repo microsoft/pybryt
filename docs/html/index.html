@@ -136,27 +136,37 @@
 <h1>PyBryt Documentation<a class="headerlink" href="#pybryt-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>PyBryt is an open source  Python auto-assessment library for teaching and learning. Our goal is to
-empower students and educators to learn about technology through fun, guided, hands-on content aimed
-at specific learning goals. PyBryt is designed to work with existing autograding solutions and
-workflows such as <a class="reference external" href="https://otter-grader.readthedocs.io">Otter Grader</a>, <a class="reference external" href="https://okpy.org">OkPy</a>, and <a class="reference external" href="https://autolab.readthedocs.io/">Autolab</a>.</p>
+<p>PyBryt is an open source Python auto-assessment library for teaching and
+learning. Its goal is to empower students and educators to learn about
+technology through fun, guided, and hands-on content aimed at specific learning
+objectives. PyBryt is designed to work with existing auto-grading solutions and
+workflows, such as <a class="reference external" href="https://otter-grader.readthedocs.io">Otter Grader</a>, <a class="reference external" href="https://okpy.org">OkPy</a>, and <a class="reference external" href="https://autolab.readthedocs.io/">Autolab</a>.</p>
 <img alt="_images/pybryt_goals.png" src="_images/pybryt_goals.png"/>
-<p>Educators and institutions can leverage PyBryt to integrate auto-assessment and reference models to hands-on labs and assessments.</p>
+<p>Educators and institutions can leverage PyBryt to integrate auto-assessment and
+reference models into hands-on lab exercises and assessments. Some of the PyBryt
+benefits are:</p>
 <ul class="simple">
 <li><p>Educators do not have to enforce the structure of the solution</p></li>
-<li><p>Learners practice the design process, code design, and solution implementation</p></li>
-<li><p>Meaningful pedagogical feedback to the learners</p></li>
-<li><p>Analysis of complexity within the learner’s solution</p></li>
+<li><p>Learners practice algorithm design, code design, and solution implementation</p></li>
+<li><p>Learners receive quick and meaningful pedagogical feedback, which substantially contributes to the learning experience</p></li>
+<li><p>Complexity of the learner’s solution can be analyzed</p></li>
 <li><p>Plagiarism detection and support for reference implementations</p></li>
 <li><p>Easy integration into existing organizational or institutional grading infrastructure</p></li>
 </ul>
-<p>PyBryt’s core auto-assessment behavior operates by comparing a student’s implementation of some
-programming problem to a series of reference implementations provided by an instructor. A
-<strong>reference implementation</strong> defines a pattern of values, and conditions on those values, to look
-for in students’ code.</p>
-<p>A reference implementation is created by annotating code written or found by an instructor and
-executing this code to create a <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a>
-object. Annotations are created by creating instances of subclasses of the abstract
+<p>PyBryt’s core auto-assessment behavior operates by comparing a <strong>student’s
+implementation</strong> of a programming problem to a series of reference
+implementations provided by an instructor. A <strong>reference implementation</strong>
+defines a pattern of values and conditions on those values expected
+to be present in students’ implementation. By comparing student’s and reference
+implementations, PyBryt provides a tailored feedback and advice to the student
+on how to bring their implementation closer to the reference one. PyBryt,
+instead of only comparing the output of their solution to the reference one,
+enables students to reconsider design choices they made and improve their
+implementation in incremental steps.</p>
+<p>A reference implementation is created by annotating the code written or found by an
+instructor and executing this code to create a
+<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> object.
+Annotations are created by creating instances of subclasses of the abstract
 <a class="reference internal" href="api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class.</p>
 </div>
 
