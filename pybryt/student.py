@@ -180,7 +180,7 @@ class StudentImplementation:
 
 
 @contextmanager
-def check(ref, **kwargs):
+def check(ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], **kwargs):
     """
     """
     if _currently_tracing():

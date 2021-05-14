@@ -11,7 +11,7 @@ from copy import deepcopy
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
-from .utils import notebook_to_string
+from .utils import get_stem, notebook_to_string
 
 
 class ReferenceImplementation:
@@ -26,13 +26,17 @@ class ReferenceImplementation:
     annotations: List[Annotation]
     """the annotations comprising this reference implementation"""
 
-    def __init__(self, annotations: List[Annotation]):
+    name: str
+    """"""
+
+    def __init__(self, name: str, annotations: List[Annotation]):
         if not isinstance(annotations, list):
             raise TypeError("annotations should be a list of Annotations")
         if not all(isinstance(ann, Annotation) for ann in annotations):
             raise TypeError("Found non-annotation in annotations")
         
         self.annotations = annotations
+        self.name = name
 
     def __eq__(self, other: Any) -> bool:
         """
@@ -47,10 +51,11 @@ class ReferenceImplementation:
         Returns:
             ``bool``: whether the objects are equal
         """
-        return isinstance(other, type(self)) and self.annotations == other.annotations
+        return isinstance(other, type(self)) and self.annotations == other.annotations and \
+            self.name == other.name
 
     @staticmethod
-    def load(file: str) -> Union['ReferenceImplementation', List['ReferenceImplementation']]:
+    def load(file: str) -> 'ReferenceImplementation':
         """
         Unpickles a reference implementation from a file.
 
@@ -63,17 +68,20 @@ class ReferenceImplementation:
         """
         with open(file, "rb") as f:
             instance = dill.load(f)
-        if not isinstance(instance, (ReferenceImplementation, list)):
+        if not isinstance(instance, ReferenceImplementation):
             raise TypeError(f"Unpickled reference implementation has type {type(instance)}")
         return instance
     
-    def dump(self, dest: str = "reference.pkl") -> NoReturn:
+    def dump(self, dest: Optional[str] = None) -> NoReturn:
         """
         Pickles this reference implementation to a file.
 
         Args:
-            dest (``str``, optional): the path to the file
+            dest (``str``, optional): the path to the file; if unspecified, defaults to 
+                ``{self.name}.pkl``
         """
+        if dest is None:
+            dest = f"{self.name}.pkl"
         with open(dest, "wb+") as f:
             dill.dump(self, f)
 
@@ -112,7 +120,7 @@ class ReferenceImplementation:
         return ReferenceResult(self, results, group=group)
 
     @classmethod
-    def compile(cls, path_or_nb: Union[str, nbformat.NotebookNode]) -> \
+    def compile(cls, path_or_nb: Union[str, nbformat.NotebookNode], name: Optional[str] = None) -> \
             Union['ReferenceImplementation', List['ReferenceImplementation']]:
         """
         Compiles a notebook or Python script into a single or list of reference implementations.
@@ -136,11 +144,13 @@ class ReferenceImplementation:
         else:
             source = notebook_to_string(path_or_nb)
 
+        if isinstance(path_or_nb, str) and name is None:
+            name = get_stem(path_or_nb)
+
         env = {}
         exec(source, env)
 
         refs = []
-        annots = []
         for _, v in env.items():
             if isinstance(v, cls):
                 refs.append(v)
@@ -150,7 +160,9 @@ class ReferenceImplementation:
                 warnings.warn(f"Could not find any reference implementations in " \
                     f"{path_or_nb if isinstance(path_or_nb, str) else 'the provided notebook'}")
             else:
-                refs = [cls(deepcopy(Annotation.get_tracked_annotations()))]
+                if name is None:
+                    raise ValueError("No name specified for the reference being compiled")
+                refs = [cls(name, deepcopy(Annotation.get_tracked_annotations()))]
 
         Annotation.reset_tracked_annotations()
         

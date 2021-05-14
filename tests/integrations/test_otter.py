@@ -54,12 +54,16 @@ def test_during_assign():
             assert os.path.isfile(agref)
             assert os.path.isfile(stref)
 
-            refs = ReferenceImplementation.load(agref)
+            # refs = ReferenceImplementation.load(agref)
+            with open(agref, "rb") as f:
+                refs = dill.load(f)
             assert isinstance(refs, list)
             assert len(refs) == 1
             assert isinstance(refs[0], ReferenceImplementation)
 
-            refs = ReferenceImplementation.load(stref)
+            # refs = ReferenceImplementation.load(stref)
+            with open(stref, "rb") as f:
+                refs = dill.load(f)
             assert isinstance(refs, list)
             assert len(refs) == 1
             assert isinstance(refs[0], ReferenceImplementation)

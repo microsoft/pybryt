@@ -1,6 +1,7 @@
 """
 """
 
+import os
 import json
 import random
 import string
@@ -123,3 +124,9 @@ def save_notebook(filename, timeout=10):
         f.close()
 
         return curr != md5
+
+
+def get_stem(fp):
+    """
+    """
+    return os.path.splitext(os.path.split(fp)[1])[0]

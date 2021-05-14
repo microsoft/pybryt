@@ -59,7 +59,8 @@ def test_reference_construction():
     """
     nb = generate_reference_notebook()
 
-    ref = ReferenceImplementation.compile(nb)
+    ref = ReferenceImplementation.compile(nb, name="foo")
+    ref.dump()
 
     ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
     expected_ref = ReferenceImplementation.load(ref_filename)
@@ -97,17 +98,18 @@ def test_reference_construction():
                 annots.append(v2)
                 annots.append(pybryt.Value(val))
             
-            ref = pybryt.ReferenceImplementation(annots)
-            ref2 = pybryt.ReferenceImplementation([])
+            ref = pybryt.ReferenceImplementation("foo", annots)
+            ref2 = pybryt.ReferenceImplementation("bar", [])
         """))
 
         ntf.seek(0)
 
-        more_refs = ReferenceImplementation.compile(ntf.name)
+        more_refs = ReferenceImplementation.compile(ntf.name, name="foo")
         assert len(more_refs) == 2
         assert len(more_refs[1].annotations) == 0
         
         ref2 = more_refs[0]
+        ref2.dump()
         assert ref2 == expected_ref2
 
 
@@ -115,10 +117,10 @@ def test_construction_errors():
     """
     """
     with pytest.raises(TypeError, match="annotations should be a list of Annotations"):
-        ReferenceImplementation(set())
+        ReferenceImplementation("foo", set())
 
     with pytest.raises(TypeError, match="Found non-annotation in annotations"):
-        ReferenceImplementation([Value(1), Value(2), 3, Value(4)])
+        ReferenceImplementation("bar", [Value(1), Value(2), 3, Value(4)])
 
     # check that you can't load something that isn't a ReferenceImplementation
     with tempfile.NamedTemporaryFile() as ntf:
@@ -136,7 +138,7 @@ def test_construction_errors():
         ntf.seek(0)
 
         with pytest.warns(UserWarning, match=f"Could not find any reference implementations in {ntf.name}"):
-            ReferenceImplementation.compile(ntf.name)
+            ReferenceImplementation.compile(ntf.name, name="bar")
 
 
 def test_run_and_results():
@@ -150,7 +152,7 @@ def test_run_and_results():
         pybryt.Value(val, success_message="SUCCESS: computed the correct median x2", 
             failure_message="ERROR: failed to compute the median")
     """)))
-    ref = ReferenceImplementation.compile(nb)
+    ref = ReferenceImplementation.compile(nb, name="foo")
     _, vals = execute_notebook(nb, "")
     
     res = ref.run(vals)

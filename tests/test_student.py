@@ -90,7 +90,7 @@ def test_load_and_dump():
 def test_check():
     """
     """
-    ref = ReferenceImplementation.compile(generate_reference_notebook())
+    ref = ReferenceImplementation.compile(generate_reference_notebook(), name="foo")
     nb, stu = generate_impl()
 
     res = stu.check(ref)
