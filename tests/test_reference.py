@@ -60,7 +60,6 @@ def test_reference_construction():
     nb = generate_reference_notebook()
 
     ref = ReferenceImplementation.compile(nb, name="foo")
-    ref.dump()
 
     ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
     expected_ref = ReferenceImplementation.load(ref_filename)
@@ -109,7 +108,6 @@ def test_reference_construction():
         assert len(more_refs[1].annotations) == 0
         
         ref2 = more_refs[0]
-        ref2.dump()
         assert ref2 == expected_ref2
 
 
