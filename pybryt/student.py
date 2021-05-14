@@ -4,11 +4,13 @@ import os
 import dill
 import base64
 import nbformat
+import inspect
 
+from contextlib import contextmanager
 from typing import Any, List, NoReturn, Optional, Tuple, Union
 
+from .execution import create_collector, _currently_tracing, execute_notebook, tracing_off, tracing_on
 from .reference import ReferenceImplementation, ReferenceResult
-from .execution import execute_notebook
 
 
 NBFORMAT_VERSION = 4
@@ -26,10 +28,10 @@ class StudentImplementation:
         output (``str``, optional): a path at which to write executed notebook
     """
 
-    nb: nbformat.NotebookNode
+    nb: Optional[nbformat.NotebookNode]
     """the submission notebook"""
 
-    nb_path: str
+    nb_path: Optional[str]
     """the path to the notebook file"""
 
     values: List[Tuple[Any, int]]
@@ -39,9 +41,13 @@ class StudentImplementation:
     """number of execution steps"""
 
     def __init__(
-        self, path_or_nb: Union[str, nbformat.NotebookNode], addl_filenames: List[str] = [],
+        self, path_or_nb: Optional[Union[str, nbformat.NotebookNode]], addl_filenames: List[str] = [],
         output: Optional[str] = None
     ):
+        if path_or_nb is None:
+            self.nb = None
+            self.nb_path = None
+            return
         if isinstance(path_or_nb, str):
             self.nb = nbformat.read(path_or_nb, as_version=NBFORMAT_VERSION)
             self.nb_path = path_or_nb
@@ -65,6 +71,15 @@ class StudentImplementation:
         self.steps, self.values = execute_notebook(
             self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
         )
+
+    @classmethod
+    def from_footprint(cls, footprint, steps):
+        """
+        """
+        stu = cls(None)
+        stu.steps = steps
+        stu.values = footprint
+        return stu
 
     def dump(self, dest: str = "student.pkl") -> NoReturn:
         """
@@ -138,7 +153,7 @@ class StudentImplementation:
             return [r.run(self.values, group=group) for r in ref]
         else:
             raise TypeError(f"check cannot take values of type {type(ref)}")
-    
+
     def check_plagiarism(self, student_impls: List["StudentImplementation"], **kwargs) -> List[ReferenceResult]:
         """
         Checks this student implementation against a list of other student implementations for 
@@ -160,6 +175,39 @@ class StudentImplementation:
         """
         refs = create_references([self], **kwargs)
         return get_impl_results(refs[0], student_impls, **kwargs)
+
+
+@contextmanager
+def check(ref, **kwargs):
+    """
+    """
+    if _currently_tracing():
+        yield  # if already tracing, no action required
+
+    if isinstance(ref, str):
+        ref = [ReferenceImplementation.load(ref)]
+    if isinstance(ref, list):
+        if len(ref) == 0:
+            raise ValueError("Cannot check against an empty list of references")
+        if not all(isinstance(r, ReferenceImplementation) for r in ref):
+            if not all(isinstance(r, str) for r in ref):
+                raise TypeError("Invalid values in the reference list")
+            ref = [ReferenceImplementation.load(r) for r in ref]
+    if not all(isinstance(r, ReferenceImplementation) for r in ref):
+        raise TypeError("Invalid values provided for reference(s)")
+
+    observed, cir = create_collector(**kwargs)
+    frame = inspect.currentframe().f_back.f_back
+
+    tracing_on(frame=frame, tracing_func=cir)
+
+    yield
+
+    tracing_off(frame=frame, save_func=False)
+
+    stu = StudentImplementation.from_footprint(observed, max(t[1] for t in observed))
+    res = stu.check(ref)
+    print([r.messages for r in res])
 
 
 from .plagiarism import create_references, get_impl_results

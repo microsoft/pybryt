@@ -131,3 +131,5 @@ dmypy.json
 .vscode/settings.json
 .doctrees/
 .OTTER_LOG
+/*.ipynb
+/*.pkl

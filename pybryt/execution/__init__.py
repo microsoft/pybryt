@@ -17,7 +17,7 @@ from typing import Any, List, Tuple, Callable, Optional
 from textwrap import dedent
 
 from .complexity import check_time_complexity, TimeComplexityResult
-from .tracing import TRACING_VARNAME, tracing_off, tracing_on
+from .tracing import _currently_tracing, TRACING_VARNAME, tracing_off, tracing_on
 from ..preprocessors import IntermediateVariablePreprocessor
 from ..utils import make_secret, pickle_and_hash
 
