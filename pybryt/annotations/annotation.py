@@ -149,7 +149,7 @@ class Annotation(ABC):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return self is other
+        ...
 
     def before(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
         """
