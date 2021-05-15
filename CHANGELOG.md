@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file, and this pr
 
 * Added time complexity annotations and checking
 * Changed tracing function to only increment step counter when tracing student code
+* Added relative tolerance to value annotations
 
 ## 0.0.5 - 2021-05-04
 
