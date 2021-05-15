@@ -76,8 +76,15 @@ class StudentImplementation:
         )
 
     @classmethod
-    def from_footprint(cls, footprint, steps):
+    def from_footprint(cls, footprint: List[Tuple[Any, int]], steps: int) -> 'StudentImplementation':
         """
+        Create a student implementation object from a memory footprint directly, rather than by
+        executing a notebook. Leaves the ``nb`` and ``nb_path`` instance variables of the resulting 
+        object empty.
+
+        Args:
+            footprint (``list[tuple[object, int]]``): the memory footprint
+            steps (``int``): the number of execution steps
         """
         stu = cls(None)
         stu.steps = steps
@@ -120,8 +127,8 @@ class StudentImplementation:
             instance = dill.load(f)
         return instance
 
-    @classmethod
-    def loads(cls, data: str) -> "StudentImplementation":
+    @staticmethod
+    def loads(data: str) -> "StudentImplementation":
         """
         Unpickles a student implementation from a base-64-encoded string.
 
