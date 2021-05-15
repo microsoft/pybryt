@@ -1,5 +1,7 @@
 """Reference implementations for PyBryt"""
 
+__all__ = ["ReferenceImplementation", "ReferenceResult", "generate_report"]
+
 import os
 import dill
 import json
@@ -207,20 +209,21 @@ class ReferenceResult:
         return f"ReferenceResult([\n  {results}\n])"
 
     @property
-    def correct(self):
+    def correct(self) -> bool:
         """
         ``bool``: whether the reference implementation was satisfied
         """
         return all(r.satisfied for r in self.results)
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
+        ``str``: the name of the underlying reference implementation
         """
         return self.reference.name
 
     @property
-    def messages(self):
+    def messages(self) -> List[str]:
         """
         ``list[str]``: the list of messages returned by all annotations in the reference 
         implementation; if ``self.group`` is not ``None``, only messages from annotations in that
@@ -257,7 +260,7 @@ class ReferenceResult:
             "results": [ar.to_dict() for ar in self.results],
         }
 
-    def to_array(self):
+    def to_array(self) -> np.ndarray:
         """
         Converts this result into a numpy array of integers, where ``1`` indicates a satisfied 
         annotation and ``0`` is unsatisfied.
@@ -268,13 +271,36 @@ class ReferenceResult:
         return np.array([r.satisfied for r in self.results], dtype=int)
 
 
-def generate_report(results, show_only=None):
+def generate_report(
+    results: Union[ReferenceResult, List[ReferenceResult]], show_only: Optional[str] = None,
+    fill_empty: bool = True
+) -> str:
     """
+    Collects a series of reference result objects and returns a summary of these results with any
+    messages from the annotations.
+
+    ``show_only`` should be in the set ``{'satisfied', 'unsatisfied', None}``. If ``"satisfied"``,
+    the summary will contain only the results of satisfied reference implementations. If 
+    ``"unsatisfied"``, the summary will contain only the results of unsatisfied reference 
+    implementations. If ``None``, all reference implementations will be included.
+
+    If ``show_only`` is set to a value that would result in an empty report (e.g. it is set to
+    ``"satisfied"`` but no reference was satisfied) and ``fill_empty`` is ``True``, the report will
+    be filled with any references that would normally be excluded by ``show_only``.
+
+    Args:
+        results (``Union[ReferenceResult, list[ReferenceResult]]``): the result(s) being collected
+        show_only (``{'satisfied', 'unsatisfied', None}``): which results to report
+        fill_empty (``bool``): if the resulting report would be empty, include results of the type
+            not specified by ``show_only``
+
+    Returns:
+        ``str``: the summary report
     """
     if isinstance(results, ReferenceResult):
         results = [results]
     if not isinstance(results, list) and not all(isinstance(r, ReferenceResult) for r in results):
-        raise TypeError("Cannot generate a report from  arguments that are not reference result objects")
+        raise TypeError("Cannot generate a report from arguments that are not reference result objects")
     if show_only not in {"satisfied", "unsatisfied", None}:
         raise ValueError("show_only must be in {'satisfied', 'unsatisfied', None}")
     
@@ -284,6 +310,9 @@ def generate_report(results, show_only=None):
             filtered.append(res)
         elif not res.correct and show_only != "satisfied":
             filtered.append(res)
+
+    if len(filtered) == 0 and fill_empty:
+        filtered = results
 
     report = ""
     for i, res in enumerate(filtered):

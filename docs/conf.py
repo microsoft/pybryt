@@ -44,7 +44,7 @@ apidoc_module_dir = '../pybryt'
 apidoc_output_dir = '.'
 apidoc_excluded_paths = []
 
-add_module_names = False
+# add_module_names = False
 
 autosummary_generate = False
 

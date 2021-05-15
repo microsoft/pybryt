@@ -137,8 +137,8 @@
 <div class="section" id="annotations">
 <h2>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="pybryt.Annotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Annotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success_message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failure_message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.Annotation" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.annotation.</span></code><code class="sig-name descname"><span class="pre">Annotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success_message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failure_message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.annotation.Annotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for annotating a reference implementation.</p>
 <p>Defines an API and global configurations for all annotations used for marking-up reference
 implementations. All instances of this class, or any of its subclasses, are added to a singleton
@@ -158,8 +158,8 @@ in <code class="docutils literal notranslate"><span class="pre">_TRACKED_ANNOTAT
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.after">
-<code class="sig-name descname"><span class="pre">after</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pybryt.annotations.annotation.Annotation</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><span class="pre">pybryt.annotations.relation.BeforeAnnotation</span></a><a class="headerlink" href="#pybryt.Annotation.after" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.after">
+<code class="sig-name descname"><span class="pre">after</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><span class="pre">pybryt.annotations.relation.BeforeAnnotation</span></a><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.after" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an annotation asserting that this annotation is satisfied after another (i.e. that
 the satisfying timestamp of this annotation is greater than or equal to that of
 <code class="docutils literal notranslate"><span class="pre">other_annotation</span></code>).</p>
@@ -180,8 +180,8 @@ one</p></li>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.before">
-<code class="sig-name descname"><span class="pre">before</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pybryt.annotations.annotation.Annotation</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><span class="pre">pybryt.annotations.relation.BeforeAnnotation</span></a><a class="headerlink" href="#pybryt.Annotation.before" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.before">
+<code class="sig-name descname"><span class="pre">before</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><span class="pre">pybryt.annotations.relation.BeforeAnnotation</span></a><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.before" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an annotation asserting that this annotation is satisfied before another (i.e. that
 the satisfying timestamp of this annotation is less than or equal to that of
 <code class="docutils literal notranslate"><span class="pre">other_annotation</span></code>).</p>
@@ -202,12 +202,12 @@ one</p></li>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.check">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.Annotation.check" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.check">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the check on the condition asserted by this annotation and returns a results object.</p>
 <p>Checks that the condition required by this annotation is met using the list of tuples of
 observed values and timestamps <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>. Creates and returns an
-<a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a> object with the results of this check.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code> object with the results of this check.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>observed_values</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">int]]</span></code>) – a list of tuples of values observed
@@ -218,13 +218,13 @@ during execution and the timestamps of those values</p>
 <code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.children">
-<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#pybryt.Annotation.children" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.children">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.children" title="Permalink to this definition">¶</a></dt>
 <dd><p>the child annotations of this annotation. If this annotation has no
 children, an empty list.</p>
 <dl class="field-list simple">
@@ -234,13 +234,13 @@ children, an empty list.</p>
 </dl>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.Annotation.failure_message">
-<code class="sig-name descname"><span class="pre">failure_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.Annotation.failure_message" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.failure_message">
+<code class="sig-name descname"><span class="pre">failure_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.failure_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>a message to relay to the student if not satisfied</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.get_tracked_annotations">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">get_tracked_annotations</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.Annotation</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.Annotation.get_tracked_annotations" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.get_tracked_annotations">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">get_tracked_annotations</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.get_tracked_annotations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of tracked annotations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -252,34 +252,34 @@ children, an empty list.</p>
 </dl>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.Annotation.group">
-<code class="sig-name descname"><span class="pre">group</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.Annotation.group" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.group">
+<code class="sig-name descname"><span class="pre">group</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.group" title="Permalink to this definition">¶</a></dt>
 <dd><p>the name of the group that this annotation belongs to</p>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.Annotation.limit">
-<code class="sig-name descname"><span class="pre">limit</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.Annotation.limit" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.limit">
+<code class="sig-name descname"><span class="pre">limit</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.limit" title="Permalink to this definition">¶</a></dt>
 <dd><p>the maximum number of annotations with this name to track in <code class="xref py py-obj docutils literal notranslate"><span class="pre">_TRACKED_ANNOTATIONS</span></code></p>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.Annotation.name">
-<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.Annotation.name" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.name">
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>the name of the annotation</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.reset_tracked_annotations">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">reset_tracked_annotations</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.Annotation.reset_tracked_annotations" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.reset_tracked_annotations">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">reset_tracked_annotations</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.reset_tracked_annotations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the list of tracked annotations and the mapping of group names to indices in that
 list.</p>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.Annotation.success_message">
-<code class="sig-name descname"><span class="pre">success_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.Annotation.success_message" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.success_message">
+<code class="sig-name descname"><span class="pre">success_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.success_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>a message to relay to the student if satisfied</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.Annotation.to_dict">
-<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.Annotation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.Annotation.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
 <p>Output dictionary contains the annotation’s name, group, limit number, success message, and
 failure message.</p>
@@ -297,7 +297,7 @@ failure message.</p>
 <span id="value-annotations"></span><h3>Value Annotations<a class="headerlink" href="#module-pybryt.annotations.value" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="pybryt.annotations.value.Attribute">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Attribute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Attribute" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.value.</span></code><code class="sig-name descname"><span class="pre">Attribute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that an object has an attribute value matching that of another object.</p>
 <p>Uses a <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotation to check there exists an object in the
 students’ code which as a specific attribute, or a series of attributes, with values matching
@@ -309,13 +309,13 @@ and the name of the attribute(s) being studied.</p>
 <li><p><strong>obj</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the object being checked</p></li>
 <li><p><strong>attrs</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">list[str]</span></code>) – the attribute or attributes that should be checked</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Attribute.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.value.Attribute.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.value.Attribute.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether any of the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code> has all of the required attributes,
 each matching the values expected.</p>
 <dl class="field-list simple">
@@ -363,7 +363,7 @@ the attributes being checked. This dictionary does <em>not</em> contain the valu
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.value.Value">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invariants</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><span class="pre">pybryt.annotations.invariants.invariant</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Value" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.value.</span></code><code class="sig-name descname"><span class="pre">Value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invariants</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><span class="pre">pybryt.annotations.invariants.invariant</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation class for asserting that a value should be observed.</p>
 <p>Indicates that a value passed to the constructor should be observed while tracing through the
 students’ code. Values can be of any type that is picklable by <code class="docutils literal notranslate"><span class="pre">dill</span></code>. Values can specify a
@@ -377,17 +377,17 @@ values that support arithemtic operators, absolute tolerances can be specified a
 <li><p><strong>invariants</strong> (<code class="docutils literal notranslate"><span class="pre">list[invariant]</span></code>) – invariants for
 this value</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Value.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.value.Value.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.value.Value.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that the value tracked by this annotation occurs in the list of observed values.</p>
 <p>Checks that the value under the conditions of its invariants occurs in the list of tuples of
 observed values and timestamps <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>. Creates and returns an
-<a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a> object with the results of this check.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code> object with the results of this check.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>observed_values</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">int]]</span></code>) – a list of tuples of values observed
@@ -456,21 +456,21 @@ dictionary does <em>not</em> contain the value being tracked.</p>
 <p>Relational annotations for asserting conditions on other annotations</p>
 <dl class="py class">
 <dt id="pybryt.annotations.relation.AndAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">AndAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.AndAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.relation.</span></code><code class="sig-name descname"><span class="pre">AndAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.AndAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that a series of annotations are <strong>all</strong> satisfied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child annotations being
+<li><p><strong>*annotations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>) – the child annotations being
 operated on</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.relation.AndAnnotation.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.relation.AndAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.relation.AndAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that all child annotations are satisfied by the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -489,7 +489,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.relation.BeforeAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">BeforeAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.BeforeAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.relation.</span></code><code class="sig-name descname"><span class="pre">BeforeAnnotation</span></code><a class="headerlink" href="#pybryt.annotations.relation.BeforeAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that one annotation occurs before another.</p>
 <p>When being <code class="xref py py-meth docutils literal notranslate"><span class="pre">check</span></code> is called, ensures that all child
 annotations are satisfied and then checks that for the <span class="math notranslate nohighlight">\(i^\text{th}\)</span> annotation the
@@ -498,16 +498,16 @@ Annotations must be passed to the constructor in the order in which they are exp
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child annotations being
+<li><p><strong>*annotations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>) – the child annotations being
 operated on</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.relation.BeforeAnnotation.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.relation.BeforeAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.relation.BeforeAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that all child annotations are satisfied by the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code> and
 that the timestamps of the satisfying values occur in non-decreasing order.</p>
 <dl class="field-list simple">
@@ -527,21 +527,21 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.relation.NotAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">NotAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.NotAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.relation.</span></code><code class="sig-name descname"><span class="pre">NotAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.NotAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that a single annotation should <strong>not</strong> be satisfied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child annotation being
+<li><p><strong>*annotations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>) – the child annotation being
 operated on</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.relation.NotAnnotation.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.relation.NotAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.relation.NotAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that the child annotation is not satisfied by the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -560,21 +560,21 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.relation.OrAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">OrAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.OrAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.relation.</span></code><code class="sig-name descname"><span class="pre">OrAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.OrAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that, of a series of annotations, <strong>any</strong> are satisfied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child annotations being
+<li><p><strong>*annotations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>) – the child annotations being
 operated on</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.relation.OrAnnotation.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.relation.OrAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.relation.OrAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that any of the child annotations are satisfied by the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -593,7 +593,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.relation.RelationalAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">RelationalAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.RelationalAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.relation.</span></code><code class="sig-name descname"><span class="pre">RelationalAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.RelationalAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for annotations that assert some kind of condition (temporal or boolean)
 on one or more other annotations.</p>
 <p>All relational annotations should inherit from this class, which defines a constructor that
@@ -602,20 +602,20 @@ needed for tracking child annotations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child annotations being
+<li><p><strong>*annotations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>) – the child annotations being
 operated on</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.relation.RelationalAnnotation.check">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.relation.RelationalAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.relation.RelationalAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the check on the condition asserted by this annotation and returns a results object.</p>
 <p>Checks that the condition required by this annotation is met using the list of tuples of
 observed values and timestamps <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>. Creates and returns an
-<a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a> object with the results of this check.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code> object with the results of this check.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>observed_values</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">int]]</span></code>) – a list of tuples of values observed
@@ -643,21 +643,21 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.relation.XorAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">XorAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.XorAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.relation.</span></code><code class="sig-name descname"><span class="pre">XorAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.relation.XorAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that, of two annotations, one is satisfied and the other is not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child annotations being
+<li><p><strong>*annotations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>) – the child annotations being
 operated on</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="pybryt.annotations.relation.XorAnnotation.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.relation.XorAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.relation.XorAnnotation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that one child annotation is satisfied and one is not by the values in
 <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>.</p>
 <dl class="field-list simple">
@@ -680,7 +680,7 @@ during execution and the timestamps of those values</p>
 <span id="complexity-annotations"></span><h3>Complexity Annotations<a class="headerlink" href="#module-pybryt.annotations.complexity" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.ComplexityAnnotation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ComplexityAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.ComplexityAnnotation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.</span></code><code class="sig-name descname"><span class="pre">ComplexityAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.ComplexityAnnotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for annotations that assert a condition on the complexity of a student’s code.</p>
 <p>All complexity annotations should inherit from this class, which defines a constructor that
 takes in a complexity class and any necessary keyword arguments. Note that all compelxity
@@ -692,7 +692,7 @@ from the student’s memory footprint.</p>
 <li><p><strong>complexity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">complexity</span></code>) – the complexity class
 being asserted</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
-<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
 </dd>
 </dl>
@@ -735,7 +735,7 @@ children, an empty list.</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.TimeComplexity">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">TimeComplexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.TimeComplexity" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.</span></code><code class="sig-name descname"><span class="pre">TimeComplexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.TimeComplexity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting the time complexity of a block of student code.</p>
 <p>Time complexity here is defined as the number of execution steps taken while executing the
 code block, which is determined using the number of calls to PyBryt’s trace function. Use the
@@ -745,7 +745,7 @@ passed to the context manager or this annotation will not be able to find the re
 check.</p>
 <dl class="py method">
 <dt id="pybryt.annotations.complexity.TimeComplexity.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.complexity.TimeComplexity.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.complexity.TimeComplexity.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks the time complexity of a block of student code and returns a results object.</p>
 <p>Finds all instances of the <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeComplexityResult</span></code>
 class in the student’s memory footprint and selects all those with matching names. Collects
@@ -798,7 +798,7 @@ during execution and the timestamps of those values</p>
 <span id="complexity-classes"></span><span id="complexities"></span><h4>Complexity Classes<a class="headerlink" href="#module-pybryt.annotations.complexity.complexities" title="Permalink to this headline">¶</a></h4>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.complexity">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">complexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.complexity" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">complexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.complexity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Architecture stolen from <a class="reference external" href="https://github.com/pberkes/big_O">https://github.com/pberkes/big_O</a></p>
 <dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.complexity.run">
@@ -815,7 +815,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.constant">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">constant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.constant" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">constant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.constant" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.constant.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.constant.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -823,7 +823,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.cubic">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">cubic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.cubic" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">cubic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.cubic" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.cubic.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.cubic.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -831,7 +831,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.exponential">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">exponential</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.exponential" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">exponential</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.exponential" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.exponential.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.exponential.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -843,7 +843,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.linear">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">linear</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.linear" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">linear</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.linear" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.linear.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.linear.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -851,7 +851,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.linearithmic">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">linearithmic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.linearithmic" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">linearithmic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.linearithmic" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.linearithmic.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.linearithmic.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -859,7 +859,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.logarithmic">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">logarithmic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.logarithmic" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">logarithmic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.logarithmic" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.logarithmic.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.logarithmic.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -867,7 +867,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.quadratic">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">quadratic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.quadratic" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">quadratic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.quadratic" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.quadratic.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.quadratic.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -880,7 +880,7 @@ during execution and the timestamps of those values</p>
 <p>Invariants for value annotations (available as <code class="xref py py-mod docutils literal notranslate"><span class="pre">pybryt.invariants</span></code>)</p>
 <dl class="py class">
 <dt id="pybryt.annotations.invariants.invariant">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">invariant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.invariant" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.invariants.</span></code><code class="sig-name descname"><span class="pre">invariant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.invariant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for invariants.</p>
 <p>All subclasses should implement the <a class="reference internal" href="#pybryt.annotations.invariants.invariant.run" title="pybryt.annotations.invariants.invariant.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a> static method for generating
 values that this invariant accepts as “correct”. Invariants have a custom <code class="docutils literal notranslate"><span class="pre">__new__</span></code> method
@@ -916,7 +916,7 @@ of this invariant</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.annotations.invariants.string_capitalization">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">string_capitalization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.string_capitalization" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.invariants.</span></code><code class="sig-name descname"><span class="pre">string_capitalization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.string_capitalization" title="Permalink to this definition">¶</a></dt>
 <dd><p>An invariant that compares strings ignoring capitalization.</p>
 <p>Works by taking in a list of values and lowercasing them if they are strings and leaving them
 unchanged otherwise.</p>
@@ -942,8 +942,8 @@ of the annotation or from the results of other invariants</p>
 <div class="section" id="annotation-results">
 <h3>Annotation Results<a class="headerlink" href="#annotation-results" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt id="pybryt.AnnotationResult">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">AnnotationResult</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satisfied</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pybryt.annotations.annotation.Annotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.AnnotationResult" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.annotation.</span></code><code class="sig-name descname"><span class="pre">AnnotationResult</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satisfied</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class that manages and defines an API for interacting with the results of an annotation.</p>
 <p>Created when an annotation calls its <code class="xref py py-meth docutils literal notranslate"><span class="pre">check&lt;pybryt.Annotation.check()</span></code> method and
 wrangles the results of that annotation. Contains fields for tracking child annotation results,
@@ -953,7 +953,7 @@ values satisfying annotations, and messages returned by this annotation and its 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>satisfied</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – whether the condition of the annotation was satisfied; if
 child annotation results should be used to determine this value, set to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
-<li><p><strong>annotation</strong> (<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the annotation that this result is for</p></li>
+<li><p><strong>annotation</strong> (<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the annotation that this result is for</p></li>
 <li><p><strong>value</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>, optional) – the value that satisfied the condition of this annotation</p></li>
 <li><p><strong>timestamp</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, optional) – the step counter value at which this annotation was satisfied</p></li>
 <li><p><strong>children</strong> (<code class="docutils literal notranslate"><span class="pre">list[AnnotationResult]</span></code>, optional) – child annotation results of this annotation
@@ -962,18 +962,18 @@ result</p></li>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="pybryt.AnnotationResult.annotation">
-<code class="sig-name descname"><span class="pre">annotation</span></code><em class="property"><span class="pre">:</span> <span class="pre">pybryt.annotations.annotation.Annotation</span></em><a class="headerlink" href="#pybryt.AnnotationResult.annotation" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.annotation">
+<code class="sig-name descname"><span class="pre">annotation</span></code><em class="property"><span class="pre">:</span> <a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></em><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.annotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>the annotation that this result is for</p>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.AnnotationResult.children">
-<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.AnnotationResult.children" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.children">
+<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.children" title="Permalink to this definition">¶</a></dt>
 <dd><p>child annotation results of this annotation result</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.group">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">group</span></code><a class="headerlink" href="#pybryt.AnnotationResult.group" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.group">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">group</span></code><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.group" title="Permalink to this definition">¶</a></dt>
 <dd><p>the group name of the annotation that these results track</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -982,8 +982,8 @@ result</p></li>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.messages">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">messages</span></code><a class="headerlink" href="#pybryt.AnnotationResult.messages" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.messages">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">messages</span></code><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>The messages returned by this annotation and its
 children based on whether or not the annotations were satisfied. A list of tuples where the
 first element is the message, the second is the name of the annotation (or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no
@@ -995,8 +995,8 @@ name is  present), and the third is whether the annotation was satisfied.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#pybryt.AnnotationResult.name" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>the name of the annotation that these results track</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -1005,8 +1005,8 @@ name is  present), and the third is whether the annotation was satisfied.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.satisfied">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">satisfied</span></code><a class="headerlink" href="#pybryt.AnnotationResult.satisfied" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.satisfied">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">satisfied</span></code><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.satisfied" title="Permalink to this definition">¶</a></dt>
 <dd><p>whether this annotation was satisfied</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -1015,8 +1015,8 @@ name is  present), and the third is whether the annotation was satisfied.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.satisfied_at">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">satisfied_at</span></code><a class="headerlink" href="#pybryt.AnnotationResult.satisfied_at" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.satisfied_at">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">satisfied_at</span></code><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.satisfied_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>the step counter value at which this annotation was satisfied; if child results are
 present, this is the maximum satisfying timestamp of all child results; if this annotation
 was not satisfied, returns -1</p>
@@ -1027,13 +1027,13 @@ was not satisfied, returns -1</p>
 </dl>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.AnnotationResult.timestamp">
-<code class="sig-name descname"><span class="pre">timestamp</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pybryt.AnnotationResult.timestamp" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.timestamp">
+<code class="sig-name descname"><span class="pre">timestamp</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>the step counter value at which this annotation was satisfied</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.to_dict">
-<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.AnnotationResult.to_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts this annotation result’s details to a JSON-friendly dictionary format.</p>
 <p>Output dictionary contains the annotation, whether it was satisfied, when it was satisfied,
 and any child results.</p>
@@ -1047,8 +1047,8 @@ and any child results.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.AnnotationResult.value">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">value</span></code><a class="headerlink" href="#pybryt.AnnotationResult.value" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.annotations.annotation.AnnotationResult.value">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">value</span></code><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>the value that satisfied the condition of this annotation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -1062,8 +1062,8 @@ and any child results.</p>
 <div class="section" id="reference-implementations">
 <h2>Reference Implementations<a class="headerlink" href="#reference-implementations" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="pybryt.ReferenceImplementation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ReferenceImplementation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.Annotation</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.ReferenceImplementation" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.reference.</span></code><code class="sig-name descname"><span class="pre">ReferenceImplementation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation" title="Permalink to this definition">¶</a></dt>
 <dd><p>A reference implementation class for managing collections of annotations. Defines methods for
 creating, running, and storing reference implementations.</p>
 <dl class="field-list simple">
@@ -1072,17 +1072,17 @@ creating, running, and storing reference implementations.</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="pybryt.ReferenceImplementation.annotations">
-<code class="sig-name descname"><span class="pre">annotations</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.Annotation</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.ReferenceImplementation.annotations" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation.annotations">
+<code class="sig-name descname"><span class="pre">annotations</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.annotations" title="Permalink to this definition">¶</a></dt>
 <dd><p>the annotations comprising this reference implementation</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceImplementation.compile">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.ReferenceImplementation.compile" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation.compile">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.compile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compiles a notebook or Python script into a single or list of reference implementations.</p>
 <p>Creates a reference implementation by executing a Jupyter Notebook or Python script and
-collecting all <a class="reference internal" href="#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> objects
-created, if any, or all <a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> objects otherwise.</p>
+collecting all <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> objects
+created, if any, or all <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> objects otherwise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path_or_nb</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">nbformat.NotebookNode</span></code>) – the file to be executed</p>
@@ -1097,8 +1097,8 @@ created by executing the file</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceImplementation.dump">
-<code class="sig-name descname"><span class="pre">dump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.ReferenceImplementation.dump" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation.dump">
+<code class="sig-name descname"><span class="pre">dump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.dump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pickles this reference implementation to a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1108,8 +1108,8 @@ created by executing the file</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceImplementation.load">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.reference.ReferenceImplementation</span><a class="headerlink" href="#pybryt.ReferenceImplementation.load" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpickles a reference implementation from a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1120,20 +1120,20 @@ created by executing the file</p>
 reference implementation</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a></p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.ReferenceImplementation.name">
-<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.ReferenceImplementation.name" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation.name">
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceImplementation.run">
-<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.reference.ReferenceResult</span><a class="headerlink" href="#pybryt.ReferenceImplementation.run" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceImplementation.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the annotations tracked by this reference implementation against a memory footprint.</p>
 <p>Can run only specific annotations by specifying the <code class="docutils literal notranslate"><span class="pre">group</span></code> argument. Returns a
-<a class="reference internal" href="#pybryt.ReferenceResult" title="pybryt.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a> object.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1145,7 +1145,7 @@ reference implementation</p>
 <dd class="field-even"><p>the results of this check</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pybryt.ReferenceResult" title="pybryt.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a></p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">group</span></code> is specified but there are no annotations with that group</p>
@@ -1156,10 +1156,10 @@ reference implementation</p>
 <div class="section" id="reference-results">
 <h3>Reference Results<a class="headerlink" href="#reference-results" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt id="pybryt.ReferenceResult">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ReferenceResult</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pybryt.reference.ReferenceImplementation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_results</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.ReferenceResult" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.reference.</span></code><code class="sig-name descname"><span class="pre">ReferenceResult</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_results</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.reference.ReferenceResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for wrangling and managing the results of a reference implementation. Collects a series of
-<a class="reference internal" href="#pybryt.AnnotationResult" title="pybryt.AnnotationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></a> objects and provides an API for managing
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code> objects and provides an API for managing
 those results collectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1172,8 +1172,8 @@ reference implementation</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceResult.correct">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">correct</span></code><a class="headerlink" href="#pybryt.ReferenceResult.correct" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.correct">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">correct</span></code><a class="headerlink" href="#pybryt.reference.ReferenceResult.correct" title="Permalink to this definition">¶</a></dt>
 <dd><p>whether the reference implementation was satisfied</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -1182,13 +1182,13 @@ reference implementation</p></li>
 </dl>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.ReferenceResult.group">
-<code class="sig-name descname"><span class="pre">group</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.ReferenceResult.group" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.group">
+<code class="sig-name descname"><span class="pre">group</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.reference.ReferenceResult.group" title="Permalink to this definition">¶</a></dt>
 <dd><p>the name of the group of annotations executed, if applicable</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceResult.messages">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">messages</span></code><a class="headerlink" href="#pybryt.ReferenceResult.messages" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.messages">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">messages</span></code><a class="headerlink" href="#pybryt.reference.ReferenceResult.messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>the list of messages returned by all annotations in the reference
 implementation; if <code class="docutils literal notranslate"><span class="pre">self.group</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, only messages from annotations in that
 group are returned</p>
@@ -1199,22 +1199,28 @@ group are returned</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceResult.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#pybryt.ReferenceResult.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pybryt.reference.ReferenceResult.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#pybryt.reference.ReferenceResult.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the underlying reference implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.ReferenceResult.reference">
-<code class="sig-name descname"><span class="pre">reference</span></code><em class="property"><span class="pre">:</span> <span class="pre">pybryt.reference.ReferenceImplementation</span></em><a class="headerlink" href="#pybryt.ReferenceResult.reference" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.reference">
+<code class="sig-name descname"><span class="pre">reference</span></code><em class="property"><span class="pre">:</span> <a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a></em><a class="headerlink" href="#pybryt.reference.ReferenceResult.reference" title="Permalink to this definition">¶</a></dt>
 <dd><p>the reference implementation executed</p>
 </dd></dl>
 <dl class="py attribute">
-<dt id="pybryt.ReferenceResult.results">
-<code class="sig-name descname"><span class="pre">results</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResult</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.ReferenceResult.results" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.results">
+<code class="sig-name descname"><span class="pre">results</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.reference.ReferenceResult.results" title="Permalink to this definition">¶</a></dt>
 <dd><p>the annotation results from running the reference implementation</p>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceResult.to_array">
-<code class="sig-name descname"><span class="pre">to_array</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.ReferenceResult.to_array" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.to_array">
+<code class="sig-name descname"><span class="pre">to_array</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.reference.ReferenceResult.to_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts this result into a numpy array of integers, where <code class="docutils literal notranslate"><span class="pre">1</span></code> indicates a satisfied
 annotation and <code class="docutils literal notranslate"><span class="pre">0</span></code> is unsatisfied.</p>
 <dl class="field-list simple">
@@ -1227,8 +1233,8 @@ annotation and <code class="docutils literal notranslate"><span class="pre">0</s
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.ReferenceResult.to_dict">
-<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.ReferenceResult.to_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="pybryt.reference.ReferenceResult.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.reference.ReferenceResult.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts this reference result’s details to a JSON-friendly dictionary format.</p>
 <p>Output dictionary contains the group name run, if present, and the dictionary representations
 of all child annotation results.</p>
@@ -1242,6 +1248,35 @@ of all child annotation results.</p>
 </dl>
 </dd></dl>
 </dd></dl>
+<dl class="py function">
+<dt id="pybryt.reference.generate_report">
+<code class="sig-prename descclassname"><span class="pre">pybryt.reference.</span></code><code class="sig-name descname"><span class="pre">generate_report</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_empty</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> → <span class="pre">str</span><a class="headerlink" href="#pybryt.reference.generate_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects a series of reference result objects and returns a summary of these results with any
+messages from the annotations.</p>
+<p><code class="docutils literal notranslate"><span class="pre">show_only</span></code> should be in the set <code class="docutils literal notranslate"><span class="pre">{'satisfied',</span> <span class="pre">'unsatisfied',</span> <span class="pre">None}</span></code>. If <code class="docutils literal notranslate"><span class="pre">"satisfied"</span></code>,
+the summary will contain only the results of satisfied reference implementations. If
+<code class="docutils literal notranslate"><span class="pre">"unsatisfied"</span></code>, the summary will contain only the results of unsatisfied reference
+implementations. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, all reference implementations will be included.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">show_only</span></code> is set to a value that would result in an empty report (e.g. it is set to
+<code class="docutils literal notranslate"><span class="pre">"satisfied"</span></code> but no reference was satisfied) and <code class="docutils literal notranslate"><span class="pre">fill_empty</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the report will
+be filled with any references that would normally be excluded by <code class="docutils literal notranslate"><span class="pre">show_only</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> (<code class="docutils literal notranslate"><span class="pre">Union[ReferenceResult,</span> <span class="pre">list[ReferenceResult]]</span></code>) – the result(s) being collected</p></li>
+<li><p><strong>show_only</strong> (<code class="docutils literal notranslate"><span class="pre">{'satisfied',</span> <span class="pre">'unsatisfied',</span> <span class="pre">None}</span></code>) – which results to report</p></li>
+<li><p><strong>fill_empty</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – if the resulting report would be empty, include results of the type
+not specified by <code class="docutils literal notranslate"><span class="pre">show_only</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the summary report</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 </div>
 </div>
 <div class="section" id="module-pybryt.student">
@@ -1249,7 +1284,7 @@ of all child annotation results.</p>
 <p>Student implementations for PyBryt</p>
 <dl class="py class">
 <dt id="pybryt.student.StudentImplementation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">StudentImplementation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addl_filenames</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.StudentImplementation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.student.</span></code><code class="sig-name descname"><span class="pre">StudentImplementation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addl_filenames</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.StudentImplementation" title="Permalink to this definition">¶</a></dt>
 <dd><p>A student implementation class for handling the execution of student work and manging the
 memory footprint generated by that execution.</p>
 <dl class="field-list simple">
@@ -1264,9 +1299,9 @@ execution</p></li>
 </dl>
 <dl class="py method">
 <dt id="pybryt.student.StudentImplementation.check">
-<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceResult</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceResult</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.student.StudentImplementation.check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.student.StudentImplementation.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks this student implementation against a single or list of reference implementations.
-Returns the <a class="reference internal" href="#pybryt.ReferenceResult" title="pybryt.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a> object(s) resulting from
+Returns the <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code> object(s) resulting from
 those checks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1287,7 +1322,7 @@ implementation checks</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.student.StudentImplementation.check_plagiarism">
-<code class="sig-name descname"><span class="pre">check_plagiarism</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_impls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceResult</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.student.StudentImplementation.check_plagiarism" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">check_plagiarism</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_impls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.student.StudentImplementation.check_plagiarism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks this student implementation against a list of other student implementations for
 plagiarism. Uses <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_references</span></code> to create
 a randomly-generated reference implementation from this student implementation and runs it
@@ -1369,7 +1404,7 @@ implementation</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.student.StudentImplementation.loads">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">loads</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.loads" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">loads</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.loads" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpickles a student implementation from a base-64-encoded string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1407,7 +1442,7 @@ implementation</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.student.check">
-<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.reference.ReferenceImplementation</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_on_error</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.check" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.student.</span></code><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_on_error</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>A context manager for running a block of student code against a reference implementation.</p>
 <p>This context manager, designed to be used in students’ notebooks, can be used to check a block
 of student code against one or a series of reference implementations. The context manager turns
@@ -1441,11 +1476,11 @@ reference results to include in the report; if <code class="docutils literal not
 <p>Submission execution internals for PyBryt</p>
 <dl class="py function">
 <dt id="pybryt.execution.check_time_complexity">
-<code class="sig-name descname"><span class="pre">check_time_complexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">collections.abc.Sized</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.check_time_complexity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pybryt.execution.</span></code><code class="sig-name descname"><span class="pre">check_time_complexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">collections.abc.Sized</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.check_time_complexity" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py function">
 <dt id="pybryt.execution.tracing_off">
-<code class="sig-name descname"><span class="pre">tracing_off</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_off" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pybryt.execution.</span></code><code class="sig-name descname"><span class="pre">tracing_off</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_off" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns off PyBryt’s tracing if tracing is occurring in this call stack. If PyBryt is not tracing,
 takes no action.</p>
 <p>This method can be used in students’ notebooks to include code that shouldn’t be traced as part
@@ -1463,7 +1498,7 @@ of the submission, e.g. demo code or ungraded code. In the example below, the ca
 </dd></dl>
 <dl class="py function">
 <dt id="pybryt.execution.tracing_on">
-<code class="sig-name descname"><span class="pre">tracing_on</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracing_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_on" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pybryt.execution.</span></code><code class="sig-name descname"><span class="pre">tracing_on</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracing_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns tracing on if PyBryt was tracing the call stack. If PyBryt is not tracing or
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">tracing_off</span></code> has not been called, no action is taken.</p>
 <p>This method can be used in students’ notebooks to turn tracing back on after deactivating tracing

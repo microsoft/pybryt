@@ -173,11 +173,11 @@ statements that show the values at various stages of execution.</p>
 <h2>Checking Implementations<a class="headerlink" href="#checking-implementations" title="Permalink to this headline">¶</a></h2>
 <p>To reconcile a student implementation with a set of reference implementations, use the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code> method, which takes in
-a single <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> object, or a list of
-them, and returns a <a class="reference internal" href="api_reference.html#pybryt.ReferenceResult" title="pybryt.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a> object (or a list of them).
+a single <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> object, or a list of
+them, and returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code> object (or a list of them).
 This method simply abstracts away managing the memory footprint tracked by the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> object and calls the
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.run" title="pybryt.ReferenceImplementation.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code></a> method for each provided
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code> method for each provided
 reference implementation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"reference.ipynb"</span><span class="p">)</span>
 <span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>

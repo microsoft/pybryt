@@ -137,12 +137,12 @@
 <p>The functional unit of PyBryt is a reference implementation. A <strong>reference implenetation</strong> is a set
 of conditions expected of students’ code that determine whether a student has correctly implemented
 some program. They are constructed by creating a series of <a class="reference internal" href="annotations/index.html#annotations"><span class="std std-ref">annotations</span></a> that are
-tracked in a <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> object.</p>
+tracked in a <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> object.</p>
 <div class="section" id="creating-reference-implementations">
 <h2>Creating Reference Implementations<a class="headerlink" href="#creating-reference-implementations" title="Permalink to this headline">¶</a></h2>
 <p>Reference implemenations can be created by compiling Jupyter Notebooks that have been marked-up
 with annotations. To compile a reference implementation, use
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.compile" title="pybryt.ReferenceImplementation.compile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.compile</span></code></a>, which takes in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.compile</span></code>, which takes in
 the path to a notebook file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">"reference.ipynb"</span><span class="p">)</span>
 </pre></div>
@@ -152,7 +152,7 @@ automatically (for a single reference), or by tracking annotations in a list (fo
 reference implementations from a single notebook).</p>
 <p>When compiling a notebook, PyBryt executes all of the code in the notebook and searches the
 resulting global environment for instances of the
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> class. If it finds them, it
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> class. If it finds them, it
 collects them into a list and returns the list of reference implementations (or a single reference
 implementation if only one is found). If it doesn’t find any reference implementations, it takes all
 of the annotations <a class="reference internal" href="#tracked-annotations"><span class="std std-ref">tracked by</span></a> PyBryt and turns those into a single
@@ -160,7 +160,7 @@ reference implementation.</p>
 <div class="section" id="automatic-reference-creation">
 <h3>Automatic Reference Creation<a class="headerlink" href="#automatic-reference-creation" title="Permalink to this headline">¶</a></h3>
 <p>To create a single reference implementation from a notebook, create
-<a class="reference internal" href="api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> instances (assigning them to variables is not necessary).
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> instances (assigning them to variables is not necessary).
 After annotating the notebook, when PyBryt compiles the notebook, it will find all of the
 annotations.</p>
 <p id="tracked-annotations">PyBryt finds the annotations because the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method automatically adds the instances
@@ -194,8 +194,8 @@ are to be made later down the line.</p>
 <div class="section" id="manual-reference-creation">
 <h3>Manual Reference Creation<a class="headerlink" href="#manual-reference-creation" title="Permalink to this headline">¶</a></h3>
 <p>To create multiple reference implementations from a single notebook, begin by creating
-<a class="reference internal" href="api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> instances and grouping them into lists. These lists will
-be passed to the <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> constructor
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> instances and grouping them into lists. These lists will
+be passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> constructor
 to create the reference implementations. <em>These objects must be assigned to global variables, or
 PyBryt will not find them.</em></p>
 <p>As an example, consider the code below, which creates two reference implementations for a Fibonacci
@@ -260,20 +260,20 @@ sequence generator:</p>
 </div>
 <div class="section" id="interacting-with-reference-implementations">
 <h2>Interacting with Reference Implementations<a class="headerlink" href="#interacting-with-reference-implementations" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> class defines an API for
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> class defines an API for
 working with reference implementations. The core method for reconciling a student implementation,
 encoded as a list of 2-tuples, is
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.run" title="pybryt.ReferenceImplementation.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code></a>. This method is
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code>. This method is
 abstracted away by the <code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code>
 method, which calls it for that student implementation.</p>
 </div>
 <div class="section" id="storing-reference-implementations">
 <span id="storing-refs"></span><h2>Storing Reference Implementations<a class="headerlink" href="#storing-reference-implementations" title="Permalink to this headline">¶</a></h2>
 <p>Reference implementation objects can be saved to a file by calling
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.dump" title="pybryt.ReferenceImplementation.dump"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.dump</span></code></a>, which takes in the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.dump</span></code>, which takes in the
 path to the file and uses the <code class="docutils literal notranslate"><span class="pre">dill</span></code> library to serialize the object. To load a reference
 implementation, or a list of reference implementations, from a file, use the static method
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.load" title="pybryt.ReferenceImplementation.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.load</span></code></a>.</p>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.load</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">([</span><span class="o">...</span><span class="p">])</span>
 <span class="n">ref</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span> <span class="c1"># defaults to filename 'reference.pkl'</span>
 <span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'reference.pkl'</span><span class="p">)</span>

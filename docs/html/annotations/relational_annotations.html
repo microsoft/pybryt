@@ -145,7 +145,7 @@ defines some helpful defaults for working with annotations that have child annot
 another. For example, consider the problem of a dynamic programming algorithm to compute the
 Fibonacci sequence: the array containing <span class="math notranslate nohighlight">\(n-1\)</span> first Fibonacci numbers should appear in memory
 before the array containing the <span class="math notranslate nohighlight">\(n\)</span> first Fibonacci numbers.</p>
-<p>To enforce such a constraint, the <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class defines a
+<p>To enforce such a constraint, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> class defines a
 <code class="docutils literal notranslate"><span class="pre">before</span></code> method that asserts that one annotation occurs before another:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="sd">"""</span>
@@ -186,13 +186,13 @@ condition such that we ensure the student followed the correct dynamic programmi
 checking each update to the <code class="docutils literal notranslate"><span class="pre">fibs</span></code> array.</p>
 <p>Temporal annotations are satisfied when the student’s code satisfies all of the child
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotations and when the first annotation (the one calling
-<a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a>) has a timestamp greater than or equal to the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code>) has a timestamp greater than or equal to the
 timestamp of the second annotation.</p>
-<p>Note that <a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a> returns an instance of the
+<p>Note that <code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code> returns an instance of the
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a> class, which is
-itself a subclass of <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> and supports all of the same operations.
-<a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> also provides
-<a class="reference internal" href="../api_reference.html#pybryt.Annotation.after" title="pybryt.Annotation.after"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.after</span></code></a>, which also returns an instance of the
+itself a subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> and supports all of the same operations.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> also provides
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.after</span></code>, which also returns an instance of the
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a> class, but with
 the operands switched.</p>
 </div>
@@ -205,7 +205,7 @@ only one of the two possible values is present.</p>
 <p>Relational annotations can be created either by instantiating the classes directly using the
 constructor or, as is more recommended, by using Python’s bitwise logical operators, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>,
 <code class="docutils literal notranslate"><span class="pre">^</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>, on annotations. The dunder methods for these operators have been overrided with
-for the <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class, and return the
+for the <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> class, and return the
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a> subclass
 instance corresponding to the logical operator used.</p>
 <p>To create the xor example above from two values <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code>, simply write</p>

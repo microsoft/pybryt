@@ -67,6 +67,8 @@ class RelationalAnnotation(Annotation):
 
 class BeforeAnnotation(RelationalAnnotation):
     """
+    pybryt.BeforeAnnotation()
+
     Annotation for asserting that one annotation occurs before another.
 
     When being :py:meth:`check<pybryt.BeforeAnnotation.check>` is called, ensures that all child 
