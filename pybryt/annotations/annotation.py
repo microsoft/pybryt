@@ -74,17 +74,13 @@ class Annotation(ABC):
         global _GROUP_INDICES, _TRACKED_ANNOTATIONS
 
         idx = len(_TRACKED_ANNOTATIONS)
-        if self.name is None:
-            if self.limit is not None:
-                raise TypeError("'limit' passed without 'name'") 
+        if self.name not in _GROUP_INDICES:
+            _GROUP_INDICES[self.name] = []
+        if self.limit is not None and len(_GROUP_INDICES[self.name]) >= self.limit:
+            return
         else:
-            if self.name not in _GROUP_INDICES:
-                _GROUP_INDICES[self.name] = []
-            if self.limit is not None and len(_GROUP_INDICES[self.name]) >= self.limit:
-                return
-            else:
-                _GROUP_INDICES[self.name].append(idx)
-        
+            _GROUP_INDICES[self.name].append(idx)
+    
         for child in self.children:
             try:
                 _TRACKED_ANNOTATIONS.remove(child)
