@@ -165,5 +165,3 @@ def test_from_notebook(capsys):
             NO REFERENCE SATISFIED
         """)
         assert captured.out == expected
-
-
