@@ -49,7 +49,8 @@ def test_before_annotation():
                 'children': [], 
                 'type': 'value', 
                 'invariants': [], 
-                'tol': 0
+                'atol': None,
+                'rtol': None,
             }, {
                 'name': 
                 'Annotation 2', 
@@ -60,7 +61,8 @@ def test_before_annotation():
                 'children': [], 
                 'type': 'value', 
                 'invariants': [], 
-                'tol': 0
+                'atol': None,
+                'rtol': None,
             }
         ], 
         'type': 'before',

@@ -149,7 +149,7 @@ def test_trace_function():
     cir(frame, "return", np.exp(arr))
     assert len(observed) == 8
     assert np.allclose(observed[7][0], np.exp(arr))
-    assert observed[7][1] == 14
+    assert observed[7][1] == 12
 
 
 def test_notebook_execution():

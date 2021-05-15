@@ -82,9 +82,9 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         Trace function for PyBryt.
         """
         name = frame.f_code.co_filename + frame.f_code.co_name
-        counter[0] += 1 # increment step counter
 
         if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
+            counter[0] += 1 # increment student code step counter
             if event == "line" or event == "return":
 
                 line = linecache.getline(frame.f_code.co_filename, frame.f_lineno)

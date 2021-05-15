@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-3.1.2, furo 2021.02.21.beta25"/><title>Index - PyBryt documentation</title>
+    <meta name="generator" content="sphinx-3.5.1, furo 2021.02.21.beta25"/><title>Index - PyBryt documentation</title>
 <link rel="stylesheet" href="_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
@@ -147,13 +147,15 @@
 </li>
         <li><a href="api_reference.html#pybryt.AnnotationResult.annotation">annotation (AnnotationResult attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation">Annotation (class in pybryt)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.AnnotationResult">AnnotationResult (class in pybryt)</a>
 </li>
         <li><a href="api_reference.html#pybryt.ReferenceImplementation.annotations">annotations (ReferenceImplementation attribute)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.value.Value.atol">atol (Value attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.value.Attribute">Attribute (class in pybryt.annotations.value)</a>
 </li>
@@ -204,6 +206,8 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.StudentImplementation.check_plagiarism">check_plagiarism() (StudentImplementation method)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.value.Value.check_values_equal">check_values_equal() (Value static method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.AnnotationResult.children">children (AnnotationResult attribute)</a>
 </li>
@@ -329,6 +333,8 @@
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.value">pybryt.annotations.value</a>
 </li>
+          <li><a href="api_reference.html#module-pybryt.execution">pybryt.execution</a>
+</li>
         </ul></li>
     </ul></td>
   </tr></table>
@@ -345,6 +351,8 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.StudentImplementation.nb">nb (StudentImplementation attribute)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.StudentImplementation.nb_path">nb_path (StudentImplementation attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.relation.NotAnnotation">NotAnnotation (class in pybryt.annotations.relation)</a>
 </li>
@@ -389,6 +397,13 @@
           <li><a href="api_reference.html#module-pybryt.annotations.value">module</a>
 </li>
         </ul></li>
+        <li>
+    pybryt.execution
+
+        <ul>
+          <li><a href="api_reference.html#module-pybryt.execution">module</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -405,11 +420,13 @@
 </li>
         <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation">RelationalAnnotation (class in pybryt.annotations.relation)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.reset_tracked_annotations">reset_tracked_annotations() (Annotation static method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.ReferenceResult.results">results (ReferenceResult attribute)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.value.Value.rtol">rtol (Value attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.invariants.invariant.run">run() (invariant static method)</a>
 
@@ -451,11 +468,25 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.AnnotationResult.timestamp">timestamp (AnnotationResult attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.ReferenceResult.to_array">to_array() (ReferenceResult method)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.annotations.value.Value.tol">tol (Value attribute)</a>
+        <li><a href="api_reference.html#pybryt.Annotation.to_dict">to_dict() (Annotation method)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.AnnotationResult.to_dict">(AnnotationResult method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.value.Attribute.to_dict">(Attribute method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.ReferenceResult.to_dict">(ReferenceResult method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.value.Value.to_dict">(Value method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.execution.tracing_off">tracing_off() (in module pybryt.execution)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.execution.tracing_on">tracing_on() (in module pybryt.execution)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -518,7 +549,5 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
 </html>
