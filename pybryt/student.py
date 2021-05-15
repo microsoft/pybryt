@@ -12,7 +12,7 @@ from typing import Any, List, NoReturn, Optional, Tuple, Union
 from .execution import (
     create_collector, _currently_tracing, execute_notebook, tracing_off, tracing_on, TRACING_VARNAME
 )
-from .reference import ReferenceImplementation, ReferenceResult
+from .reference import generate_report, ReferenceImplementation, ReferenceResult
 
 
 NBFORMAT_VERSION = 4
@@ -179,39 +179,56 @@ class StudentImplementation:
         return get_impl_results(refs[0], student_impls, **kwargs)
 
 
-@contextmanager
-def check(ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], **kwargs):
-    """
-    """
-    if _currently_tracing():
-        yield  # if already tracing, no action required
+class check:
 
-    if isinstance(ref, str):
-        ref = [ReferenceImplementation.load(ref)]
-    if isinstance(ref, list):
-        if len(ref) == 0:
-            raise ValueError("Cannot check against an empty list of references")
+    def __init__(
+        self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
+        report_on_error: bool = True, **kwargs
+    ):
+        if isinstance(ref, str):
+            ref = [ReferenceImplementation.load(ref)]
+        if isinstance(ref, list):
+            if len(ref) == 0:
+                raise ValueError("Cannot check against an empty list of references")
+            if not all(isinstance(r, ReferenceImplementation) for r in ref):
+                if not all(isinstance(r, str) for r in ref):
+                    raise TypeError("Invalid values in the reference list")
+                ref = [ReferenceImplementation.load(r) for r in ref]
         if not all(isinstance(r, ReferenceImplementation) for r in ref):
-            if not all(isinstance(r, str) for r in ref):
-                raise TypeError("Invalid values in the reference list")
-            ref = [ReferenceImplementation.load(r) for r in ref]
-    if not all(isinstance(r, ReferenceImplementation) for r in ref):
-        raise TypeError("Invalid values provided for reference(s)")
+            raise TypeError("Invalid values provided for reference(s)")
 
-    observed, cir = create_collector(**kwargs)
-    frame = inspect.currentframe().f_back.f_back
-    frame.f_globals[TRACING_VARNAME] = True
+        self.ref = ref
+        self.kwargs = kwargs
+        self.show_only = self.kwargs.pop("show_only", None)
+        self.frame = None
+        self.observed = None
+        self.report_on_error = report_on_error
 
-    tracing_on(tracing_func=cir)
+    def __enter__(self):
+        if _currently_tracing():
+            return  # if already tracing, no action required
 
-    yield
+        else:
+            self.observed, cir = create_collector(**self.kwargs)
+            self.frame = inspect.currentframe().f_back.f_back
+            self.frame.f_globals[TRACING_VARNAME] = True
 
-    tracing_off(save_func=False)
-    frame.f_globals[TRACING_VARNAME] = False
+            tracing_on(tracing_func=cir)
 
-    stu = StudentImplementation.from_footprint(observed, max(t[1] for t in observed))
-    res = stu.check(ref)
-    print([r.messages for r in res])
+    def __exit__(self, exc_type, exc_value, traceback):
+        """
+        """
+        tracing_off(save_func=False)
+        self.frame.f_globals[TRACING_VARNAME] = False
+
+        if exc_type is None or self.report_on_error:
+            stu = StudentImplementation.from_footprint(self.observed, max(t[1] for t in self.observed))
+            res = stu.check(self.ref)
+            report = generate_report(res, show_only=self.show_only)
+            if report:
+                print(report)
+
+        return False
 
 
 from .plagiarism import create_references, get_impl_results

@@ -8,6 +8,7 @@ import nbformat
 import numpy as np
 
 from copy import deepcopy
+from textwrap import indent
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
@@ -213,6 +214,12 @@ class ReferenceResult:
         return all(r.satisfied for r in self.results)
 
     @property
+    def name(self):
+        """
+        """
+        return self.reference.name
+
+    @property
     def messages(self):
         """
         ``list[str]``: the list of messages returned by all annotations in the reference 
@@ -259,3 +266,32 @@ class ReferenceResult:
             ``numpy.ndarray``: indicator array for the passage of annotations
         """
         return np.array([r.satisfied for r in self.results], dtype=int)
+
+
+def generate_report(results, show_only=None):
+    """
+    """
+    if isinstance(results, ReferenceResult):
+        results = [results]
+    if not isinstance(results, list) and not all(isinstance(r, ReferenceResult) for r in results):
+        raise TypeError("Cannot generate a report from  arguments that are not reference result objects")
+    if show_only not in {"satisfied", "unsatisfied", None}:
+        raise ValueError("show_only must be in {'satisfied', 'unsatisfied', None}")
+    
+    filtered = []
+    for res in results:
+        if res.correct and show_only != "unsatisfied":
+            filtered.append(res)
+        elif not res.correct and show_only != "satisfied":
+            filtered.append(res)
+
+    report = ""
+    for i, res in enumerate(filtered):
+        report += f"REFERENCE: {res.name}\n"
+        report += f"SATISFIED: {res.correct}\n"
+        report += f"MESSAGES:\n"
+        report += indent("\n".join(res.messages), "  - ")
+        if i != len(filtered) - 1:
+            report += "\n\n"
+    
+    return report
