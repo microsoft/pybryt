@@ -81,7 +81,7 @@ Reference Results
 Student Implementations
 -----------------------
 
-.. autoclass:: pybryt.StudentImplementation
+.. automodule:: pybryt.student
    :members:
    :undoc-members:
 

@@ -1,5 +1,7 @@
 """Student implementations for PyBryt"""
 
+__all__ = ["StudentImplementation", "check"]
+
 import os
 import dill
 import base64
@@ -7,7 +9,8 @@ import nbformat
 import inspect
 
 from contextlib import contextmanager
-from typing import Any, List, NoReturn, Optional, Tuple, Union
+from types import FrameType
+from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .execution import (
     create_collector, _currently_tracing, execute_notebook, tracing_off, tracing_on, TRACING_VARNAME
@@ -180,13 +183,61 @@ class StudentImplementation:
 
 
 class check:
+    """
+    A context manager for running a block of student code against a reference implementation.
+
+    This context manager, designed to be used in students' notebooks, can be used to check a block
+    of student code against one or a series of reference implementations. The context manager turns
+    on tracing before launching the block and captures the memory footprint that is created while
+    the block is executed. It prints out a report upon exiting with information about the passing or
+    failing of each reference and the messages returned.
+
+    As an example, the block below uses this context manager to test a student's implementation of
+    a Fibonacci generator ``fiberator``:
+
+    .. code-block:: python
+
+        with pybryt.check("fiberator.pkl"):
+            fib = fiberator()
+            for _ in range(100):
+                next(fib)
+
+    Args:
+        ref (``Union[str, ReferenceImplementation, list[str], list[ReferenceImplementation]]``): the
+            reference(s) to check against or the path(s) to them
+        report_on_error (``bool``, optional): whether to print the report when an error is thrown
+            by the block
+        show_only (one of ``{'satisified', 'unsatisfied', None}``, optional): which types of
+            reference results to include in the report; if ``None``, all are included
+        **kwargs: additional keyword arguments passed to ``pybryt.execution.create_collector``
+    """
+
+    _ref: List[ReferenceImplementation]
+    """the references being checked against"""
+
+    _report_on_error: bool
+    """whether to print the report when an error is thrown by the block"""
+
+    _show_only: Optional[str]
+    """which types of eference results to include in the report"""
+
+    _frame: Optional[FrameType]
+    """the frame containing the student's code"""
+
+    _observed: Optional[List[Tuple[Any, int]]]
+    """the memory footprint"""
+
+    _kwargs: Dict[str, Any]
+    """keyword arguments passed to ``pybryt.execution.create_collector``"""
 
     def __init__(
         self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
-        report_on_error: bool = True, **kwargs
+        report_on_error: bool = True, show_only: Optional[str] = None, **kwargs
     ):
         if isinstance(ref, str):
-            ref = [ReferenceImplementation.load(ref)]
+            ref = ReferenceImplementation.load(ref)
+        if isinstance(ref, ReferenceImplementation):
+            ref = [ref]
         if isinstance(ref, list):
             if len(ref) == 0:
                 raise ValueError("Cannot check against an empty list of references")
@@ -197,34 +248,32 @@ class check:
         if not all(isinstance(r, ReferenceImplementation) for r in ref):
             raise TypeError("Invalid values provided for reference(s)")
 
-        self.ref = ref
-        self.kwargs = kwargs
-        self.show_only = self.kwargs.pop("show_only", None)
-        self.frame = None
-        self.observed = None
-        self.report_on_error = report_on_error
+        self._ref = ref
+        self._kwargs = kwargs
+        self._show_only = show_only
+        self._frame = None
+        self._observed = None
+        self._report_on_error = report_on_error
 
     def __enter__(self):
         if _currently_tracing():
             return  # if already tracing, no action required
 
         else:
-            self.observed, cir = create_collector(**self.kwargs)
-            self.frame = inspect.currentframe().f_back.f_back
-            self.frame.f_globals[TRACING_VARNAME] = True
+            self._observed, cir = create_collector(**self._kwargs)
+            self._frame = inspect.currentframe().f_back.f_back
+            self._frame.f_globals[TRACING_VARNAME] = True
 
             tracing_on(tracing_func=cir)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        """
-        """
         tracing_off(save_func=False)
-        self.frame.f_globals[TRACING_VARNAME] = False
+        self._frame.f_globals[TRACING_VARNAME] = False
 
-        if exc_type is None or self.report_on_error:
-            stu = StudentImplementation.from_footprint(self.observed, max(t[1] for t in self.observed))
-            res = stu.check(self.ref)
-            report = generate_report(res, show_only=self.show_only)
+        if exc_type is None or self._report_on_error:
+            stu = StudentImplementation.from_footprint(self._observed, max(t[1] for t in self._observed))
+            res = stu.check(self._ref)
+            report = generate_report(res, show_only=self._show_only)
             if report:
                 print(report)
 

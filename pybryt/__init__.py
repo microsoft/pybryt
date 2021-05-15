@@ -3,5 +3,5 @@
 from .annotations import *
 from .execution import *
 from .reference import ReferenceImplementation, ReferenceResult
-from .student import check, StudentImplementation
+from .student import *
 from .version import __version__

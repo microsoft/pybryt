@@ -136,7 +136,7 @@
 <h1>Student Implementations<a class="headerlink" href="#student-implementations" title="Permalink to this headline">¶</a></h1>
 <p>For tracking and managing student implementations, stored in PyBryt as a list of 2-tuples of the
 objects observed while tracing students’ code and the timestamps of those objects, PyBryt provides
-the <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> class. The constructor for this
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> class. The constructor for this
 class takes in either a path to a Jupyter Notebook file or a notebook object read in with
 <code class="docutils literal notranslate"><span class="pre">nbformat</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>
@@ -172,11 +172,11 @@ statements that show the values at various stages of execution.</p>
 <div class="section" id="checking-implementations">
 <h2>Checking Implementations<a class="headerlink" href="#checking-implementations" title="Permalink to this headline">¶</a></h2>
 <p>To reconcile a student implementation with a set of reference implementations, use the
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.check" title="pybryt.StudentImplementation.check"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code></a> method, which takes in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code> method, which takes in
 a single <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> object, or a list of
 them, and returns a <a class="reference internal" href="api_reference.html#pybryt.ReferenceResult" title="pybryt.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a> object (or a list of them).
 This method simply abstracts away managing the memory footprint tracked by the
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> object and calls the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> object and calls the
 <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.run" title="pybryt.ReferenceImplementation.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code></a> method for each provided
 reference implementation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"reference.ipynb"</span><span class="p">)</span>
@@ -194,15 +194,15 @@ for a single question in a reference that contains multiple questions, the patte
 <div class="section" id="storing-implementations">
 <h2>Storing Implementations<a class="headerlink" href="#storing-implementations" title="Permalink to this headline">¶</a></h2>
 <p>Because generating the memory footprints of students’ code can be time consuming and computationally
-expensive, <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> objects can also be
+expensive, <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> objects can also be
 serialized to make multiple runs across sessions easier. The
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> class provides the
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.dump" title="pybryt.StudentImplementation.dump"><code class="xref py py-class docutils literal notranslate"><span class="pre">dump</span></code></a> and
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.load" title="pybryt.StudentImplementation.load"><code class="xref py py-class docutils literal notranslate"><span class="pre">load</span></code></a> methods, which function the same as with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> class provides the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dump</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">load</span></code> methods, which function the same as with
 <a class="reference internal" href="reference_implementations.html#storing-refs"><span class="std std-ref">reference implementations</span></a>.
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> objects can also be serialized to
-base-64-encoded strings using the <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.dumps" title="pybryt.StudentImplementation.dumps"><code class="xref py py-class docutils literal notranslate"><span class="pre">dumps</span></code></a> and
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.loads" title="pybryt.StudentImplementation.loads"><code class="xref py py-class docutils literal notranslate"><span class="pre">loads</span></code></a> methods.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> objects can also be serialized to
+base-64-encoded strings using the <code class="xref py py-class docutils literal notranslate"><span class="pre">dumps</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">loads</span></code> methods.</p>
 </div>
 </div>
 
