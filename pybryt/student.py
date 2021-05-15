@@ -13,12 +13,10 @@ from types import FrameType
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .execution import (
-    create_collector, _currently_tracing, execute_notebook, tracing_off, tracing_on, TRACING_VARNAME
+    create_collector, _currently_tracing, execute_notebook, NBFORMAT_VERSION, tracing_off, 
+    tracing_on, TRACING_VARNAME
 )
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
-
-
-NBFORMAT_VERSION = 4
 
 
 class StudentImplementation:

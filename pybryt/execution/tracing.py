@@ -28,6 +28,10 @@ def _currently_tracing():
 
 def _get_tracing_frame():
     """
+    Returns the frame that is being traced by looking for the ``__PYBRYT_TRACING__`` global variable.
+
+    Returns:
+        the frame being traced or ``None`` of no tracing is occurring
     """
     frame = inspect.currentframe()
     while frame is not None:
