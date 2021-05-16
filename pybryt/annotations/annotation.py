@@ -325,8 +325,8 @@ class AnnotationResult:
             return self._satisfied
         elif self.children:
             return all(c.satisfied for c in self.children)
-        else:
-            return bool(self._satisfied)
+        else: # pragma: no cover
+            return False
 
     @property
     def satisfied_at(self) -> int:
