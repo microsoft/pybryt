@@ -62,8 +62,8 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
         sys.settrace(None)
         import dill
-        from pybryt.utils import filter_pickleable_list
-        filter_pickleable_list(observed_{secret})
+        from pybryt.utils import filter_picklable_list
+        filter_picklable_list(observed_{secret})
         with open("{observed_fp}", "wb+") as f:
             dill.dump(observed_{secret}, f)
     """))

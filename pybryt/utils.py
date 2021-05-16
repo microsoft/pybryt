@@ -28,7 +28,7 @@ def pickle_and_hash(obj: Any) -> str:
     return hashlib.sha512(s).hexdigest()
 
 
-def filter_pickleable_list(lst: List[Any]) -> NoReturn:
+def filter_picklable_list(lst: List[Any]) -> NoReturn:
     """
     Removes all elements from a list that cannot be pickled with ``dill``.
 
