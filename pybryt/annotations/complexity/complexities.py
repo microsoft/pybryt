@@ -20,7 +20,7 @@ class complexity(ABC):
     def transform_n(n: np.ndarray) -> np.ndarray:
         """
         """
-        ...
+        ... # pragma: no cover
 
     @staticmethod
     def transform_t(t: np.ndarray) -> np.ndarray:
@@ -101,4 +101,4 @@ class exponential(complexity):
         return np.log2(t)
 
 
-complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic]#, exponential]
+complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic, exponential]
