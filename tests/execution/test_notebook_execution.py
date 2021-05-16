@@ -14,25 +14,7 @@ from unittest import mock
 
 from pybryt.execution import create_collector, execute_notebook, NBFORMAT_VERSION
 
-from ..utils import AttrDict
-
-
-def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals={}, f_back=None):
-    """
-    Factory for generating objects with the instance variables of an ``inspect`` frame that are 
-    needed by PyBryt's trace function.
-    """
-    code = AttrDict({
-        "co_filename": co_filename,
-        "co_name": co_name,
-    })
-    return AttrDict({
-        "f_lineno": f_lineno,
-        "f_globals": f_globals,
-        "f_locals": f_locals,
-        "f_back": f_back,
-        "f_code": code,
-    })
+from .utils import generate_mocked_frame
 
 
 def generate_test_notebook():

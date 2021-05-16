@@ -6,6 +6,8 @@ import numpy as np
 from pybryt import check_time_complexity
 from pybryt.execution import create_collector, TimeComplexityResult
 
+from .utils import generate_mocked_frame
+
 
 def test_time_complexity():
     def do_work(n, transform):
@@ -44,3 +46,9 @@ def test_time_complexity():
     with pytest.raises(TypeError, match=f"n has invalid type {type(n)}"):
         with check_time_complexity("foo", n):
             pass
+
+    # check that tracking is disabled
+    frame = generate_mocked_frame("<ipython-abc-123>", "bar", 1)
+    with check_time_complexity("foo", 10):
+        cir(frame, "return", 10)
+        assert len(observed) == 16
