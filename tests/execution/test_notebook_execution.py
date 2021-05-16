@@ -3,6 +3,7 @@
 import os
 import re
 import dill
+import pathlib
 import random
 import tempfile
 import nbformat
@@ -158,7 +159,7 @@ def test_notebook_execution():
     random.seed(42)
     nb = generate_test_notebook()
 
-    observed_fn = pkg_resources.resource_filename(__name__, os.path.join("..", "files", "expected_observed.pkl"))
+    observed_fn = str(pathlib.Path(__file__).parent.parent / 'files' / 'expected_observed.pkl')
     with open(observed_fn, "rb") as f:
         expected_observed = dill.load(f)
 
