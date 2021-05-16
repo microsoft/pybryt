@@ -13,7 +13,7 @@ from unittest import mock
 
 from pybryt.execution import create_collector, execute_notebook, NBFORMAT_VERSION
 
-from .utils import AttrDict
+from ..utils import AttrDict
 
 
 def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals={}, f_back=None):
@@ -158,7 +158,7 @@ def test_notebook_execution():
     random.seed(42)
     nb = generate_test_notebook()
 
-    observed_fn = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_observed.pkl"))
+    observed_fn = pkg_resources.resource_filename(__name__, os.path.join("..", "files", "expected_observed.pkl"))
     with open(observed_fn, "rb") as f:
         expected_observed = dill.load(f)
 

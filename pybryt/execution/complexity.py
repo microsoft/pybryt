@@ -42,6 +42,8 @@ def check_time_complexity(name: str, n: Union[int, float, Sized]):
 
     yield
 
+    _TRACKING_DISABLED = False
+
     if curr_steps is not None:
         end_steps = counter[0]
         observed.append((TimeComplexityResult(name, n, curr_steps, end_steps), end_steps))
