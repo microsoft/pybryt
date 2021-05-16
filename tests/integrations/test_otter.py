@@ -8,6 +8,7 @@ import nbformat
 import pathlib
 import dill
 import pkg_resources
+import pytest
 
 from otter.assign.assignment import Assignment
 from otter.test_files import GradingResults 
@@ -129,7 +130,9 @@ def test_from_notebook(capsys):
         ref_path = str(pathlib.Path(__file__).parent.parent / 'files' / 'expected_ref.pkl')
 
         plg = OtterPlugin(ntf.name, {}, {})
-        plg.from_notebook(ref_path)
+        with pytest.warns(UserWarning, match="ould not force-save notebook; the results of this "
+                                "call will be based on the last saved version of this notebook."):
+            plg.from_notebook(ref_path)
 
         captured = capsys.readouterr()
         expected = dedent("""\
@@ -147,7 +150,10 @@ def test_from_notebook(capsys):
         ntf.seek(0)
 
         plg = OtterPlugin(ntf.name, {}, {})
-        plg.from_notebook(ref_path)
+
+        with pytest.warns(UserWarning, match="ould not force-save notebook; the results of this "
+                                "call will be based on the last saved version of this notebook."):
+            plg.from_notebook(ref_path)
 
         captured = capsys.readouterr()
         expected = dedent("""\

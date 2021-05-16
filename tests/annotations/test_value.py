@@ -51,7 +51,8 @@ def test_value_annotation():
         "limit": None,
         "group": None,
         "invariants": [],
-        "tol": 0,
+        "atol": None,
+        "rtol": None,
         "type": "value",
     }
     assert repr(res) == "AnnotationResult(satisfied=False, annotation=pybryt.Value)"
@@ -111,7 +112,8 @@ def test_attribute_annotation():
                 'failure_message': None, 
                 'children': [], 
                 'invariants': [], 
-                'tol': 0,
+                'atol': None,
+                'rtol': None,
                 "type": None,
             }
         ],
@@ -120,7 +122,8 @@ def test_attribute_annotation():
         "limit": None,
         "group": None,
         "invariants": [],
-        "tol": 0,
+        "atol": None,
+        "rtol": None,
         "type": "attribute",
         "attributes": ['T'],
     }
