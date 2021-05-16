@@ -117,7 +117,7 @@ class Annotation(ABC):
         ``list[Annotation]``: the child annotations of this annotation. If this annotation has no 
         children, an empty list.
         """
-        ...
+        ... # pragma: no cover
 
     @abstractmethod
     def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
@@ -136,7 +136,7 @@ class Annotation(ABC):
             :py:class:`AnnotationResult`: the results of this annotation based on 
             ``observed_values``
         """
-        ...
+        ... # pragma: no cover
 
     @abstractmethod
     def __eq__(self, other: Any) -> bool:
@@ -149,7 +149,7 @@ class Annotation(ABC):
         Returns:
             ``bool``: whether the objects are equal
         """
-        ...
+        ... # pragma: no cover
 
     def before(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
         """

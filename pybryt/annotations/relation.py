@@ -62,7 +62,7 @@ class RelationalAnnotation(Annotation):
 
     @abstractmethod
     def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
-        ...
+        ... # pragma: no cover
 
 
 class BeforeAnnotation(RelationalAnnotation):

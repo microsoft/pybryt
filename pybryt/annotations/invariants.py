@@ -47,7 +47,7 @@ class invariant(ABC):
             ``list[object]``: the values that would evaluate as "the same" under the conditions 
             of this invariant
         """
-        ...
+        ... # pragma: no cover
 
 
 # TODO: if hashing, for all strings collect actual string and lowercased version (marked as such), 
