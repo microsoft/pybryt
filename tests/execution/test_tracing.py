@@ -1,12 +1,18 @@
 """"""
 
+import sys
+import inspect
 import numpy as np
 
 from unittest import mock
 
-from pybryt.execution import create_collector
+from pybryt import *
+from pybryt.execution import create_collector, TRACING_VARNAME
 
 from .utils import generate_mocked_frame
+
+
+__PYBRYT_TRACING__ = False
 
 
 def test_trace_function():
@@ -111,3 +117,30 @@ def test_trace_function():
     assert len(observed) == 8
     assert np.allclose(observed[7][0], np.exp(arr))
     assert observed[7][1] == 12
+
+
+def test_tracing_control():
+    """
+    """
+    global __PYBRYT_TRACING__
+    trace = lambda frame, event, arg: trace
+
+    __PYBRYT_TRACING__ = True
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_off()
+        mocked_settrace.assert_called()
+
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_on()
+        mocked_settrace.assert_called()
+
+    __PYBRYT_TRACING__ = False
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_off()
+        mocked_settrace.assert_not_called()
+
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_on()
+        mocked_settrace.assert_not_called()
+
+    # assert inspect.currentframe().f_trace is not trace
