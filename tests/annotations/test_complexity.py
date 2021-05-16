@@ -22,6 +22,8 @@ def generate_complexity_footprint(name, t_transform, max_exp=8):
 def test_complexity_abc():
     """
     """
+    Annotation.reset_tracked_annotations()
+
     a = TimeComplexity(cplx.constant, name="foo")
     check_obj_attributes(a, {
         "name": "foo",
@@ -49,6 +51,8 @@ def test_complexity_abc():
 
 
 def test_time_complexity():
+    Annotation.reset_tracked_annotations()
+
     a = TimeComplexity(cplx.constant, name="foo")
 
     footprint = generate_complexity_footprint("foo", lambda v: 1012)

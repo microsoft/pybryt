@@ -40,5 +40,6 @@ def generate_memory_footprint():
         None,
         np.random.normal(size=102),
         4.0,
+        "some CasE insenSITIve StrINg!",
     ]
     return [(o, i) for i, o in enumerate(objs)]
