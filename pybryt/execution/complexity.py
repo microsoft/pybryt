@@ -40,7 +40,7 @@ class check_time_complexity:
     def __enter__(self):
         global _TRACKING_DISABLED
 
-        from . import _COLLECTOR_RET
+        from .tracing import _COLLECTOR_RET
         if _COLLECTOR_RET is not None:
             self._observed, self._counter, _ = _COLLECTOR_RET
             self._curr_steps = self._counter[0]
