@@ -19,6 +19,18 @@ class TimeComplexityResult:
 
 class check_time_complexity:
     """
+    A context manager for checking the time complexity of student code.
+
+    Halts tracking of values in memory and sets the trace function to only increment the step
+    counter. When the block exits, the step counter is checked an a ``TimeComplexityResult`` object
+    is appended to the student's memory footprint.
+
+    If the current call stack is not being traced by PyBryt, no action is taken.
+
+    Args:
+        name (``str``): the name of the check; should match with the name of an annotation in the
+            reference implementation
+        n (``Union[int, float, Sized]``): the input length or the input itself if it supports ``len``
     """
 
     def __init__(self, name: str, n: Union[int, float, Sized]):

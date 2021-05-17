@@ -199,6 +199,8 @@
 </li>
           <li><a href="api_reference.html#pybryt.StudentImplementation.check">(StudentImplementation method)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.check">(TimeComplexity method)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.value.Value.check">(Value method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.relation.XorAnnotation.check">(XorAnnotation method)</a>
@@ -206,10 +208,10 @@
         </ul></li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.check_plagiarism">check_plagiarism() (StudentImplementation method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.execution.check_time_complexity">check_time_complexity (class in pybryt.execution)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.value.Value.check_values_equal">check_values_equal() (Value static method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.AnnotationResult.children">children (AnnotationResult attribute)</a>
@@ -219,6 +221,8 @@
         <ul>
           <li><a href="api_reference.html#pybryt.annotations.value.Attribute.children">(Attribute property)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.children">(ComplexityAnnotation property)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation.children">(RelationalAnnotation property)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.value.Value.children">(Value property)</a>
@@ -227,6 +231,8 @@
         <li><a href="api_reference.html#pybryt.ReferenceImplementation.compile">compile() (ReferenceImplementation class method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity">complexity (class in pybryt.annotations.complexity.complexities)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation">ComplexityAnnotation (class in pybryt.annotations.complexity.annotation)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.constant">constant (class in pybryt.annotations.complexity.complexities)</a>
 </li>
@@ -271,7 +277,13 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.failure_message">failure_message (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.failure_message">(ComplexityAnnotation attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.failure_message">(TimeComplexity attribute)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -285,7 +297,11 @@
         <li><a href="api_reference.html#pybryt.Annotation.group">group (Annotation attribute)</a>
 
         <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.group">(ComplexityAnnotation attribute)</a>
+</li>
           <li><a href="api_reference.html#pybryt.ReferenceResult.group">(ReferenceResult attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.group">(TimeComplexity attribute)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -317,13 +333,19 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.limit">limit (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.limit">(ComplexityAnnotation attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.limit">(TimeComplexity attribute)</a>
+</li>
+        </ul></li>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linear">linear (class in pybryt.annotations.complexity.complexities)</a>
-</li>
-        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linearithmic">linearithmic (class in pybryt.annotations.complexity.complexities)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linearithmic">linearithmic (class in pybryt.annotations.complexity.complexities)</a>
+</li>
         <li><a href="api_reference.html#pybryt.ReferenceImplementation.load">load() (ReferenceImplementation static method)</a>
 
         <ul>
@@ -352,7 +374,7 @@
     module
 
         <ul>
-          <li><a href="api_reference.html#module-pybryt.annotations.complexity">pybryt.annotations.complexity</a>
+          <li><a href="api_reference.html#module-pybryt.annotations.complexity.annotation">pybryt.annotations.complexity.annotation</a>
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.complexity.complexities">pybryt.annotations.complexity.complexities</a>
 </li>
@@ -374,11 +396,17 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.name">name (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.name">(ComplexityAnnotation attribute)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.AnnotationResult.name">name() (AnnotationResult property)</a>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.name">(TimeComplexity attribute)</a>
 </li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.AnnotationResult.name">name() (AnnotationResult property)</a>
+</li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.nb">nb (StudentImplementation attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.nb_path">nb_path (StudentImplementation attribute)</a>
@@ -404,10 +432,10 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li>
-    pybryt.annotations.complexity
+    pybryt.annotations.complexity.annotation
 
         <ul>
-          <li><a href="api_reference.html#module-pybryt.annotations.complexity">module</a>
+          <li><a href="api_reference.html#module-pybryt.annotations.complexity.annotation">module</a>
 </li>
         </ul></li>
         <li>
@@ -505,14 +533,20 @@
 </li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.steps">steps (StudentImplementation attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.invariants.string_capitalization">string_capitalization (class in pybryt.annotations.invariants)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.StudentImplementation">StudentImplementation (class in pybryt)</a>
 </li>
         <li><a href="api_reference.html#pybryt.Annotation.success_message">success_message (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.success_message">(ComplexityAnnotation attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.success_message">(TimeComplexity attribute)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -521,6 +555,8 @@
   <h2>T</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity">TimeComplexity (class in pybryt.annotations.complexity.annotation)</a>
+</li>
         <li><a href="api_reference.html#pybryt.AnnotationResult.timestamp">timestamp (AnnotationResult attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.ReferenceResult.to_array">to_array() (ReferenceResult method)</a>

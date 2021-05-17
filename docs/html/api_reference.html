@@ -685,8 +685,124 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 </dd></dl>
 </div>
-<div class="section" id="module-pybryt.annotations.complexity">
-<span id="complexity-annotations"></span><h3>Complexity Annotations<a class="headerlink" href="#module-pybryt.annotations.complexity" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-pybryt.annotations.complexity.annotation">
+<span id="complexity-annotations"></span><h3>Complexity Annotations<a class="headerlink" href="#module-pybryt.annotations.complexity.annotation" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">ComplexityAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for annotations that assert a condition on the complexity of a student’s code.</p>
+<p>All complexity annotations should inherit from this class, which defines a constructor that
+takes in a complexity class and any necessary keyword arguments. Note that all compelxity
+annotations require a <code class="docutils literal notranslate"><span class="pre">name</span></code> keyword argument so that they can be matched with their results
+from the student’s memory footprint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>complexity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">complexity</span></code>) – the complexity class
+being asserted</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation.children">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>the child annotations of this annotation. If this annotation has no
+children, an empty list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation.failure_message">
+<code class="sig-name descname"><span class="pre">failure_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation.failure_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>a message to relay to the student if not satisfied</p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation.group">
+<code class="sig-name descname"><span class="pre">group</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the group that this annotation belongs to</p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation.limit">
+<code class="sig-name descname"><span class="pre">limit</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation.limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>the maximum number of annotations with this name to track in <code class="xref py py-obj docutils literal notranslate"><span class="pre">_TRACKED_ANNOTATIONS</span></code></p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation.name">
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the annotation</p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation.success_message">
+<code class="sig-name descname"><span class="pre">success_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation.success_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>a message to relay to the student if satisfied</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">TimeComplexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotation for asserting the time complexity of a block of student code.</p>
+<p>Time complexity here is defined as the number of execution steps taken while executing the
+code block, which is determined using the number of calls to PyBryt’s trace function. Use the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">check_time_complexity</span></code> context manager to check time
+complexity in student’s code. The <code class="docutils literal notranslate"><span class="pre">name</span></code> of this annotation should be the same as the <code class="docutils literal notranslate"><span class="pre">name</span></code>
+passed to the context manager or this annotation will not be able to find the results of the
+check.</p>
+<dl class="py method">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity.check">
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">pybryt.annotations.annotation.AnnotationResult</span><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the time complexity of a block of student code and returns a results object.</p>
+<p>Finds all instances of the <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeComplexityResult</span></code>
+class in the student’s memory footprint and selects all those with matching names. Collects
+the timing data from each into a dictionary and runs each complexity class in
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">complexities.complexity_classes</span></code> against
+this data. Returns a result indicating whether the closest-matched complexity class was the
+one asserted in this annotation’s <code class="docutils literal notranslate"><span class="pre">complexity</span></code> field. The <code class="docutils literal notranslate"><span class="pre">value</span></code> of the result object
+is set to the matching complexity class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>observed_values</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">int]]</span></code>) – a list of tuples of values observed
+during execution and the timestamps of those values</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the results of this annotation based on
+<code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity.failure_message">
+<code class="sig-name descname"><span class="pre">failure_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity.failure_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>a message to relay to the student if not satisfied</p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity.group">
+<code class="sig-name descname"><span class="pre">group</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the group that this annotation belongs to</p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity.limit">
+<code class="sig-name descname"><span class="pre">limit</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity.limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>the maximum number of annotations with this name to track in <code class="xref py py-obj docutils literal notranslate"><span class="pre">_TRACKED_ANNOTATIONS</span></code></p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity.name">
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the annotation</p>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.complexity.annotation.TimeComplexity.success_message">
+<code class="sig-name descname"><span class="pre">success_message</span></code><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.complexity.annotation.TimeComplexity.success_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>a message to relay to the student if satisfied</p>
+</dd></dl>
+</dd></dl>
 <div class="section" id="module-pybryt.annotations.complexity.complexities">
 <span id="complexity-classes"></span><span id="complexities"></span><h4>Complexity Classes<a class="headerlink" href="#module-pybryt.annotations.complexity.complexities" title="Permalink to this headline">¶</a></h4>
 <dl class="py class">
@@ -773,7 +889,7 @@ arrays and returns the sum of residuals.</p>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.cubic">
 <em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">cubic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.cubic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Complexity class for cubic time: <span class="math notranslate nohighlight">\(\mathcal{O}(n^4)\)</span></p>
+<dd><p>Complexity class for cubic time: <span class="math notranslate nohighlight">\(\mathcal{O}(n^3)\)</span></p>
 <dl class="py method">
 <dt id="pybryt.annotations.complexity.complexities.cubic.transform_n">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">transform_n</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> → <span class="pre">numpy.ndarray</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.cubic.transform_n" title="Permalink to this definition">¶</a></dt>
@@ -1519,7 +1635,7 @@ for ungraded code In the example below, <code class="docutils literal notranslat
 <li><a class="reference internal" href="#annotations">Annotations</a><ul>
 <li><a class="reference internal" href="#module-pybryt.annotations.value">Value Annotations</a></li>
 <li><a class="reference internal" href="#module-pybryt.annotations.relation">Relational Annotations</a></li>
-<li><a class="reference internal" href="#module-pybryt.annotations.complexity">Complexity Annotations</a><ul>
+<li><a class="reference internal" href="#module-pybryt.annotations.complexity.annotation">Complexity Annotations</a><ul>
 <li><a class="reference internal" href="#module-pybryt.annotations.complexity.complexities">Complexity Classes</a></li>
 </ul>
 </li>
