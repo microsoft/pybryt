@@ -74,17 +74,13 @@ class Annotation(ABC):
         global _GROUP_INDICES, _TRACKED_ANNOTATIONS
 
         idx = len(_TRACKED_ANNOTATIONS)
-        if self.name is None:
-            if self.limit is not None:
-                raise TypeError("'limit' passed without 'name'") 
+        if self.name not in _GROUP_INDICES:
+            _GROUP_INDICES[self.name] = []
+        if self.limit is not None and len(_GROUP_INDICES[self.name]) >= self.limit:
+            return
         else:
-            if self.name not in _GROUP_INDICES:
-                _GROUP_INDICES[self.name] = []
-            if self.limit is not None and len(_GROUP_INDICES[self.name]) >= self.limit:
-                return
-            else:
-                _GROUP_INDICES[self.name].append(idx)
-        
+            _GROUP_INDICES[self.name].append(idx)
+    
         for child in self.children:
             try:
                 _TRACKED_ANNOTATIONS.remove(child)
@@ -121,7 +117,7 @@ class Annotation(ABC):
         ``list[Annotation]``: the child annotations of this annotation. If this annotation has no 
         children, an empty list.
         """
-        ...
+        ... # pragma: no cover
 
     @abstractmethod
     def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
@@ -140,7 +136,7 @@ class Annotation(ABC):
             :py:class:`AnnotationResult`: the results of this annotation based on 
             ``observed_values``
         """
-        ...
+        ... # pragma: no cover
 
     @abstractmethod
     def __eq__(self, other: Any) -> bool:
@@ -153,7 +149,7 @@ class Annotation(ABC):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return self is other
+        ... # pragma: no cover
 
     def before(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
         """
@@ -329,8 +325,8 @@ class AnnotationResult:
             return self._satisfied
         elif self.children:
             return all(c.satisfied for c in self.children)
-        else:
-            return bool(self._satisfied)
+        else: # pragma: no cover
+            return False
 
     @property
     def satisfied_at(self) -> int:

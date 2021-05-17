@@ -31,7 +31,7 @@ Relational Annotations
 Complexity Annotations
 ++++++++++++++++++++++
 
-.. automodule:: pybryt.annotations.complexity
+.. automodule:: pybryt.annotations.complexity.annotation
    :members:
    :undoc-members:
 

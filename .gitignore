@@ -133,3 +133,4 @@ dmypy.json
 .OTTER_LOG
 /*.ipynb
 /*.pkl
+/notebooks
