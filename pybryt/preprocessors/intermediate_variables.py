@@ -125,7 +125,7 @@ class UnassignedVarWrapper(ast.NodeTransformer):
                 if isinstance(curr.parent, ast.If):
                     idx = curr.parent.orelse.index(curr)
                     is_else = True
-                else:
+                else: # pragma: no cover
                     raise
 
             curr = curr.parent
