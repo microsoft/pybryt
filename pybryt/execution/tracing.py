@@ -1,26 +1,17 @@
-"""Submission execution internals for PyBryt"""
+""""""
 
-__all__ = ["tracing_off", "tracing_on"]
-
-import os
 import re
 import linecache
-import dill
 import inspect
-import nbformat
 
-from nbconvert.preprocessors import ExecutePreprocessor
-from copy import copy, deepcopy
-from tempfile import mkstemp
+from copy import copy
 from types import FrameType, FunctionType, ModuleType
-from typing import Any, List, Tuple, Callable, Optional
-from textwrap import dedent
+from typing import Any, List, Tuple, Callable
 
-from .preprocessors import IntermediateVariablePreprocessor
-from .utils import make_secret, pickle_and_hash
+from ..utils import make_secret, pickle_and_hash
 
 
-NBFORMAT_VERSION = 4
+_COLLECTOR_RET = None
 TRACING_VARNAME = "__PYBRYT_TRACING__"
 TRACING_FUNC = None
 
@@ -44,6 +35,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         ``tuple[list[tuple[object, int]], callable[[frame, str, object], callable]]``: the list
         of tuples of observed objects and their timestamps, and the trace function
     """
+    global _COLLECTOR_RET
     observed = []
     vars_not_found = {}
     hashes = set()
@@ -81,10 +73,17 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         """
         Trace function for PyBryt.
         """
+        if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
+            counter[0] += 1 # increment student code step counter
+
+        # return if tracking is disabled by a compelxity check
+        from .complexity import _TRACKING_DISABLED
+        if _TRACKING_DISABLED:
+            return collect_intermidiate_results
+
         name = frame.f_code.co_filename + frame.f_code.co_name
 
         if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
-            counter[0] += 1 # increment student code step counter
             if event == "line" or event == "return":
 
                 line = linecache.getline(frame.f_code.co_filename, frame.f_lineno)
@@ -137,23 +136,19 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
         return collect_intermidiate_results
 
+    _COLLECTOR_RET = (observed, counter, collect_intermidiate_results)
     return observed, collect_intermidiate_results
 
 
-def _currently_tracing():
+def _get_tracing_frame():
     """
-    Determines whether PyBryt is actively tracing the current call stack by looking at the parent
-    frames and determining if ``__PYBRYT_TRACING__`` exists and is ``True`` in any of their globals.
-
-    Returns:
-        ``bool``: if PyBryt is currently tracing
     """
     frame = inspect.currentframe()
     while frame is not None:
         if TRACING_VARNAME in frame.f_globals and frame.f_globals[TRACING_VARNAME]:
-            return True
+            return frame
         frame = frame.f_back
-    return False
+    return None
 
 
 def tracing_off():
@@ -176,9 +171,9 @@ def tracing_off():
         x3 = pow(x, 3)
     """
     global TRACING_FUNC
-    if not _currently_tracing():
+    frame = _get_tracing_frame()
+    if frame is None:
         return
-    frame = inspect.currentframe().f_back
     TRACING_FUNC = frame.f_trace
     vn = f"sys_{make_secret()}"
     exec(f"import sys as {vn}\n{vn}.settrace(None)", frame.f_globals, frame.f_locals)
@@ -207,78 +202,10 @@ def tracing_on():
         x4 = pow(x, 4)
     """
     global TRACING_FUNC
-    if not _currently_tracing() or TRACING_FUNC is None:
+    frame = _get_tracing_frame()
+    if frame is None:
         return
-    frame = inspect.currentframe().f_back
     vn = f"cir_{make_secret()}"
     vn2 = f"sys_{make_secret()}"
     frame.f_globals[vn] = TRACING_FUNC
     exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)
-
-
-def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
-        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]]]:
-    """
-    Executes a submission using ``nbconvert`` and returns the memory footprint.
-
-    Takes in a notebook object and preprocesses it before running it through the 
-    ``nbconvert.ExecutePreprocessor`` to execute it. The notebook writes the memory footprint, a 
-    list of observed values and their timestamps, to a file, which is loaded using ``dill`` by this
-    function. Errors during execution are ignored, and the executed notebook can be written to a 
-    file using the ``output`` argument.
-
-    Args:
-        nb (``nbformat.NotebookNode``): the notebook to be executed
-        nb_path (``str``): path to the notebook ``nb``
-        addl_filenames (``list[str]``, optional): a list of additional files to trace inside
-        output (``str``, optional): a file path at which to write the executed notebook
-
-    Returns:
-        ``tuple[int, list[tuple[object, int]]]``: the number of execution steps and the memory 
-        footprint
-    """
-    nb = deepcopy(nb)
-    preprocessor = IntermediateVariablePreprocessor()
-    nb = preprocessor.preprocess(nb)
-
-    secret = make_secret()
-    _, observed_fp = mkstemp()
-    nb_dir = os.path.abspath(os.path.split(nb_path)[0])
-
-    first_cell = nbformat.v4.new_code_cell(dedent(f"""\
-        import sys
-        from pybryt.execution import create_collector
-        observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
-        sys.settrace(cir)
-        {TRACING_VARNAME} = True
-        %cd {nb_dir}
-    """))
-
-    last_cell = nbformat.v4.new_code_cell(dedent(f"""\
-        sys.settrace(None)
-        import dill
-        from pybryt.utils import filter_pickleable_list
-        filter_pickleable_list(observed_{secret})
-        with open("{observed_fp}", "wb+") as f:
-            dill.dump(observed_{secret}, f)
-    """))
-
-    nb['cells'].insert(0, first_cell)
-    nb['cells'].append(last_cell)
-
-    ep = ExecutePreprocessor(timeout=1200, allow_errors=True)
-
-    ep.preprocess(nb)
-
-    if output:
-        with open(output, "w+") as f:
-            nbformat.write(nb, f)
-
-    with open(observed_fp, "rb") as f:
-        observed = dill.load(f)
-
-    os.remove(observed_fp)
-
-    n_steps = max([t[1] for t in observed])
-
-    return n_steps, observed

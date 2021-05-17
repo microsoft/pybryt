@@ -1,51 +1,18 @@
-"""Tests for PyBryt execution internals"""
+""""""
 
-import os
-import re
-import dill
-import random
-import tempfile
-import nbformat
+import sys
+import inspect
 import numpy as np
-import pkg_resources
 
 from unittest import mock
 
-from pybryt.execution import create_collector, execute_notebook, NBFORMAT_VERSION
+from pybryt import *
+from pybryt.execution import create_collector, TRACING_VARNAME
 
-from .utils import AttrDict
-
-
-def generate_mocked_frame(co_filename, co_name, f_lineno, f_globals={}, f_locals={}, f_back=None):
-    """
-    Factory for generating objects with the instance variables of an ``inspect`` frame that are 
-    needed by PyBryt's trace function.
-    """
-    code = AttrDict({
-        "co_filename": co_filename,
-        "co_name": co_name,
-    })
-    return AttrDict({
-        "f_lineno": f_lineno,
-        "f_globals": f_globals,
-        "f_locals": f_locals,
-        "f_back": f_back,
-        "f_code": code,
-    })
+from .utils import generate_mocked_frame
 
 
-def generate_test_notebook():
-    """
-    """
-    nb = nbformat.v4.new_notebook()
-    nb.cells.append(nbformat.v4.new_code_cell(
-        "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\n%matplotlib inline"
-        ))
-    nb.cells.append(nbformat.v4.new_code_cell(
-        "np.random.seed(42)\nx = np.random.uniform(size=1000)\ny = np.random.normal(size=1000)"
-    ))
-    nb.cells.append(nbformat.v4.new_code_cell("df = pd.DataFrame({'x': x, 'y': y})"))
-    return nb
+__PYBRYT_TRACING__ = False
 
 
 def test_trace_function():
@@ -152,21 +119,28 @@ def test_trace_function():
     assert observed[7][1] == 12
 
 
-def test_notebook_execution():
+def test_tracing_control():
     """
     """
-    random.seed(42)
-    nb = generate_test_notebook()
+    global __PYBRYT_TRACING__
+    trace = lambda frame, event, arg: trace
 
-    observed_fn = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_observed.pkl"))
-    with open(observed_fn, "rb") as f:
-        expected_observed = dill.load(f)
+    __PYBRYT_TRACING__ = True
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_off()
+        mocked_settrace.assert_called()
 
-    with tempfile.NamedTemporaryFile("w+") as ntf:
-        with tempfile.NamedTemporaryFile(delete=False) as observed_ntf:
-            with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
-                mocked_tempfile.return_value = (None, observed_ntf.name)
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_on()
+        mocked_settrace.assert_called()
 
-                n_steps, observed = execute_notebook(nb, "", output=ntf.name)
-                assert len(ntf.read()) > 0
-                assert n_steps == max(t[1] for t in observed)
+    __PYBRYT_TRACING__ = False
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_off()
+        mocked_settrace.assert_not_called()
+
+    with mock.patch("sys.settrace") as mocked_settrace:
+        tracing_on()
+        mocked_settrace.assert_not_called()
+
+    # assert inspect.currentframe().f_trace is not trace

@@ -8,6 +8,7 @@ Annotations
    :hidden:
 
    relational_annotations
+   complexity_annotations
    invariants
 
 Annotations are the building blocks out of which reference implementations are constructed. They 
