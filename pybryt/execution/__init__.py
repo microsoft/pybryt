@@ -13,7 +13,7 @@ from typing import Any, List, Tuple, Optional
 from textwrap import dedent
 
 from .complexity import check_time_complexity, TimeComplexityResult
-from .tracing import _currently_tracing, create_collector, tracing_off, tracing_on, TRACING_VARNAME
+from .tracing import create_collector, _get_tracing_frame, tracing_off, tracing_on, TRACING_VARNAME
 from ..preprocessors import IntermediateVariablePreprocessor
 from ..utils import make_secret
 

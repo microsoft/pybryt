@@ -13,7 +13,7 @@ from types import FrameType
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .execution import (
-    create_collector, _currently_tracing, execute_notebook, NBFORMAT_VERSION, tracing_off, 
+    create_collector, execute_notebook, _get_tracing_frame, NBFORMAT_VERSION, tracing_off, 
     tracing_on, TRACING_VARNAME
 )
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
@@ -261,26 +261,28 @@ class check:
         self._report_on_error = report_on_error
 
     def __enter__(self):
-        if _currently_tracing():
+        if _get_tracing_frame() is None:
             return  # if already tracing, no action required
 
         else:
             self._observed, cir = create_collector(**self._kwargs)
-            self._frame = inspect.currentframe().f_back.f_back
+            self._frame = inspect.currentframe().f_back
             self._frame.f_globals[TRACING_VARNAME] = True
 
             tracing_on(tracing_func=cir)
 
     def __exit__(self, exc_type, exc_value, traceback):
         tracing_off(save_func=False)
-        self._frame.f_globals[TRACING_VARNAME] = False
 
-        if exc_type is None or self._report_on_error:
-            stu = StudentImplementation.from_footprint(self._observed, max(t[1] for t in self._observed))
-            res = stu.check(self._ref)
-            report = generate_report(res, show_only=self._show_only)
-            if report:
-                print(report)
+        if self._frame is not None:
+            self._frame.f_globals[TRACING_VARNAME] = False
+
+            if exc_type is None or self._report_on_error:
+                stu = StudentImplementation.from_footprint(self._observed, max(t[1] for t in self._observed))
+                res = stu.check(self._ref)
+                report = generate_report(res, show_only=self._show_only)
+                if report:
+                    print(report)
 
         return False
 
