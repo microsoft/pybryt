@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
 
-    <meta name="generator" content="sphinx-3.5.1, furo 2021.02.21.beta25"/>
+    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
         <title>API Reference - PyBryt documentation</title>
       <link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
     <link rel="stylesheet" href="_static/pygments.css">
@@ -370,7 +370,7 @@ the attributes being checked. This dictionary does <em>not</em> contain the valu
 students’ code. Values can be of any type that is picklable by <code class="docutils literal notranslate"><span class="pre">dill</span></code>. Values can specify a
 list of <a class="reference internal" href="annotations/invariants.html#invariants"><span class="std std-ref">invariants</span></a> that will allow objects to be considered “equal.” For
 values that support arithemtic operators, absolute tolerances can be specified as well.</p>
-<p>Numeric tolerances are computing as with <code class="docutils literal notranslate"><span class="pre">numpy.allcose</span></code>, where the value is considered “equal
+<p>Numeric tolerances are computed as with <code class="docutils literal notranslate"><span class="pre">numpy.allcose</span></code>, where the value is considered “equal
 enough” if it is within <span class="math notranslate nohighlight">\(v \pm (\texttt{atol} + \texttt{rtol} \cdot |v|)\)</span>, where
 <span class="math notranslate nohighlight">\(v\)</span> is the value of the annotation.</p>
 <dl class="field-list simple">
@@ -378,7 +378,7 @@ enough” if it is within <span class="math notranslate nohighlight">\(v \pm (\t
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>value</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the value that should be observed</p></li>
 <li><p><strong>atol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional) – absolute tolerance for numeric values</p></li>
-<li><p><strong>rtol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional) – absolute tolerance for numeric values</p></li>
+<li><p><strong>rtol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional) – relative tolerance for numeric values</p></li>
 <li><p><strong>invariants</strong> (<code class="docutils literal notranslate"><span class="pre">list[invariant]</span></code>) – invariants for
 this value</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
@@ -436,23 +436,6 @@ children, an empty list.</p>
 <dt id="pybryt.annotations.value.Value.invariants">
 <code class="sig-name descname"><span class="pre">invariants</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><span class="pre">pybryt.annotations.invariants.invariant</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.value.Value.invariants" title="Permalink to this definition">¶</a></dt>
 <dd><p>the invariants for this value</p>
-</dd></dl>
-<dl class="py method">
-<dt id="pybryt.annotations.value.Value.to_dict">
-<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.value.Value.to_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
-<p>Output dictionary contains the annotation’s name, group, limit number, success message, and
-failure message, as well as an <code class="docutils literal notranslate"><span class="pre">invariants</span></code> key with a list of the names of all invariants
-used in this value annotation and a <code class="docutils literal notranslate"><span class="pre">tol</span></code> key with this annotation’s tolerance. This
-dictionary does <em>not</em> contain the value being tracked.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the dictionary representation of this annotation</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
-</dd>
-</dl>
 </dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.annotations.value.Value.rtol">
@@ -1559,7 +1542,21 @@ implementation</p>
 <dl class="py class">
 <dt id="pybryt.execution.check_time_complexity">
 <em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">check_time_complexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">collections.abc.Sized</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.check_time_complexity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A context manager for checking the time complexity of student code.</p>
+<p>Halts tracking of values in memory and sets the trace function to only increment the step
+counter. When the block exits, the step counter is checked an a <code class="docutils literal notranslate"><span class="pre">TimeComplexityResult</span></code> object
+is appended to the student’s memory footprint.</p>
+<p>If the current call stack is not being traced by PyBryt, no action is taken.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the name of the check; should match with the name of an annotation in the
+reference implementation</p></li>
+<li><p><strong>n</strong> (<code class="docutils literal notranslate"><span class="pre">Union[int,</span> <span class="pre">float,</span> <span class="pre">Sized]</span></code>) – the input length or the input itself if it supports <code class="docutils literal notranslate"><span class="pre">len</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py function">
 <dt id="pybryt.execution.tracing_off">
 <code class="sig-name descname"><span class="pre">tracing_off</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.execution.tracing_off" title="Permalink to this definition">¶</a></dt>

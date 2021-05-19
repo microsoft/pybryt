@@ -1,9 +1,10 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Complexity Annotations" href="complexity_annotations.html" /><link rel="prev" title="Annotations" href="index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Complexity Annotations" href="complexity_annotations.html" /><link rel="prev" title="Annotations" href="index.html" />
 
-    <meta name="generator" content="sphinx-3.5.1, furo 2021.02.21.beta25"/>
+    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
         <title>Relational Annotations - PyBryt documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
     <link rel="stylesheet" href="../_static/pygments.css">
@@ -134,19 +135,27 @@
         </label>
         <div class="section" id="relational-annotations">
 <span id="relational"></span><h1>Relational Annotations<a class="headerlink" href="#relational-annotations" title="Permalink to this headline">¶</a></h1>
-<p>Relational annotations define some kind of relationship between two or more annotations. Currently,
-PyBryt supports two kinds of relational annotations: temporal annotations and boolean annotations.
-All relational annotations are subclasses of the abstract
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a> class, which
-defines some helpful defaults for working with annotations that have child annotations.</p>
+<p>Relational annotations define some kind of relationship between two or more
+annotations. Currently, PyBryt supports two types of relational annotations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>temporal annotations and</p></li>
+<li><p>boolean annotations.</p></li>
+</ul>
+</div></blockquote>
+<p>All relational annotations are subclasses of the abstract
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a>
+class, which defines some helpful defaults for working with annotations that
+have child annotations.</p>
 <div class="section" id="temporal-annotations">
 <h2>Temporal Annotations<a class="headerlink" href="#temporal-annotations" title="Permalink to this headline">¶</a></h2>
-<p>Temporal annotations describe <em>when</em> variables should appear in students’ code relative to one
-another. For example, consider the problem of a dynamic programming algorithm to compute the
-Fibonacci sequence: the array containing <span class="math notranslate nohighlight">\(n-1\)</span> first Fibonacci numbers should appear in memory
-before the array containing the <span class="math notranslate nohighlight">\(n\)</span> first Fibonacci numbers.</p>
-<p>To enforce such a constraint, the <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class defines a
-<code class="docutils literal notranslate"><span class="pre">before</span></code> method that asserts that one annotation occurs before another:</p>
+<p>Temporal annotations describe <em>when</em> variables should appear in student’s code
+relative to one another. For example, let us consider the problem of a dynamic
+programming algorithm to compute the Fibonacci sequence: the array containing
+<span class="math notranslate nohighlight">\(n-1\)</span> first Fibonacci numbers should appear in memory before the array
+with <span class="math notranslate nohighlight">\(n\)</span> first Fibonacci numbers. To enforce such a constraint, the
+<a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class defines a <code class="docutils literal notranslate"><span class="pre">before</span></code> method that
+asserts that one annotation occurs before another:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Compute and return an array of the first n Fibonacci numbers using dynamic programming.</span>
@@ -156,6 +165,7 @@ before the array containing the <span class="math notranslate nohighlight">\(n\)
 
 <span class="sd">    Returns:</span>
 <span class="sd">    ``np.ndarray``: the first ``n`` Fibonacci numbers</span>
+
 <span class="sd">    """</span>
     <span class="n">fibs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -166,7 +176,7 @@ before the array containing the <span class="math notranslate nohighlight">\(n\)
 
     <span class="n">fibs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
-    <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># we expect curr_val to appear in memory before v</span>
     <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">fibs</span>
@@ -174,45 +184,51 @@ before the array containing the <span class="math notranslate nohighlight">\(n\)
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 
-        <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span> <span class="c1"># array of first n Fibonacci numbrs</span>
-        <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>     <span class="c1"># check that first n-1 Fib numbers come before first n</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span> <span class="c1"># array of first n Fibonacci numbers</span>
+        <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>     <span class="c1"># check that first n-1 appear before first n Fibonacci numbers</span>
         <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>           <span class="c1"># update curr_val for next iteration</span>
 
     <span class="k">return</span> <span class="n">fibs</span>
 </pre></div>
 </div>
-<p>In the example above, updating a pointer <code class="docutils literal notranslate"><span class="pre">curr_val</span></code> in the loop allows us to create a <code class="docutils literal notranslate"><span class="pre">before</span></code>
-condition such that we ensure the student followed the correct dynamic programming algorithm by
-checking each update to the <code class="docutils literal notranslate"><span class="pre">fibs</span></code> array.</p>
-<p>Temporal annotations are satisfied when the student’s code satisfies all of the child
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotations and when the first annotation (the one calling
-<a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a>) has a timestamp greater than or equal to the
-timestamp of the second annotation.</p>
-<p>Note that <a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a> returns an instance of the
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a> class, which is
-itself a subclass of <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> and supports all of the same operations.
+<p>In the example above, updating <code class="docutils literal notranslate"><span class="pre">curr_val</span></code> in the loop allows us to create a
+<code class="docutils literal notranslate"><span class="pre">before</span></code> condition to ensure the student followed the correct dynamic
+programming algorithm by checking each update to the <code class="docutils literal notranslate"><span class="pre">fibs</span></code> array.</p>
+<p>Temporal annotations are satisfied when the student’s code satisfies all of the
+child <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotations and when the first annotation
+(the one calling <a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a>) has a
+timestamp greater than or equal to the timestamp of the second annotation.</p>
+<p>Note that <a class="reference internal" href="../api_reference.html#pybryt.Annotation.before" title="pybryt.Annotation.before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code></a> returns an
+instance of the
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a>
+class, which is itself a subclass of <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>
+and supports all of the same operations.
 <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> also provides
-<a class="reference internal" href="../api_reference.html#pybryt.Annotation.after" title="pybryt.Annotation.after"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.after</span></code></a>, which also returns an instance of the
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a> class, but with
-the operands switched.</p>
+<a class="reference internal" href="../api_reference.html#pybryt.Annotation.after" title="pybryt.Annotation.after"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.after</span></code></a>, which also returns an
+instance of the
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a>
+class, but with the operands switched.</p>
 </div>
 <div class="section" id="boolean-annotations">
 <h2>Boolean Annotations<a class="headerlink" href="#boolean-annotations" title="Permalink to this headline">¶</a></h2>
-<p>Boolean annotations define conditions on the presence of different values. For example, in defining
-a solutions, students may be able to take two different paths, and this logic can be enforced
-using a <a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.XorAnnotation" title="pybryt.annotations.relation.XorAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">XorAnnotation</span></code></a> to ensure that
-only one of the two possible values is present.</p>
-<p>Relational annotations can be created either by instantiating the classes directly using the
-constructor or, as is more recommended, by using Python’s bitwise logical operators, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>,
-<code class="docutils literal notranslate"><span class="pre">^</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>, on annotations. The dunder methods for these operators have been overrided with
-for the <a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class, and return the
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a> subclass
-instance corresponding to the logical operator used.</p>
-<p>To create the xor example above from two values <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code>, simply write</p>
+<p>Boolean annotations define conditions on the presence of different values. For
+example, in solving an exercise, students may be able to take two different
+paths, and this logic can be enforced using a
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.XorAnnotation" title="pybryt.annotations.relation.XorAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">XorAnnotation</span></code></a> to ensure
+that only one of the two possible values is present.</p>
+<p>Relational annotations can be created either by instantiating the classes
+directly using the constructor or, as it is more recommended, by using Python’s
+bitwise logical operators, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>, <code class="docutils literal notranslate"><span class="pre">^</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>, on annotations. The
+special (dunder) methods for these operators have been overridden in
+<a class="reference internal" href="../api_reference.html#pybryt.Annotation" title="pybryt.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class, and return the
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a>
+subclass instance corresponding to the logical operator used.</p>
+<p>To create the XOR example from two values <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code>, we write</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">v1</span> <span class="o">^</span> <span class="n">v2</span>
 </pre></div>
 </div>
-<p>To assert that a student should <em>not</em> have a specific value <code class="docutils literal notranslate"><span class="pre">v</span></code> in their code, use</p>
+<p>To assert that a student should <em>not</em> have a specific value <code class="docutils literal notranslate"><span class="pre">v</span></code> in their code,
+we use</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">~</span><span class="n">v</span>
 </pre></div>
 </div>
