@@ -44,14 +44,15 @@ def test_value_annotation():
     res = v.check(mfp)
 
     assert v.to_dict() == {
-        "name": "Annotation 10",
+        "name": "Annotation 11",
         "children": [],
         "success_message": None,
         "failure_message": None,
         "limit": None,
         "group": None,
         "invariants": [],
-        "tol": 0,
+        "atol": None,
+        "rtol": None,
         "type": "value",
     }
     assert repr(res) == "AnnotationResult(satisfied=False, annotation=pybryt.Value)"
@@ -75,6 +76,12 @@ def test_value_annotation():
         mocked_dumps.side_effect = Exception()
         with pytest.raises(ValueError):
             v = Value(-1)
+
+    # test with invariants
+    s = mfp[-1][0]
+    v = Value(s.upper(), invariants=[invariants.string_capitalization])
+    res = v.check(mfp)
+    assert res.satisfied
 
 
 def test_attribute_annotation():
@@ -111,7 +118,8 @@ def test_attribute_annotation():
                 'failure_message': None, 
                 'children': [], 
                 'invariants': [], 
-                'tol': 0,
+                'atol': None,
+                'rtol': None,
                 "type": None,
             }
         ],
@@ -120,7 +128,8 @@ def test_attribute_annotation():
         "limit": None,
         "group": None,
         "invariants": [],
-        "tol": 0,
+        "atol": None,
+        "rtol": None,
         "type": "attribute",
         "attributes": ['T'],
     }

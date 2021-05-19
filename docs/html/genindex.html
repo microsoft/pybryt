@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/><title>Index - PyBryt documentation</title>
-<link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+    <meta name="generator" content="sphinx-3.5.1, furo 2021.02.21.beta25"/><title>Index - PyBryt documentation</title>
+<link rel="stylesheet" href="_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
     
@@ -110,6 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
@@ -134,7 +135,9 @@
         
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#X"><strong>X</strong></a></div>
+  <div class="genindex-jumpbox">
+  <a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#Q"><strong>Q</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#X"><strong>X</strong></a>
+  </div>
 </section>
 <section id="A" class="genindex-section">
   <h2>A</h2>
@@ -146,13 +149,15 @@
 </li>
         <li><a href="api_reference.html#pybryt.AnnotationResult.annotation">annotation (AnnotationResult attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation">Annotation (class in pybryt)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.AnnotationResult">AnnotationResult (class in pybryt)</a>
 </li>
         <li><a href="api_reference.html#pybryt.ReferenceImplementation.annotations">annotations (ReferenceImplementation attribute)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.value.Value.atol">atol (Value attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.value.Attribute">Attribute (class in pybryt.annotations.value)</a>
 </li>
@@ -195,14 +200,20 @@
 </li>
           <li><a href="api_reference.html#pybryt.StudentImplementation.check">(StudentImplementation method)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.check">(TimeComplexity method)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.value.Value.check">(Value method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.relation.XorAnnotation.check">(XorAnnotation method)</a>
 </li>
         </ul></li>
+        <li><a href="api_reference.html#pybryt.StudentImplementation.check_plagiarism">check_plagiarism() (StudentImplementation method)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.execution.check_time_complexity">check_time_complexity (class in pybryt.execution)</a>
+</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api_reference.html#pybryt.StudentImplementation.check_plagiarism">check_plagiarism() (StudentImplementation method)</a>
+        <li><a href="api_reference.html#pybryt.annotations.value.Value.check_values_equal">check_values_equal() (Value static method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.value.Value.check_values_equal">check_values_equal() (Value static method)</a>
 </li>
@@ -213,6 +224,8 @@
         <ul>
           <li><a href="api_reference.html#pybryt.annotations.value.Attribute.children">(Attribute property)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.children">(ComplexityAnnotation property)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation.children">(RelationalAnnotation property)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.value.Value.children">(Value property)</a>
@@ -220,7 +233,15 @@
         </ul></li>
         <li><a href="api_reference.html#pybryt.ReferenceImplementation.compile">compile() (ReferenceImplementation class method)</a>
 </li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity">complexity (class in pybryt.annotations.complexity.complexities)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation">ComplexityAnnotation (class in pybryt.annotations.complexity.annotation)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.constant">constant (class in pybryt.annotations.complexity.complexities)</a>
+</li>
         <li><a href="api_reference.html#pybryt.ReferenceResult.correct">correct() (ReferenceResult property)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.cubic">cubic (class in pybryt.annotations.complexity.complexities)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -244,12 +265,28 @@
   </tr></table>
 </section>
 
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.exponential">exponential (class in pybryt.annotations.complexity.complexities)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
 <section id="F" class="genindex-section">
   <h2>F</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.failure_message">failure_message (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.failure_message">(ComplexityAnnotation attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.failure_message">(TimeComplexity attribute)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -263,7 +300,11 @@
         <li><a href="api_reference.html#pybryt.Annotation.group">group (Annotation attribute)</a>
 
         <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.group">(ComplexityAnnotation attribute)</a>
+</li>
           <li><a href="api_reference.html#pybryt.ReferenceResult.group">(ReferenceResult attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.group">(TimeComplexity attribute)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -295,6 +336,18 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.limit">limit (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.limit">(ComplexityAnnotation attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.limit">(TimeComplexity attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linear">linear (class in pybryt.annotations.complexity.complexities)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linearithmic">linearithmic (class in pybryt.annotations.complexity.complexities)</a>
 </li>
         <li><a href="api_reference.html#pybryt.ReferenceImplementation.load">load() (ReferenceImplementation static method)</a>
 
@@ -302,9 +355,9 @@
           <li><a href="api_reference.html#pybryt.StudentImplementation.load">(StudentImplementation static method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.StudentImplementation.loads">loads() (StudentImplementation class method)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.logarithmic">logarithmic (class in pybryt.annotations.complexity.complexities)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -324,6 +377,10 @@
     module
 
         <ul>
+          <li><a href="api_reference.html#module-pybryt.annotations.complexity.annotation">pybryt.annotations.complexity.annotation</a>
+</li>
+          <li><a href="api_reference.html#module-pybryt.annotations.complexity.complexities">pybryt.annotations.complexity.complexities</a>
+</li>
           <li><a href="api_reference.html#module-pybryt.annotations.invariants">pybryt.annotations.invariants</a>
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.relation">pybryt.annotations.relation</a>
@@ -342,11 +399,17 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.name">name (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.name">(ComplexityAnnotation attribute)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.AnnotationResult.name">name() (AnnotationResult property)</a>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.name">(TimeComplexity attribute)</a>
 </li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.AnnotationResult.name">name() (AnnotationResult property)</a>
+</li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.nb">nb (StudentImplementation attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.nb_path">nb_path (StudentImplementation attribute)</a>
@@ -372,12 +435,28 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li>
+    pybryt.annotations.complexity.annotation
+
+        <ul>
+          <li><a href="api_reference.html#module-pybryt.annotations.complexity.annotation">module</a>
+</li>
+        </ul></li>
+        <li>
+    pybryt.annotations.complexity.complexities
+
+        <ul>
+          <li><a href="api_reference.html#module-pybryt.annotations.complexity.complexities">module</a>
+</li>
+        </ul></li>
+        <li>
     pybryt.annotations.invariants
 
         <ul>
           <li><a href="api_reference.html#module-pybryt.annotations.invariants">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     pybryt.annotations.relation
 
@@ -385,8 +464,6 @@
           <li><a href="api_reference.html#module-pybryt.annotations.relation">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     pybryt.annotations.value
 
@@ -405,6 +482,16 @@
   </tr></table>
 </section>
 
+<section id="Q" class="genindex-section">
+  <h2>Q</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.quadratic">quadratic (class in pybryt.annotations.complexity.complexities)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
 <section id="R" class="genindex-section">
   <h2>R</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
@@ -417,15 +504,19 @@
 </li>
         <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation">RelationalAnnotation (class in pybryt.annotations.relation)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.Annotation.reset_tracked_annotations">reset_tracked_annotations() (Annotation static method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.ReferenceResult.results">results (ReferenceResult attribute)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.annotations.invariants.invariant.run">run() (invariant static method)</a>
+        <li><a href="api_reference.html#pybryt.annotations.value.Value.rtol">rtol (Value attribute)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity.run">run() (complexity class method)</a>
 
         <ul>
+          <li><a href="api_reference.html#pybryt.annotations.invariants.invariant.run">(invariant static method)</a>
+</li>
           <li><a href="api_reference.html#pybryt.ReferenceImplementation.run">(ReferenceImplementation method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.invariants.string_capitalization.run">(string_capitalization static method)</a>
@@ -445,14 +536,20 @@
 </li>
         <li><a href="api_reference.html#pybryt.StudentImplementation.steps">steps (StudentImplementation attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.invariants.string_capitalization">string_capitalization (class in pybryt.annotations.invariants)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.StudentImplementation">StudentImplementation (class in pybryt)</a>
 </li>
         <li><a href="api_reference.html#pybryt.Annotation.success_message">success_message (Annotation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.success_message">(ComplexityAnnotation attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.success_message">(TimeComplexity attribute)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -461,6 +558,8 @@
   <h2>T</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity">TimeComplexity (class in pybryt.annotations.complexity.annotation)</a>
+</li>
         <li><a href="api_reference.html#pybryt.AnnotationResult.timestamp">timestamp (AnnotationResult attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.ReferenceResult.to_array">to_array() (ReferenceResult method)</a>
@@ -477,14 +576,36 @@
           <li><a href="api_reference.html#pybryt.annotations.value.Value.to_dict">(Value method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api_reference.html#pybryt.annotations.value.Value.tol">tol (Value attribute)</a>
-</li>
         <li><a href="api_reference.html#pybryt.execution.tracing_off">tracing_off() (in module pybryt.execution)</a>
 </li>
         <li><a href="api_reference.html#pybryt.execution.tracing_on">tracing_on() (in module pybryt.execution)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity.transform_n">transform_n() (complexity static method)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.constant.transform_n">(constant static method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.cubic.transform_n">(cubic static method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.exponential.transform_n">(exponential static method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linear.transform_n">(linear static method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.linearithmic.transform_n">(linearithmic static method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.logarithmic.transform_n">(logarithmic static method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.quadratic.transform_n">(quadratic static method)</a>
+</li>
+        </ul></li>
+        <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity.transform_t">transform_t() (complexity static method)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.exponential.transform_t">(exponential static method)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>

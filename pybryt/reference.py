@@ -212,15 +212,12 @@ class ReferenceResult:
         for r in self.results:
             m = r.messages
             for msg in m:
-                if msg[1] is None:
+                if msg[1] in message_names and not msg[2]:
+                    idx = message_names[msg[1]]
+                    messages[idx] = msg[0]
+                elif msg[1] not in message_names:
+                    message_names[msg[1]] = len(messages)
                     messages.append(msg[0])
-                else:
-                    if msg[1] in message_names and not msg[2]:
-                        idx = message_names[msg[1]]
-                        messages[idx] = msg[0]
-                    elif msg[1] not in message_names:
-                        message_names[msg[1]] = len(messages)
-                        messages.append(msg[0])
         return messages
 
     def to_dict(self) -> Dict[str, Any]:

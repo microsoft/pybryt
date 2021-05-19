@@ -8,7 +8,7 @@ import numpy as np
 
 from collections.abc import Iterable
 from copy import copy
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
@@ -24,9 +24,14 @@ class Value(Annotation):
     list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
     values that support arithemtic operators, absolute tolerances can be specified as well.
 
+    Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
+    enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \cdot |v|)`, where 
+    :math:`v` is the value of the annotation.
+
     Args:
         value (``object``): the value that should be observed
-        tol (``float`` or ``int``, optional): absolute tolerance for numeric values
+        atol (``float`` or ``int``, optional): absolute tolerance for numeric values
+        rtol (``float`` or ``int``, optional): relative tolerance for numeric values
         invariants (``list[invariant]``): invariants for 
             this value
         **kwargs: additional keyword arguments passed to the 
@@ -42,13 +47,19 @@ class Value(Annotation):
     specified in the constructor
     """
 
-    tol: Union[float, int]
+    atol: Optional[Union[float, int]]
     """absolute tolerance for numeric values"""
+
+    rtol: Optional[Union[float, int]]
+    """relative tolerance for numeric values"""
 
     invariants: List[invariant]
     """the invariants for this value"""
 
-    def __init__(self, value: Any, tol: Union[float, int] = 0, invariants: List[invariant] = [], **kwargs):
+    def __init__(
+        self, value: Any, atol: Optional[Union[float, int]] = None, rtol: Optional[Union[float, int]] = None, 
+        invariants: List[invariant] = [], **kwargs
+    ):
         try:
             dill.dumps(value)
         except Exception as e:
@@ -56,7 +67,8 @@ class Value(Annotation):
 
         self.initial_value = copy(value)
         self._values = [self.initial_value]
-        self.tol = tol
+        self.atol = atol
+        self.rtol = rtol
         self.invariants = invariants
 
         for inv in self.invariants:
@@ -74,7 +86,7 @@ class Value(Annotation):
 
         Output dictionary contains the annotation's name, group, limit number, success message, and
         failure message, as well as an ``invariants`` key with a list of the names of all invariants
-        used in this value annotation and a ``tol`` key with this annotation's tolerance. This 
+        used in this value annotation and a ``atol`` key with this annotation's tolerance. This 
         dictionary does *not* contain the value being tracked.
 
         Returns:
@@ -83,7 +95,8 @@ class Value(Annotation):
         d = super().to_dict()
         d.update({
             "invariants": [inv.__name__ for inv in self.invariants],
-            "tol": self.tol,
+            "atol": self.atol,
+            "rtol": self.rtol,
         })
         return d
 
@@ -124,7 +137,8 @@ class Value(Annotation):
             ``bool``: whether the objects are equal
         """
         return isinstance(other, type(self)) and self.invariants == other.invariants and \
-            self.check_values_equal(self.initial_value, other.initial_value) and self.tol == other.tol
+            self.check_values_equal(self.initial_value, other.initial_value) and \
+            self.atol == other.atol and self.rtol == other.rtol
 
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
@@ -147,15 +161,20 @@ class Value(Annotation):
             for other_value in other_values:
                 # if type(value) != type(other_value):
                 #     continue
-                if self.check_values_equal(value, other_value, self.tol):
+                if self.check_values_equal(value, other_value, self.atol, self.rtol):
                     return True
 
         return False
 
     @staticmethod
-    def check_values_equal(value, other_value, tol=0):
+    def check_values_equal(value, other_value, atol = None, rtol = None):
         """
         """
+        if atol is None:
+            atol = 0
+        if rtol is None:
+            rtol = 0
+
         if hasattr(value, 'shape'):
             try:
                 if value.shape != other_value.shape:
@@ -164,7 +183,9 @@ class Value(Annotation):
                 return False
 
         try:
-            ub, lb = value + tol, value - tol
+            ub, lb = value + atol, value - atol
+            ub += rtol * np.abs(value)
+            lb -= rtol * np.abs(value)
             numeric = True
         
         except:
@@ -275,7 +296,8 @@ class Attribute(Annotation):
 
     _annotations: List[_AttrValue]
     _invariants: List[invariant]
-    _tol: float
+    _atol: Optional[Union[float, int]]
+    _rtol: Optional[Union[float, int]]
 
     def __init__(self, obj: Any, attrs: Union[str, List[str]], **kwargs):
         if isinstance(attrs, str):
@@ -293,7 +315,8 @@ class Attribute(Annotation):
             self._annotations.append(_AttrValue(obj, attr, **kwargs))
         
         self._invariants = kwargs.pop("invariants", [])
-        self._tol = kwargs.pop("tol", 0)
+        self._atol = kwargs.pop("atol", None)
+        self._rtol = kwargs.pop("rtol", None)
     
         super().__init__(name=name, success_message=success_message, failure_message=failure_message,
             **kwargs)
@@ -323,7 +346,7 @@ class Attribute(Annotation):
 
         Output dictionary contains the annotation's name, group, limit number, success message, and
         failure message, as well as an ``invariants`` key with a list of the names of all invariants
-        used in this value annotation, a ``tol`` key with this annotation's tolerance, and a key for 
+        used in this value annotation, a ``atol`` key with this annotation's tolerance, and a key for 
         the attributes being checked. This dictionary does *not* contain the value being tracked.
 
         Returns:
@@ -332,7 +355,8 @@ class Attribute(Annotation):
         d = super().to_dict()
         d.update({
             "invariants": [inv.__name__ for inv in self._invariants],
-            "tol": self._tol,
+            "atol": self._atol,
+            "rtol": self._rtol,
             "attributes": [av._attr for av in self._annotations],
         })
         return d
