@@ -132,3 +132,6 @@ dmypy.json
 .doctrees/
 .OTTER_LOG
 /notebooks
+
+# ignore docs build
+/docs/html
