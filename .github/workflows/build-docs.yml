@@ -52,7 +52,7 @@ jobs:
 
     - name: Commit documentation
       run: |
-        git add docs/html
+        git add -f docs/html
         git commit -m "build docs for ${{ github.sha }}" || :
         git push
         
