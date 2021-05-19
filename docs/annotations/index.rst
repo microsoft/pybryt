@@ -36,8 +36,7 @@ its constructor the value we are expecting to see in the student's code:
 
 .. code-block:: python
 
-   np.random.seed(42)
-   arr = np.random.normal(3, 2, size=100)
+   arr = np.linspace(0, 10, 11)
    pybryt.Value(arr)
 
 Note that when an instance of :py:class:`Value<pybryt.Value>` is created, :py:meth:`copy.copy` is 
