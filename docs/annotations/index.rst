@@ -39,10 +39,9 @@ its constructor the value we are expecting to see in the student's code:
    arr = np.linspace(0, 10, 11)
    pybryt.Value(arr)
 
-Note that when an instance of :py:class:`Value<pybryt.Value>` is created, :py:meth:`copy.copy` is 
-called on the argument passed to it, so values don't need to worry about being affected by 
-mutability.
-
+Note that when an instance of :py:class:`Value<pybryt.Value>` is created,
+:py:meth:`copy.copy` is called on the argument passed to it, so values cannot be
+affected by mutability.
 
 Numerical Tolerance
 +++++++++++++++++++
