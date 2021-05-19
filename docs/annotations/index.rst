@@ -43,16 +43,21 @@ Note that when an instance of :py:class:`Value<pybryt.Value>` is created,
 :py:meth:`copy.copy` is called on the argument passed to it, so values cannot be
 affected by mutability.
 
-Numerical Tolerance
-+++++++++++++++++++
+Numerical Tolerances
+++++++++++++++++++++
 
-For numerical values, or iterables of numerical values that support vectorized math, it is also 
-possible to set an absolute tolerance for the acceptance of student values using the ``tol`` 
-argument, which defaults to zero.
+For numerical values, or iterables of numerical values that support vectorized
+math, it is also possible to define an absolute tolerance (``atol``) and/or a
+relative tolerance (``rtol``) to allow the student's solution to deviate from
+the reference. Numeric tolerances are computed as with ``numpy.allcose``, where
+the value is considered to be "equal enough" if it is within :math:`v \\pm
+(\\texttt{atol} + \\texttt{rtol} \cdot |v|)`, where :math:`v` is the value of
+the annotation. Both ``atol`` and ``rtol`` default to zero and have to be
+defined:
 
 .. code-block:: python
 
-   pybryt.Value(arr, tol=1e-4)
+   pybryt.Value(arr, atol=1e-3, rtol=1e-5)
 
 
 Invariants
