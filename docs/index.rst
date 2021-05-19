@@ -41,10 +41,10 @@ implementation** of a programming problem to a series of reference
 implementations provided by an instructor. A **reference implementation**
 defines a pattern of values and conditions on those values expected
 to be present in students' implementation. By comparing student's and reference
-implementations, PyBryt provides a tailored feedback and advice to the student
+implementations, PyBryt provides tailored feedback and advice to the student
 on how to bring their implementation closer to the reference one. PyBryt,
 instead of only comparing the output of their solution to the reference one,
-enables students to reconsider design choices they made and improve their
+enables students to reconsider the design choices they made and improve their
 implementation in incremental steps.
 
 A reference implementation is created by annotating the code written or found by an
