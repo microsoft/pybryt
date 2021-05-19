@@ -11,24 +11,28 @@ Annotations
    complexity_annotations
    invariants
 
-Annotations are the building blocks out of which reference implementations are constructed. They 
-annotations represent a single condition that a student's implementation should meet, and define a 
-set of behaviors for responding to the passing or failing of those conditions. Annotations provide
-conditions not only for expecting a specific value but also for combining those expectations to form
-conditions on the structure of students' code, including the temporal relationship of values and
-complex boolean logic surrounding the presence, or lack thereof, of those values.
+Annotations are the building blocks, out of which reference implementations are
+constructed. The annotations represent a single condition that a student's
+implementation should meet, and they define a set of behaviors for responding to
+the passing or failing of those conditions. Annotations provide conditions not
+only for expecting a specific value but also for combining those expectations to
+form conditions on the structure of students' code, including the temporal
+relationship of values and complex boolean logic surrounding the presence or
+absence of those values.
 
-All annotations are created by instaniating subclasses of the abstract 
-:py:class:`Annotation<pybryt.Annotation>` class. There are two main types of annotations: value 
-annotations, described below, and :ref:`relational annotations<relational>`.
+All annotations are created by instantiating subclasses of the abstract 
+:py:class:`Annotation<pybryt.Annotation>` class. There are two main types of annotations: 
+ 
+ * value annotations, described below, and
+ * :ref:`relational annotations<relational>`.
 
+Value annotations
+-----------------
 
-Values
-------
-
-Consider the most basic kind of annotation: expecting a specific value to appear while executing the 
-student's code. To create a value annotation, create an instance of :py:class:`Value<pybryt.Value>`. 
-The constructor takes in the value that you are expecting to see in the student's code:
+Value annotation is the most basic type of annotation. It expects a specific
+value to appear while executing the student's code. To create a value
+annotation, we create an instance of :py:class:`Value<pybryt.Value>` and pass to
+its constructor the value we are expecting to see in the student's code:
 
 .. code-block:: python
 
