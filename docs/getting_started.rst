@@ -1,36 +1,34 @@
 Getting Started
 ===============
 
-Installing pybryt
+Installing PyBryt
 -----------------
 
-You can install pybyrt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.
+We can install PyBryt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.
 
-Installing inside an existing Jupyter Notebook
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Installing within a Jupyter Notebook
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:
+We can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:
 
 .. code-block:: python
 
     %pip install pybryt
-
     import pybryt
 
-Or, for a conda environment:
+or, similarly, for a conda environment:
 
 .. code-block:: python
 
-    %pip install pybryt
-
+    %conda install pybryt
     import pybryt
 
 Installing on Windows PowerShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before installing, make sure you have a recent version of `Python 3 installed <https://python.org/downloads>`_.
-
-Next, create a virtual environment, update pip and then install ``pybryt``:
+Before installing, make sure you have a recent version of `Python 3 installed
+<https://python.org/downloads>`_. Next, create a virtual environment, update
+``pip``, and install ``pybryt``:
 
 .. code-block:: console
 
@@ -42,13 +40,13 @@ Next, create a virtual environment, update pip and then install ``pybryt``:
 Installing on macOS or Linux command-line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before installing, make sure you have a recent version of `Python 3 installed <https://python.org/downloads>`_.
-
-Next, create a virtual environment, update pip and then install ``pybryt``:
+Before installing, make sure you have a recent version of `Python 3 installed
+<https://python.org/downloads>`_. Next, create a virtual environment, update
+``pip``, and then install ``pybryt``:
 
 .. code-block:: console
 
-    python3.8 -m venv .venv
+    python3 -m venv .venv
     source .venv/bin/activate
     pip install -U pip
     pip install pybryt
@@ -56,13 +54,14 @@ Next, create a virtual environment, update pip and then install ``pybryt``:
 Annotating a working example
 ----------------------------
 
-The first step after installing pybryt would be to create a working example for pybryt to model from.
+PyBryt works by observing working reference implementations and looking for
+annotated types and variables in other implementations. The first step after
+installing PyBryt would be to create a working example to serve as a reference
+implementation.
 
-pybryt works by observing working reference implementations and looking for annotated types and variables in any implementation.
-
-Take this example, you want students to complete a simple task of counting the number of words in a piece of text.
-
-You send them the signature of the function to be completed inside a Jupyter notebook:
+Let us say we want students to complete a simple task of counting the number of
+words in a string. We send them the signature of the function and ask them to
+complete it inside a Jupyter notebook:
 
 .. code-block:: python
 
@@ -73,8 +72,9 @@ You send them the signature of the function to be completed inside a Jupyter not
         """
         pass
 
-You could write this function by splitting the string using the builtin ``str.split()`` method, which will automatically 
-remove empty strings, and then to count the number of items in the result:
+We could write this function by splitting the string using the builtin
+``str.split()`` method, which will automatically remove empty strings, and then
+count the number of items in the resulting list:
 
 .. code-block:: python
 
@@ -90,15 +90,17 @@ remove empty strings, and then to count the number of items in the result:
         length = len(fragments)
         return length
 
-To annotate the example and train pybryt on what values to look for, you next use the ``pybryt.Value`` class from the :ref:`api`
-to annotate the example. ``pybryt.Value`` takes any Python value as the required input for its constructor.
+To annotate this example and train PyBryt what values (variables) to look for in
+other implementations, we use the ``pybryt.Value`` class from the :ref:`api`.
+``pybryt.Value`` takes any Python value as an input for its constructor.
 
-The two key variables to observe in the reference implementation were:
+The two key variables we want to observe in our example are:
 
  * The ``list`` of words created by splitting the text (``fragments``)
  * The count of words as a Python ``int`` (``length``)
 
-Update the reference implementation and create a ``pybryt.Value()`` instance for both of these variables:
+Now, let us update the reference implementation and create a ``pybryt.Value()``
+instance for both of these variables:
 
  .. code-block:: python
 
@@ -116,7 +118,7 @@ Update the reference implementation and create a ``pybryt.Value()`` instance for
         pybryt.Value(length)
         return length
 
-Next, check your own implementation with some sample text that will also be used to test the student implementations:
+Next, we check our implementation with some text samples that we will also use to test the student implementations:
 
 .. code-block:: python
 
@@ -127,9 +129,9 @@ Next, check your own implementation with some sample text that will also be used
 Next Steps
 ----------
 
-pybryt can do much more beyond this simple example, such as automating the assessment of student implementations and detecting plagiarism.
-
-To learn more about pybryt, check out the following
+PyBryt can do much more beyond this simple example, such as automating the
+assessment of student implementations and detecting plagiarism. To learn more
+about pybryt, check out the following
 
 * The example projects in the `demos folder <https://github.com/microsoft/pybryt/tree/main/demo/>`_
 * Read the :ref:`api` for details on the annotation types
