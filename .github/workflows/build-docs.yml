@@ -21,11 +21,15 @@ jobs:
       with:
         python-version: 3.8
     
+    - name: Checkout to gh-pages
+      uses: actions/checkout@v2
+      with:
+        ref: gh-pages
+    
     - name: Merge main -> gh-pages
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git checkout gh-pages
         git merge main -Xtheirs
         git push origin gh-pages
         
@@ -40,11 +44,6 @@ jobs:
       run: |
         $CONDA/bin/conda env update -f environment.yml -n base
         $CONDA/bin/pip install -r docs/requirements.txt
-
-    - name: Checkout to gh-pages
-      uses: actions/checkout@v2
-      with:
-        ref: gh-pages
         
     - name: Build documentation
       working-directory: ./docs
