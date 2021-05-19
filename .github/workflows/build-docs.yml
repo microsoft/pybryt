@@ -30,7 +30,7 @@ jobs:
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git merge origin/main -Xtheirs
+        git merge origin/main -Xtheirs --allow-unrelated-histories
         git push origin gh-pages
         
 #       uses: devmasx/merge-branch@v1.3.1
