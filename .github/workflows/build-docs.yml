@@ -27,18 +27,18 @@ jobs:
         ref: gh-pages
     
     - name: Merge main -> gh-pages
-#       run: |
-#         git config --global user.name "github-actions"
-#         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-#         git merge origin/main -Xtheirs
-#         git push origin gh-pages
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git merge origin/main -Xtheirs
+        git push origin gh-pages
         
-      uses: devmasx/merge-branch@v1.3.1
-      with:
-        type: now
-        from_branch: main
-        target_branch: gh-pages
-        github_token: ${{ github.token }}
+#       uses: devmasx/merge-branch@v1.3.1
+#       with:
+#         type: now
+#         from_branch: main
+#         target_branch: gh-pages
+#         github_token: ${{ github.token }}
         
     - name: Install dependencies
       run: |
