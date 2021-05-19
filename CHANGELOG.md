@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file, and this pr
 * Added time complexity annotations and checking
 * Changed tracing function to only increment step counter when tracing student code
 * Added relative tolerance to value annotations
+* Fixed bug in intermediate variable preprocessor for newer versions of Python
 
 ## 0.0.5 - 2021-05-04
 
