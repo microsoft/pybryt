@@ -319,5 +319,5 @@ def generate_report(
         report += indent("\n".join(res.messages), "  - ")
         if i != len(filtered) - 1:
             report += "\n\n"
-    
+
     return report

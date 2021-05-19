@@ -261,7 +261,7 @@ class check:
         self._report_on_error = report_on_error
 
     def __enter__(self):
-        if _get_tracing_frame() is None:
+        if _get_tracing_frame() is not None:
             return  # if already tracing, no action required
 
         else:
