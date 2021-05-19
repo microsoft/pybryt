@@ -59,13 +59,16 @@ defined:
 
    pybryt.Value(arr, atol=1e-3, rtol=1e-5)
 
-
 Invariants
 ++++++++++
 
-PyBryt supports :ref:`invariants<invariants>`, which are conditions that allow for objects with 
-different structures to be considered "equal" from PyBryt's perspective. To use invariants on a 
-value, pass the invariant objects in a list to the ``invariants`` argument of the constructor:
+Similar to numerical tolerances, which allow the student's solution to deviate
+from the reference value, PyBryt allows specifying conditions when other data
+types should be considered equal. PyBryt supports defining these conditions
+using :ref:`invariants<invariants>`. To use invariants on a value, we need to
+pass the invariant objects as a list to the ``invariants`` argument of the
+:py:class:`Value<pybryt.Value>` constructor. For instance, let us say we want to
+allow the student's solution (string) to be case-insensitive.
 
 .. code-block:: python
 
