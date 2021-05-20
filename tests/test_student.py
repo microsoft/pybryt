@@ -101,3 +101,8 @@ def test_check():
 
     with pytest.raises(TypeError, match="check cannot take values of type <class 'int'>"):
         stu.check(1)
+
+
+def test_check_cm():
+    """
+    """

@@ -296,7 +296,7 @@ def generate_report(
     """
     if isinstance(results, ReferenceResult):
         results = [results]
-    if not isinstance(results, list) and not all(isinstance(r, ReferenceResult) for r in results):
+    if not isinstance(results, list) or not all(isinstance(r, ReferenceResult) for r in results):
         raise TypeError("Cannot generate a report from arguments that are not reference result objects")
     if show_only not in {"satisfied", "unsatisfied", None}:
         raise ValueError("show_only must be in {'satisfied', 'unsatisfied', None}")

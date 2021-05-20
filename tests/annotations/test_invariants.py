@@ -21,3 +21,7 @@ def test_string_capitalization():
     expected_values = [s.lower() if isinstance(s, str) else s for s in values]
     np.testing.assert_equal(string_capitalization(values), expected_values)
 
+
+def test_alias():
+    import pybryt.invariants as inv2
+    assert inv2.string_capitalization is string_capitalization
