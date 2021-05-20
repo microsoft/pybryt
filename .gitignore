@@ -134,3 +134,6 @@ dmypy.json
 /*.ipynb
 /*.pkl
 /notebooks
+
+# ignore docs build
+/docs/html

@@ -129,10 +129,10 @@ class UnassignedVarWrapper(ast.NodeTransformer):
                     raise
 
             curr = curr.parent
-            new_assign = ast.Assign([ast.Name(vn, ctx=ast.Load())], node, ctx=ast.Load())
+            new_assign = ast.Assign([ast.Name(vn, ast.Store())], node)
             new_assign.parent = curr
 
-            new_name = ast.Name(vn, ctx=ast.Load())
+            new_name = ast.Name(vn, ast.Load())
             new_name.parent = node.parent
             node.parent = new_assign
 

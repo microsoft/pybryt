@@ -24,14 +24,14 @@ class Value(Annotation):
     list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
     values that support arithemtic operators, absolute tolerances can be specified as well.
 
-    Numeric tolerances are computing as with ``numpy.allcose``, where the value is considered "equal 
+    Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
     enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \cdot |v|)`, where 
     :math:`v` is the value of the annotation.
 
     Args:
         value (``object``): the value that should be observed
         atol (``float`` or ``int``, optional): absolute tolerance for numeric values
-        rtol (``float`` or ``int``, optional): absolute tolerance for numeric values
+        rtol (``float`` or ``int``, optional): relative tolerance for numeric values
         invariants (``list[invariant]``): invariants for 
             this value
         **kwargs: additional keyword arguments passed to the 

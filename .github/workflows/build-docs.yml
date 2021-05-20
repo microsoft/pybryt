@@ -21,23 +21,29 @@ jobs:
       with:
         python-version: 3.8
     
-    - name: Merge main -> gh-pages
-      uses: devmasx/merge-branch@v1.3.1
+    - name: Checkout to gh-pages
+      uses: actions/checkout@v2
       with:
-        type: now
-        from_branch: main
-        target_branch: gh-pages
-        github_token: ${{ github.token }}
+        ref: gh-pages
+    
+    - name: Merge main -> gh-pages
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git merge origin/main -Xtheirs --allow-unrelated-histories
+        git push origin gh-pages
+        
+#       uses: devmasx/merge-branch@v1.3.1
+#       with:
+#         type: now
+#         from_branch: main
+#         target_branch: gh-pages
+#         github_token: ${{ github.token }}
         
     - name: Install dependencies
       run: |
         $CONDA/bin/conda env update -f environment.yml -n base
         $CONDA/bin/pip install -r docs/requirements.txt
-
-    - name: Checkout to gh-pages
-      uses: actions/checkout@v2
-      with:
-        ref: gh-pages
         
     - name: Build documentation
       working-directory: ./docs
@@ -46,9 +52,7 @@ jobs:
 
     - name: Commit documentation
       run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add docs/html
+        git add -f docs/html
         git commit -m "build docs for ${{ github.sha }}" || :
         git push
         
