@@ -24,8 +24,8 @@ All annotations are created by instantiating subclasses of the abstract
 :py:class:`Annotation<pybryt.Annotation>` class. There are two main types of
 annotations: 
  
- * value annotations, described below, and
- * :ref:`relational annotations<relational>`.
+* value annotations, described below, and
+* :ref:`relational annotations<relational>`.
 
 Value annotations
 -----------------
@@ -51,8 +51,8 @@ For numerical values, or iterables of numerical values that support vectorized
 math, it is also possible to define an absolute tolerance (``atol``) and/or a
 relative tolerance (``rtol``) to allow the student's solution to deviate from
 the reference. Numerical tolerances are computed as with ``numpy.allcose``,
-where the value is "equal enough" if it is within :math:`v \\pm (\\texttt{atol}
-+ \\texttt{rtol} \cdot |v|)`, where :math:`v` is the value of the annotation.
+where the value is "equal enough" if it is within :math:`v \pm (\texttt{atol}
++ \texttt{rtol} \cdot |v|)`, where :math:`v` is the value of the annotation.
 Both ``atol`` and ``rtol`` default to zero and have to be specified when value
 annotation is defined:
 
