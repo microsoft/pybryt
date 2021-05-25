@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file, and this pr
 * Changed tracing function to only increment step counter when tracing student code
 * Added relative tolerance to value annotations
 * Fixed bug in intermediate variable preprocessor for newer versions of Python
+* Added a context manager for checking code against a reference implementation from the same
+  notebook
 
 ## 0.0.5 - 2021-05-04
 

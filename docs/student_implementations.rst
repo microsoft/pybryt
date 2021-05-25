@@ -72,6 +72,47 @@ for a single question in a reference that contains multiple questions, the patte
     stu.check(ref, group="q1")
 
 
+Checking from the Notebook
+++++++++++++++++++++++++++
+
+For running checks against a reference implementation from inside the notebook, PyBryt also provides
+the context manager :py:class:`check<pybryt.student.check>`. This context manager initializes 
+PyBryt's tracing function for any code executed inside of the context and generates a memory 
+footprint of that code, which can be reconciled against a reference implementation. The context
+manager prints a report when it exits to inform students of any messages and the passing or failing 
+of each reference.
+
+A general pattern for using this context manager would be to have students encapsulate some logic in
+a function and then write test cases that are checked by the reference implementation inside the
+context manager. For exmaple, consider the median example below:
+
+.. code-block:: python
+
+    def median(S):
+        sorted_S = sorted(S)
+        size_of_set = len(S)
+        middle = size_of_set // 2
+        is_set_size_even = (size_of_set % 2) == 0
+        if is_set_size_even:
+            return (sorted_S[middle-1] + sorted_S[middle]) / 2
+        else:
+            return sorted_S[middle]
+
+    with pybryt.check("median.pkl"):
+        import numpy as np
+        np.random.seed(42)
+        for _ in range(10):
+            vals = [np.random.randint(-1000, 1000) for _ in range(np.random.randint(1, 1000))]
+            val = median(vals)
+
+The ``check`` context manager takes as its arguments a path to a reference implementation, a reference
+implementation object, or lists thereof. By default, the report printed out at the end includes the
+results of all reference implementations being checked; this can be changed using the ``show_only``
+argument, which takes on 3 values: ``{"satisfied", "unsatisfied", None}``. If it is set to 
+``"satisfied"``, only the results of satisfied reference will be included (unless there are none and
+``fill_empty`` is ``True``), and similarly for ``"unsatisfied"``.
+
+
 Storing Implementations
 -----------------------
 
