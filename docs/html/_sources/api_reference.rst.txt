@@ -7,7 +7,7 @@ API Reference
 Annotations
 -----------
 
-.. autoclass:: pybryt.Annotation
+.. autoclass:: pybryt.annotations.annotation.Annotation
    :members:
    :undoc-members:
 
@@ -57,7 +57,7 @@ Invariants
 Annotation Results
 ++++++++++++++++++
 
-.. autoclass:: pybryt.AnnotationResult
+.. autoclass:: pybryt.annotations.annotation.AnnotationResult
    :members:
    :undoc-members:
 
@@ -65,7 +65,7 @@ Annotation Results
 Reference Implementations
 -------------------------
 
-.. autoclass:: pybryt.ReferenceImplementation
+.. autoclass:: pybryt.reference.ReferenceImplementation
    :members:
    :undoc-members:
 
@@ -73,15 +73,17 @@ Reference Implementations
 Reference Results
 +++++++++++++++++
 
-.. autoclass:: pybryt.ReferenceResult
+.. autoclass:: pybryt.reference.ReferenceResult
    :members:
    :undoc-members:
+
+.. autofunction:: pybryt.reference.generate_report
 
 
 Student Implementations
 -----------------------
 
-.. autoclass:: pybryt.StudentImplementation
+.. automodule:: pybryt.student
    :members:
    :undoc-members:
 

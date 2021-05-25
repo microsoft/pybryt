@@ -137,7 +137,7 @@
 <h1>Student Implementations<a class="headerlink" href="#student-implementations" title="Permalink to this headline">¶</a></h1>
 <p>For tracking and managing student implementations, stored in PyBryt as a list of 2-tuples of the
 objects observed while tracing students’ code and the timestamps of those objects, PyBryt provides
-the <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> class. The constructor for this
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> class. The constructor for this
 class takes in either a path to a Jupyter Notebook file or a notebook object read in with
 <code class="docutils literal notranslate"><span class="pre">nbformat</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>
@@ -173,12 +173,12 @@ statements that show the values at various stages of execution.</p>
 <div class="section" id="checking-implementations">
 <h2>Checking Implementations<a class="headerlink" href="#checking-implementations" title="Permalink to this headline">¶</a></h2>
 <p>To reconcile a student implementation with a set of reference implementations, use the
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.check" title="pybryt.StudentImplementation.check"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code></a> method, which takes in
-a single <a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation" title="pybryt.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> object, or a list of
-them, and returns a <a class="reference internal" href="api_reference.html#pybryt.ReferenceResult" title="pybryt.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a> object (or a list of them).
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code> method, which takes in
+a single <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> object, or a list of
+them, and returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code> object (or a list of them).
 This method simply abstracts away managing the memory footprint tracked by the
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> object and calls the
-<a class="reference internal" href="api_reference.html#pybryt.ReferenceImplementation.run" title="pybryt.ReferenceImplementation.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code></a> method for each provided
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> object and calls the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code> method for each provided
 reference implementation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"reference.ipynb"</span><span class="p">)</span>
 <span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>
@@ -191,19 +191,55 @@ for a single question in a reference that contains multiple questions, the patte
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"q1"</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="section" id="checking-from-the-notebook">
+<h3>Checking from the Notebook<a class="headerlink" href="#checking-from-the-notebook" title="Permalink to this headline">¶</a></h3>
+<p>For running checks against a reference implementation from inside the notebook, PyBryt also provides
+the context manager <a class="reference internal" href="api_reference.html#pybryt.student.check" title="pybryt.student.check"><code class="xref py py-class docutils literal notranslate"><span class="pre">check</span></code></a>. This context manager initializes
+PyBryt’s tracing function for any code executed inside of the context and generates a memory
+footprint of that code, which can be reconciled against a reference implementation. The context
+manager prints a report when it exits to inform students of any messages and the passing or failing
+of each reference.</p>
+<p>A general pattern for using this context manager would be to have students encapsulate some logic in
+a function and then write test cases that are checked by the reference implementation inside the
+context manager. For exmaple, consider the median example below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
+    <span class="n">sorted_S</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">size_of_set</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">middle</span> <span class="o">=</span> <span class="n">size_of_set</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">is_set_size_even</span> <span class="o">=</span> <span class="p">(</span><span class="n">size_of_set</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">is_set_size_even</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">sorted_S</span><span class="p">[</span><span class="n">middle</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">sorted_S</span><span class="p">[</span><span class="n">middle</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sorted_S</span><span class="p">[</span><span class="n">middle</span><span class="p">]</span>
+
+<span class="k">with</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">"median.pkl"</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">median</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">check</span></code> context manager takes as its arguments a path to a reference implementation, a reference
+implementation object, or lists thereof. By default, the report printed out at the end includes the
+results of all reference implementations being checked; this can be changed using the <code class="docutils literal notranslate"><span class="pre">show_only</span></code>
+argument, which takes on 3 values: <code class="docutils literal notranslate"><span class="pre">{"satisfied",</span> <span class="pre">"unsatisfied",</span> <span class="pre">None}</span></code>. If it is set to
+<code class="docutils literal notranslate"><span class="pre">"satisfied"</span></code>, only the results of satisfied reference will be included (unless there are none and
+<code class="docutils literal notranslate"><span class="pre">fill_empty</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>), and similarly for <code class="docutils literal notranslate"><span class="pre">"unsatisfied"</span></code>.</p>
+</div>
 </div>
 <div class="section" id="storing-implementations">
 <h2>Storing Implementations<a class="headerlink" href="#storing-implementations" title="Permalink to this headline">¶</a></h2>
 <p>Because generating the memory footprints of students’ code can be time consuming and computationally
-expensive, <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> objects can also be
+expensive, <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> objects can also be
 serialized to make multiple runs across sessions easier. The
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> class provides the
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.dump" title="pybryt.StudentImplementation.dump"><code class="xref py py-class docutils literal notranslate"><span class="pre">dump</span></code></a> and
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.load" title="pybryt.StudentImplementation.load"><code class="xref py py-class docutils literal notranslate"><span class="pre">load</span></code></a> methods, which function the same as with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> class provides the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dump</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">load</span></code> methods, which function the same as with
 <a class="reference internal" href="reference_implementations.html#storing-refs"><span class="std std-ref">reference implementations</span></a>.
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation" title="pybryt.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> objects can also be serialized to
-base-64-encoded strings using the <a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.dumps" title="pybryt.StudentImplementation.dumps"><code class="xref py py-class docutils literal notranslate"><span class="pre">dumps</span></code></a> and
-<a class="reference internal" href="api_reference.html#pybryt.StudentImplementation.loads" title="pybryt.StudentImplementation.loads"><code class="xref py py-class docutils literal notranslate"><span class="pre">loads</span></code></a> methods.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> objects can also be serialized to
+base-64-encoded strings using the <code class="xref py py-class docutils literal notranslate"><span class="pre">dumps</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">loads</span></code> methods.</p>
 </div>
 </div>
 
@@ -263,7 +299,10 @@ base-64-encoded strings using the <a class="reference internal" href="api_refere
             <ul>
 <li><a class="reference internal" href="#">Student Implementations</a><ul>
 <li><a class="reference internal" href="#notebook-execution">Notebook Execution</a></li>
-<li><a class="reference internal" href="#checking-implementations">Checking Implementations</a></li>
+<li><a class="reference internal" href="#checking-implementations">Checking Implementations</a><ul>
+<li><a class="reference internal" href="#checking-from-the-notebook">Checking from the Notebook</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#storing-implementations">Storing Implementations</a></li>
 </ul>
 </li>
