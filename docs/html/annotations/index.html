@@ -148,12 +148,10 @@ boolean logic surrounding the presence or absence of those values.</p>
 <p>All annotations are created by instantiating subclasses of the abstract
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> class. There are two main types of
 annotations:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>value annotations, described below, and</p></li>
 <li><p><a class="reference internal" href="relational_annotations.html#relational"><span class="std std-ref">relational annotations</span></a>.</p></li>
 </ul>
-</div></blockquote>
 <div class="section" id="value-annotations">
 <h2>Value annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h2>
 <p>Value annotation is the most basic type of annotation. It expects a specific
@@ -173,8 +171,8 @@ affected by mutability.</p>
 math, it is also possible to define an absolute tolerance (<code class="docutils literal notranslate"><span class="pre">atol</span></code>) and/or a
 relative tolerance (<code class="docutils literal notranslate"><span class="pre">rtol</span></code>) to allow the student’s solution to deviate from
 the reference. Numerical tolerances are computed as with <code class="docutils literal notranslate"><span class="pre">numpy.allcose</span></code>,
-where the value is “equal enough” if it is within <span class="math notranslate nohighlight">\(v \\pm (\\texttt{atol}
-+ \\texttt{rtol} \cdot |v|)\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> is the value of the annotation.
+where the value is “equal enough” if it is within <span class="math notranslate nohighlight">\(v \pm (\texttt{atol}
++ \texttt{rtol} \cdot |v|)\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> is the value of the annotation.
 Both <code class="docutils literal notranslate"><span class="pre">atol</span></code> and <code class="docutils literal notranslate"><span class="pre">rtol</span></code> default to zero and have to be specified when value
 annotation is defined:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>

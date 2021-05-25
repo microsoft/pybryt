@@ -211,16 +211,13 @@ count the number of items in the resulting list:</p>
 other implementations, we use the <code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> class from the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a>.
 <code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> takes any Python value as an input for its constructor.</p>
 <p>The two key variables we want to observe in our example are:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">list</span></code> of words created by splitting the text (<code class="docutils literal notranslate"><span class="pre">fragments</span></code>)</p></li>
 <li><p>The count of words as a Python <code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">length</span></code>)</p></li>
 </ul>
-</div></blockquote>
 <p>Now, let us update the reference implementation and create a <code class="docutils literal notranslate"><span class="pre">pybryt.Value()</span></code>
 instance for both of these variables:</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Given the input string, ``text``, return the number</span>
 <span class="sd">    of complete words.</span>
@@ -235,7 +232,6 @@ instance for both of these variables:</p>
     <span class="k">return</span> <span class="n">length</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>Next, we check our implementation with some text samples that we will also use to test the student implementations:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Waltz, bad nymph, for quick jigs vex."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
 <span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"The five boxing wizards-- </span><span class="se">\n</span><span class="s2">jump quickly!"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
