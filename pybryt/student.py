@@ -250,7 +250,7 @@ class check:
                 if not all(isinstance(r, str) for r in ref):
                     raise TypeError("Invalid values in the reference list")
                 ref = [ReferenceImplementation.load(r) for r in ref]
-        if not all(isinstance(r, ReferenceImplementation) for r in ref):
+        if not all(isinstance(r, ReferenceImplementation) for r in ref):  # pragma: no cover
             raise TypeError("Invalid values provided for reference(s)")
 
         self._ref = ref
