@@ -1,5 +1,7 @@
 """Reference implementations for PyBryt"""
 
+__all__ = ["ReferenceImplementation", "ReferenceResult", "generate_report"]
+
 import os
 import dill
 import json
@@ -8,10 +10,11 @@ import nbformat
 import numpy as np
 
 from copy import deepcopy
+from textwrap import indent
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
-from .utils import notebook_to_string
+from .utils import get_stem, notebook_to_string
 
 
 class ReferenceImplementation:
@@ -26,13 +29,17 @@ class ReferenceImplementation:
     annotations: List[Annotation]
     """the annotations comprising this reference implementation"""
 
-    def __init__(self, annotations: List[Annotation]):
+    name: str
+    """"""
+
+    def __init__(self, name: str, annotations: List[Annotation]):
         if not isinstance(annotations, list):
             raise TypeError("annotations should be a list of Annotations")
         if not all(isinstance(ann, Annotation) for ann in annotations):
             raise TypeError("Found non-annotation in annotations")
         
         self.annotations = annotations
+        self.name = name
 
     def __eq__(self, other: Any) -> bool:
         """
@@ -47,10 +54,11 @@ class ReferenceImplementation:
         Returns:
             ``bool``: whether the objects are equal
         """
-        return isinstance(other, type(self)) and self.annotations == other.annotations
+        return isinstance(other, type(self)) and self.annotations == other.annotations and \
+            self.name == other.name
 
     @staticmethod
-    def load(file: str) -> Union['ReferenceImplementation', List['ReferenceImplementation']]:
+    def load(file: str) -> 'ReferenceImplementation':
         """
         Unpickles a reference implementation from a file.
 
@@ -63,17 +71,20 @@ class ReferenceImplementation:
         """
         with open(file, "rb") as f:
             instance = dill.load(f)
-        if not isinstance(instance, (ReferenceImplementation, list)):
+        if not isinstance(instance, ReferenceImplementation):
             raise TypeError(f"Unpickled reference implementation has type {type(instance)}")
         return instance
     
-    def dump(self, dest: str = "reference.pkl") -> NoReturn:
+    def dump(self, dest: Optional[str] = None) -> NoReturn:
         """
         Pickles this reference implementation to a file.
 
         Args:
-            dest (``str``, optional): the path to the file
+            dest (``str``, optional): the path to the file; if unspecified, defaults to 
+                ``{self.name}.pkl``
         """
+        if dest is None:
+            dest = f"{self.name}.pkl"
         with open(dest, "wb+") as f:
             dill.dump(self, f)
 
@@ -112,7 +123,7 @@ class ReferenceImplementation:
         return ReferenceResult(self, results, group=group)
 
     @classmethod
-    def compile(cls, path_or_nb: Union[str, nbformat.NotebookNode]) -> \
+    def compile(cls, path_or_nb: Union[str, nbformat.NotebookNode], name: Optional[str] = None) -> \
             Union['ReferenceImplementation', List['ReferenceImplementation']]:
         """
         Compiles a notebook or Python script into a single or list of reference implementations.
@@ -136,11 +147,13 @@ class ReferenceImplementation:
         else:
             source = notebook_to_string(path_or_nb)
 
+        if isinstance(path_or_nb, str) and name is None:
+            name = get_stem(path_or_nb)
+
         env = {}
         exec(source, env)
 
         refs = []
-        annots = []
         for _, v in env.items():
             if isinstance(v, cls):
                 refs.append(v)
@@ -150,7 +163,9 @@ class ReferenceImplementation:
                 warnings.warn(f"Could not find any reference implementations in " \
                     f"{path_or_nb if isinstance(path_or_nb, str) else 'the provided notebook'}")
             else:
-                refs = [cls(deepcopy(Annotation.get_tracked_annotations()))]
+                if name is None:
+                    raise ValueError("No name specified for the reference being compiled")
+                refs = [cls(name, deepcopy(Annotation.get_tracked_annotations()))]
 
         Annotation.reset_tracked_annotations()
         
@@ -194,14 +209,21 @@ class ReferenceResult:
         return f"ReferenceResult([\n  {results}\n])"
 
     @property
-    def correct(self):
+    def correct(self) -> bool:
         """
         ``bool``: whether the reference implementation was satisfied
         """
         return all(r.satisfied for r in self.results)
 
     @property
-    def messages(self):
+    def name(self) -> str:
+        """
+        ``str``: the name of the underlying reference implementation
+        """
+        return self.reference.name
+
+    @property
+    def messages(self) -> List[str]:
         """
         ``list[str]``: the list of messages returned by all annotations in the reference 
         implementation; if ``self.group`` is not ``None``, only messages from annotations in that
@@ -235,7 +257,7 @@ class ReferenceResult:
             "results": [ar.to_dict() for ar in self.results],
         }
 
-    def to_array(self):
+    def to_array(self) -> np.ndarray:
         """
         Converts this result into a numpy array of integers, where ``1`` indicates a satisfied 
         annotation and ``0`` is unsatisfied.
@@ -244,3 +266,58 @@ class ReferenceResult:
             ``numpy.ndarray``: indicator array for the passage of annotations
         """
         return np.array([r.satisfied for r in self.results], dtype=int)
+
+
+def generate_report(
+    results: Union[ReferenceResult, List[ReferenceResult]], show_only: Optional[str] = None,
+    fill_empty: bool = True
+) -> str:
+    """
+    Collects a series of reference result objects and returns a summary of these results with any
+    messages from the annotations.
+
+    ``show_only`` should be in the set ``{'satisfied', 'unsatisfied', None}``. If ``"satisfied"``,
+    the summary will contain only the results of satisfied reference implementations. If 
+    ``"unsatisfied"``, the summary will contain only the results of unsatisfied reference 
+    implementations. If ``None``, all reference implementations will be included.
+
+    If ``show_only`` is set to a value that would result in an empty report (e.g. it is set to
+    ``"satisfied"`` but no reference was satisfied) and ``fill_empty`` is ``True``, the report will
+    be filled with any references that would normally be excluded by ``show_only``.
+
+    Args:
+        results (``Union[ReferenceResult, list[ReferenceResult]]``): the result(s) being collected
+        show_only (``{'satisfied', 'unsatisfied', None}``): which results to report
+        fill_empty (``bool``): if the resulting report would be empty, include results of the type
+            not specified by ``show_only``
+
+    Returns:
+        ``str``: the summary report
+    """
+    if isinstance(results, ReferenceResult):
+        results = [results]
+    if not isinstance(results, list) or not all(isinstance(r, ReferenceResult) for r in results):
+        raise TypeError("Cannot generate a report from arguments that are not reference result objects")
+    if show_only not in {"satisfied", "unsatisfied", None}:
+        raise ValueError("show_only must be in {'satisfied', 'unsatisfied', None}")
+    
+    filtered = []
+    for res in results:
+        if res.correct and show_only != "unsatisfied":
+            filtered.append(res)
+        elif not res.correct and show_only != "satisfied":
+            filtered.append(res)
+
+    if len(filtered) == 0 and fill_empty:
+        filtered = results
+
+    report = ""
+    for i, res in enumerate(filtered):
+        report += f"REFERENCE: {res.name}\n"
+        report += f"SATISFIED: {res.correct}\n"
+        report += f"MESSAGES:\n"
+        report += indent("\n".join(res.messages), "  - ")
+        if i != len(filtered) - 1:
+            report += "\n\n"
+
+    return report

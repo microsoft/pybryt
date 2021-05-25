@@ -1,6 +1,7 @@
 """
 """
 
+import os
 import json
 import random
 import string
@@ -123,3 +124,16 @@ def save_notebook(filename, timeout=10):
         f.close()
 
         return curr != md5
+
+
+def get_stem(fp):
+    """
+    Returns the stem of a filepath.
+
+    Args:
+        fp (``str``): the filepath
+
+    Returns:
+        ``str``: the stem of the filepath
+    """
+    return os.path.splitext(os.path.split(fp)[1])[0]

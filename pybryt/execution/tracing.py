@@ -142,6 +142,10 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
 def _get_tracing_frame():
     """
+    Returns the frame that is being traced by looking for the ``__PYBRYT_TRACING__`` global variable.
+
+    Returns:
+        the frame being traced or ``None`` of no tracing is occurring
     """
     frame = inspect.currentframe()
     while frame is not None:
@@ -151,7 +155,7 @@ def _get_tracing_frame():
     return None
 
 
-def tracing_off():
+def tracing_off(frame=None, save_func=True):
     """
     Turns off PyBryt's tracing if tracing is occurring in this call stack. If PyBryt is not tracing,
     takes no action.
@@ -171,15 +175,16 @@ def tracing_off():
         x3 = pow(x, 3)
     """
     global TRACING_FUNC
-    frame = _get_tracing_frame()
+    frame = _get_tracing_frame() if frame is None else frame
     if frame is None:
         return
-    TRACING_FUNC = frame.f_trace
+    if save_func:
+        TRACING_FUNC = frame.f_trace
     vn = f"sys_{make_secret()}"
     exec(f"import sys as {vn}\n{vn}.settrace(None)", frame.f_globals, frame.f_locals)
 
 
-def tracing_on():
+def tracing_on(frame=None, tracing_func=None):
     """
     Turns tracing on if PyBryt was tracing the call stack. If PyBryt is not tracing or
     :py:meth:`tracing_off<pybryt.tracing_off>` has not been called, no action is taken.
@@ -202,10 +207,12 @@ def tracing_on():
         x4 = pow(x, 4)
     """
     global TRACING_FUNC
-    frame = _get_tracing_frame()
-    if frame is None:
+    frame = _get_tracing_frame() if frame is None else frame
+    if frame is None or (TRACING_FUNC is None and tracing_func is None):
         return
+    if TRACING_FUNC is not None and tracing_func is None:
+        tracing_func = TRACING_FUNC
     vn = f"cir_{make_secret()}"
     vn2 = f"sys_{make_secret()}"
-    frame.f_globals[vn] = TRACING_FUNC
+    frame.f_globals[vn] = tracing_func
     exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)

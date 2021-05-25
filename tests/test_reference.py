@@ -10,11 +10,17 @@ import numpy as np
 import pkg_resources
 import pytest
 
+from copy import deepcopy
+from functools import lru_cache
 from textwrap import dedent
 from unittest import mock
 
-from pybryt import ReferenceImplementation, Value
+from pybryt import generate_report, ReferenceImplementation, Value
 from pybryt.execution import execute_notebook
+
+
+def generate_mfp(nb):
+    return execute_notebook(nb, "")[1]
 
 
 def generate_reference_notebook():
@@ -59,7 +65,11 @@ def test_reference_construction():
     """
     nb = generate_reference_notebook()
 
-    ref = ReferenceImplementation.compile(nb)
+    # check compile error
+    with pytest.raises(ValueError, match="No name specified for the reference being compiled"):
+        ReferenceImplementation.compile(nb)
+
+    ref = ReferenceImplementation.compile(nb, name="foo")
 
     ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
     expected_ref = ReferenceImplementation.load(ref_filename)
@@ -97,13 +107,13 @@ def test_reference_construction():
                 annots.append(v2)
                 annots.append(pybryt.Value(val))
             
-            ref = pybryt.ReferenceImplementation(annots)
-            ref2 = pybryt.ReferenceImplementation([])
+            ref = pybryt.ReferenceImplementation("foo", annots)
+            ref2 = pybryt.ReferenceImplementation("bar", [])
         """))
 
         ntf.seek(0)
 
-        more_refs = ReferenceImplementation.compile(ntf.name)
+        more_refs = ReferenceImplementation.compile(ntf.name, name="foo")
         assert len(more_refs) == 2
         assert len(more_refs[1].annotations) == 0
         
@@ -115,10 +125,10 @@ def test_construction_errors():
     """
     """
     with pytest.raises(TypeError, match="annotations should be a list of Annotations"):
-        ReferenceImplementation(set())
+        ReferenceImplementation("foo", set())
 
     with pytest.raises(TypeError, match="Found non-annotation in annotations"):
-        ReferenceImplementation([Value(1), Value(2), 3, Value(4)])
+        ReferenceImplementation("bar", [Value(1), Value(2), 3, Value(4)])
 
     # check that you can't load something that isn't a ReferenceImplementation
     with tempfile.NamedTemporaryFile() as ntf:
@@ -136,7 +146,7 @@ def test_construction_errors():
         ntf.seek(0)
 
         with pytest.warns(UserWarning, match=f"Could not find any reference implementations in {ntf.name}"):
-            ReferenceImplementation.compile(ntf.name)
+            ReferenceImplementation.compile(ntf.name, name="bar")
 
 
 def test_run_and_results():
@@ -150,10 +160,12 @@ def test_run_and_results():
         pybryt.Value(val, success_message="SUCCESS: computed the correct median x2", 
             failure_message="ERROR: failed to compute the median")
     """)))
-    ref = ReferenceImplementation.compile(nb)
-    _, vals = execute_notebook(nb, "")
+    ref = ReferenceImplementation.compile(nb, name="foo")
+    # _, vals = execute_notebook(nb, "")
+    vals = generate_mfp(nb)
     
     res = ref.run(vals)
+    assert res.name == ref.name
     assert len(res.results) == 27
     assert res.reference is ref
     assert res.correct is True
@@ -179,7 +191,8 @@ def test_run_and_results():
     ]
 
     nb.cells.insert(2, nbformat.v4.new_code_cell("import numpy as np\ndef median(S):\n    return np.median(S)"))
-    _, vals = execute_notebook(nb, "")
+    # _, vals = execute_notebook(nb, "")
+    vals = generate_mfp(nb)
     
     res = ref.run(vals)
     assert len(res.results) == 27
@@ -211,3 +224,96 @@ def test_run_and_results():
 
     with pytest.raises(ValueError, match="Group 'foo' not found"):
         ref.run(vals, group="foo")
+
+
+def test_generate_report():
+    """
+    """
+    nb = generate_reference_notebook()
+    ref = ReferenceImplementation.compile(nb, name="foo")
+    # _, vals = execute_notebook(nb, "")
+    vals = generate_mfp(nb)
+    res = ref.run(vals)
+
+    report = generate_report(res)
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: True
+        MESSAGES:
+          - SUCCESS: Sorted the sample correctly
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
+    res2 = deepcopy(res)
+    res2.results[0]._satisfied = False
+    report = generate_report(res2)
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: False
+        MESSAGES:
+          - ERROR: The sample was not sorted
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
+    report = generate_report(res, show_only="unsatisfied")
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: True
+        MESSAGES:
+          - SUCCESS: Sorted the sample correctly
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
+    report = generate_report(res, show_only="unsatisfied", fill_empty=False)
+    assert report == ""
+
+    res = [res, res2]
+    report = generate_report(res)
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: True
+        MESSAGES:
+          - SUCCESS: Sorted the sample correctly
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+
+        REFERENCE: foo
+        SATISFIED: False
+        MESSAGES:
+          - ERROR: The sample was not sorted
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
+    report = generate_report(res, show_only="satisfied")
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: True
+        MESSAGES:
+          - SUCCESS: Sorted the sample correctly
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
+    report = generate_report(res, show_only="unsatisfied")
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: False
+        MESSAGES:
+          - ERROR: The sample was not sorted
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
+    # test misc. errors
+    with pytest.raises(TypeError, match="Cannot generate a report from arguments that are not reference result objects"):
+        generate_report(1)
+
+    with pytest.raises(TypeError, match="Cannot generate a report from arguments that are not reference result objects"):
+        generate_report([1])
+    
+    with pytest.raises(ValueError, match="show_only must be in {'satisfied', 'unsatisfied', None}"):
+        generate_report(res, show_only="foo")

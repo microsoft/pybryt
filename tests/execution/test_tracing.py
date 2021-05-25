@@ -132,7 +132,8 @@ def test_tracing_control():
 
     with mock.patch("sys.settrace") as mocked_settrace:
         tracing_on()
-        mocked_settrace.assert_called()
+        if sys.gettrace() is not None:
+            mocked_settrace.assert_called()
 
     __PYBRYT_TRACING__ = False
     with mock.patch("sys.settrace") as mocked_settrace:

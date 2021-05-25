@@ -175,7 +175,9 @@ class OtterPlugin(AbstractOtterPlugin):
 
         refs = []
         for rp in ref_paths:
-            ref = ReferenceImplementation.load(rp)
+            with open(rp, "rb") as f:
+                ref = dill.load(f)
+            # ref = ReferenceImplementation.load(rp)
             if isinstance(ref, ReferenceImplementation):
                 refs.append(ref)
             else:
