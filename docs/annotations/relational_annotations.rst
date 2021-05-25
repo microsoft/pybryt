@@ -6,8 +6,8 @@ Relational Annotations
 Relational annotations define some kind of relationship between two or more
 annotations. Currently, PyBryt supports two types of relational annotations:
 
- * temporal annotations and
- * boolean annotations. 
+* temporal annotations and
+* boolean annotations. 
 
 All relational annotations are subclasses of the abstract
 :py:class:`RelationalAnnotation<pybryt.annotations.relation.RelationalAnnotation>`
