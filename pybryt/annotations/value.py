@@ -25,7 +25,7 @@ class Value(Annotation):
     values that support arithemtic operators, absolute tolerances can be specified as well.
 
     Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
-    enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \cdot |v|)`, where 
+    enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \\cdot |v|)`, where 
     :math:`v` is the value of the annotation.
 
     Args:

@@ -96,13 +96,13 @@ other implementations, we use the ``pybryt.Value`` class from the :ref:`api`.
 
 The two key variables we want to observe in our example are:
 
- * The ``list`` of words created by splitting the text (``fragments``)
- * The count of words as a Python ``int`` (``length``)
+* The ``list`` of words created by splitting the text (``fragments``)
+* The count of words as a Python ``int`` (``length``)
 
 Now, let us update the reference implementation and create a ``pybryt.Value()``
 instance for both of these variables:
 
- .. code-block:: python
+.. code-block:: python
 
     def count_words(text: str) -> int:
         """
