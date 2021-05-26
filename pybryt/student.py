@@ -157,6 +157,19 @@ def generate_student_impls(
     paths_or_nbs: List[Union[str, nbformat.NotebookNode]], parallel: bool = False, **kwargs
 ) -> List[StudentImplementation]:
     """
+    Generates multiple student implementations from a list of file paths or notebooks.
+
+    Can optionally generate the student implementations in parallel processes using Python's 
+    ``multiprocessing`` library to reduce the runtime.
+
+    Args:
+        paths_or_nbs (``list[Union[str, nbformat.NotebookNode]]``): the notebooks or paths to them
+        parallel (``bool``, optional): whether to execute in parallel
+        **kwargs: additional keyword arguments passed to the 
+            :py:class:`StudentImplementation<pybryt.StudentImplementation>` constructor
+
+    Returns:
+        ``list[StudentImplementation]``: the student implementations
     """
     if parallel:
         def create_and_collect_impl(impl, queue, **kwargs):
