@@ -54,7 +54,7 @@ def check(ref, stu, name, output_nb, output, output_type):
     STU can be a path to a pickled student implementation or to a notebook to be executed.
 
     If TYPE is "pickle" or "json", the output is a file. If TYPE is "report", a report is echoed to
-    the console.
+    the console and OUTPUT is ignored.
     """
     if os.path.splitext(ref)[1] == ".ipynb":
         ref = ReferenceImplementation.compile(ref)
