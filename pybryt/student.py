@@ -1,6 +1,6 @@
 """Student implementations for PyBryt"""
 
-__all__ = ["StudentImplementation", "check"]
+__all__ = ["StudentImplementation", "check", "generate_student_impls"]
 
 import os
 import dill
@@ -9,6 +9,7 @@ import nbformat
 import inspect
 
 from contextlib import contextmanager
+from multiprocessing import Process, Queue
 from types import FrameType
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
@@ -140,6 +141,36 @@ class StudentImplementation(Serializable):
         """
         refs = create_references([self], **kwargs)
         return get_impl_results(refs[0], student_impls, **kwargs)
+
+
+def generate_student_impls(impl_paths: List[str], parallel=False, **kwargs):
+    """
+    """
+    if parallel:
+        def create_and_collect_impl(impl, queue, **kwargs):
+            stu = StudentImplementation(impl, **kwargs)
+            queue.put((impl, stu))
+
+    impls = []
+    if parallel:
+        queue = Queue()
+    for stu in impl_paths:
+        if parallel:
+            p = Process(target=create_and_collect_impl, args=(stu, queue), kwargs=kwargs)
+            p.start()
+            impls.append(p)
+        else:
+            impls.append(StudentImplementation(stu, **kwargs))
+    if parallel:
+        for p in impls:
+            p.join()
+        procs, impls = impls, {}
+        while not queue.empty():
+            t = queue.get()
+            impls[t[0]] = t[1]
+        # impls = {t[0]: t[1] for t in queue}
+        impls = [impls[p] for p in impl_paths]
+    return impls
 
 
 class check:

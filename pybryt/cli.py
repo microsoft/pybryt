@@ -4,7 +4,7 @@ import os
 import json
 import click
 
-from . import ReferenceImplementation, StudentImplementation
+from . import generate_student_impls, ReferenceImplementation, StudentImplementation
 
 
 @click.group()
@@ -67,6 +67,16 @@ def check(ref, stu, name, output_nb, output, output_type):
         d = res.to_dict()
         with open(output, "w+") as f:
             json.dump(d, f, indent=2)
+
+
+@click_cli.command()
+@click.option("-p", "--parallel/--no-parallel", default=False, show_default=True)
+@click.argument("subm", nargs=-1, type=click.Path(exists=True, dir_okay=False))
+def execute(subm, parallel):
+    """
+    """
+    stus = generate_student_impls(subm, parallel=parallel)
+    click.echo(stus)
 
 
 def cli(*args, **kwargs):
