@@ -152,6 +152,53 @@ annotations:</p>
 <li><p>value annotations, described below, and</p></li>
 <li><p><a class="reference internal" href="relational_annotations.html#relational"><span class="std std-ref">relational annotations</span></a>.</p></li>
 </ul>
+<div class="section" id="annotation-arguments">
+<h2>Annotation Arguments<a class="headerlink" href="#annotation-arguments" title="Permalink to this headline">¶</a></h2>
+<p>All annotations contain some core configurations that can be set using keyword arguments in the
+constructor or by accessing the instance variables of that object. The table below lists these
+arguments.</p>
+<div class="table-wrapper"><table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 10%"/>
+<col style="width: 10%"/>
+<col style="width: 70%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Field Name</p></td>
+<td><p>Keyword Argument</p></td>
+<td><p>Type</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The name of the annotation; used to process <code class="docutils literal notranslate"><span class="pre">limit</span></code>; automatically set if unspecified</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">limit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">limit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The maximum number of annotations with a given <code class="docutils literal notranslate"><span class="pre">name</span></code> to track</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>The name of a group to which this annotation belongs; for running specific groups of annotations
+from a reference implementation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">success_message</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">success_message</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>A message to be displayed to the student if the annotation is satisfied</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">failure_message</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">failure_message</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>A message to be displayed to the student if the annotation is <em>not</em> satisfied</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
 <div class="section" id="value-annotations">
 <h2>Value annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h2>
 <p>Value annotation is the most basic type of annotation. It expects a specific
@@ -251,6 +298,7 @@ allow the student’s solution (string) to be case-insensitive.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
+<li><a class="reference internal" href="#annotation-arguments">Annotation Arguments</a></li>
 <li><a class="reference internal" href="#value-annotations">Value annotations</a><ul>
 <li><a class="reference internal" href="#numerical-tolerances">Numerical Tolerances</a></li>
 <li><a class="reference internal" href="#invariants">Invariants</a></li>

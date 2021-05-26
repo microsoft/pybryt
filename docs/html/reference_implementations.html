@@ -198,7 +198,8 @@ are to be made later down the line.</p>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> instances and grouping them into lists. These lists will
 be passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> constructor
 to create the reference implementations. <em>These objects must be assigned to global variables, or
-PyBryt will not find them.</em></p>
+PyBryt will not find them.</em> Note that the constructor takes an additional positional argument which
+corresponds to the name of the reference implementation.</p>
 <p>As an example, consider the code below, which creates two reference implementations for a Fibonacci
 sequence generator:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_fibs</span> <span class="o">=</span> <span class="mi">50</span>
@@ -253,8 +254,8 @@ sequence generator:</p>
 
 
 <span class="c1"># create references</span>
-<span class="n">ref1</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="n">first_ref</span><span class="p">)</span>
-<span class="n">ref2</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="n">second_ref</span><span class="p">)</span>
+<span class="n">ref1</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"ref1"</span><span class="p">,</span> <span class="n">first_ref</span><span class="p">)</span>
+<span class="n">ref2</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"ref2"</span><span class="p">,</span> <span class="n">second_ref</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -275,9 +276,9 @@ method, which calls it for that student implementation.</p>
 path to the file and uses the <code class="docutils literal notranslate"><span class="pre">dill</span></code> library to serialize the object. To load a reference
 implementation, or a list of reference implementations, from a file, use the static method
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.load</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">([</span><span class="o">...</span><span class="p">])</span>
-<span class="n">ref</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span> <span class="c1"># defaults to filename 'reference.pkl'</span>
-<span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'reference.pkl'</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">,</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span> <span class="c1"># defaults to filename '{ref.name}.pkl'</span>
+<span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'foo.pkl'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

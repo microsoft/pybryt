@@ -180,7 +180,7 @@ This method simply abstracts away managing the memory footprint tracked by the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> object and calls the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code> method for each provided
 reference implementation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"reference.ipynb"</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"reference.pkl"</span><span class="p">)</span>
 <span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>
 <span class="n">stu</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
 </pre></div>
