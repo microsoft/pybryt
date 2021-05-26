@@ -148,7 +148,7 @@ class Serializable(ABC):
 
     @property
     @abstractmethod
-    def _default_dump_dest():
+    def _default_dump_dest(self) -> str:
         """
         Default destination path for the ``dump`` method
         """

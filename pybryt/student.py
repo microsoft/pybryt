@@ -93,58 +93,8 @@ class StudentImplementation(Serializable):
         return stu
 
     @property
-    def _default_dump_dest(self):
+    def _default_dump_dest(self) -> str:
         return "student.pkl"
-
-    # def dump(self, dest: str = "student.pkl") -> NoReturn:
-    #     """
-    #     Pickles this student implementation to a file.
-
-    #     Args:
-    #         dest (``str``, optional): the path to the file
-    #     """
-    #     with open(dest, "wb+") as f:
-    #         dill.dump(self, f)
-
-    # def dumps(self) -> str:
-    #     """
-    #     Pickles this student implementation to a base-64-encoded string.
-
-    #     Returns:
-    #        ``str``: the pickled and encoded student implementation
-    #     """
-    #     bits = dill.dumps(self)
-    #     return base64.b64encode(bits).decode("ascii")
-
-    # @staticmethod
-    # def load(file: str) -> Union['StudentImplementation']:
-    #     """
-    #     Unpickles a student implementation from a file.
-
-    #     Args:
-    #         file (``str``): the path to the file
-        
-    #     Returns:
-    #         :py:class:`StudentImplementation<pybryt.StudentImplementation>`: the unpickled student 
-    #         implementation
-    #     """
-    #     with open(file, "rb") as f:
-    #         instance = dill.load(f)
-    #     return instance
-
-    # @staticmethod
-    # def loads(data: str) -> "StudentImplementation":
-    #     """
-    #     Unpickles a student implementation from a base-64-encoded string.
-
-    #     Args:
-    #         data (``str``): the pickled and encoded student implementation
-        
-    #     Returns:
-    #         :py:class:`StudentImplementation<pybryt.StudentImplementation>`: the unpickled student 
-    #         implementation
-    #     """
-    #     return dill.loads(base64.b64decode(data.encode("ascii")))
 
     def check(self, ref: Union[ReferenceImplementation, List[ReferenceImplementation]], group=None) -> \
             Union[ReferenceResult, List[ReferenceResult]]:
