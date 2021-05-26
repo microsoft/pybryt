@@ -167,6 +167,6 @@ implementation, or a list of reference implementations, from a file, use the sta
 
 .. code-block:: python
 
-    ref = pybryt.ReferenceImplementation([...])
-    ref.dump() # defaults to filename 'reference.pkl'
-    ref = pybryt.ReferenceImplementation.load('reference.pkl')
+    ref = pybryt.ReferenceImplementation("foo", [...])
+    ref.dump() # defaults to filename '{ref.name}.pkl'
+    ref = pybryt.ReferenceImplementation.load('foo.pkl')
