@@ -27,6 +27,44 @@ annotations:
 * value annotations, described below, and
 * :ref:`relational annotations<relational>`.
 
+
+Annotation Arguments
+--------------------
+
+All annotations contain some core configurations that can be set using keyword arguments in the
+constructor or by accessing the instance variables of that object. The table below lists these 
+arguments.
+
+.. list-table::
+   :widths: 10 10 10 70
+
+   * - Field Name
+     - Keyword Argument
+     - Type
+     - Description
+   * - ``name``
+     - ``name``
+     - ``str``
+     - The name of the annotation; used to process ``limit``; automatically set if unspecified
+   * - ``limit``
+     - ``limit``
+     - ``str``
+     - The maximum number of annotations with a given ``name`` to track
+   * - ``group``
+     - ``group``
+     - ``str``
+     - The name of a group to which this annotation belongs; for running specific groups of annotations
+       from a reference implementation
+   * - ``success_message``
+     - ``success_message``
+     - ``str``
+     - A message to be displayed to the student if the annotation is satisfied
+   * - ``failure_message``
+     - ``failure_message``
+     - ``str``
+     - A message to be displayed to the student if the annotation is *not* satisfied
+
+
 Value annotations
 -----------------
 
@@ -44,6 +82,7 @@ Note that when an instance of :py:class:`Value<pybryt.Value>` is created,
 :py:meth:`copy.copy` is called on the argument passed to it, so values cannot be
 affected by mutability.
 
+
 Numerical Tolerances
 ++++++++++++++++++++
 
@@ -59,6 +98,7 @@ annotation is defined:
 .. code-block:: python
 
    pybryt.Value(arr, atol=1e-3, rtol=1e-5)
+
 
 Invariants
 ++++++++++
