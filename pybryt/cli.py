@@ -71,22 +71,28 @@ def check(ref, stu, name, output_nb, output, output_type):
 
 
 @click_cli.command()
-@click.option("-p", "--parallel/--no-parallel", default=False, show_default=True)
+@click.option("-p", "--parallel", is_flag=True, default=False, 
+              help="Execute notebooks in parallel using the multiprocessing library")
 @click.option("-o", "--output", default=None, type=click.Path(), 
               help="Path at which to write the pickled student implementation")
 @click.argument("subm", nargs=-1, type=click.Path(exists=True, dir_okay=False))
 def execute(subm, parallel, output):
     """
     """
+    if len(subm) == 0:
+        raise ValueError("You must specify at least one notebook to execute")
+
     stus = generate_student_impls(subm, parallel=parallel)
 
     if len(subm) == 1:
         stus[0].dump(output)
+
     else:
         if output is None:
             output = "./"
+
         if not os.path.isdir(output):
-            raise ValueError(f"output directory {output} does not exist or is not a directory")
+            raise ValueError(f"Output directory {output} does not exist or is not a directory")
 
         for s, stu in zip(subm, stus):
             stem = get_stem(s)
