@@ -23,6 +23,7 @@ class ReferenceImplementation(Serializable):
     creating, running, and storing reference implementations.
 
     Args:
+        name (``str``): the name of the reference implementation
         annotations (``list[Annotation]``): the annotations comprising this reference implementation
     """
     
