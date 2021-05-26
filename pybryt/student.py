@@ -93,6 +93,16 @@ class StudentImplementation(Serializable):
         stu.values = footprint
         return stu
 
+    def __eq__(self, other: Any) -> bool:
+        """
+        Checks whether a student implementation is equal to another object.
+
+        The object is considered equal if it is also a student implementation, has the same memory
+        footprint, the same number of steps, and the same source notebook.
+        """
+        return isinstance(other, type(self)) and self.values == other.values and \
+            self.steps == other.steps and self.nb == other.nb
+
     @property
     def _default_dump_dest(self) -> str:
         return "student.pkl"
@@ -143,7 +153,9 @@ class StudentImplementation(Serializable):
         return get_impl_results(refs[0], student_impls, **kwargs)
 
 
-def generate_student_impls(impl_paths: List[str], parallel=False, **kwargs):
+def generate_student_impls(
+    paths_or_nbs: List[Union[str, nbformat.NotebookNode]], parallel: bool = False, **kwargs
+) -> List[StudentImplementation]:
     """
     """
     if parallel:
@@ -154,22 +166,26 @@ def generate_student_impls(impl_paths: List[str], parallel=False, **kwargs):
     impls = []
     if parallel:
         queue = Queue()
-    for stu in impl_paths:
+
+    for stu in paths_or_nbs:
         if parallel:
             p = Process(target=create_and_collect_impl, args=(stu, queue), kwargs=kwargs)
             p.start()
             impls.append(p)
         else:
             impls.append(StudentImplementation(stu, **kwargs))
+
     if parallel:
         for p in impls:
             p.join()
+
         procs, impls = impls, {}
         while not queue.empty():
             t = queue.get()
-            impls[t[0]] = t[1]
-        # impls = {t[0]: t[1] for t in queue}
-        impls = [impls[p] for p in impl_paths]
+            impls[str(t[0])] = t[1]
+
+        impls = [impls[str(p)] for p in paths_or_nbs]
+
     return impls
 
 
