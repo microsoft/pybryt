@@ -59,7 +59,7 @@ reference implementation.
 
 .. code-block:: python
 
-    ref = pybryt.ReferenceImplementation.load("reference.ipynb")
+    ref = pybryt.ReferenceImplementation.load("reference.pkl")
     stu = pybryt.StudentImplementation("subm.ipynb")
     stu.check(ref)
 
