@@ -67,6 +67,9 @@ def check(ref, stu, name, output_nb, output, output_type):
         except:
             raise RuntimeError(f"Could not load the reference implementation {ref}")
 
+    if output is None:
+        output = get_stem(stu) + "_results" + (".pkl", ".json")[output_type == "json"]
+
     if os.path.splitext(stu)[1] == ".ipynb":
         stu = StudentImplementation(stu, output=output_nb)
     else:
@@ -80,8 +83,6 @@ def check(ref, stu, name, output_nb, output, output_type):
     if output_type == "pickle":
         res.dump(output)
     elif output_type == "json":
-        if output is None:
-            output = os.path.splitext(res._default_dump_dest)[0] + ".json"
         d = res.to_dict()
         with open(output, "w+") as f:
             json.dump(d, f, indent=2)
