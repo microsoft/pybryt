@@ -10,6 +10,7 @@ from . import ReferenceImplementation, StudentImplementation
 @click.group()
 def click_cli():
     """
+    A command-line interface for PyBryt. See https://microsoft.github.io/pybryt for more information.
     """
     pass
 
@@ -70,6 +71,7 @@ def check(ref, stu, name, output_nb, output, output_type):
 
 def cli(*args, **kwargs):
     """
+    Wrapper for the click CLI that sets the prog name.
     """
     prog_name = kwargs.pop("prog_name", "pybryt")
     return click_cli(*args, prog_name=prog_name, **kwargs)
