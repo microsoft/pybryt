@@ -5,6 +5,7 @@ import json
 import click
 
 from . import generate_student_impls, ReferenceImplementation, StudentImplementation
+from .utils import get_stem
 
 
 @click.group()
@@ -71,12 +72,26 @@ def check(ref, stu, name, output_nb, output, output_type):
 
 @click_cli.command()
 @click.option("-p", "--parallel/--no-parallel", default=False, show_default=True)
+@click.option("-o", "--output", default=None, type=click.Path(), 
+              help="Path at which to write the pickled student implementation")
 @click.argument("subm", nargs=-1, type=click.Path(exists=True, dir_okay=False))
-def execute(subm, parallel):
+def execute(subm, parallel, output):
     """
     """
     stus = generate_student_impls(subm, parallel=parallel)
-    click.echo(stus)
+
+    if len(subm) == 1:
+        stus[0].dump(output)
+    else:
+        if output is None:
+            output = "./"
+        if not os.path.isdir(output):
+            raise ValueError(f"output directory {output} does not exist or is not a directory")
+
+        for s, stu in zip(subm, stus):
+            stem = get_stem(s)
+            path = os.path.join(output, stem + ".pkl")
+            stu.dump(path)
 
 
 def cli(*args, **kwargs):
