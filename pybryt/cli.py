@@ -31,9 +31,12 @@ def compile(src, dest, name):
 @click_cli.command()
 @click.option("-n", "--name", default=None, type=click.STRING, 
               help="Optional name for the reference implementation")
-@click.option("--output-nb", default=None, type=click.Path(dir_okay=False))
-@click.option("-o", "--output", default=None, type=click.Path(dir_okay=False))
-@click.option("-t", "--type", "output_type", default="pickle", show_default=True, type=click.Choice(["pickle", "json"]))
+@click.option("--output-nb", default=None, type=click.Path(dir_okay=False), 
+              help="Path at which to write the output notebook from executing the student submission")
+@click.option("-o", "--output", default=None, type=click.Path(dir_okay=False), 
+              help="Path at which to write the results of the check")
+@click.option("-t", "--type", "output_type", default="pickle", show_default=True, 
+              type=click.Choice(["pickle", "json"]), help="Type of output file to write")
 @click.argument("ref", type=click.Path(exists=True, dir_okay=False))
 @click.argument("stu", type=click.Path(exists=True, dir_okay=False))
 def check(ref, stu, name, output_nb, output, output_type):
