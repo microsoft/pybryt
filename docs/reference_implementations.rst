@@ -79,7 +79,8 @@ To create multiple reference implementations from a single notebook, begin by cr
 :py:class:`Annotation<pybryt.Annotation>` instances and grouping them into lists. These lists will 
 be passed to the :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>` constructor
 to create the reference implementations. *These objects must be assigned to global variables, or 
-PyBryt will not find them.*
+PyBryt will not find them.* Note that the constructor takes an additional positional argument which
+corresponds to the name of the reference implementation.
 
 As an example, consider the code below, which creates two reference implementations for a Fibonacci
 sequence generator:
@@ -138,8 +139,8 @@ sequence generator:
 
 
     # create references
-    ref1 = pybryt.ReferenceImplementation(first_ref)
-    ref2 = pybryt.ReferenceImplementation(second_ref)
+    ref1 = pybryt.ReferenceImplementation("ref1", first_ref)
+    ref2 = pybryt.ReferenceImplementation("ref2", second_ref)
 
 
 Interacting with Reference Implementations
@@ -166,6 +167,6 @@ implementation, or a list of reference implementations, from a file, use the sta
 
 .. code-block:: python
 
-    ref = pybryt.ReferenceImplementation([...])
-    ref.dump() # defaults to filename 'reference.pkl'
-    ref = pybryt.ReferenceImplementation.load('reference.pkl')
+    ref = pybryt.ReferenceImplementation("foo", [...])
+    ref.dump() # defaults to filename '{ref.name}.pkl'
+    ref = pybryt.ReferenceImplementation.load('foo.pkl')
