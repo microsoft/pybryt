@@ -1,6 +1,7 @@
 """Command-line interface for PyBryt"""
 
 import os
+import dill
 import json
 import click
 
@@ -58,9 +59,6 @@ def check(ref, stu, name, output_nb, output, output_type):
     """
     if os.path.splitext(ref)[1] == ".ipynb":
         ref = ReferenceImplementation.compile(ref)
-        if not isinstance(ref, ReferenceImplementation):
-            raise RuntimeError("On-the-fly reference compilation must result in a single reference "
-                               "implementation")
     else:
         try:
             ref = ReferenceImplementation.load(ref)
@@ -81,9 +79,16 @@ def check(ref, stu, name, output_nb, output, output_type):
     res = stu.check(ref)
 
     if output_type == "pickle":
-        res.dump(output)
+        if isinstance(res, list):
+            with open(output, "wb+") as f:
+                dill.dump(res, f)
+        else:
+            res.dump(output)
     elif output_type == "json":
-        d = res.to_dict()
+        if isinstance(res, list):
+            d = [r.to_dict() for r in res]
+        else:
+            d = res.to_dict()
         with open(output, "w+") as f:
             json.dump(d, f, indent=2)
     elif output_type == "report":
