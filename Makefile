@@ -22,7 +22,8 @@ test:
 	$(PYTEST) $(TESTPATH) $(PYTESTOPTS)
 
 testcov:
-	$(COVERAGE) run --source=pybryt -m pytest $(TESTPATH) $(PYTESTOPTS) 
+	$(COVERAGE) run -m pytest $(TESTPATH) $(PYTESTOPTS) 
+	$(COVERAGE) combine
 
 covhtml: testcov
 	$(COVERAGE) html

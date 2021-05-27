@@ -14,15 +14,16 @@ from textwrap import indent
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
-from .utils import get_stem, notebook_to_string
+from .utils import get_stem, notebook_to_string, Serializable
 
 
-class ReferenceImplementation:
+class ReferenceImplementation(Serializable):
     """
     A reference implementation class for managing collections of annotations. Defines methods for
     creating, running, and storing reference implementations.
 
     Args:
+        name (``str``): the name of the reference implementation
         annotations (``list[Annotation]``): the annotations comprising this reference implementation
     """
     
@@ -30,7 +31,7 @@ class ReferenceImplementation:
     """the annotations comprising this reference implementation"""
 
     name: str
-    """"""
+    """the name of the reference implementation"""
 
     def __init__(self, name: str, annotations: List[Annotation]):
         if not isinstance(annotations, list):
@@ -57,36 +58,9 @@ class ReferenceImplementation:
         return isinstance(other, type(self)) and self.annotations == other.annotations and \
             self.name == other.name
 
-    @staticmethod
-    def load(file: str) -> 'ReferenceImplementation':
-        """
-        Unpickles a reference implementation from a file.
-
-        Args:
-            file (``str``): the path to the file
-        
-        Returns:
-            :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>`: the unpickled
-            reference implementation
-        """
-        with open(file, "rb") as f:
-            instance = dill.load(f)
-        if not isinstance(instance, ReferenceImplementation):
-            raise TypeError(f"Unpickled reference implementation has type {type(instance)}")
-        return instance
-    
-    def dump(self, dest: Optional[str] = None) -> NoReturn:
-        """
-        Pickles this reference implementation to a file.
-
-        Args:
-            dest (``str``, optional): the path to the file; if unspecified, defaults to 
-                ``{self.name}.pkl``
-        """
-        if dest is None:
-            dest = f"{self.name}.pkl"
-        with open(dest, "wb+") as f:
-            dill.dump(self, f)
+    @property
+    def _default_dump_dest(self) -> str:
+        return f"{self.name}.pkl"
 
     def run(self, observed_values: List[Tuple[Any, int]], group: Optional[str] = None) -> 'ReferenceResult':        
         """
@@ -174,7 +148,7 @@ class ReferenceImplementation:
         return refs
 
 
-class ReferenceResult:
+class ReferenceResult(Serializable):
     """
     Class for wrangling and managing the results of a reference implementation. Collects a series of
     :py:class:`AnnotationResult<pybryt.AnnotationResult>` objects and provides an API for managing
@@ -203,10 +177,14 @@ class ReferenceResult:
         self.reference = reference
         self.results = annotation_results
         self.group = group
-    
+
     def __repr__(self):
         results = ',\n  '.join(repr(r) for r in self.results)
         return f"ReferenceResult([\n  {results}\n])"
+
+    @property
+    def _default_dump_dest(self) -> str:
+        return f"{self.name}_results.pkl"
 
     @property
     def correct(self) -> bool:

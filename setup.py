@@ -29,4 +29,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
 	],
 	install_requires=install_requires,
+	entry_points={
+		"console_scripts": ["pybryt=pybryt.cli:cli"]
+	},
 )

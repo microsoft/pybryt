@@ -136,7 +136,7 @@ def test_construction_errors():
 
         ntf.seek(0)
 
-        with pytest.raises(TypeError, match="Unpickled reference implementation has type <class 'int'>"):
+        with pytest.raises(TypeError, match="Unpickled object is not of type <class 'pybryt.reference.ReferenceImplementation'>"):
             ReferenceImplementation.load(ntf.name)
 
     # check that loading an empty reference implementation gives an error
