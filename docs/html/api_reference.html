@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Command-Line Interface" href="cli_reference.html" />
 
     <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
         <title>API Reference - PyBryt documentation</title>
@@ -117,6 +117,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference_implementations.html">Reference Implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
 </ul>
@@ -1224,7 +1225,10 @@ and any child results.</p>
 creating, running, and storing reference implementations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>annotations</strong> (<code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code>) – the annotations comprising this reference implementation</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the name of the reference implementation</p></li>
+<li><p><strong>annotations</strong> (<code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code>) – the annotations comprising this reference implementation</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1252,38 +1256,11 @@ created by executing the file</p>
 </dd>
 </dl>
 </dd></dl>
-<dl class="py method">
-<dt id="pybryt.reference.ReferenceImplementation.dump">
-<code class="sig-name descname"><span class="pre">dump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pickles this reference implementation to a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dest</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – the path to the file; if unspecified, defaults to
-<code class="docutils literal notranslate"><span class="pre">{self.name}.pkl</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt id="pybryt.reference.ReferenceImplementation.load">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unpickles a reference implementation from a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the path to the file</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the unpickled
-reference implementation</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></p>
-</dd>
-</dl>
-</dd></dl>
 <dl class="py attribute">
 <dt id="pybryt.reference.ReferenceImplementation.name">
 <code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>the name of the reference implementation</p>
+</dd></dl>
 <dl class="py method">
 <dt id="pybryt.reference.ReferenceImplementation.run">
 <code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><span class="pre">pybryt.reference.ReferenceResult</span></a><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.run" title="Permalink to this definition">¶</a></dt>
@@ -1504,29 +1481,6 @@ implementation in <code class="docutils literal notranslate"><span class="pre">s
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt id="pybryt.student.StudentImplementation.dump">
-<code class="sig-name descname"><span class="pre">dump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'student.pkl'</span></span></em><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.student.StudentImplementation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pickles this student implementation to a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dest</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – the path to the file</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt id="pybryt.student.StudentImplementation.dumps">
-<code class="sig-name descname"><span class="pre">dumps</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">str</span><a class="headerlink" href="#pybryt.student.StudentImplementation.dumps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pickles this student implementation to a base-64-encoded string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the pickled and encoded student implementation</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
 <dt id="pybryt.student.StudentImplementation.from_footprint">
 <em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_footprint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.from_footprint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a student implementation object from a memory footprint directly, rather than by
@@ -1538,40 +1492,6 @@ object empty.</p>
 <li><p><strong>footprint</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">int]]</span></code>) – the memory footprint</p></li>
 <li><p><strong>steps</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – the number of execution steps</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt id="pybryt.student.StudentImplementation.load">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unpickles a student implementation from a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the path to the file</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the unpickled student
-implementation</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt id="pybryt.student.StudentImplementation.loads">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">loads</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.loads" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unpickles a student implementation from a base-64-encoded string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the pickled and encoded student implementation</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the unpickled student
-implementation</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1624,6 +1544,29 @@ by the block</p></li>
 reference results to include in the report; if <code class="docutils literal notranslate"><span class="pre">None</span></code>, all are included</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">pybryt.execution.create_collector</span></code></p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="pybryt.student.generate_student_impls">
+<code class="sig-prename descclassname"><span class="pre">pybryt.student.</span></code><code class="sig-name descname"><span class="pre">generate_student_impls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths_or_nbs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> → <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.student.generate_student_impls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates multiple student implementations from a list of file paths or notebooks.</p>
+<p>Can optionally generate the student implementations in parallel processes using Python’s
+<code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> library to reduce the runtime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>paths_or_nbs</strong> (<code class="docutils literal notranslate"><span class="pre">list[Union[str,</span> <span class="pre">nbformat.NotebookNode]]</span></code>) – the notebooks or paths to them</p></li>
+<li><p><strong>parallel</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to execute in parallel</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> constructor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the student implementations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[StudentImplementation]</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1696,14 +1639,14 @@ for ungraded code In the example below, <code class="docutils literal notranslat
         
         <div class="related-pages">
           
-          <a class="prev-page" href="student_implementations.html">
+          <a class="prev-page" href="cli_reference.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Student Implementations</div>
+                <div class="title">Command-Line Interface</div>
                 
               </div>
             </a>
