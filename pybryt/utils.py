@@ -4,13 +4,15 @@
 import os
 import json
 import random
+import base64
 import string
 import dill
 import hashlib
 import time
 import nbformat
 
-from typing import Any, List, NoReturn, Union
+from abc import ABC, abstractmethod
+from typing import Any, List, NoReturn, Optional, Union
 from IPython import get_ipython
 from IPython.display import publish_display_data
 
@@ -137,3 +139,72 @@ def get_stem(fp):
         ``str``: the stem of the filepath
     """
     return os.path.splitext(os.path.split(fp)[1])[0]
+
+
+class Serializable(ABC):
+    """
+    A class that implements serialization using the ``dill`` library.
+    """
+
+    @property
+    @abstractmethod
+    def _default_dump_dest(self) -> str:
+        """
+        Default destination path for the ``dump`` method
+        """
+        ... # pragma: no cover
+
+    def dump(self, dest: Optional[str] = None) -> NoReturn:
+        """
+        Pickles this object to a file.
+
+        Args:
+            dest (``str``, optional): the path to the file
+        """
+        if dest is None:
+            dest = self._default_dump_dest
+        with open(dest, "wb+") as f:
+            dill.dump(self, f)
+
+    def dumps(self) -> str:
+        """
+        Pickles this object to a base-64-encoded string.
+
+        Returns:
+           ``str``: the pickled and encoded object
+        """
+        bits = dill.dumps(self)
+        return base64.b64encode(bits).decode("ascii")
+
+    @classmethod
+    def load(cls, file: str) -> 'Serializable':
+        """
+        Unpickles an object from a file.
+
+        Args:
+            file (``str``): the path to the file
+        
+        Returns:
+            ``Serializable``: the unpickled object
+        """
+        with open(file, "rb") as f:
+            instance = dill.load(f)
+        if not isinstance(instance, cls):
+            raise TypeError(f"Unpickled object is not of type {cls}")
+        return instance
+
+    @classmethod
+    def loads(cls, data: str) -> "Serializable":
+        """
+        Unpickles an object from a base-64-encoded string.
+
+        Args:
+            data (``str``): the pickled and encoded object
+        
+        Returns:
+            ``Serializable``: the unpickled object
+        """
+        instance = dill.loads(base64.b64decode(data.encode("ascii")))
+        if not isinstance(instance, cls):
+            raise TypeError(f"Unpickled object is not of type {cls}")
+        return instance

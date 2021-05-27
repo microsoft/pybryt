@@ -8,9 +8,12 @@ import pkg_resources
 
 from functools import lru_cache
 from textwrap import dedent
+from types import MethodType
 from unittest import mock
 
-from pybryt import check, ReferenceImplementation, ReferenceResult, StudentImplementation
+from pybryt import (
+    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation
+)
 
 from .test_reference import generate_reference_notebook
 
@@ -175,3 +178,38 @@ def test_check_cm(capsys):
 
     with pytest.raises(TypeError, match="Invalid values in the reference list"):
         check([ref, "path", 1])
+
+
+def test_generate_student_impls():
+    """
+    """
+    num_notebooks = 6
+    nb, stu = generate_impl()
+    nbs = [nb] * num_notebooks
+
+    with mock.patch("pybryt.student.execute_notebook") as mocked_execute:
+        mocked_execute.return_value = (stu.steps, stu.values)
+        stus = generate_student_impls(nbs)
+
+    assert all(s == stu for s in stus)
+
+    with mock.patch("pybryt.student.Process") as mocked_process:
+
+        class MockedQueue:
+            def __init__(self, *args, **kwargs):
+                self.calls = 0
+
+            def empty(self, *args, **kwargs):
+                if self.calls >= num_notebooks:
+                    return True
+                self.calls += 1
+                return False
+
+            def get(self, *args, **kwargs):
+                return (nb, stu)
+
+        with mock.patch("pybryt.student.Queue") as mocked_queue:
+            mocked_queue.return_value = mock.MagicMock(wraps=MockedQueue())
+            stus = generate_student_impls(nbs, parallel=True)
+
+    assert all(s == stu for s in stus)

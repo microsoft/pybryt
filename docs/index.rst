@@ -14,6 +14,7 @@ PyBryt Documentation
    annotations/index
    reference_implementations
    student_implementations
+   cli_reference
    api_reference
    Changelog <https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md>
 
@@ -31,7 +32,8 @@ benefits are:
 
 - Educators do not have to enforce the structure of the solution
 - Learners practice algorithm design, code design, and solution implementation
-- Learners receive quick and meaningful pedagogical feedback, which substantially contributes to the learning experience
+- Learners receive quick and meaningful pedagogical feedback, which substantially contributes 
+  to the learning experience
 - Complexity of the learner's solution can be analyzed
 - Plagiarism detection and support for reference implementations
 - Easy integration into existing organizational or institutional grading infrastructure
