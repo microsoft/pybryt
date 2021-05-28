@@ -70,13 +70,16 @@ class complexity(ABC):
         n = np.array(ns, dtype=int)
         t = np.array(ts, dtype=int)
 
-        n = cls.transform_n(n)
-        t = cls.transform_t(t)
+        try:
+            n = cls.transform_n(n)
+            t = cls.transform_t(t)
 
-        _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
-        if len(resid) == 0:
+            _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
+            if len(resid) == 0:
+                return np.inf
+            return resid[0]
+        except:
             return np.inf
-        return resid[0]
 
 
 class constant(complexity):

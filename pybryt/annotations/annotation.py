@@ -71,6 +71,10 @@ class Annotation(ABC):
         index of the annotation if ``self.group`` is present. If the annotation has children
         (returned by ``self.children``), the children are removed from ``_TRACKED_ANNOTATIONS``.
         """
+        from ..execution.complexity import _TRACKING_DISABLED
+        if _TRACKING_DISABLED:
+            return
+
         global _GROUP_INDICES, _TRACKED_ANNOTATIONS
 
         idx = len(_TRACKED_ANNOTATIONS)
