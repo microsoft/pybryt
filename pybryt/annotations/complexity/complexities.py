@@ -84,7 +84,7 @@ class complexity(ABC):
 
 class constant(complexity):
     """
-    Complexity class for constant time: :math:`\mathcal{O}(1)`
+    Complexity class for constant time: :math:`\\mathcal{O}(1)`
     """
 
     @staticmethod
@@ -94,7 +94,7 @@ class constant(complexity):
 
 class logarithmic(complexity):
     """
-    Complexity class for logarithmic time: :math:`\mathcal{O}(\log n)`
+    Complexity class for logarithmic time: :math:`\\mathcal{O}(\log n)`
     """
 
     @staticmethod
@@ -104,7 +104,7 @@ class logarithmic(complexity):
 
 class linear(complexity):
     """
-    Complexity class for linear time: :math:`\mathcal{O}(n)`
+    Complexity class for linear time: :math:`\\mathcal{O}(n)`
     """
 
     @staticmethod
@@ -114,7 +114,7 @@ class linear(complexity):
 
 class linearithmic(complexity):
     """
-    Complexity class for linearithmic time: :math:`\mathcal{O}(n \log n)`
+    Complexity class for linearithmic time: :math:`\\mathcal{O}(n \log n)`
     """
 
     @staticmethod
@@ -124,7 +124,7 @@ class linearithmic(complexity):
 
 class quadratic(complexity):
     """
-    Complexity class for quadratic time: :math:`\mathcal{O}(n^2)`
+    Complexity class for quadratic time: :math:`\\mathcal{O}(n^2)`
     """
 
     @staticmethod
@@ -134,7 +134,7 @@ class quadratic(complexity):
 
 class cubic(complexity):
     """
-    Complexity class for cubic time: :math:`\mathcal{O}(n^3)`
+    Complexity class for cubic time: :math:`\\mathcal{O}(n^3)`
     """
 
     @staticmethod
@@ -144,7 +144,7 @@ class cubic(complexity):
 
 class exponential(complexity):
     """
-    Complexity class for exponential time: :math:`\mathcal{O}(2^n)`
+    Complexity class for exponential time: :math:`\\mathcal{O}(2^n)`
     """
 
     @staticmethod
