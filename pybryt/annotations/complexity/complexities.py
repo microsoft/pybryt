@@ -156,4 +156,4 @@ class exponential(complexity):
         return np.log2(t)
 
 
-complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic, exponential]
+complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic]#, exponential]
