@@ -110,7 +110,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                             track_value(val)
                 
                 # for tracking the results of an assignment statement
-                m = re.match(r"\s*(\w+)\s=.*", line)
+                m = re.match(r"^\s*(\w+)(\[[^\]]\]|(\.\w+)+)*\s=.*", line)
                 if m:
                     if name not in vars_not_found:
                         vars_not_found[name] = []

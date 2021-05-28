@@ -70,18 +70,21 @@ class complexity(ABC):
         n = np.array(ns, dtype=int)
         t = np.array(ts, dtype=int)
 
-        n = cls.transform_n(n)
-        t = cls.transform_t(t)
+        try:
+            n = cls.transform_n(n)
+            t = cls.transform_t(t)
 
-        _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
-        if len(resid) == 0:
+            _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
+            if len(resid) == 0:
+                return np.inf
+            return resid[0]
+        except:
             return np.inf
-        return resid[0]
 
 
 class constant(complexity):
     """
-    Complexity class for constant time: :math:`\mathcal{O}(1)`
+    Complexity class for constant time: :math:`\\mathcal{O}(1)`
     """
 
     @staticmethod
@@ -91,7 +94,7 @@ class constant(complexity):
 
 class logarithmic(complexity):
     """
-    Complexity class for logarithmic time: :math:`\mathcal{O}(\log n)`
+    Complexity class for logarithmic time: :math:`\\mathcal{O}(\log n)`
     """
 
     @staticmethod
@@ -101,7 +104,7 @@ class logarithmic(complexity):
 
 class linear(complexity):
     """
-    Complexity class for linear time: :math:`\mathcal{O}(n)`
+    Complexity class for linear time: :math:`\\mathcal{O}(n)`
     """
 
     @staticmethod
@@ -111,7 +114,7 @@ class linear(complexity):
 
 class linearithmic(complexity):
     """
-    Complexity class for linearithmic time: :math:`\mathcal{O}(n \log n)`
+    Complexity class for linearithmic time: :math:`\\mathcal{O}(n \log n)`
     """
 
     @staticmethod
@@ -121,7 +124,7 @@ class linearithmic(complexity):
 
 class quadratic(complexity):
     """
-    Complexity class for quadratic time: :math:`\mathcal{O}(n^2)`
+    Complexity class for quadratic time: :math:`\\mathcal{O}(n^2)`
     """
 
     @staticmethod
@@ -131,7 +134,7 @@ class quadratic(complexity):
 
 class cubic(complexity):
     """
-    Complexity class for cubic time: :math:`\mathcal{O}(n^3)`
+    Complexity class for cubic time: :math:`\\mathcal{O}(n^3)`
     """
 
     @staticmethod
@@ -141,7 +144,7 @@ class cubic(complexity):
 
 class exponential(complexity):
     """
-    Complexity class for exponential time: :math:`\mathcal{O}(2^n)`
+    Complexity class for exponential time: :math:`\\mathcal{O}(2^n)`
     """
 
     @staticmethod
@@ -153,4 +156,4 @@ class exponential(complexity):
         return np.log2(t)
 
 
-complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic, exponential]
+complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic]#, exponential]
