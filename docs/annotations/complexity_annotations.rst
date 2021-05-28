@@ -54,6 +54,9 @@ An important note: any code placed inside this context manager will **not** have
 traced. PyBryt's trace function will only be used to track the number of steps taken during execution,
 but no values will be added to the student's memory footprint. This means that any code needed to
 satisfy value annotations, relational annotations, etc. must be placed outside this context manager.
+This is also the case during reference construction: any annotations created by code inside this
+context manager will not be automatically tracked and added to a reference implementation. If this
+behavior is desired, it must be accomplished manually.
 
 For example, to satisfy the time complexity annotation above, the code block below checks the time
 complexity of a student-implemented ``sort`` function on a series of inputs of increasing sizes.
