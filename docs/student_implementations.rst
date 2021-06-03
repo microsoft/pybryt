@@ -44,6 +44,16 @@ statements that show the values at various stages of execution.
 
     stu = pybryt.StudentImplementation("subm.ipynb", output="executed-subm.ipynb")
 
+If there is code in a student notebook that should not be traced by PyBryt, wrap it PyBryt's
+:py:class:`no_tracing<pybryt.execution.no_tracing>` context manager. Any code inside this context
+will not be traced (if PyBryt is tracing the call stack). If no tracing is occurring, no action is
+taken.
+
+.. code-block:: python
+
+    with pybryt.no_tracing():
+        foo(1)
+
 
 Checking Implementations
 ------------------------
