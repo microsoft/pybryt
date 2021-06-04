@@ -216,3 +216,28 @@ def tracing_on(frame=None, tracing_func=None):
     vn2 = f"sys_{make_secret()}"
     frame.f_globals[vn] = tracing_func
     exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)
+
+
+class no_tracing:
+    """
+    A context manager for turning tracing off for a block of code in a submission.
+
+    If PyBryt is tracing code, any code inside this context will not be traced for values in memory.
+    If PyBryt is not tracing, no action is taken.
+
+    .. code-block:: python
+
+        with pybryt.no_tracing():
+            # this code is not traced
+            foo(1)
+        
+        # this code is traced
+        foo(2)
+    """
+
+    def __enter__(self):
+        tracing_off()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        tracing_on()
+        return False
