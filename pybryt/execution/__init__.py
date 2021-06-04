@@ -1,6 +1,6 @@
 """Submission execution internals for PyBryt"""
 
-__all__ = ["check_time_complexity", "tracing_off", "tracing_on"]
+__all__ = ["check_time_complexity", "no_tracing"]
 
 import os
 import dill
@@ -13,7 +13,9 @@ from typing import Any, List, Tuple, Optional
 from textwrap import dedent
 
 from .complexity import check_time_complexity, TimeComplexityResult
-from .tracing import create_collector, _get_tracing_frame, tracing_off, tracing_on, TRACING_VARNAME
+from .tracing import (
+    create_collector, _get_tracing_frame, no_tracing, tracing_off, tracing_on, TRACING_VARNAME
+)
 from ..preprocessors import IntermediateVariablePreprocessor
 from ..utils import make_secret
 

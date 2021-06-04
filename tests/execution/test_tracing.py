@@ -7,7 +7,7 @@ import numpy as np
 from unittest import mock
 
 from pybryt import *
-from pybryt.execution import create_collector, TRACING_VARNAME
+from pybryt.execution import create_collector, tracing_off, tracing_on, TRACING_VARNAME
 
 from .utils import generate_mocked_frame
 
@@ -144,4 +144,13 @@ def test_tracing_control():
         tracing_on()
         mocked_settrace.assert_not_called()
 
-    # assert inspect.currentframe().f_trace is not trace
+
+def test_tracing_context_manager():
+    """
+    """
+    with mock.patch("pybryt.execution.tracing.tracing_off") as mocked_off, \
+            mock.patch("pybryt.execution.tracing.tracing_on") as mocked_on:
+        with no_tracing():
+            mocked_off.assert_called()
+            mocked_on.assert_not_called()
+        mocked_on.assert_called()
