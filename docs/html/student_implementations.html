@@ -170,6 +170,14 @@ statements that show the values at various stages of execution.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s2">"executed-subm.ipynb"</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>If there is code in a student notebook that should not be traced by PyBryt, wrap it PyBryt’s
+<a class="reference internal" href="api_reference.html#pybryt.execution.no_tracing" title="pybryt.execution.no_tracing"><code class="xref py py-class docutils literal notranslate"><span class="pre">no_tracing</span></code></a> context manager. Any code inside this context
+will not be traced (if PyBryt is tracing the call stack). If no tracing is occurring, no action is
+taken.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">no_tracing</span><span class="p">():</span>
+    <span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="checking-implementations">
 <h2>Checking Implementations<a class="headerlink" href="#checking-implementations" title="Permalink to this headline">¶</a></h2>
