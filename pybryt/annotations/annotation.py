@@ -104,7 +104,7 @@ class Annotation(ABC):
         return _TRACKED_ANNOTATIONS
 
     @staticmethod
-    def reset_tracked_annotations():
+    def reset_tracked_annotations() -> NoReturn:
         """
         Resets the list of tracked annotations and the mapping of group names to indices in that
         list.

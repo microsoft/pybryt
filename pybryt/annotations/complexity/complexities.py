@@ -1,4 +1,4 @@
-""""""
+"""Complexity classes for complexity annotations"""
 
 import numpy as np
 
