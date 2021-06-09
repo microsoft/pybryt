@@ -4,6 +4,7 @@
 __all__ = ["Value", "Attribute"]
 
 import dill
+import pandas as pd
 import numpy as np
 
 from collections.abc import Iterable
@@ -159,8 +160,6 @@ class Value(Annotation):
         
         for value in self._values:
             for other_value in other_values:
-                # if type(value) != type(other_value):
-                #     continue
                 if self.check_values_equal(value, other_value, self.atol, self.rtol):
                     return True
 
@@ -206,13 +205,13 @@ class Value(Annotation):
                 return False
 
         if isinstance(res, Iterable):
-            try:
+            # handle NaN values in pandas objects
+            if isinstance(res, (pd.DataFrame, pd.Series)):
+                res = res | (value.isna() & other_value.isna())
+            if isinstance(res, (np.ndarray, pd.DataFrame, pd.Series)):
+                res = res.all(axis=None)
+            else:
                 res = all(res)
-            except ValueError as e:
-                if isinstance(res, np.ndarray):
-                    res = res.all()
-                else:
-                    raise e
 
         if res:
             return True
