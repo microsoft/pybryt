@@ -13,6 +13,8 @@
 
 # PyBryt - Python Library
 
+[](/images/pybrytlogo.png)
+
 PyBryt is an auto-assessment Python library for teaching and learning.
 
 - The PyBryt Library is a FREE Open Source Python Library that provides auto assessment of grading submissions. Our goal is to empower students and educators to learn about technology through fun, guided, hands-on content aimed at specific learning goals.
@@ -37,13 +39,21 @@ See the [Getting Started](https://microsoft.github.io/pybryt/html/getting_starte
 
 ## Testing
 
-> Instructions for testing 
+To run the demos, all demos are located in the demo folder. 
+
+First install PyBryt with `pip`:
+
+```
+pip install pybryt
+```
+
+Simply launch the `index.ipynb` notebook in each of the directories under `demo` from Jupyter Notebook, which demonstrates the process of using PyBryt to assess student submissions.
 
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit 
+the rights to use your contribution. For details, visit
 [https://cla.opensource.microsoft.com](https://cla.opensource.microsoft.com).
 
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide
