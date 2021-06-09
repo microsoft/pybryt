@@ -13,7 +13,7 @@
 
 # PyBryt - Python Library
 
-![Alt text](/images/pybryt-logo.png "PyBryt")
+![Alt text](/images/pybryt-logo.PNG "PyBryt")
 
 PyBryt is an auto-assessment Python library for teaching and learning.
 
