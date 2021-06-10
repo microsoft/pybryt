@@ -142,7 +142,6 @@ class Annotation(ABC):
         """
         ... # pragma: no cover
 
-    @abstractmethod
     def __eq__(self, other: Any) -> bool:
         """
         Checks whether this annotation is equal to another object.
@@ -153,7 +152,10 @@ class Annotation(ABC):
         Returns:
             ``bool``: whether the objects are equal
         """
-        ... # pragma: no cover
+        return isinstance(other, type(self)) and  self.name == other.name and \
+            self.success_message == other.success_message and \
+            self.failure_message == other.failure_message and self.group == other.group and \
+            self.limit == other.limit
 
     def before(self, other_annotation: "Annotation", **kwargs) -> "BeforeAnnotation":
         """
