@@ -57,7 +57,7 @@ class ComplexityAnnotation(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return type(self) is type(other) and self.name == other.name and self.complexity is other.complexity
+        return super().__eq__(other) and self.complexity is other.complexity
 
 
 class TimeComplexity(ComplexityAnnotation):

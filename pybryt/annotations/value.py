@@ -137,7 +137,7 @@ class Value(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return isinstance(other, type(self)) and self.invariants == other.invariants and \
+        return super().__eq__(other) and self.invariants == other.invariants and \
             self.check_values_equal(self.initial_value, other.initial_value) and \
             self.atol == other.atol and self.rtol == other.rtol
 
@@ -337,7 +337,7 @@ class Attribute(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return isinstance(other, type(self)) and self.children == other.children
+        return super().__eq__(other) and self.children == other.children
 
     def to_dict(self) -> Dict[str, Any]:
         """
