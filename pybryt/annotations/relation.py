@@ -58,7 +58,7 @@ class RelationalAnnotation(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return isinstance(other, type(self)) and self.children == other.children
+        return super().__eq__(other) and self.children == other.children
 
     @abstractmethod
     def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":

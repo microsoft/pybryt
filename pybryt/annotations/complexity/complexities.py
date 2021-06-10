@@ -94,7 +94,7 @@ class constant(complexity):
 
 class logarithmic(complexity):
     """
-    Complexity class for logarithmic time: :math:`\\mathcal{O}(\log n)`
+    Complexity class for logarithmic time: :math:`\\mathcal{O}(\\log n)`
     """
 
     @staticmethod
@@ -114,7 +114,7 @@ class linear(complexity):
 
 class linearithmic(complexity):
     """
-    Complexity class for linearithmic time: :math:`\\mathcal{O}(n \log n)`
+    Complexity class for linearithmic time: :math:`\\mathcal{O}(n \\log n)`
     """
 
     @staticmethod
