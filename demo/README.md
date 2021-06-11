@@ -74,6 +74,8 @@ The three submissions in this submissions directory includes:
 
 We can see in these results that the hashmap implementation satisfied the hashman preference and also satisfied the reference concerning that the naive implementation was not being used. We see the dynamic programming satisfied its reference implementation and in the third example, which was the naive example, we see it failed all three references. 
 
+## Conclusion 
+
 As you can see, PyBryt allows you to build complex assignments in such a way that students aren't forced to rigidly adhere to a set structure for their submission. And is robust in the various failing of comparrisons in conventional auto graders. 
 
 For more information about PyBryt. You can visit the GitHub repository documentation and see try out the demos.
