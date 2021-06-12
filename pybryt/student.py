@@ -7,8 +7,10 @@ import dill
 import base64
 import nbformat
 import inspect
+import hashlib
 
 from contextlib import contextmanager
+from glob import glob
 from multiprocessing import Process, Queue
 from types import FrameType
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
@@ -19,6 +21,9 @@ from .execution import (
 )
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
 from .utils import Serializable
+
+
+CACHE_DIR_NAME = ".pybryt_cache"
 
 
 class StudentImplementation(Serializable):
@@ -247,12 +252,15 @@ class check:
     _observed: Optional[List[Tuple[Any, int]]]
     """the memory footprint"""
 
+    _cache: bool
+    """whether to cache the memory footprint and results"""
+
     _kwargs: Dict[str, Any]
     """keyword arguments passed to ``pybryt.execution.create_collector``"""
 
     def __init__(
         self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
-        report_on_error: bool = True, show_only: Optional[str] = None, **kwargs
+        report_on_error: bool = True, show_only: Optional[str] = None, cache: bool = True, **kwargs
     ):
         if isinstance(ref, str):
             ref = ReferenceImplementation.load(ref)
@@ -274,6 +282,29 @@ class check:
         self._frame = None
         self._observed = None
         self._report_on_error = report_on_error
+        self._cache = cache
+
+    def _cache_check(self, stu, res):
+        """
+        Cache the student implementation and reference results in the PyBryt cache directory.
+
+        Args:
+            stu (``StudentImplementation``): the student implementation created by the check
+            res (``Union[ReferenceImplementation, list[ReferenceImplementation]]``): the reference 
+                results
+        """
+        os.makedirs(CACHE_DIR_NAME, exist_ok=True)  # create cache directory if needed
+
+        if not isinstance(res, list):
+            res = [res]
+
+        for r in res:
+            res_path = os.path.join(CACHE_DIR_NAME, f"{r.name}_results.pkl")
+            r.dump(res_path)
+
+        ref_hash = hashlib.sha1("".join(r.name for r in res).encode()).hexdigest()
+        stu_path = f"student_impl_{ref_hash}.pkl"
+        stu.dump(stu_path)
 
     def __enter__(self):
         if _get_tracing_frame() is not None:
@@ -298,6 +329,9 @@ class check:
                 report = generate_report(res, show_only=self._show_only)
                 if report:
                     print(report)
+
+                if self._cache:
+                    self._cache_check(stu, res)
 
         return False
 
