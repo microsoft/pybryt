@@ -303,7 +303,7 @@ class check:
             r.dump(res_path)
 
         ref_hash = hashlib.sha1("".join(r.name for r in res).encode()).hexdigest()
-        stu_path = f"student_impl_{ref_hash}.pkl"
+        stu_path = os.path.join(CACHE_DIR_NAME, f"student_impl_{ref_hash}.pkl")
         stu.dump(stu_path)
 
     def __enter__(self):
