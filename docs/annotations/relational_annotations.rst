@@ -52,7 +52,7 @@ asserts that one annotation occurs before another:
         if n == 2:
             return fibs
 
-        for i in range(2, n-1):
+        for i in range(2, n):
             fibs[i] = fibs[i-1] + fibs[i-2]
 
             v = pybryt.Value(fibs) # array of first n Fibonacci numbers
