@@ -168,6 +168,7 @@ def test_check_cm(capsys):
                 check_cm = check(ref)
                 with check_cm:
                     pass
+
                 mocked_tracing.assert_not_called()
 
         except:
@@ -183,6 +184,22 @@ def test_check_cm(capsys):
 
         with pytest.raises(TypeError, match="Invalid values in the reference list"):
             check([ref, "path", 1])
+
+    # check caching
+    with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
+        with mock.patch("pybryt.student.StudentImplementation") as mocked_stu, \
+                mock.patch("pybryt.student.generate_report") as mocked_generate, \
+                mock.patch("pybryt.student.os.makedirs") as mocked_makedirs:
+            mocked_stu.from_footprint.return_value.check.return_value = [mock.MagicMock()]
+            mocked_stu.from_footprint.return_value.check.return_value[0].name = "foo"
+            # breakpoint()
+            check_cm = check(ref)
+            with check_cm:
+                check_cm._observed = mfp
+            
+            mocked_makedirs.assert_called_with(".pybryt_cache", exist_ok=True)
+            mocked_stu.from_footprint.return_value.dump.assert_called()
+            mocked_stu.from_footprint.return_value.check.return_value[0].dump.assert_called_with(".pybryt_cache/foo_results.pkl")
 
 
 def test_generate_student_impls():
