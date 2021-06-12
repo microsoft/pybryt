@@ -118,66 +118,71 @@ def test_check_cm(capsys):
     _, stu = generate_impl()
     mfp = stu.values
 
-    with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
-        check_cm = check(ref)
-        with check_cm:
-            check_cm._observed = mfp
-
-    captured = capsys.readouterr()
-    expected = dedent("""\
-        REFERENCE: foo
-        SATISFIED: True
-        MESSAGES:
-          - SUCCESS: Sorted the sample correctly
-          - SUCCESS: Computed the size of the sample
-          - SUCCESS: computed the correct median
-    """)
-    assert captured.out == expected
-
-    with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
-        ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
-        check_cm = check(ref_filename)
-        with check_cm:
-            check_cm._observed = mfp
-
-        check_cm2 = check([ref_filename])
-        assert check_cm._ref == check_cm2._ref
-
-    captured = capsys.readouterr()
-    expected = dedent("""\
-        REFERENCE: foo
-        SATISFIED: True
-        MESSAGES:
-          - SUCCESS: Sorted the sample correctly
-          - SUCCESS: Computed the size of the sample
-          - SUCCESS: computed the correct median
-    """)
-    assert captured.out == expected
-
-    # check no action when tracing
-    global __PYBRYT_TRACING__
-    __PYBRYT_TRACING__ = True
-
-    try:
+    with mock.patch.object(check, "_cache_check") as mocked_cache:
         with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
-            check_cm = check(ref)
+            check_cm = check(ref, cache=False)
             with check_cm:
-                pass
-            mocked_tracing.assert_not_called()
+                check_cm._observed = mfp
 
-    except:
-        __PYBRYT_TRACING__ = False
-        raise
+            mocked_cache.assert_not_called()
 
-    else:
-        __PYBRYT_TRACING__ = False
+        captured = capsys.readouterr()
+        expected = dedent("""\
+            REFERENCE: foo
+            SATISFIED: True
+            MESSAGES:
+              - SUCCESS: Sorted the sample correctly
+              - SUCCESS: Computed the size of the sample
+              - SUCCESS: computed the correct median
+        """)
+        assert captured.out == expected
 
-    # test errors
-    with pytest.raises(ValueError, match="Cannot check against an empty list of references"):
-        check([])
+        with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
+            ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
+            check_cm = check(ref_filename)
+            with check_cm:
+                check_cm._observed = mfp
 
-    with pytest.raises(TypeError, match="Invalid values in the reference list"):
-        check([ref, "path", 1])
+            mocked_cache.assert_called()
+
+            check_cm2 = check([ref_filename])
+            assert check_cm._ref == check_cm2._ref
+
+        captured = capsys.readouterr()
+        expected = dedent("""\
+            REFERENCE: foo
+            SATISFIED: True
+            MESSAGES:
+              - SUCCESS: Sorted the sample correctly
+              - SUCCESS: Computed the size of the sample
+              - SUCCESS: computed the correct median
+        """)
+        assert captured.out == expected
+
+        # check no action when tracing
+        global __PYBRYT_TRACING__
+        __PYBRYT_TRACING__ = True
+
+        try:
+            with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
+                check_cm = check(ref)
+                with check_cm:
+                    pass
+                mocked_tracing.assert_not_called()
+
+        except:
+            __PYBRYT_TRACING__ = False
+            raise
+
+        else:
+            __PYBRYT_TRACING__ = False
+
+        # test errors
+        with pytest.raises(ValueError, match="Cannot check against an empty list of references"):
+            check([])
+
+        with pytest.raises(TypeError, match="Invalid values in the reference list"):
+            check([ref, "path", 1])
 
 
 def test_generate_student_impls():
