@@ -6,6 +6,7 @@ import nbformat
 import pytest
 import pkg_resources
 
+from copy import deepcopy
 from functools import lru_cache
 from textwrap import dedent
 from types import MethodType
@@ -200,6 +201,37 @@ def test_check_cm(capsys):
             mocked_makedirs.assert_called_with(".pybryt_cache", exist_ok=True)
             mocked_stu.from_footprint.return_value.dump.assert_called()
             mocked_stu.from_footprint.return_value.check.return_value[0].dump.assert_called_with(".pybryt_cache/foo_results.pkl")
+
+
+def test_from_cache():
+    """
+    """
+    with mock.patch("pybryt.student.glob") as mocked_glob, \
+            mock.patch.object(StudentImplementation, "load") as mocked_load, \
+            mock.patch.object(StudentImplementation, "combine") as mocked_combine:
+        mocked_glob.return_value = [".pybryt_cache/student_impl_foo.pkl", ".pybryt_cache/student_impl_bar.pkl"]
+        StudentImplementation.from_cache(combine=False)
+
+        mocked_load.assert_has_calls([mock.call(fp) for fp in mocked_glob.return_value])
+        mocked_combine.assert_not_called()
+
+        StudentImplementation.from_cache()
+
+        mocked_combine.assert_called()
+
+
+def test_combine():
+    """
+    """
+    _, stu = generate_impl()
+    stu2 = deepcopy(stu)
+    stu2.steps += 1
+    stu2.values.append(([1, 2, 3, 4], stu2.steps))
+
+    comb = StudentImplementation.combine([stu, stu2])
+    assert len(comb.values) == len(stu.values)  + 1
+    assert comb.steps == stu.steps + stu2.steps
+    assert comb.values[-1][1] == stu.steps + stu2.steps
 
 
 def test_generate_student_impls():
