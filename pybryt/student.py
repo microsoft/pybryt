@@ -142,6 +142,10 @@ class StudentImplementation(Serializable):
         Args:
             cache_dir (``str``, optional): the path to the cache directory
             combine (``bool``, optional): whether to combine the implementations
+
+        Returns:
+            ``StudentImplementation`` or ``list[StudentImplementation]``: the student implementations
+            loaded from the cache.
         """
         impls = []
         for impl_path in glob(os.path.join(cache_dir, _CACHE_STUDENT_IMPL_PREFIX.format("*"))):
