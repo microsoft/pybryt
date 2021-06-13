@@ -1482,6 +1482,49 @@ implementation in <code class="docutils literal notranslate"><span class="pre">s
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt id="pybryt.student.StudentImplementation.combine">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">combine</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">impls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.combine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine a series of student implementations into a single student implementation.</p>
+<p>Collects the memory footprint of each implementation into a single list and offsets the
+timestamp of each object by the total number of steps for each preceding student
+implementation in the list.</p>
+<p>Assumes that the student implementations are provided in sorted order. Filters out duplicate
+values present in multiple implementations by keeping the earliest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>impls</strong> (<code class="docutils literal notranslate"><span class="pre">list[StudentImplementation]</span></code>) – the list of implementations to combine</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the combined implementation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">StudentImplementation</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.student.StudentImplementation.from_cache">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_cache</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.pybryt_cache'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> → <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.student.StudentImplementation.from_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more student implementations from a cache.</p>
+<p>All files are combined into a single student implementation by default, but a list can be
+returned instead by setting <code class="docutils literal notranslate"><span class="pre">combine=False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache_dir</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – the path to the cache directory</p></li>
+<li><p><strong>combine</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to combine the implementations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the student implementations
+loaded from the cache.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">StudentImplementation</span></code> or <code class="docutils literal notranslate"><span class="pre">list[StudentImplementation]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt id="pybryt.student.StudentImplementation.from_footprint">
 <em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_footprint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><span class="pre">pybryt.student.StudentImplementation</span></a><a class="headerlink" href="#pybryt.student.StudentImplementation.from_footprint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a student implementation object from a memory footprint directly, rather than by
@@ -1519,7 +1562,7 @@ object empty.</p>
 </dd></dl>
 <dl class="py class">
 <dt id="pybryt.student.check">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.student.</span></code><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_on_error</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.check" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.student.</span></code><code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_on_error</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>A context manager for running a block of student code against a reference implementation.</p>
 <p>This context manager, designed to be used in students’ notebooks, can be used to check a block
 of student code against one or a series of reference implementations. The context manager turns
