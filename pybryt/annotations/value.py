@@ -169,6 +169,9 @@ class Value(Annotation):
     def check_values_equal(value, other_value, atol = None, rtol = None):
         """
         """
+        if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
+            return False
+
         if atol is None:
             atol = 0
         if rtol is None:
