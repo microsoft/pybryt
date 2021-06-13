@@ -4,7 +4,7 @@ __all__ = ["ComplexityAnnotation", "TimeComplexity"]
 
 from typing import Any, List, Tuple
 
-from . import complexities
+from . import complexities as cplx
 from ..annotation import Annotation, AnnotationResult
 from ...execution import TimeComplexityResult
 
@@ -24,16 +24,18 @@ class ComplexityAnnotation(Annotation):
     Args:
         complexity (:py:class:`complexity<pybryt.complexities.complexity>`): the complexity class
             being asserted
+        addl_complexities(``list[complexity]``): additional custom complexity classes to consider
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def __init__(self, complexity: complexities.complexity, **kwargs):
+    def __init__(self, complexity: cplx.complexity, addl_complexities=[], **kwargs):
         if "name" not in kwargs:
             raise ValueError("Complexity annotations require a 'name' kwarg")
-        if complexity not in complexities.complexity_classes:
+        if complexity not in cplx.complexity_classes and not isinstance(complexity, cplx.complexity):
             raise ValueError(f"Invalid valid for argument 'complexity': {complexity}")
         self.complexity = complexity
+        self.addl_complexities = addl_complexities
         super().__init__(**kwargs)
 
     @property
@@ -92,6 +94,9 @@ class TimeComplexity(ComplexityAnnotation):
             :py:class:`AnnotationResult`: the results of this annotation based on 
             ``observed_values``
         """
+        if self.complexity not in cplx.complexity_classes:
+            self.addl_complexities.insert(0, self.complexity)
+
         complexity_data = {}
         for v, ts in observed_values:
             if not isinstance(v, TimeComplexityResult) or v.name != self.name:
@@ -100,10 +105,11 @@ class TimeComplexity(ComplexityAnnotation):
             complexity_data[v.n] = v.stop - v.start
 
         best_cls, best_res = None, None
-        for cplx in complexities.complexity_classes:
-            res = cplx(complexity_data)
+        complexities = cplx.complexity_classes + self.addl_complexities
+        for cplxy in complexities:
+            res = cplxy(complexity_data)
 
             if best_res is None or res < best_res - EPS:
-                best_cls, best_res = cplx, res
+                best_cls, best_res = cplxy, res
 
         return AnnotationResult(best_cls is self.complexity, self, value=best_cls)
