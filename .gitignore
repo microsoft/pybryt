@@ -134,6 +134,7 @@ dmypy.json
 /*.ipynb
 /*.pkl
 /notebooks
+.pybryt_cache
 
 # ignore docs build
 /docs/html

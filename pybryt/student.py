@@ -7,8 +7,10 @@ import dill
 import base64
 import nbformat
 import inspect
+import hashlib
 
 from contextlib import contextmanager
+from glob import glob
 from multiprocessing import Process, Queue
 from types import FrameType
 from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
@@ -18,7 +20,11 @@ from .execution import (
     tracing_on, TRACING_VARNAME
 )
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
-from .utils import Serializable
+from .utils import pickle_and_hash, Serializable
+
+
+CACHE_DIR_NAME = ".pybryt_cache"
+_CACHE_STUDENT_IMPL_PREFIX = "student_impl_{}.pkl"
 
 
 class StudentImplementation(Serializable):
@@ -92,6 +98,62 @@ class StudentImplementation(Serializable):
         stu.steps = steps
         stu.values = footprint
         return stu
+
+    @classmethod
+    def combine(cls, impls: List['StudentImplementation']) -> 'StudentImplementation':
+        """
+        Combine a series of student implementations into a single student implementation.
+
+        Collects the memory footprint of each implementation into a single list and offsets the
+        timestamp of each object by the total number of steps for each preceding student
+        implementation in the list. 
+
+        Assumes that the student implementations are provided in sorted order. Filters out duplicate
+        values present in multiple implementations by keeping the earliest.
+
+        Args:
+            impls (``list[StudentImplementation]``): the list of implementations to combine
+
+        Returns:
+            ``StudentImplementation``: the combined implementation
+        """
+        new_mfp = []  # the new memory footprint
+        seen = set()  # set to track which values we've seen
+        timestamp_offset = 0  # offset for timestamps in the new memory footprint
+        for impl in impls:
+            for obj, ts in impl.values:
+                h = pickle_and_hash(obj)
+                if h not in seen:
+                    ts += timestamp_offset
+                    new_mfp.append((obj, ts))
+                    seen.add(h)
+            timestamp_offset += impl.steps
+        return cls.from_footprint(new_mfp, timestamp_offset)
+
+    @classmethod
+    def from_cache(cls, cache_dir=CACHE_DIR_NAME, combine=True) -> \
+            Union['StudentImplementation', List['StudentImplementation']]:
+        """
+        Load one or more student implementations from a cache.
+
+        All files are combined into a single student implementation by default, but a list can be
+        returned instead by setting ``combine=False``.
+
+        Args:
+            cache_dir (``str``, optional): the path to the cache directory
+            combine (``bool``, optional): whether to combine the implementations
+
+        Returns:
+            ``StudentImplementation`` or ``list[StudentImplementation]``: the student implementations
+            loaded from the cache.
+        """
+        impls = []
+        for impl_path in glob(os.path.join(cache_dir, _CACHE_STUDENT_IMPL_PREFIX.format("*"))):
+            impls.append(cls.load(impl_path))
+        if combine:
+            return cls.combine(impls)
+        else:
+            return impls
 
     def __eq__(self, other: Any) -> bool:
         """
@@ -247,12 +309,15 @@ class check:
     _observed: Optional[List[Tuple[Any, int]]]
     """the memory footprint"""
 
+    _cache: bool
+    """whether to cache the memory footprint and results"""
+
     _kwargs: Dict[str, Any]
     """keyword arguments passed to ``pybryt.execution.create_collector``"""
 
     def __init__(
         self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
-        report_on_error: bool = True, show_only: Optional[str] = None, **kwargs
+        report_on_error: bool = True, show_only: Optional[str] = None, cache: bool = True, **kwargs
     ):
         if isinstance(ref, str):
             ref = ReferenceImplementation.load(ref)
@@ -274,6 +339,29 @@ class check:
         self._frame = None
         self._observed = None
         self._report_on_error = report_on_error
+        self._cache = cache
+
+    def _cache_check(self, stu, res):
+        """
+        Cache the student implementation and reference results in the PyBryt cache directory.
+
+        Args:
+            stu (``StudentImplementation``): the student implementation created by the check
+            res (``Union[ReferenceImplementation, list[ReferenceImplementation]]``): the reference 
+                results
+        """
+        os.makedirs(CACHE_DIR_NAME, exist_ok=True)  # create cache directory if needed
+
+        if not isinstance(res, list):
+            res = [res]
+
+        for r in res:
+            res_path = os.path.join(CACHE_DIR_NAME, f"{r.name}_results.pkl")
+            r.dump(res_path)
+
+        ref_hash = hashlib.sha1("".join(r.name for r in res).encode()).hexdigest()
+        stu_path = os.path.join(CACHE_DIR_NAME, _CACHE_STUDENT_IMPL_PREFIX.format(ref_hash))
+        stu.dump(stu_path)
 
     def __enter__(self):
         if _get_tracing_frame() is not None:
@@ -298,6 +386,9 @@ class check:
                 report = generate_report(res, show_only=self._show_only)
                 if report:
                     print(report)
+
+                if self._cache:
+                    self._cache_check(stu, res)
 
         return False
 
