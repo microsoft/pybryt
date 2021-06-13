@@ -36,6 +36,38 @@ For example, to check the time complexity of a block named ``"sort"`` with :math
 A full list of the available complexity classes can be found :ref:`here<complexities>`.
 
 
+Custom Complexity Classes
++++++++++++++++++++++++++
+
+If a complexity not provided in PyBryt's defaults is needed, this can be created by subclassing
+:py:class:`pybryt.complexities.complexity<pybryt.annotations.complexity.complexities.complexity>`.
+This abstract base class requires the ``transform_n`` static method to be implemented, which should 
+transform the array of input lengths, passed as an ``numpy.ndarray`` so that the least-squares solver
+can be used to determine if the data matches this complexity. Optionally, you can also override the
+``transform_t`` static method, which transforms the array of timings. The default implementation of this
+function is the identity function.
+
+.. code-block:: python
+
+    import numpy as np
+    import pybryt.complexities as cplx
+
+    class loglog(cplx.complexity):
+
+        @staticmethod
+        def transform_n(n: np.ndarray) -> np.ndarray:
+            return np.vstack((np.ones(len(n)), np.log2(np.log2(n)))).T
+
+To use these custom complexity classes, they can either be passed as the first argument to the
+``TimeComplexity`` constructor, if they are the desired complexity, or passed in a list to the
+``addl_complexities`` argument if they should be considered but are not correct.
+
+.. code-block:: python
+
+    # my_cplx is a package with custom complexities
+    pybryt.TimeComplexity(my_cplx.quartic, name="foo", addl_complexities=[my_cplx.factorial])
+
+
 Tracking Code Complexity
 ------------------------
 
