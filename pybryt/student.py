@@ -20,10 +20,11 @@ from .execution import (
     tracing_on, TRACING_VARNAME
 )
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
-from .utils import Serializable
+from .utils import pickle_and_hash, Serializable
 
 
 CACHE_DIR_NAME = ".pybryt_cache"
+_CACHE_STUDENT_IMPL_PREFIX = "student_impl_{}.pkl"
 
 
 class StudentImplementation(Serializable):
@@ -97,6 +98,58 @@ class StudentImplementation(Serializable):
         stu.steps = steps
         stu.values = footprint
         return stu
+
+    @classmethod
+    def combine(cls, impls: List['StudentImplementation']) -> 'StudentImplementation':
+        """
+        Combine a series of student implementations into a single student implementation.
+
+        Collects the memory footprint of each implementation into a single list and offsets the
+        timestamp of each object by the total number of steps for each preceding student
+        implementation in the list. 
+
+        Assumes that the student implementations are provided in sorted order. Filters out duplicate
+        values present in multiple implementations by keeping the earliest.
+
+        Args:
+            impls (``list[StudentImplementation]``): the list of implementations to combine
+
+        Returns:
+            ``StudentImplementation``: the combined implementation
+        """
+        new_mfp = []  # the new memory footprint
+        seen = set()  # set to track which values we've seen
+        timestamp_offset = 0  # offset for timestamps in the new memory footprint
+        for impl in impls:
+            for obj, ts in impl.values:
+                h = pickle_and_hash(obj)
+                if h not in seen:
+                    ts += timestamp_offset
+                    new_mfp.append((obj, ts))
+                    seen.add(h)
+            timestamp_offset += impl.steps
+        return cls.from_footprint(new_mfp, timestamp_offset)
+
+    @classmethod
+    def from_cache(cls, cache_dir=CACHE_DIR_NAME, combine=True) -> \
+            Union['StudentImplementation', List['StudentImplementation']]:
+        """
+        Load one or more student implementations from a cache.
+
+        All files are combined into a single student implementation by default, but a list can be
+        returned instead by setting ``combine=False``.
+
+        Args:
+            cache_dir (``str``, optional): the path to the cache directory
+            combine (``bool``, optional): whether to combine the implementations
+        """
+        impls = []
+        for impl_path in glob(os.path.join(cache_dir, _CACHE_STUDENT_IMPL_PREFIX.format("*"))):
+            impls.append(cls.load(impl_path))
+        if combine:
+            return cls.combine(impls)
+        else:
+            return impls
 
     def __eq__(self, other: Any) -> bool:
         """
@@ -303,7 +356,7 @@ class check:
             r.dump(res_path)
 
         ref_hash = hashlib.sha1("".join(r.name for r in res).encode()).hexdigest()
-        stu_path = os.path.join(CACHE_DIR_NAME, f"student_impl_{ref_hash}.pkl")
+        stu_path = os.path.join(CACHE_DIR_NAME, _CACHE_STUDENT_IMPL_PREFIX.format(ref_hash))
         stu.dump(stu_path)
 
     def __enter__(self):
