@@ -160,6 +160,33 @@ should be unique across all annotations.</p>
 </pre></div>
 </div>
 <p>A full list of the available complexity classes can be found <a class="reference internal" href="../api_reference.html#complexities"><span class="std std-ref">here</span></a>.</p>
+<div class="section" id="custom-complexity-classes">
+<h3>Custom Complexity Classes<a class="headerlink" href="#custom-complexity-classes" title="Permalink to this headline">¶</a></h3>
+<p>If a complexity not provided in PyBryt’s defaults is needed, this can be created by subclassing
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pybryt.complexities.complexity</span></code></a>.
+This abstract base class requires the <code class="docutils literal notranslate"><span class="pre">transform_n</span></code> static method to be implemented, which should
+transform the array of input lengths, passed as an <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> so that the least-squares solver
+can be used to determine if the data matches this complexity. Optionally, you can also override the
+<code class="docutils literal notranslate"><span class="pre">transform_t</span></code> static method, which transforms the array of timings. The default implementation of this
+function is the identity function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pybryt.complexities</span> <span class="k">as</span> <span class="nn">cplx</span>
+
+<span class="k">class</span> <span class="nc">loglog</span><span class="p">(</span><span class="n">cplx</span><span class="o">.</span><span class="n">complexity</span><span class="p">):</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">transform_n</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">n</span><span class="p">))))</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+<p>To use these custom complexity classes, they can either be passed as the first argument to the
+<code class="docutils literal notranslate"><span class="pre">TimeComplexity</span></code> constructor, if they are the desired complexity, or passed in a list to the
+<code class="docutils literal notranslate"><span class="pre">addl_complexities</span></code> argument if they should be considered but are not correct.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># my_cplx is a package with custom complexities</span>
+<span class="n">pybryt</span><span class="o">.</span><span class="n">TimeComplexity</span><span class="p">(</span><span class="n">my_cplx</span><span class="o">.</span><span class="n">quartic</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"foo"</span><span class="p">,</span> <span class="n">addl_complexities</span><span class="o">=</span><span class="p">[</span><span class="n">my_cplx</span><span class="o">.</span><span class="n">factorial</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="tracking-code-complexity">
 <h2>Tracking Code Complexity<a class="headerlink" href="#tracking-code-complexity" title="Permalink to this headline">¶</a></h2>
@@ -259,7 +286,10 @@ the annotation was satisfied.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Complexity Annotations</a><ul>
-<li><a class="reference internal" href="#creating-complexity-annotations">Creating Complexity Annotations</a></li>
+<li><a class="reference internal" href="#creating-complexity-annotations">Creating Complexity Annotations</a><ul>
+<li><a class="reference internal" href="#custom-complexity-classes">Custom Complexity Classes</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#tracking-code-complexity">Tracking Code Complexity</a></li>
 <li><a class="reference internal" href="#evaluating-code-complexity">Evaluating Code Complexity</a></li>
 </ul>
