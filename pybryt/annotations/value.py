@@ -1,5 +1,4 @@
-"""
-"""
+"""Annotations for asserting the presence of a value"""
 
 __all__ = ["Value", "Attribute"]
 
@@ -13,7 +12,6 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
-# from ..utils import check_values_equal
 
 
 class Value(Annotation):
@@ -166,8 +164,19 @@ class Value(Annotation):
         return False
 
     @staticmethod
-    def check_values_equal(value, other_value, atol = None, rtol = None):
+    def check_values_equal(value, other_value, atol = None, rtol = None) -> bool:
         """
+        Checks whether two objects are equal. 
+        
+        If the values are both numeric (numerics, arrays, etc.) and ``atol`` and/or ``rtol`` are 
+        specified, the values are considered equal if ``other_value`` is within the tolerance
+        bounds of ``value``.
+
+        Args:
+            value (``object``): the first object to compare
+            other_value (``object``): the second object to compare
+            atol (``float``, optional): the absolute tolerance for numeric values
+            rtol (``float``, optional): the relative tolerance for numeric values
         """
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
@@ -342,7 +351,7 @@ class Attribute(Annotation):
             **kwargs)
 
     @property
-    def children(self):
+    def children(self) -> List[Annotation]:
         return self._annotations
     
     def __eq__(self, other: Any) -> bool:
