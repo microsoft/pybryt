@@ -1,0 +1,45 @@
+# follow instructions here: https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
+
+name: Publish release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version number'     
+        required: true
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    
+    - name: Checkout to stable
+      uses: actions/checkout@v2
+      with:
+        ref: stable
+    
+    - name: Merge main -> stable
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git merge origin/main -Xtheirs --allow-unrelated-histories
+
+    - name: Run release script
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        make release
+
+    - name: Push updates
+      run: |
+        git push origin stable
