@@ -17,8 +17,8 @@ release:
 	git add pybryt/version.py
 	git commit -m "update pybryt.__version__ for v$(VERSION)"
 	python3 setup.py sdist bdist_wheel
-	python3 -m twine upload dist/*
 	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(VERSION)' $(VERSION)
+	python3 -m twine upload dist/*
 
 test:
 	$(PYTEST) $(TESTPATH) $(PYTESTOPTS)
