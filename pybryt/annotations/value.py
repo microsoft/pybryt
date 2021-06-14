@@ -34,7 +34,7 @@ class Value(Annotation):
         invariants (``list[invariant]``): invariants for 
             this value
         **kwargs: additional keyword arguments passed to the 
-            :py:class:`Annotation<pybryt.Annotation>` constructor
+            :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
 
     intial_value: Any
@@ -76,7 +76,7 @@ class Value(Annotation):
         super().__init__(**kwargs)
 
     @property
-    def children(self):
+    def children(self) -> List[Annotation]:
         return []
 
     def to_dict(self) -> Dict[str, Any]:
@@ -112,8 +112,7 @@ class Value(Annotation):
                 during execution and the timestamps of those values
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation based on ``observed_values``
         """
         satisfied = [self._check_observed_value(v) for v in observed_values]
         if not any(satisfied):
