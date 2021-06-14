@@ -9,6 +9,27 @@ _TRACKING_DISABLED = False
 
 
 class TimeComplexityResult:
+    """
+    A class for collecting the results of time complexity check blocks.
+
+    Args:
+        name (``str``): the name of the block
+        n (``int``): the input length
+        start (``int``): the step counter value at the start of the block
+        stop (``int``): the step counter value at the end of the block
+    """
+
+    name: str
+    """the name of the block"""
+
+    n: int
+    """the input length or the input itself"""
+
+    start: int
+    """the step counter value at the start of the block"""
+
+    stop: int
+    """the step counter value at the end of the block"""
 
     def __init__(self, name, n, start, stop):
         self.name = name

@@ -1,4 +1,4 @@
-""""""
+"""Annotation classes for complexity assertions"""
 
 __all__ = ["ComplexityAnnotation", "TimeComplexity"]
 
