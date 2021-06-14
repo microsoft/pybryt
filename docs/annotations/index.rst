@@ -9,6 +9,7 @@ Annotations
 
    relational_annotations
    complexity_annotations
+   presence_annotations
    invariants
 
 Annotations are the basic building blocks, out of which reference
@@ -21,11 +22,13 @@ student's code, including the temporal relationship of values and complex
 boolean logic surrounding the presence or absence of those values.
 
 All annotations are created by instantiating subclasses of the abstract
-:py:class:`Annotation<pybryt.Annotation>` class. There are two main types of
+:py:class:`Annotation<pybryt.Annotation>` class. There are four main types of
 annotations: 
  
-* value annotations, described below, and
-* :ref:`relational annotations<relational>`.
+* value annotations (described below)
+* :ref:`relational annotations<relational>`
+* :ref:`complexity annotations<complexity>`
+* :ref:`presence annotations<presence>`
 
 
 Annotation Arguments
