@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Value Annotations" href="value_annotations.html" /><link rel="prev" title="Getting Started" href="../getting_started.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Invariants" href="invariants.html" /><link rel="prev" title="Complexity Annotations" href="complexity_annotations.html" />
 
     <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
-        <title>Annotations - PyBryt documentation</title>
+        <title>Type Annotations - PyBryt documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -109,11 +109,11 @@
 </form><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Annotations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Annotations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="complexity_annotations.html">Complexity Annotations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="type_annotations.html">Type Annotations</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Type Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="invariants.html">Invariants</a></li>
 </ul>
 </li>
@@ -136,73 +136,24 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="annotations">
-<span id="id1"></span><h1>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+        <div class="section" id="type-annotations">
+<span id="type"></span><h1>Type Annotations<a class="headerlink" href="#type-annotations" title="Permalink to this headline">¶</a></h1>
+<p>Type annotations are somewhat similar to value annotations, although they operate on types
+insted of individual values or objects. They can be used to check the presence, or lack thereof, of
+objects of a specific type in a memory footprint, or conditions on that presence.</p>
+<div class="section" id="forbid-type">
+<h2>Forbid Type<a class="headerlink" href="#forbid-type" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../api_reference.html#pybryt.annotations.type_.ForbidType" title="pybryt.annotations.type_.ForbidType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForbidType</span></code></a> annotation asserts that a student’s
+memory footprint has no values of a specific type in it. For example, if students should be implementing
+an algorithm without vectorization, it is possible to create an annotation forbidding the use of
+arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">pybryt</span><span class="o">.</span><span class="n">ForbidType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Arrays are not allowed!"</span><span class="p">)</span>
+</pre></div>
 </div>
-<p>Annotations are the basic building blocks, out of which reference
-implementations are constructed. The annotations represent a single condition
-that a student’s implementation should meet, and they define a set of behaviors
-for responding to the passing or failing of those conditions. Annotations
-provide conditions not only for expecting a specific value but also for
-combining those expectations to form conditions on the structure of the
-student’s code, including the temporal relationship of values and complex
-boolean logic surrounding the presence or absence of those values.</p>
-<p>All annotations are created by instantiating subclasses of the abstract
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> class. There
-are four main types of annotations:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="value_annotations.html#value"><span class="std std-ref">value annotations</span></a></p></li>
-<li><p><a class="reference internal" href="relational_annotations.html#relational"><span class="std std-ref">relational annotations</span></a></p></li>
-<li><p><a class="reference internal" href="complexity_annotations.html#complexity"><span class="std std-ref">complexity annotations</span></a></p></li>
-<li><p><a class="reference internal" href="type_annotations.html#type"><span class="std std-ref">type annotations</span></a></p></li>
-</ul>
-<div class="section" id="annotation-arguments">
-<h2>Annotation Arguments<a class="headerlink" href="#annotation-arguments" title="Permalink to this headline">¶</a></h2>
-<p>All annotations contain some core configurations that can be set using keyword arguments in the
-constructor or by accessing the instance variables of that object. The table below lists these
-arguments.</p>
-<div class="table-wrapper"><table class="colwidths-given docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 10%"/>
-<col style="width: 10%"/>
-<col style="width: 70%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Field Name</p></td>
-<td><p>Keyword Argument</p></td>
-<td><p>Type</p></td>
-<td><p>Description</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td><p>The name of the annotation; used to process <code class="docutils literal notranslate"><span class="pre">limit</span></code>; automatically set if unspecified</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">limit</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">limit</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td><p>The maximum number of annotations with a given <code class="docutils literal notranslate"><span class="pre">name</span></code> to track</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td><p>The name of a group to which this annotation belongs; for running specific groups of annotations
-from a reference implementation</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">success_message</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">success_message</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td><p>A message to be displayed to the student if the annotation is satisfied</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">failure_message</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">failure_message</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td><p>A message to be displayed to the student if the annotation is <em>not</em> satisfied</p></td>
-</tr>
-</tbody>
-</table></div>
+<p>Checking for values is performed using Python’s built-in <code class="docutils literal notranslate"><span class="pre">isinstance</span></code> function. Types passed to
+the constructor must be picklable with the <code class="docutils literal notranslate"><span class="pre">dill</span></code> library.</p>
 </div>
 </div>
 
@@ -210,23 +161,23 @@ from a reference implementation</p></td>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="value_annotations.html">
+          <a class="next-page" href="invariants.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Value Annotations</div>
+                <div class="title">Invariants</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../getting_started.html">
+          <a class="prev-page" href="complexity_annotations.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Getting Started</div>
+                <div class="title">Complexity Annotations</div>
                 
               </div>
             </a>
@@ -240,7 +191,7 @@ from a reference implementation</p></td>
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/annotations/index.rst.txt"
+            <a class="muted-link" href="../_sources/annotations/type_annotations.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -260,8 +211,8 @@ from a reference implementation</p></td>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Annotations</a><ul>
-<li><a class="reference internal" href="#annotation-arguments">Annotation Arguments</a></li>
+<li><a class="reference internal" href="#">Type Annotations</a><ul>
+<li><a class="reference internal" href="#forbid-type">Forbid Type</a></li>
 </ul>
 </li>
 </ul>
