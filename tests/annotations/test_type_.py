@@ -1,4 +1,4 @@
-"""Tests for PyBryt presence annotations"""
+"""Tests for PyBryt type annotations"""
 
 import time
 import pytest
@@ -57,7 +57,7 @@ def test_forbid_type():
     with pytest.raises(TypeError, match=f"1 is not a type"):
         ForbidType(1)
 
-    with mock.patch("pybryt.annotations.presence.dill") as mocked_dill:
+    with mock.patch("pybryt.annotations.type_.dill") as mocked_dill:
         mocked_dill.dumps.side_effect = Exception()
 
         with pytest.raises(ValueError, match="Types must be serializable but the following error was thrown during serialization:\n"):

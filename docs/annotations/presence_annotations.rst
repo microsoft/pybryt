@@ -1,4 +1,0 @@
-.. _presence:
-
-Presence Annotations
-====================

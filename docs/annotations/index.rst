@@ -10,7 +10,7 @@ Annotations
     value_annotations
     relational_annotations
     complexity_annotations
-    presence_annotations
+    type_annotations
     invariants
 
 Annotations are the basic building blocks, out of which reference
@@ -29,7 +29,7 @@ are four main types of annotations:
 * :ref:`value annotations<value>`
 * :ref:`relational annotations<relational>`
 * :ref:`complexity annotations<complexity>`
-* :ref:`presence annotations<presence>`
+* :ref:`type annotations<type>`
 
 
 Annotation Arguments

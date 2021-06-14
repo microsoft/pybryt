@@ -34,7 +34,7 @@ class Value(Annotation):
         invariants (``list[invariant]``): invariants for 
             this value
         **kwargs: additional keyword arguments passed to the 
-            :py:class:`Annotation<pybryt.Annotation>` constructor
+            :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
 
     intial_value: Any

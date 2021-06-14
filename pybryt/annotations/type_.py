@@ -18,9 +18,9 @@ class ForbidType(Annotation):
     must be pickleable by ``dill``.
 
     Args:
-        type_ (``type``): the type to forbid
+        type\\_ (``type``): the type to forbid
         **kwargs: additional keyword arguments passed to the 
-            :py:class:`Annotation<pybryt.Annotation>` constructor
+            :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
 
     type_: type
