@@ -230,6 +230,8 @@ class _AttrValue(Value):
     Args:
         obj (``object``): the object being checked
         attr (``str``): the attribute of the object being checked
+        enforce_type (``bool``, optional): whether to ensure that the satisfying value has the same 
+            type as the initial value
         **kwargs: additional keyword arguments passed to the :py:class:`Value<pybryt.Value>` 
             constructor
     """
@@ -237,9 +239,13 @@ class _AttrValue(Value):
     _object: Any
     _attr: str
 
-    def __init__(self, obj: Any, attr: str, **kwargs):
+    enforce_type: bool
+    """whether to ensure that the satisfying value has the same type as the initial value"""
+
+    def __init__(self, obj: Any, attr: str, enforce_type: bool = False, **kwargs):
         self._object = obj
         self._attr = attr
+        self.enforce_type = enforce_type
         val = getattr(obj, attr)
         super().__init__(val, **kwargs)
     
@@ -273,6 +279,8 @@ class _AttrValue(Value):
             :py:class:`AnnotationResult`: the results of this annotation based on 
             ``observed_values``
         """
+        if self.enforce_type:  # filter out values of wrong type if enforce_type is True
+            observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
         attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
         res = super().check(attrs)
@@ -292,6 +300,8 @@ class Attribute(Annotation):
     Args:
         obj (``object``): the object being checked
         attrs (``str`` or ``list[str]``): the attribute or attributes that should be checked
+        enforce_type (``bool``, optional): whether to ensure that the satisfying value has the same 
+            type as the initial value
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
@@ -301,7 +311,10 @@ class Attribute(Annotation):
     _atol: Optional[Union[float, int]]
     _rtol: Optional[Union[float, int]]
 
-    def __init__(self, obj: Any, attrs: Union[str, List[str]], **kwargs):
+    enforce_type: bool
+    """whether to ensure that the satisfying value has the same type as the initial value"""
+
+    def __init__(self, obj: Any, attrs: Union[str, List[str]], enforce_type: bool = False, **kwargs):
         if isinstance(attrs, str):
             attrs = [attrs]
         if not isinstance(attrs, list) or not all(isinstance(a, str) for a in attrs):
@@ -314,11 +327,13 @@ class Attribute(Annotation):
         for attr in attrs:
             if not hasattr(obj, attr):
                 raise AttributeError(f"{obj} has not attribute '{attr}'")
-            self._annotations.append(_AttrValue(obj, attr, **kwargs))
+            self._annotations.append(_AttrValue(obj, attr, enforce_type=enforce_type, **kwargs))
         
         self._invariants = kwargs.pop("invariants", [])
         self._atol = kwargs.pop("atol", None)
         self._rtol = kwargs.pop("rtol", None)
+
+        self.enforce_type = enforce_type
     
         super().__init__(name=name, success_message=success_message, failure_message=failure_message,
             **kwargs)
@@ -360,6 +375,7 @@ class Attribute(Annotation):
             "atol": self._atol,
             "rtol": self._rtol,
             "attributes": [av._attr for av in self._annotations],
+            "enforce_type": self.enforce_type,
         })
         return d
 
