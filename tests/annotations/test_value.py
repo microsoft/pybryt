@@ -132,7 +132,23 @@ def test_attribute_annotation():
         "rtol": None,
         "type": "attribute",
         "attributes": ['T'],
+        "enforce_type": False,
     }
+
+    # check enforce type
+    class Foo:
+        T = val.T
+
+    mfp2 = [(Foo(), 1)]
+    res = v.check(mfp2)
+    assert res.satisfied
+
+    v = Attribute(val, "T", enforce_type=True)
+    res = v.check(mfp2)
+    assert not res.satisfied
+
+    res = v.check(mfp + mfp2)
+    assert res.satisfied
 
     # check error raising
     with pytest.raises(TypeError):

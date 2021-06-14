@@ -1,5 +1,4 @@
-"""
-"""
+"""Various utilities for PyBryt"""
 
 import os
 import json
