@@ -201,7 +201,7 @@ from a reference implementation</p></td>
 </table></div>
 </div>
 <div class="section" id="value-annotations">
-<h2>Value annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h2>
+<h2>Value Annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h2>
 <p>Value annotation is the most basic type of annotation. It expects a specific
 value to appear while executing the student’s code. To create a value
 annotation, we create an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> and pass to
@@ -240,6 +240,42 @@ allow the student’s solution (string) to be case-insensitive.</p>
 <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">correct_answer</span><span class="p">,</span> <span class="n">invariants</span><span class="o">=</span><span class="p">[</span><span class="n">pybryt</span><span class="o">.</span><span class="n">invariants</span><span class="o">.</span><span class="n">string_capitalization</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>More information about invariants can be found <a class="reference internal" href="invariants.html#invariants"><span class="std std-ref">here</span></a>.</p>
+</div>
+</div>
+<div class="section" id="attribute-annotations">
+<h2>Attribute Annotations<a class="headerlink" href="#attribute-annotations" title="Permalink to this headline">¶</a></h2>
+<p>PyBryt supports checking for the presence of an object with a specific attribute value using the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code> annotation. This annotation takes in an object and one or more
+strings representing an instance variable, and asserts that the student’s memory footprint should
+contain an object with that attribute such that the value of the attribute equals the value of the
+attribute in the annotation.</p>
+<p>For example, this can be useful in checking that students have correctly fitted in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>
+regression model by checking that the coefficients are correct:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="k">as</span> <span class="nn">lm</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">pybryt</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">"coef_"</span><span class="p">,</span>
+    <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Your model doesn't have the correct coefficients."</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that, by default, PyBryt doesn’t check that the object satisfying the attribute annotation has
+the same type as the object the annotation was created for. If a student knew the coefficient values
+in the above example, the following student code would satisfy that annotation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+
+    <span class="n">coef_</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># the array of coefficients</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>  <span class="c1"># f will satisfy the annotation</span>
+</pre></div>
+</div>
+<p>To ensure that the annotation is only satisfied when the object is of the same type, set
+<code class="docutils literal notranslate"><span class="pre">enforce_type=True</span></code> in the constructor:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">"coef_"</span><span class="p">,</span> <span class="n">enforce_type</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Your model doesn't have the correct coefficients."</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -300,11 +336,12 @@ allow the student’s solution (string) to be case-insensitive.</p>
             <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
 <li><a class="reference internal" href="#annotation-arguments">Annotation Arguments</a></li>
-<li><a class="reference internal" href="#value-annotations">Value annotations</a><ul>
+<li><a class="reference internal" href="#value-annotations">Value Annotations</a><ul>
 <li><a class="reference internal" href="#numerical-tolerances">Numerical Tolerances</a></li>
 <li><a class="reference internal" href="#invariants">Invariants</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#attribute-annotations">Attribute Annotations</a></li>
 </ul>
 </li>
 </ul>

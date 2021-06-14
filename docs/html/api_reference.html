@@ -270,7 +270,7 @@ children, an empty list.</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.annotations.annotation.Annotation.reset_tracked_annotations">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">reset_tracked_annotations</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.reset_tracked_annotations" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">reset_tracked_annotations</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.annotations.annotation.Annotation.reset_tracked_annotations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the list of tracked annotations and the mapping of group names to indices in that
 list.</p>
 </dd></dl>
@@ -297,9 +297,10 @@ failure message.</p>
 </dd></dl>
 <div class="section" id="module-pybryt.annotations.value">
 <span id="value-annotations"></span><h3>Value Annotations<a class="headerlink" href="#module-pybryt.annotations.value" title="Permalink to this headline">¶</a></h3>
+<p>Annotations for asserting the presence of a value</p>
 <dl class="py class">
 <dt id="pybryt.annotations.value.Attribute">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.value.</span></code><code class="sig-name descname"><span class="pre">Attribute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Attribute" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.value.</span></code><code class="sig-name descname"><span class="pre">Attribute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enforce_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotation for asserting that an object has an attribute value matching that of another object.</p>
 <p>Uses a <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotation to check there exists an object in the
 students’ code which as a specific attribute, or a series of attributes, with values matching
@@ -310,6 +311,8 @@ and the name of the attribute(s) being studied.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the object being checked</p></li>
 <li><p><strong>attrs</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">list[str]</span></code>) – the attribute or attributes that should be checked</p></li>
+<li><p><strong>enforce_type</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to ensure that the satisfying value has the same
+type as the initial value</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> constructor</p></li>
 </ul>
@@ -344,6 +347,11 @@ children, an empty list.</p>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code></p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.value.Attribute.enforce_type">
+<code class="sig-name descname"><span class="pre">enforce_type</span></code><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#pybryt.annotations.value.Attribute.enforce_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>whether to ensure that the satisfying value has the same type as the initial value</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Attribute.to_dict">
@@ -415,8 +423,22 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Value.check_values_equal">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">check_values_equal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.value.Value.check_values_equal" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">check_values_equal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> → <span class="pre">bool</span><a class="headerlink" href="#pybryt.annotations.value.Value.check_values_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether two objects are equal.</p>
+<p>If the values are both numeric (numerics, arrays, etc.) and <code class="docutils literal notranslate"><span class="pre">atol</span></code> and/or <code class="docutils literal notranslate"><span class="pre">rtol</span></code> are
+specified, the values are considered equal if <code class="docutils literal notranslate"><span class="pre">other_value</span></code> is within the tolerance
+bounds of <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the first object to compare</p></li>
+<li><p><strong>other_value</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the second object to compare</p></li>
+<li><p><strong>atol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>, optional) – the absolute tolerance for numeric values</p></li>
+<li><p><strong>rtol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>, optional) – the relative tolerance for numeric values</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt id="pybryt.annotations.value.Value.children">
 <em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#pybryt.annotations.value.Value.children" title="Permalink to this definition">¶</a></dt>
@@ -689,6 +711,7 @@ during execution and the timestamps of those values</p>
 </div>
 <div class="section" id="module-pybryt.annotations.complexity.annotation">
 <span id="complexity-annotations"></span><h3>Complexity Annotations<a class="headerlink" href="#module-pybryt.annotations.complexity.annotation" title="Permalink to this headline">¶</a></h3>
+<p>Annotation classes for complexity assertions</p>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.annotation.ComplexityAnnotation">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.annotation.</span></code><code class="sig-name descname"><span class="pre">ComplexityAnnotation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">addl_complexities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.annotation.ComplexityAnnotation" title="Permalink to this definition">¶</a></dt>
@@ -808,6 +831,7 @@ during execution and the timestamps of those values</p>
 </dd></dl>
 <div class="section" id="module-pybryt.annotations.complexity.complexities">
 <span id="complexity-classes"></span><span id="complexities"></span><h4>Complexity Classes<a class="headerlink" href="#module-pybryt.annotations.complexity.complexities" title="Permalink to this headline">¶</a></h4>
+<p>Complexity classes for complexity annotations</p>
 <dl class="py class">
 <dt id="pybryt.annotations.complexity.complexities.complexity">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.complexity.complexities.</span></code><code class="sig-name descname"><span class="pre">complexity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexity_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.complexity.complexities.complexity" title="Permalink to this definition">¶</a></dt>
@@ -1035,7 +1059,7 @@ arrays and returns the sum of residuals.</p>
 </div>
 <div class="section" id="module-pybryt.annotations.invariants">
 <span id="invariants"></span><h3>Invariants<a class="headerlink" href="#module-pybryt.annotations.invariants" title="Permalink to this headline">¶</a></h3>
-<p>Invariants for value annotations (available as <code class="xref py py-mod docutils literal notranslate"><span class="pre">pybryt.invariants</span></code>)</p>
+<p>Invariants for value annotations</p>
 <dl class="py class">
 <dt id="pybryt.annotations.invariants.invariant">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.invariants.</span></code><code class="sig-name descname"><span class="pre">invariant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.invariant" title="Permalink to this definition">¶</a></dt>
@@ -1075,9 +1099,7 @@ of this invariant</p>
 <dl class="py class">
 <dt id="pybryt.annotations.invariants.string_capitalization">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.invariants.</span></code><code class="sig-name descname"><span class="pre">string_capitalization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.invariants.string_capitalization" title="Permalink to this definition">¶</a></dt>
-<dd><p>An invariant that compares strings ignoring capitalization.</p>
-<p>Works by taking in a list of values and lowercasing them if they are strings and leaving them
-unchanged otherwise.</p>
+<dd><p>An invariant that compares strings ignoring the capitalization of letters.</p>
 <dl class="py method">
 <dt id="pybryt.annotations.invariants.string_capitalization.run">
 <em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.invariants.string_capitalization.run" title="Permalink to this definition">¶</a></dt>
