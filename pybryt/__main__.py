@@ -1,4 +1,4 @@
-""""""
+"""Main module for PyBryt CLI"""
 
 from .cli import cli
 

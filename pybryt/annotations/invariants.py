@@ -1,13 +1,10 @@
-"""Invariants for value annotations (available as :py:mod:`pybryt.invariants`)"""
+"""Invariants for value annotations"""
 
 import numpy as np
 
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from typing import Any, List, Optional, Union
-# from enum import Enum, auto
-
-# TODO: add iterable_type invariant
 
 
 class invariant(ABC):
@@ -50,14 +47,9 @@ class invariant(ABC):
         ... # pragma: no cover
 
 
-# TODO: if hashing, for all strings collect actual string and lowercased version (marked as such), 
-#       and compare against that if this invariant is used. 
 class string_capitalization(invariant):
     """
-    An invariant that compares strings ignoring capitalization.
-
-    Works by taking in a list of values and lowercasing them if they are strings and leaving them
-    unchanged otherwise.
+    An invariant that compares strings ignoring the capitalization of letters.
     """
 
     @staticmethod

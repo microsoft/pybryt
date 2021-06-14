@@ -1,5 +1,4 @@
-"""
-"""
+"""Plagiarism checking for PyBryt"""
 
 import random
 import numpy as np
