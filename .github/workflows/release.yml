@@ -49,3 +49,13 @@ jobs:
     - name: Push updates
       run: |
         git push origin stable
+    
+    - name: Checkout to main
+      uses: actions/checkout@v2
+      with:
+        ref: main
+    
+    - name: Merge stable -> main
+      run: |
+        git merge origin/stable -Xtheirs --allow-unrelated-histories
+        git push origin main
