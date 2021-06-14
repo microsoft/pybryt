@@ -1,3 +1,5 @@
+setuptools
+wheel
 IPython
 nbconvert
 nbformat
