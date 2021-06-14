@@ -264,7 +264,7 @@ class _AttrValue(Value):
             ``bool``: whether the objects are equal
         """
         return super().__eq__(other) and self.check_values_equal(self._object, other._object) and \
-            self._attr == other._attr
+            self._attr == other._attr and self.enforce_type == other.enforce_type
     
     def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
         """
@@ -284,7 +284,10 @@ class _AttrValue(Value):
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
         attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
         res = super().check(attrs)
-        satisfier = vals[attrs.index((res.value, res.timestamp))][0]
+        try:
+            satisfier = vals[attrs.index((res.value, res.timestamp))][0]
+        except ValueError:
+            satisfier = None
         return AnnotationResult(None, self, value=satisfier, children=[res])
 
 
