@@ -25,12 +25,13 @@ boolean logic surrounding the presence or absence of those values.
 
 All annotations are created by instantiating subclasses of the abstract
 :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` class. There 
-are four main types of annotations: 
+are five main types of annotations: 
  
 * :ref:`value annotations<value>`
 * :ref:`relational annotations<relational>`
 * :ref:`complexity annotations<complexity>`
 * :ref:`type annotations<type>`
+* :ref:`annotation collections<collection>`
 
 
 Annotation Arguments
