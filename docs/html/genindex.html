@@ -113,6 +113,7 @@
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
@@ -246,16 +247,18 @@
   <h2>A</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.collection.Collection.add">add() (pybryt.annotations.collection.Collection method)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.after">after() (pybryt.annotations.annotation.Annotation method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.relation.AndAnnotation">AndAnnotation (class in pybryt.annotations.relation)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation">Annotation (class in pybryt.annotations.annotation)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.annotations.annotation.AnnotationResult.annotation">annotation (pybryt.annotations.annotation.AnnotationResult attribute)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.annotation.AnnotationResult.annotation">annotation (pybryt.annotations.annotation.AnnotationResult attribute)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.AnnotationResult">AnnotationResult (class in pybryt.annotations.annotation)</a>
 </li>
         <li><a href="api_reference.html#pybryt.reference.ReferenceImplementation.annotations">annotations (pybryt.reference.ReferenceImplementation attribute)</a>
@@ -291,6 +294,8 @@
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.check">check() (pybryt.annotations.annotation.Annotation method)</a>
 
         <ul>
+          <li><a href="api_reference.html#pybryt.annotations.collection.Collection.check">(pybryt.annotations.collection.Collection method)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.check">(pybryt.annotations.complexity.annotation.TimeComplexity method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.relation.AndAnnotation.check">(pybryt.annotations.relation.AndAnnotation method)</a>
@@ -327,6 +332,8 @@
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.children">children() (pybryt.annotations.annotation.Annotation property)</a>
 
         <ul>
+          <li><a href="api_reference.html#pybryt.annotations.collection.Collection.children">(pybryt.annotations.collection.Collection property)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.children">(pybryt.annotations.complexity.annotation.ComplexityAnnotation property)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation.children">(pybryt.annotations.relation.RelationalAnnotation property)</a>
@@ -338,6 +345,8 @@
           <li><a href="api_reference.html#pybryt.annotations.value.Value.children">(pybryt.annotations.value.Value property)</a>
 </li>
         </ul></li>
+        <li><a href="api_reference.html#pybryt.annotations.collection.Collection">Collection (class in pybryt.annotations.collection)</a>
+</li>
         <li><a href="api_reference.html#pybryt.student.StudentImplementation.combine">combine() (pybryt.student.StudentImplementation class method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.reference.ReferenceImplementation.compile">compile() (pybryt.reference.ReferenceImplementation class method)</a>
@@ -360,10 +369,12 @@
   <h2>E</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api_reference.html#pybryt.annotations.value.Attribute.enforce_type">enforce_type (pybryt.annotations.value.Attribute attribute)</a>
+        <li><a href="api_reference.html#pybryt.annotations.collection.Collection.enforce_order">enforce_order (pybryt.annotations.collection.Collection attribute)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.value.Attribute.enforce_type">enforce_type (pybryt.annotations.value.Attribute attribute)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.exponential">exponential (class in pybryt.annotations.complexity.complexities)</a>
 </li>
     </ul></td>
@@ -476,6 +487,8 @@
     module
 
         <ul>
+          <li><a href="api_reference.html#module-pybryt.annotations.collection">pybryt.annotations.collection</a>
+</li>
           <li><a href="api_reference.html#module-pybryt.annotations.complexity.annotation">pybryt.annotations.complexity.annotation</a>
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.complexity.complexities">pybryt.annotations.complexity.complexities</a>
@@ -608,6 +621,13 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li>
+    pybryt.annotations.collection
+
+        <ul>
+          <li><a href="api_reference.html#module-pybryt.annotations.collection">module</a>
+</li>
+        </ul></li>
+        <li>
     pybryt.annotations.complexity.annotation
 
         <ul>
@@ -696,6 +716,8 @@
 </li>
         <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation">RelationalAnnotation (class in pybryt.annotations.relation)</a>
 </li>
+        <li><a href="api_reference.html#pybryt.annotations.collection.Collection.remove">remove() (pybryt.annotations.collection.Collection method)</a>
+</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.reset_tracked_annotations">reset_tracked_annotations() (pybryt.annotations.annotation.Annotation static method)</a>
@@ -782,6 +804,8 @@
         <ul>
           <li><a href="api_reference.html#pybryt.annotations.annotation.AnnotationResult.to_dict">(pybryt.annotations.annotation.AnnotationResult method)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.collection.Collection.to_dict">(pybryt.annotations.collection.Collection method)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.type_.ForbidType.to_dict">(pybryt.annotations.type_.ForbidType method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.value.Attribute.to_dict">(pybryt.annotations.value.Attribute method)</a>
@@ -791,6 +815,8 @@
           <li><a href="api_reference.html#pybryt.reference.ReferenceResult.to_dict">(pybryt.reference.ReferenceResult method)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity.transform_n">transform_n() (pybryt.annotations.complexity.complexities.complexity static method)</a>
 
         <ul>
@@ -809,8 +835,6 @@
           <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.quadratic.transform_n">(pybryt.annotations.complexity.complexities.quadratic static method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity.transform_t">transform_t() (pybryt.annotations.complexity.complexities.complexity static method)</a>
 
         <ul>

@@ -114,6 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
@@ -1189,6 +1190,99 @@ failure message, as well as the type as a string.</p>
 </dd></dl>
 </dd></dl>
 </div>
+<div class="section" id="module-pybryt.annotations.collection">
+<span id="annotation-collections"></span><h3>Annotation Collections<a class="headerlink" href="#module-pybryt.annotations.collection" title="Permalink to this headline">¶</a></h3>
+<p>Class for gathering and operating on collections of annotations</p>
+<dl class="py class">
+<dt id="pybryt.annotations.collection.Collection">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pybryt.annotations.collection.</span></code><code class="sig-name descname"><span class="pre">Collection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">annotations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">enforce_order</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.collection.Collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for collecting and operating on multiple annotations.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">enforce_order</span></code> is true, this collection will only be satisfied if all of its children are
+satisfied <em>and</em> the satisfying timestamps are in non-decreasing order (for those that have them).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*annotations</strong> (<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the child
+annotations being operated on</p></li>
+<li><p><strong>enforce_order</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to enforce the ordering of annotations as added
+to this collection</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pybryt.annotations.collection.Collection.add">
+<code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></span></em><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.annotations.collection.Collection.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an annotation to this collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>annotation</strong> (<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the
+annotation to add</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.collection.Collection.check">
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> → <a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a><a class="headerlink" href="#pybryt.annotations.collection.Collection.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that all child annotations are satisfied by the values in <code class="docutils literal notranslate"><span class="pre">observed_values</span></code>, and
+that the timestamps of the satisfying values occur in non-decreasing order if
+<code class="docutils literal notranslate"><span class="pre">self.enforce_order</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>observed_values</strong> (<code class="docutils literal notranslate"><span class="pre">list[tuple[object,</span> <span class="pre">int]]</span></code>) – a list of tuples of values observed
+during execution and the timestamps of those values</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the results of this annotation based on
+<code class="docutils literal notranslate"><span class="pre">observed_values</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.collection.Collection.children">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#pybryt.annotations.collection.Collection.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>the child annotations that this annotation operates on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt id="pybryt.annotations.collection.Collection.enforce_order">
+<code class="sig-name descname"><span class="pre">enforce_order</span></code><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#pybryt.annotations.collection.Collection.enforce_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>whether to enforce the ordering of annotations as added to this collection</p>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.collection.Collection.remove">
+<code class="sig-name descname"><span class="pre">remove</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a></span></em><span class="sig-paren">)</span> → <span class="pre">NoReturn</span><a class="headerlink" href="#pybryt.annotations.collection.Collection.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an annotation from this collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>annotation</strong> (<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a>) – the
+annotation to remove</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="pybryt.annotations.collection.Collection.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> → <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#pybryt.annotations.collection.Collection.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
 <div class="section" id="annotation-results">
 <h3>Annotation Results<a class="headerlink" href="#annotation-results" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
@@ -1804,6 +1898,7 @@ If PyBryt is not tracing, no action is taken.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-pybryt.annotations.type_">Type Annotations</a></li>
+<li><a class="reference internal" href="#module-pybryt.annotations.collection">Annotation Collections</a></li>
 <li><a class="reference internal" href="#annotation-results">Annotation Results</a></li>
 </ul>
 </li>

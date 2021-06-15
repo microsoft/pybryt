@@ -62,6 +62,14 @@ Type Annotations
    :undoc-members:
 
 
+Annotation Collections
+++++++++++++++++++++++
+
+.. automodule:: pybryt.annotations.collection
+   :members:
+   :undoc-members:
+
+
 Annotation Results
 ++++++++++++++++++
 
