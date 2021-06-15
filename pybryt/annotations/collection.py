@@ -120,3 +120,19 @@ class Collection(Annotation):
             self.get_tracked_annotations().remove(annotation)
         except ValueError:  # pragma: no cover
             pass
+
+    def remove(self, annotation: Annotation) -> NoReturn:
+        """
+        Removes an annotation from this collection.
+
+        Args:
+            annotation (:py:class:`Annotation<pybryt.annotations.annotation.Annotation>`): the
+                annotation to remove
+        """
+        if not isinstance(annotation, Annotation):
+            raise TypeError(f"{annotation} is not an annotation")
+
+        if annotation not in self._annotations:
+            raise ValueError(f"The specified annotation is not part of this collection")
+
+        self._annotations.remove(annotation)

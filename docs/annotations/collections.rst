@@ -23,6 +23,15 @@ To add additional annotations to the collection, use
         l[i] = prod
         collection.add(pybryt.value(l))
 
+Annotations can be removed from the collection using
+:py:meth:`Collection.remove<pybryt.annotations.collection.Collection.remove>`:
+
+.. code-block:: python
+
+    val = pybryt.Value(l)
+    collection = pybryt.Collection(val)
+    collection.remove(val)
+
 Collection annotations can be used to simplify the creation of temporal annotations. Rather than
 reassigning variables and using the ``before`` method over and over again, you can simply create
 a collection and set ``enforce_order=True`` in the constructor. This will mean that the collection

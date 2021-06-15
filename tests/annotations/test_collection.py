@@ -46,9 +46,14 @@ def test_collection():
     res = a.check(mfp)
     assert res.satisfied
 
-    a.add(Value(mfp[1][0]))
+    v3 = Value(mfp[1][0])
+    a.add(v3)
     res = a.check(mfp)
     assert not res.satisfied
+
+    a.remove(v3)
+    res = a.check(mfp)
+    assert res.satisfied
 
     a = Collection(v2, v1, enforce_order=True, success_message="foo")
     res = a.check(mfp)
