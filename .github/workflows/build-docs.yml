@@ -5,7 +5,7 @@ name: Build documentation
 
 on:
   push:
-    branches: [ main ]
+    branches: [ stable ]
   workflow_dispatch:
 
 jobs:
@@ -21,24 +21,22 @@ jobs:
       with:
         python-version: 3.8
     
+    - name: Checkout to stable
+      uses: actions/checkout@v2
+      with:
+        ref: stable
+
     - name: Checkout to gh-pages
       uses: actions/checkout@v2
       with:
         ref: gh-pages
     
-    - name: Merge main -> gh-pages
+    - name: Merge stable -> gh-pages
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git merge origin/main -Xtheirs --allow-unrelated-histories
+        git merge origin/stable -Xtheirs --allow-unrelated-histories
         git push origin gh-pages
-        
-#       uses: devmasx/merge-branch@v1.3.1
-#       with:
-#         type: now
-#         from_branch: main
-#         target_branch: gh-pages
-#         github_token: ${{ github.token }}
         
     - name: Install dependencies
       run: |
