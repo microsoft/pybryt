@@ -1,5 +1,7 @@
 """Abstract base class for annotations and annotation results class"""
 
+__all__ = ["Annotation", "AnnotationResult"]
+
 from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import Any, Dict, List, NoReturn, Optional, Tuple
