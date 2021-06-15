@@ -11,6 +11,7 @@ Annotations
     relational_annotations
     complexity_annotations
     type_annotations
+    collections
     invariants
 
 Annotations are the basic building blocks, out of which reference

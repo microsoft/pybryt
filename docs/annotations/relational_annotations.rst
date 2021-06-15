@@ -14,6 +14,7 @@ All relational annotations are subclasses of the abstract
 class, which defines some helpful defaults for working with annotations that
 have child annotations.
 
+
 Temporal Annotations
 --------------------
 
@@ -80,6 +81,7 @@ and supports all of the same operations.
 instance of the
 :py:class:`BeforeAnnotation<pybryt.annotations.relation.BeforeAnnotation>`
 class, but with the operands switched.
+
 
 Boolean Annotations
 -------------------
