@@ -114,3 +114,7 @@ class Collection(Annotation):
             raise TypeError(f"{annotation} is not an annotation")
 
         self._annotations.append(annotation)
+        try:
+            self.get_tracked_annotations().remove(annotation)
+        except ValueError:
+            pass
