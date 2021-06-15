@@ -21,6 +21,11 @@ jobs:
       with:
         python-version: 3.8
     
+    - name: Checkout to stable
+      uses: actions/checkout@v2
+      with:
+        ref: stable
+
     - name: Checkout to gh-pages
       uses: actions/checkout@v2
       with:
