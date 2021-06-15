@@ -1,0 +1,15 @@
+name: Only allow main -> stable
+
+on:
+  pull_request:
+    branches: [ stable ]
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Only allow main -> stable merges
+      run: |
+        # *Only* main can be merged into stable
+        echo "Merging ${GITHUB_HEAD_REF} into ${GITHUB_BASE_REF}"
+        python3 -c 'import os, sys; sys.exit(not (os.environ["GITHUB_HEAD_REF"] == "main" if os.environ["GITHUB_BASE_REF"] == "stable" else True))'
