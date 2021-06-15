@@ -1,6 +1,8 @@
 """Class for gathering and operating on collections of annotations"""
 
-from typing import Any, Dict, List, Tuple
+__all__ = ["Collection"]
+
+from typing import Any, Dict, List, NoReturn, Tuple
 
 from .annotation import Annotation, AnnotationResult
 
@@ -28,7 +30,7 @@ class Collection(Annotation):
     """whether to enforce the ordering of annotations as added to this collection"""
 
     def __init__(self, *annotations: Annotation, enforce_order: bool = False, **kwargs):
-        self._annotations = annotations
+        self._annotations = list(annotations)
         for ann in self._annotations:
             if not isinstance(ann, Annotation):
                 raise ValueError("One of the arguments is not an annotation")
@@ -80,7 +82,7 @@ class Collection(Annotation):
         
         if self.enforce_order and all(res.satisfied for res in results):
                 before = []
-                with_timestamp = [res for res in results if results.satisfied_at != -1]
+                with_timestamp = [res for res in results if res.satisfied_at != -1]
                 for i in range(len(with_timestamp) - 1):
                     before.append(with_timestamp[i].satisfied_at < with_timestamp[i + 1].satisfied_at)
 
@@ -116,5 +118,5 @@ class Collection(Annotation):
         self._annotations.append(annotation)
         try:
             self.get_tracked_annotations().remove(annotation)
-        except ValueError:
+        except ValueError:  # pragma: no cover
             pass
