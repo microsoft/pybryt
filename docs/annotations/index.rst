@@ -31,7 +31,7 @@ are five main types of annotations:
 * :ref:`relational annotations<relational>`
 * :ref:`complexity annotations<complexity>`
 * :ref:`type annotations<type>`
-* :ref:`annotation collections<collection>`
+* :ref:`annotation collections<collections>`
 
 
 Annotation Arguments
