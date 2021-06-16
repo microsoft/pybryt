@@ -21,7 +21,7 @@ To add additional annotations to the collection, use
     for i in range(len(l)):
         prod *= l[i]
         l[i] = prod
-        collection.add(pybryt.value(l))
+        collection.add(pybryt.Value(l))
 
 Annotations can be removed from the collection using
 :py:meth:`Collection.remove<pybryt.annotations.collection.Collection.remove>`:
@@ -66,4 +66,4 @@ them to a specific group of annotations:
     for i in range(len(l)):
         prod *= l[i]
         l[i] = prod
-        collection.add(pybryt.value(l))
+        collection.add(pybryt.Value(l))
