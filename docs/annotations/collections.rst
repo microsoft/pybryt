@@ -35,7 +35,7 @@ Annotations can be removed from the collection using
 Collection annotations can be used to simplify the creation of temporal annotations. Rather than
 reassigning variables and using the ``before`` method over and over again, you can simply create
 a collection and set ``enforce_order=True`` in the constructor. This will mean that the collection
-is only satified if the satisfying timestamps of its annotations occur in non-decreasing order based
+is only satisfied if the satisfying timestamps of its annotations occur in non-decreasing order based
 on the order the annotations were added in. For the example above, this can be done with
 
 .. code-block:: python
