@@ -49,7 +49,7 @@ on the order the annotations were added in. For the example above, this can be d
     for i in range(len(l)):
         prod *= l[i]
         l[i] = prod
-        collection.add(pybryt.value(l))
+        collection.add(pybryt.Value(l))
 
 Collections can also be used to simplify the management of success and failure messages by linking
 them to a specific group of annotations:
