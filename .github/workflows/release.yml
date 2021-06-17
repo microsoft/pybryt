@@ -51,6 +51,8 @@ jobs:
         git push origin stable
 
     - name: PR stable back into main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         hub pull-request -l "release" -r "chrispyles" \
           -m "Release v${{ github.event.inputs.version }}"$'\n'$'\n'"Updates from the release of version ${{ github.event.inputs.version }}"
