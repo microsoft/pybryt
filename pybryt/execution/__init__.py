@@ -5,6 +5,7 @@ __all__ = ["check_time_complexity", "no_tracing"]
 import os
 import dill
 import nbformat
+import warnings
 
 from nbconvert.preprocessors import ExecutePreprocessor
 from copy import deepcopy
@@ -76,6 +77,10 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     ep = ExecutePreprocessor(timeout=1200, allow_errors=True)
 
     ep.preprocess(nb)
+
+    # check for errors
+    if any(any(o['output_type'] == 'error' for o in c['outputs']) for c in nb['cells']):
+        warnings.warn("Executing the student notebook produced one or more errors")
 
     if output:
         with open(output, "w+") as f:
