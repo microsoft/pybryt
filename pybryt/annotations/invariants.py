@@ -96,7 +96,7 @@ class matrix_transpose(invariant):
             if isinstance(v, np.ndarray):
                 ret.append(v)
                 ret.append(v.T)
-            elif isinstance(v, Iterable):
+            elif isinstance(v, Iterable) and not isinstance(v, str):
                 try:
                     arr = np.array(v)
                     ret.append(arr)
@@ -110,7 +110,7 @@ class matrix_transpose(invariant):
 
 class list_permutation(invariant):
     """
-    An invariant that compares iterables ignoring ordering, using ``sorted``.
+    An invariant that compares iterables (except strings) ignoring ordering, using ``sorted``.
     """
 
     @staticmethod
@@ -127,7 +127,9 @@ class list_permutation(invariant):
         """
         ret = []
         for v in values:
-            if isinstance(v, Iterable):
+            if isinstance(v, np.ndarray):
+                ret.append(np.sort(v))
+            elif isinstance(v, Iterable) and not isinstance(v, str):
                 ret.append(sorted(v))
             else:
                 ret.append(v)
