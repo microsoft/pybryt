@@ -62,7 +62,7 @@ class string_capitalization(invariant):
                 of the annotation or from the results of other invariants
         
         Returns:
-            ``list[object]``: the elements of ``values`` with all strings lowercased
+            ``list[object]``: the transformed values
         """
         ret = []
         for v in values:
@@ -70,4 +70,65 @@ class string_capitalization(invariant):
                 ret.append(v)
             else:
                 ret.append(v.lower())
+        return ret
+
+
+class matrix_transpose(invariant):
+    """
+    An invariant that compares 2-dimensional arrays ignoring transposition.
+    """
+
+    @staticmethod
+    def run(values: List[Any]) -> List[Any]:
+        """
+        Returns a list of values in which all 2D iterables have been converted to NumPy arrays and
+        have had their transpose added
+
+        Args:
+            values (``list[object]``): acceptable values, either from the initial constructor call
+                of the annotation or from the results of other invariants
+        
+        Returns:
+            ``list[object]``: the transformed values
+        """
+        ret = []
+        for v in values:
+            if isinstance(v, np.ndarray):
+                ret.append(v)
+                ret.append(v.T)
+            elif isinstance(v, Iterable):
+                try:
+                    arr = np.array(v)
+                    ret.append(arr)
+                    ret.append(arr.T)
+                except:
+                    ret.append(v)
+            else:
+                ret.append(v)
+        return ret
+
+
+class list_permutation(invariant):
+    """
+    An invariant that compares iterables ignoring ordering, using ``sorted``.
+    """
+
+    @staticmethod
+    def run(values: List[Any]) -> List[Any]:
+        """
+        Returns a list of values in which all iterables have been sorted.
+
+        Args:
+            values (``list[object]``): acceptable values, either from the initial constructor call
+                of the annotation or from the results of other invariants
+        
+        Returns:
+            ``list[object]``: the transformed values
+        """
+        ret = []
+        for v in values:
+            if isinstance(v, Iterable):
+                ret.append(sorted(v))
+            else:
+                ret.append(v)
         return ret
