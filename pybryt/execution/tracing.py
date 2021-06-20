@@ -216,6 +216,7 @@ def tracing_on(frame=None, tracing_func=None):
     vn2 = f"sys_{make_secret()}"
     frame.f_globals[vn] = tracing_func
     exec(f"import sys as {vn2}\n{vn2}.settrace({vn})", frame.f_globals, frame.f_locals)
+    frame.f_trace = tracing_func
 
 
 class no_tracing:
