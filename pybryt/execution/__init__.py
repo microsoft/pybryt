@@ -24,7 +24,7 @@ NBFORMAT_VERSION = 4
 
 
 def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
-        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]]]:
+        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]], nbformat.NotebookNode]:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -41,8 +41,8 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
         output (``str``, optional): a file path at which to write the executed notebook
 
     Returns:
-        ``tuple[int, list[tuple[object, int]]]``: the number of execution steps and the memory 
-        footprint
+        ``tuple[int, list[tuple[object, int]], nbformat.NotebookNode]``: the number of execution steps,
+        the memory footprint, and the executed notebook
     """
     nb = deepcopy(nb)
     preprocessor = IntermediateVariablePreprocessor()
@@ -88,4 +88,4 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
 
     n_steps = max([t[1] for t in observed])
 
-    return n_steps, observed
+    return n_steps, observed, nb
