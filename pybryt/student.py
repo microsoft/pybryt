@@ -83,6 +83,19 @@ class StudentImplementation(Serializable):
             self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
         )
 
+    @property
+    def errors(self) -> List[Dict[str, Union[str, List[str]]]]:
+        """
+        ``list[dict[str, Union[str, list[str]]]]:``: a list of error outputs from the executed notebook
+        """
+        # check for errors
+        errors = []
+        for cell in self.nb['cells']:
+            for out in cell['outputs']:
+                if out['output_type'] == "error":
+                    errors.append(out)
+        return errors
+
     @classmethod
     def from_footprint(cls, footprint: List[Tuple[Any, int]], steps: int) -> 'StudentImplementation':
         """

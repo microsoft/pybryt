@@ -78,10 +78,6 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
 
     ep.preprocess(nb)
 
-    # check for errors
-    if any(any(o['output_type'] == 'error' for o in c['outputs']) for c in nb['cells']):
-        warnings.warn("Executing the student notebook produced one or more errors")
-
     if output:
         with open(output, "w+") as f:
             nbformat.write(nb, f)
