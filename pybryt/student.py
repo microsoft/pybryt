@@ -8,6 +8,7 @@ import base64
 import nbformat
 import inspect
 import hashlib
+import warnings
 
 from contextlib import contextmanager
 from glob import glob
@@ -82,6 +83,12 @@ class StudentImplementation(Serializable):
         self.steps, self.values = execute_notebook(
             self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
         )
+
+        if self.errors:
+            nb_path = self.nb_path
+            if nb_path is None:
+                nb_path = "student notebook"
+            warnings.warn(f"Executing {nb_path} produced errors in the notebook")
 
     @property
     def errors(self) -> List[Dict[str, Union[str, List[str]]]]:

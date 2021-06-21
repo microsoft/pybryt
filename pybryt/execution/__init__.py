@@ -5,7 +5,6 @@ __all__ = ["check_time_complexity", "no_tracing"]
 import os
 import dill
 import nbformat
-import warnings
 
 from nbconvert.preprocessors import ExecutePreprocessor
 from copy import deepcopy
