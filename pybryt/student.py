@@ -52,10 +52,14 @@ class StudentImplementation(Serializable):
     steps: int
     """number of execution steps"""
 
+    executed_nb: Optional[nbformat.NotebookNode]
+    """the executed submission notebook"""
+
     def __init__(
         self, path_or_nb: Optional[Union[str, nbformat.NotebookNode]], addl_filenames: List[str] = [],
         output: Optional[str] = None
     ):
+        self .executed_nb = None
         if path_or_nb is None:
             self.nb = None
             self.nb_path = None
@@ -80,13 +84,13 @@ class StudentImplementation(Serializable):
                 execution
             output (``str``, optional): a path at which to write executed notebook
         """
-        self.steps, self.values = execute_notebook(
+        self.steps, self.values, self.executed_nb = execute_notebook(
             self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
         )
 
         if self.errors:
             nb_path = self.nb_path
-            if nb_path is None:
+            if not nb_path:
                 nb_path = "student notebook"
             warnings.warn(f"Executing {nb_path} produced errors in the notebook")
 
@@ -94,13 +98,17 @@ class StudentImplementation(Serializable):
     def errors(self) -> List[Dict[str, Union[str, List[str]]]]:
         """
         ``list[dict[str, Union[str, list[str]]]]:``: a list of error outputs from the executed notebook
+        if present
         """
-        # check for errors
+        if self.executed_nb is None:
+            return []
+
         errors = []
-        for cell in self.nb['cells']:
+        for cell in self.executed_nb['cells']:
             for out in cell['outputs']:
                 if out['output_type'] == "error":
                     errors.append(out)
+
         return errors
 
     @classmethod
