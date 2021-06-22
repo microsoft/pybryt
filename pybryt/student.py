@@ -108,9 +108,10 @@ class StudentImplementation(Serializable):
 
         errors = []
         for cell in self.executed_nb['cells']:
-            for out in cell['outputs']:
-                if out['output_type'] == "error":
-                    errors.append(out)
+            if cell['cell_type'] == "code":
+                for out in cell['outputs']:
+                    if out['output_type'] == "error":
+                        errors.append(out)
 
         return errors
 
