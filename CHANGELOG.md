@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.1.5 - 2021-06-22
 
 * Added tracking and warnings for errors in student notebook execution
 * Added the `matrix_transpose` and `list_permutation` invariants
