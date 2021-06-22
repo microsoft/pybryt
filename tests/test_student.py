@@ -65,7 +65,7 @@ def test_constructor():
     assert len(stu.values) == 993
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_exec:
-        mocked_exec.return_value = (0, [])
+        mocked_exec.return_value = (0, [], None)
 
         with tempfile.NamedTemporaryFile(mode="w+", suffix=".ipynb") as ntf:
             nbformat.write(nb, ntf.name)
@@ -111,6 +111,21 @@ def test_check():
     with pytest.raises(TypeError, match="check cannot take values of type <class 'int'>"):
         stu.check(1)
 
+
+def test_errors():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell("raise Exception()"))
+
+    with pytest.warns(UserWarning, match="Executing student notebook produced errors in the notebook"):
+        stu = StudentImplementation(nb)
+
+    assert len(stu.errors) == 1
+    assert stu.errors[0]["ename"] == "Exception"
+    assert stu.errors[0]["evalue"] == ""
+    assert stu.errors[0]["output_type"] == "error"
+    assert isinstance(stu.errors[0]["traceback"], list)
+    assert len(stu.errors[0]) == 4
+    
 
 def test_check_cm(capsys):
     """
@@ -242,7 +257,7 @@ def test_generate_student_impls():
     nbs = [nb] * num_notebooks
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_execute:
-        mocked_execute.return_value = (stu.steps, stu.values)
+        mocked_execute.return_value = (stu.steps, stu.values, None)
         stus = generate_student_impls(nbs)
 
     assert all(s == stu for s in stus)

@@ -217,7 +217,8 @@ class Value(Annotation):
 
         if isinstance(res, Iterable):
             # handle NaN values in pandas objects
-            if isinstance(res, (pd.DataFrame, pd.Series)):
+            if isinstance(res, (pd.DataFrame, pd.Series)) and hasattr(value, "isna") and \
+                    hasattr(other_value, "isna"):
                 res = res | (value.isna() & other_value.isna())
             if isinstance(res, (np.ndarray, pd.DataFrame, pd.Series)):
                 res = res.all(axis=None)

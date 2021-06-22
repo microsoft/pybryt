@@ -42,6 +42,6 @@ def test_notebook_execution():
             with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
                 mocked_tempfile.return_value = (None, observed_ntf.name)
 
-                n_steps, observed = execute_notebook(nb, "", output=ntf.name)
+                n_steps, observed, _ = execute_notebook(nb, "", output=ntf.name)
                 assert len(ntf.read()) > 0
                 assert n_steps == max(t[1] for t in observed)

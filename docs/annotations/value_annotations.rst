@@ -87,7 +87,7 @@ types should be considered equal. PyBryt supports defining these conditions
 using :ref:`invariants<invariants>`. To use invariants on a value, we need to
 pass the invariant objects as a list to the ``invariants`` argument of the
 :py:class:`Value<pybryt.Value>` constructor. For instance, let's say we want to
-allow the student's solution (string) to be case-insensitive.
+allow the student's solution (a string) to be case-insensitive.
 
 .. code-block:: python
 

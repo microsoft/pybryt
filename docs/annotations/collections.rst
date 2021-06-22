@@ -21,7 +21,7 @@ To add additional annotations to the collection, use
     for i in range(len(l)):
         prod *= l[i]
         l[i] = prod
-        collection.add(pybryt.value(l))
+        collection.add(pybryt.Value(l))
 
 Annotations can be removed from the collection using
 :py:meth:`Collection.remove<pybryt.annotations.collection.Collection.remove>`:
@@ -35,8 +35,8 @@ Annotations can be removed from the collection using
 Collection annotations can be used to simplify the creation of temporal annotations. Rather than
 reassigning variables and using the ``before`` method over and over again, you can simply create
 a collection and set ``enforce_order=True`` in the constructor. This will mean that the collection
-is only satified if the satisfying timestamps of its annotations occur in non-decreasing order based
-on the order the annotations were added in. For the example above, this can be done with
+is only satisfied if the satisfying timestamps of its annotations occur in non-decreasing order based
+on the order the annotations were added in. For the example above, this can be done with:
 
 .. code-block:: python
 
@@ -49,7 +49,7 @@ on the order the annotations were added in. For the example above, this can be d
     for i in range(len(l)):
         prod *= l[i]
         l[i] = prod
-        collection.add(pybryt.value(l))
+        collection.add(pybryt.Value(l))
 
 Collections can also be used to simplify the management of success and failure messages by linking
 them to a specific group of annotations:
@@ -66,4 +66,4 @@ them to a specific group of annotations:
     for i in range(len(l)):
         prod *= l[i]
         l[i] = prod
-        collection.add(pybryt.value(l))
+        collection.add(pybryt.Value(l))
