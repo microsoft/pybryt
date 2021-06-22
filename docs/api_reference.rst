@@ -20,18 +20,20 @@ Value Annotations
    :undoc-members:
 
 
-Relational Annotations
-++++++++++++++++++++++
-
-.. automodule:: pybryt.annotations.relation
-   :members:
-   :undoc-members:
-
+.. _invariants_ref:
 
 Invariants
 ??????????
 
 .. automodule:: pybryt.annotations.invariants
+   :members:
+   :undoc-members:
+
+
+Relational Annotations
+++++++++++++++++++++++
+
+.. automodule:: pybryt.annotations.relation
    :members:
    :undoc-members:
 

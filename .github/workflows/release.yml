@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'New version number'     
+        description: 'New version number'
         required: true
 
 jobs:
@@ -51,6 +51,8 @@ jobs:
         git push origin stable
 
     - name: PR stable back into main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        hub pull-request -l "release" -r "chrispyles" \
+        hub pull-request -l "release" \
           -m "Release v${{ github.event.inputs.version }}"$'\n'$'\n'"Updates from the release of version ${{ github.event.inputs.version }}"

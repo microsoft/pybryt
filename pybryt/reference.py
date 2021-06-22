@@ -62,6 +62,33 @@ class ReferenceImplementation(Serializable):
     def _default_dump_dest(self) -> str:
         return f"{self.name}.pkl"
 
+    def get(self, name: str) -> Union[Annotation, List[Annotation]]:
+        """
+        Retrieves and returns annotation(s) using their ``name`` attribute.
+
+        Returns a single annotation if there is only one annotation with that name, otherwise returns
+        a list of annotations with that name.
+
+        Args:
+            name (``str``): the name of look up
+
+        Returns:
+            ``Annotation`` or ``list[Annotation]``: the annotation(s) with that name
+
+        Raises:
+            ``ValueError``: if there are no annotations with that name
+        """
+        annots = []
+        for ann in self.annotations:
+            if ann.name == name:
+                annots.append(ann)
+        if len(annots) == 0:
+            raise ValueError(f"Found no annotations with name '{name}'")
+        elif len(annots) == 1:
+            return annots[0]
+        else:
+            return annots
+
     def run(self, observed_values: List[Tuple[Any, int]], group: Optional[str] = None) -> 'ReferenceResult':        
         """
         Runs the annotations tracked by this reference implementation against a memory footprint.

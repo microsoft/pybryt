@@ -3,7 +3,7 @@ Student Implementations
 
 For tracking and managing student implementations, stored in PyBryt as a list of 2-tuples of the 
 objects observed while tracing students' code and the timestamps of those objects, PyBryt provides
-the :py:class:`StudentImplementation<pybryt.StudentImplementation>` class. The constructor for this
+the :py:class:`StudentImplementation<pybryt.student.StudentImplementation>` class. The constructor for this
 class takes in either a path to a Jupyter Notebook file or a notebook object read in with 
 ``nbformat``.
 
@@ -37,7 +37,9 @@ written in a Python script (which PyBryt would by default not trace).
 PyBryt also employs various custom notebook preprocessors for handling special cases that occur in 
 the code to allow different types of values to be checked. To see the exact version of the code that 
 PyBryt executes, set ``output`` to a path to a notebook that PyBryt will write with the executed 
-notebook. This can be useful e.g. for debugging reference implementations by inserting ``print`` 
+notebook. You can also access this notebook as an ``nbformat.NotebookNode`` object using 
+:py:obj:`StudentImplementation.executed_nb<pybryt.student.StudentImplementation.executed_nb>`
+This can be useful e.g. for debugging reference implementations by inserting ``print`` 
 statements that show the values at various stages of execution.
 
 .. code-block:: python
@@ -59,12 +61,12 @@ Checking Implementations
 ------------------------
 
 To reconcile a student implementation with a set of reference implementations, use the
-:py:meth:`StudentImplementation.check<pybryt.StudentImplementation.check>` method, which takes in
-a single :py:class:`ReferenceImplementation<pybryt.ReferenceImplementation>` object, or a list of
-them, and returns a :py:class:`ReferenceResult<pybryt.ReferenceResult>` object (or a list of them).
+:py:meth:`StudentImplementation.check<pybryt.student.StudentImplementation.check>` method, which takes in
+a single :py:class:`ReferenceImplementation<pybryt.reference.ReferenceImplementation>` object, or a list of
+them, and returns a :py:class:`ReferenceResult<pybryt.reference.ReferenceResult>` object (or a list of them).
 This method simply abstracts away managing the memory footprint tracked by the 
-:py:class:`StudentImplementation<pybryt.StudentImplementation>` object and calls the 
-:py:meth:`ReferenceImplementation.run<pybryt.ReferenceImplementation.run>` method for each provided 
+:py:class:`StudentImplementation<pybryt.student.StudentImplementation>` object and calls the 
+:py:meth:`ReferenceImplementation.run<pybryt.reference.ReferenceImplementation.run>` method for each provided 
 reference implementation.
 
 .. code-block:: python
@@ -127,12 +129,12 @@ Storing Implementations
 -----------------------
 
 Because generating the memory footprints of students' code can be time consuming and computationally
-expensive, :py:class:`StudentImplementation<pybryt.StudentImplementation>` objects can also be 
+expensive, :py:class:`StudentImplementation<pybryt.student.StudentImplementation>` objects can also be 
 serialized to make multiple runs across sessions easier. The 
 :py:class:`StudentImplementation<pybryt.StudentImplementation>` class provides the 
-:py:class:`dump<pybryt.StudentImplementation.dump>` and 
-:py:class:`load<pybryt.StudentImplementation.load>` methods, which function the same as with 
+:py:meth:`dump<pybryt.student.StudentImplementation.dump>` and 
+:py:meth:`load<pybryt.student.StudentImplementation.load>` methods, which function the same as with 
 :ref:`reference implementations<storing_refs>`.
-:py:class:`StudentImplementation<pybryt.StudentImplementation>` objects can also be serialized to 
-base-64-encoded strings using the :py:class:`dumps<pybryt.StudentImplementation.dumps>` and 
-:py:class:`loads<pybryt.StudentImplementation.loads>` methods.
+:py:class:`StudentImplementation<pybryt.student.StudentImplementation>` objects can also be serialized to 
+base-64-encoded strings using the :py:meth:`dumps<pybryt.student.StudentImplementation.dumps>` and 
+:py:meth:`loads<pybryt.student.StudentImplementation.loads>` methods.

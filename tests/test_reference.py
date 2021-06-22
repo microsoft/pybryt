@@ -71,6 +71,14 @@ def test_reference_construction():
 
     ref = ReferenceImplementation.compile(nb, name="foo")
 
+    # test ReferenceImplementation.get
+    sorted_annots = ref.get("sorted")
+    assert len(sorted_annots) == 5
+    assert all(isinstance(a, Value) for a in sorted_annots)
+
+    with pytest.raises(ValueError, match="Found no annotations with name 'foo'"):
+        ref.get("foo")
+
     ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
     expected_ref = ReferenceImplementation.load(ref_filename)
 
