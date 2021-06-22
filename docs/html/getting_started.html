@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" /><link rel="prev" title="PyBryt Documentation" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" /><link rel="prev" title="PyBryt Documentation" href="index.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Getting Started - PyBryt documentation</title>
-      <link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+    <link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -137,12 +140,12 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="getting-started">
+        <section id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="installing-pybryt">
+<section id="installing-pybryt">
 <h2>Installing PyBryt<a class="headerlink" href="#installing-pybryt" title="Permalink to this headline">¶</a></h2>
 <p>We can install PyBryt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.</p>
-<div class="section" id="installing-within-a-jupyter-notebook">
+<section id="installing-within-a-jupyter-notebook">
 <h3>Installing within a Jupyter Notebook<a class="headerlink" href="#installing-within-a-jupyter-notebook" title="Permalink to this headline">¶</a></h3>
 <p>We can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
@@ -154,8 +157,8 @@
 <span class="kn">import</span> <span class="nn">pybryt</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-on-windows-powershell">
+</section>
+<section id="installing-on-windows-powershell">
 <h3>Installing on Windows PowerShell<a class="headerlink" href="#installing-on-windows-powershell" title="Permalink to this headline">¶</a></h3>
 <p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
 <code class="docutils literal notranslate"><span class="pre">pip</span></code>, and install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
@@ -165,8 +168,8 @@
 <span class="go">pip install pybryt</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-on-macos-or-linux-command-line">
+</section>
+<section id="installing-on-macos-or-linux-command-line">
 <h3>Installing on macOS or Linux command-line<a class="headerlink" href="#installing-on-macos-or-linux-command-line" title="Permalink to this headline">¶</a></h3>
 <p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
 <code class="docutils literal notranslate"><span class="pre">pip</span></code>, and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
@@ -176,9 +179,9 @@
 <span class="go">pip install pybryt</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="annotating-a-working-example">
+</section>
+</section>
+<section id="annotating-a-working-example">
 <h2>Annotating a working example<a class="headerlink" href="#annotating-a-working-example" title="Permalink to this headline">¶</a></h2>
 <p>PyBryt works by observing working reference implementations and looking for
 annotated types and variables in other implementations. The first step after
@@ -242,8 +245,8 @@ instance for both of these variables:</p>
 <span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Sphinx of black quartz,          judge my vow."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="next-steps">
+</section>
+<section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
 <p>PyBryt can do much more beyond this simple example, such as automating the
 assessment of student implementations and detecting plagiarism. To learn more
@@ -252,8 +255,8 @@ about pybryt, check out the following</p>
 <li><p>The example projects in the <a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/demo/">demos folder</a></p></li>
 <li><p>Read the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a> for details on the annotation types</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
       </article>
       <footer>
@@ -331,6 +334,7 @@ about pybryt, check out the following</p>
   </main>
 </div>
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>

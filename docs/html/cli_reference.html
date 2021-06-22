@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="api_reference.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="api_reference.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Command-Line Interface - PyBryt documentation</title>
-      <link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+    <link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -137,7 +140,7 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="command-line-interface">
+        <section id="command-line-interface">
 <h1>Command-Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h1>
 <p>PyBryt includes a small command-line interface for performing quick tasks using its functionality.
 The main tasks that the CLI currently supports are:</p>
@@ -150,9 +153,9 @@ and saving/echoing the results</p></li>
 <p>Each of the commands is detailed in the <a class="reference internal" href="#cli-reference"><span class="std std-ref">refererence</span></a> below, but a short summary
 of each is provided here. The CLI can be invoked via the command <code class="docutils literal notranslate"><span class="pre">pybryt</span></code> or by calling PyBryt as a
 Python module: <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pybryt</span></code>. For simplicity, the convention of the former is used here.</p>
-<div class="section" id="cli-sub-commands">
+<section id="cli-sub-commands">
 <h2>CLI Sub-commands<a class="headerlink" href="#cli-sub-commands" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="check">
+<section id="check">
 <h3><code class="docutils literal notranslate"><span class="pre">check</span></code><a class="headerlink" href="#check" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">pybryt</span> <span class="pre">check</span></code> is used to check a student implementation against a reference implementation. It
 takes two position arguments corresponding to the path to a reference implementation and the path to
@@ -181,8 +184,8 @@ output path (defaults to <code class="docutils literal notranslate"><span class=
 <span class="go">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="compile">
+</section>
+<section id="compile">
 <h3><code class="docutils literal notranslate"><span class="pre">compile</span></code><a class="headerlink" href="#compile" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">pybryt</span> <span class="pre">compile</span></code> is used to compile a reference implementation to a file. It takes a single positional
 argument, the path to the notebook to be compiled. To set the destination path, use the <code class="docutils literal notranslate"><span class="pre">-d</span></code> flag.
@@ -191,8 +194,8 @@ If a name is needed for the reference implementation, it can be provided with th
 <span class="gp">$ </span>pybryt compile reference.ipynb -d ref.pkl -n foo
 </pre></div>
 </div>
-</div>
-<div class="section" id="execute">
+</section>
+<section id="execute">
 <h3><code class="docutils literal notranslate"><span class="pre">execute</span></code><a class="headerlink" href="#execute" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">pybryte</span> <span class="pre">execute</span></code> is used to execute one or more student implementations and write the memory
 footprints to files for futher processing. All paths passed as position arguments to this command
@@ -203,12 +206,12 @@ are paths to student implementation notebooks.</p>
 <span class="gp">$ </span>pybryt execute submissions/*.ipynb -p
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="reference">
+</section>
+</section>
+<section id="reference">
 <span id="cli-reference"></span><h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <p>This section is a short reference for all of the commands and options for PyBryt’s CLI.</p>
-<div class="section" id="pybryt">
+<section id="pybryt">
 <h3>pybryt<a class="headerlink" href="#pybryt" title="Permalink to this headline">¶</a></h3>
 <p>A command-line interface for PyBryt. See <a class="reference external" href="https://microsoft.github.io/pybryt">https://microsoft.github.io/pybryt</a> for more information.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pybryt <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
@@ -216,11 +219,11 @@ are paths to student implementation notebooks.</p>
 </div>
 <p class="rubric">Options</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-version">
-<code class="sig-name descname"><span class="pre">--version</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-pybryt-version" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show the version and exit.</p>
 </dd></dl>
-<div class="section" id="pybryt-check">
+<section id="pybryt-check">
 <h4>check<a class="headerlink" href="#pybryt-check" title="Permalink to this headline">¶</a></h4>
 <p>Run a student submission against a reference implementation.</p>
 <p>REF can be a path to a pickled reference implementation or to a notebook to be compiled on-the-fly.
@@ -232,23 +235,23 @@ the console and OUTPUT is ignored.</p>
 </div>
 <p class="rubric">Options</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-check-n">
-<span id="cmdoption-pybryt-check-name"></span><code class="sig-name descname"><span class="pre">-n</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--name</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-check-n" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-check-n">
+<span id="cmdoption-pybryt-check-name"></span><span class="sig-name descname"><span class="pre">-n</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-n" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optional name for the reference implementation</p>
 </dd></dl>
 <dl class="std option">
-<dt id="cmdoption-pybryt-check-output-nb">
-<code class="sig-name descname"><span class="pre">--output-nb</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;output_nb&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-check-output-nb" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-check-output-nb">
+<span class="sig-name descname"><span class="pre">--output-nb</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_nb&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-output-nb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the output notebook from executing the student submission</p>
 </dd></dl>
 <dl class="std option">
-<dt id="cmdoption-pybryt-check-o">
-<span id="cmdoption-pybryt-check-output"></span><code class="sig-name descname"><span class="pre">-o</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--output</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-check-o" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-check-o">
+<span id="cmdoption-pybryt-check-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-o" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the results of the check</p>
 </dd></dl>
 <dl class="std option">
-<dt id="cmdoption-pybryt-check-t">
-<span id="cmdoption-pybryt-check-type"></span><code class="sig-name descname"><span class="pre">-t</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--type</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;output_type&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-check-t" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-check-t">
+<span id="cmdoption-pybryt-check-type"></span><span class="sig-name descname"><span class="pre">-t</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--type</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_type&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type of output to write</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default</dt>
@@ -261,17 +264,17 @@ the console and OUTPUT is ignored.</p>
 </dd></dl>
 <p class="rubric">Arguments</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-check-arg-REF">
-<span id="cmdoption-pybryt-check-arg-ref"></span><code class="sig-name descname"><span class="pre">REF</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-pybryt-check-arg-REF" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-check-arg-REF">
+<span id="cmdoption-pybryt-check-arg-ref"></span><span class="sig-name descname"><span class="pre">REF</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-check-arg-REF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
 <dl class="std option">
-<dt id="cmdoption-pybryt-check-arg-STU">
-<span id="cmdoption-pybryt-check-arg-stu"></span><code class="sig-name descname"><span class="pre">STU</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-pybryt-check-arg-STU" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-check-arg-STU">
+<span id="cmdoption-pybryt-check-arg-stu"></span><span class="sig-name descname"><span class="pre">STU</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-check-arg-STU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
-</div>
-<div class="section" id="pybryt-compile">
+</section>
+<section id="pybryt-compile">
 <h4>compile<a class="headerlink" href="#pybryt-compile" title="Permalink to this headline">¶</a></h4>
 <p>Compile the reference implementation SRC.</p>
 <p>SRC must be a path to a Jupyter Notebook file which defines a reference implementation.</p>
@@ -280,23 +283,23 @@ the console and OUTPUT is ignored.</p>
 </div>
 <p class="rubric">Options</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-compile-d">
-<span id="cmdoption-pybryt-compile-dest"></span><code class="sig-name descname"><span class="pre">-d</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--dest</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-compile-d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-compile-d">
+<span id="cmdoption-pybryt-compile-dest"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-compile-d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the pickled reference implementation</p>
 </dd></dl>
 <dl class="std option">
-<dt id="cmdoption-pybryt-compile-n">
-<span id="cmdoption-pybryt-compile-name"></span><code class="sig-name descname"><span class="pre">-n</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--name</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-compile-n" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-compile-n">
+<span id="cmdoption-pybryt-compile-name"></span><span class="sig-name descname"><span class="pre">-n</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-compile-n" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optional name for the reference implementation</p>
 </dd></dl>
 <p class="rubric">Arguments</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-compile-arg-SRC">
-<span id="cmdoption-pybryt-compile-arg-src"></span><code class="sig-name descname"><span class="pre">SRC</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-pybryt-compile-arg-SRC" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-compile-arg-SRC">
+<span id="cmdoption-pybryt-compile-arg-src"></span><span class="sig-name descname"><span class="pre">SRC</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-compile-arg-SRC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
-</div>
-<div class="section" id="pybryt-execute">
+</section>
+<section id="pybryt-execute">
 <h4>execute<a class="headerlink" href="#pybryt-execute" title="Permalink to this headline">¶</a></h4>
 <p>Execute student submissions to generate memory footprints.</p>
 <p>Executes the student submission(s) SUBM at writes the pickled objects to some output file. If
@@ -307,25 +310,25 @@ OUTPUT is unspecified, this defaults to “./{SUBM.stem}.pkl” (e.g. for SUBM
 </div>
 <p class="rubric">Options</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-execute-p">
-<span id="cmdoption-pybryt-execute-parallel"></span><code class="sig-name descname"><span class="pre">-p</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--parallel</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-pybryt-execute-p" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-execute-p">
+<span id="cmdoption-pybryt-execute-parallel"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-execute-p" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute notebooks in parallel using the multiprocessing library</p>
 </dd></dl>
 <dl class="std option">
-<dt id="cmdoption-pybryt-execute-o">
-<span id="cmdoption-pybryt-execute-output"></span><code class="sig-name descname"><span class="pre">-o</span></code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname"><span class="pre">,</span> </code><code class="sig-name descname"><span class="pre">--output</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></code><a class="headerlink" href="#cmdoption-pybryt-execute-o" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-execute-o">
+<span id="cmdoption-pybryt-execute-output"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-execute-o" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the pickled student implementation</p>
 </dd></dl>
 <p class="rubric">Arguments</p>
 <dl class="std option">
-<dt id="cmdoption-pybryt-execute-arg-SUBM">
-<span id="cmdoption-pybryt-execute-arg-subm"></span><code class="sig-name descname"><span class="pre">SUBM</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-pybryt-execute-arg-SUBM" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="cmdoption-pybryt-execute-arg-SUBM">
+<span id="cmdoption-pybryt-execute-arg-subm"></span><span class="sig-name descname"><span class="pre">SUBM</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-execute-arg-SUBM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optional argument(s)</p>
 </dd></dl>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
       </article>
       <footer>
@@ -410,6 +413,7 @@ OUTPUT is unspecified, this defaults to “./{SUBM.stem}.pkl” (e.g. for SUBM
   </main>
 </div>
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>

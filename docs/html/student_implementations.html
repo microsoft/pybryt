@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Command-Line Interface" href="cli_reference.html" /><link rel="prev" title="Reference Implementations" href="reference_implementations.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Command-Line Interface" href="cli_reference.html" /><link rel="prev" title="Reference Implementations" href="reference_implementations.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Student Implementations - PyBryt documentation</title>
-      <link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+    <link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -137,11 +140,11 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="student-implementations">
+        <section id="student-implementations">
 <h1>Student Implementations<a class="headerlink" href="#student-implementations" title="Permalink to this headline">¶</a></h1>
 <p>For tracking and managing student implementations, stored in PyBryt as a list of 2-tuples of the
 objects observed while tracing students’ code and the timestamps of those objects, PyBryt provides
-the <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> class. The constructor for this
+the <a class="reference internal" href="api_reference.html#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> class. The constructor for this
 class takes in either a path to a Jupyter Notebook file or a notebook object read in with
 <code class="docutils literal notranslate"><span class="pre">nbformat</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>
@@ -151,7 +154,7 @@ class takes in either a path to a Jupyter Notebook file or a notebook object rea
 <span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="n">nb</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="notebook-execution">
+<section id="notebook-execution">
 <h2>Notebook Execution<a class="headerlink" href="#notebook-execution" title="Permalink to this headline">¶</a></h2>
 <p>The constructor reads the notebook file and stores the student’s code. It then proceeds to execute
 the student’s notebook using <code class="docutils literal notranslate"><span class="pre">nbformat</span></code>’s <code class="docutils literal notranslate"><span class="pre">ExecutePreprocessor</span></code>. The memory footprint of the
@@ -168,7 +171,9 @@ written in a Python script (which PyBryt would by default not trace).</p>
 <p>PyBryt also employs various custom notebook preprocessors for handling special cases that occur in
 the code to allow different types of values to be checked. To see the exact version of the code that
 PyBryt executes, set <code class="docutils literal notranslate"><span class="pre">output</span></code> to a path to a notebook that PyBryt will write with the executed
-notebook. This can be useful e.g. for debugging reference implementations by inserting <code class="docutils literal notranslate"><span class="pre">print</span></code>
+notebook. You can also access this notebook as an <code class="docutils literal notranslate"><span class="pre">nbformat.NotebookNode</span></code> object using
+<a class="reference internal" href="api_reference.html#pybryt.student.StudentImplementation.executed_nb" title="pybryt.student.StudentImplementation.executed_nb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StudentImplementation.executed_nb</span></code></a>
+This can be useful e.g. for debugging reference implementations by inserting <code class="docutils literal notranslate"><span class="pre">print</span></code>
 statements that show the values at various stages of execution.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s2">"executed-subm.ipynb"</span><span class="p">)</span>
 </pre></div>
@@ -181,16 +186,16 @@ taken.</p>
     <span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="checking-implementations">
+</section>
+<section id="checking-implementations">
 <h2>Checking Implementations<a class="headerlink" href="#checking-implementations" title="Permalink to this headline">¶</a></h2>
 <p>To reconcile a student implementation with a set of reference implementations, use the
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code> method, which takes in
-a single <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> object, or a list of
-them, and returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code> object (or a list of them).
+<a class="reference internal" href="api_reference.html#pybryt.student.StudentImplementation.check" title="pybryt.student.StudentImplementation.check"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StudentImplementation.check</span></code></a> method, which takes in
+a single <a class="reference internal" href="api_reference.html#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code></a> object, or a list of
+them, and returns a <a class="reference internal" href="api_reference.html#pybryt.reference.ReferenceResult" title="pybryt.reference.ReferenceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceResult</span></code></a> object (or a list of them).
 This method simply abstracts away managing the memory footprint tracked by the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> object and calls the
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code> method for each provided
+<a class="reference internal" href="api_reference.html#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> object and calls the
+<a class="reference internal" href="api_reference.html#pybryt.reference.ReferenceImplementation.run" title="pybryt.reference.ReferenceImplementation.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.run</span></code></a> method for each provided
 reference implementation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"reference.pkl"</span><span class="p">)</span>
 <span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">)</span>
@@ -203,7 +208,7 @@ for a single question in a reference that contains multiple questions, the patte
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"q1"</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="checking-from-the-notebook">
+<section id="checking-from-the-notebook">
 <h3>Checking from the Notebook<a class="headerlink" href="#checking-from-the-notebook" title="Permalink to this headline">¶</a></h3>
 <p>For running checks against a reference implementation from inside the notebook, PyBryt also provides
 the context manager <a class="reference internal" href="api_reference.html#pybryt.student.check" title="pybryt.student.check"><code class="xref py py-class docutils literal notranslate"><span class="pre">check</span></code></a>. This context manager initializes
@@ -238,22 +243,22 @@ results of all reference implementations being checked; this can be changed usin
 argument, which takes on 3 values: <code class="docutils literal notranslate"><span class="pre">{"satisfied",</span> <span class="pre">"unsatisfied",</span> <span class="pre">None}</span></code>. If it is set to
 <code class="docutils literal notranslate"><span class="pre">"satisfied"</span></code>, only the results of satisfied reference will be included (unless there are none and
 <code class="docutils literal notranslate"><span class="pre">fill_empty</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>), and similarly for <code class="docutils literal notranslate"><span class="pre">"unsatisfied"</span></code>.</p>
-</div>
-</div>
-<div class="section" id="storing-implementations">
+</section>
+</section>
+<section id="storing-implementations">
 <h2>Storing Implementations<a class="headerlink" href="#storing-implementations" title="Permalink to this headline">¶</a></h2>
 <p>Because generating the memory footprints of students’ code can be time consuming and computationally
-expensive, <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> objects can also be
+expensive, <a class="reference internal" href="api_reference.html#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> objects can also be
 serialized to make multiple runs across sessions easier. The
 <code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> class provides the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">dump</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">load</span></code> methods, which function the same as with
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">dump</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">load</span></code> methods, which function the same as with
 <a class="reference internal" href="reference_implementations.html#storing-refs"><span class="std std-ref">reference implementations</span></a>.
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code> objects can also be serialized to
-base-64-encoded strings using the <code class="xref py py-class docutils literal notranslate"><span class="pre">dumps</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">loads</span></code> methods.</p>
-</div>
-</div>
+<a class="reference internal" href="api_reference.html#pybryt.student.StudentImplementation" title="pybryt.student.StudentImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentImplementation</span></code></a> objects can also be serialized to
+base-64-encoded strings using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">loads</span></code> methods.</p>
+</section>
+</section>
 
       </article>
       <footer>
@@ -329,6 +334,7 @@ base-64-encoded strings using the <code class="xref py py-class docutils literal
   </main>
 </div>
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>

@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Relational Annotations" href="relational_annotations.html" /><link rel="prev" title="Annotations" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Relational Annotations" href="relational_annotations.html" /><link rel="prev" title="Annotations" href="index.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Value Annotations - PyBryt documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -137,7 +140,7 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="value-annotations">
+        <section id="value-annotations">
 <span id="value"></span><h1>Value Annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h1>
 <p>Value annotations are the most basic type of annotation. They expect a specific
 value to appear while executing the student’s code. To create a value
@@ -150,7 +153,7 @@ its constructor the value expected in the student’s code:</p>
 <p>Note that when an instance of <a class="reference internal" href="../api_reference.html#pybryt.annotations.value.Value" title="pybryt.annotations.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> is created,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">copy.copy()</span></code> is called on the argument passed to it, so values cannot be
 affected by mutability.</p>
-<div class="section" id="attribute-annotations">
+<section id="attribute-annotations">
 <h2>Attribute Annotations<a class="headerlink" href="#attribute-annotations" title="Permalink to this headline">¶</a></h2>
 <p>PyBryt supports checking for the presence of an object with a specific attribute value using the
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.value.Attribute" title="pybryt.annotations.value.Attribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code></a> annotation. This annotation takes in an
@@ -184,8 +187,8 @@ in the above example, the following student code would satisfy that annotation:<
     <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Your model doesn't have the correct coefficients."</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="numerical-tolerances">
+</section>
+<section id="numerical-tolerances">
 <h2>Numerical Tolerances<a class="headerlink" href="#numerical-tolerances" title="Permalink to this headline">¶</a></h2>
 <p>For numerical values, or iterables of numerical values that support vectorized
 math, it is also possible to define an absolute tolerance (<code class="docutils literal notranslate"><span class="pre">atol</span></code>) and/or a
@@ -198,8 +201,8 @@ annotation is defined:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="invariants">
+</section>
+<section id="invariants">
 <h2>Invariants<a class="headerlink" href="#invariants" title="Permalink to this headline">¶</a></h2>
 <p>Similar to numerical tolerances, which allow the student’s solution to deviate
 from the reference value, PyBryt allows specifying conditions when other data
@@ -207,14 +210,14 @@ types should be considered equal. PyBryt supports defining these conditions
 using <a class="reference internal" href="invariants.html#invariants"><span class="std std-ref">invariants</span></a>. To use invariants on a value, we need to
 pass the invariant objects as a list to the <code class="docutils literal notranslate"><span class="pre">invariants</span></code> argument of the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> constructor. For instance, let’s say we want to
-allow the student’s solution (string) to be case-insensitive.</p>
+allow the student’s solution (a string) to be case-insensitive.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">correct_answer</span> <span class="o">=</span> <span class="s2">"a CasE-inSensiTiVe stRING"</span>
 <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">correct_answer</span><span class="p">,</span> <span class="n">invariants</span><span class="o">=</span><span class="p">[</span><span class="n">pybryt</span><span class="o">.</span><span class="n">invariants</span><span class="o">.</span><span class="n">string_capitalization</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>More information about invariants can be found <a class="reference internal" href="invariants.html#invariants"><span class="std std-ref">here</span></a>.</p>
-</div>
-</div>
+</section>
+</section>
 
       </article>
       <footer>
@@ -287,9 +290,10 @@ allow the student’s solution (string) to be case-insensitive.</p>
   </main>
 </div>
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
 </html>

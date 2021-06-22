@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reference Implementations" href="../reference_implementations.html" /><link rel="prev" title="Annotation Collections" href="collections.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reference Implementations" href="../reference_implementations.html" /><link rel="prev" title="Annotation Collections" href="collections.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Invariants - PyBryt documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -89,7 +92,7 @@
       <a href="../index.html"><div class="brand">PyBryt  documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -134,13 +137,36 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="invariants">
+        <section id="invariants">
 <span id="id1"></span><h1>Invariants<a class="headerlink" href="#invariants" title="Permalink to this headline">¶</a></h1>
-<p>This page is currently under construction.</p>
-</div>
+<p>Invariants provide logic for determining whether a value satisfies a value annotation. They can be
+used to ensure that annotations can still be satisfied independent of the different ways students
+format their answers.</p>
+<section id="invariant-structure">
+<h2>Invariant Structure<a class="headerlink" href="#invariant-structure" title="Permalink to this headline">¶</a></h2>
+<p>Invariants are subclasses of the abstract base class
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><code class="xref py py-class docutils literal notranslate"><span class="pre">invariants.invariant</span></code></a>. All subclasses implement
+the static <a class="reference internal" href="../api_reference.html#pybryt.annotations.invariants.invariant.run" title="pybryt.annotations.invariants.invariant.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a> method, which takes in a list of
+objects and returns a transformed list of objects that contains all versions of every object in the
+input list which are considered equal.</p>
+<p>Consider an invariant for string capitalization. The <code class="docutils literal notranslate"><span class="pre">run</span></code> method of this invariant takes in a list
+of objects and returns the same list but with every string lowercased. For a matrix transposition
+invariant, the <code class="docutils literal notranslate"><span class="pre">run</span></code> method might return a list with every 2D array’s transpose included, as well
+as the original array.</p>
+<p>Invariants have a custom <code class="docutils literal notranslate"><span class="pre">__new__</span></code> method that calls the <code class="docutils literal notranslate"><span class="pre">run</span></code> method, so that they function as
+callables rather than classes.</p>
+<p>PyBryt supports custom invariants. To create your own invariant, subclass
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><code class="xref py py-class docutils literal notranslate"><span class="pre">invariants.invariant</span></code></a> and implement the <code class="docutils literal notranslate"><span class="pre">run</span></code>
+method.</p>
+</section>
+<section id="built-in-invariants">
+<h2>Built-In Invariants<a class="headerlink" href="#built-in-invariants" title="Permalink to this headline">¶</a></h2>
+<p>A list of built-in invariants can be found <a class="reference internal" href="../api_reference.html#invariants-ref"><span class="std std-ref">here</span></a>.</p>
+</section>
+</section>
 
       </article>
       <footer>
@@ -184,14 +210,35 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Invariants</a><ul>
+<li><a class="reference internal" href="#invariant-structure">Invariant Structure</a></li>
+<li><a class="reference internal" href="#built-in-invariants">Built-In Invariants</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </main>
 </div>
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>

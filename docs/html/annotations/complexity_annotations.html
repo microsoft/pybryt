@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Type Annotations" href="type_annotations.html" /><link rel="prev" title="Relational Annotations" href="relational_annotations.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Type Annotations" href="type_annotations.html" /><link rel="prev" title="Relational Annotations" href="relational_annotations.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Complexity Annotations - PyBryt documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -137,14 +140,14 @@
         <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="complexity-annotations">
+        <section id="complexity-annotations">
 <span id="complexity"></span><h1>Complexity Annotations<a class="headerlink" href="#complexity-annotations" title="Permalink to this headline">¶</a></h1>
 <p>Complexity annotations define an expectation of the complexity of a block of student code. Currently,
 PyBryt supports one kind of complexity annotation: time complexity. All complexity annotations are
 subclasses of the abstract
 <code class="xref py py-class docutils literal notranslate"><span class="pre">ComplexityAnnotation</span></code> class, which
 defines some helpful defaults for working with these annotations.</p>
-<div class="section" id="creating-complexity-annotations">
+<section id="creating-complexity-annotations">
 <h2>Creating Complexity Annotations<a class="headerlink" href="#creating-complexity-annotations" title="Permalink to this headline">¶</a></h2>
 <p>Complexity annotations can be created just like value annotations: by calling their constructor. The
 constructor takes one positional argument which corresponds to a class asserting the expected
@@ -163,7 +166,7 @@ should be unique across all annotations.</p>
 </pre></div>
 </div>
 <p>A full list of the available complexity classes can be found <a class="reference internal" href="../api_reference.html#complexities"><span class="std std-ref">here</span></a>.</p>
-<div class="section" id="custom-complexity-classes">
+<section id="custom-complexity-classes">
 <h3>Custom Complexity Classes<a class="headerlink" href="#custom-complexity-classes" title="Permalink to this headline">¶</a></h3>
 <p>If a complexity not provided in PyBryt’s defaults is needed, this can be created by subclassing
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pybryt.complexities.complexity</span></code></a>.
@@ -189,9 +192,9 @@ function is the identity function.</p>
 <span class="n">pybryt</span><span class="o">.</span><span class="n">TimeComplexity</span><span class="p">(</span><span class="n">my_cplx</span><span class="o">.</span><span class="n">quartic</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"foo"</span><span class="p">,</span> <span class="n">addl_complexities</span><span class="o">=</span><span class="p">[</span><span class="n">my_cplx</span><span class="o">.</span><span class="n">factorial</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="tracking-code-complexity">
+</section>
+</section>
+<section id="tracking-code-complexity">
 <h2>Tracking Code Complexity<a class="headerlink" href="#tracking-code-complexity" title="Permalink to this headline">¶</a></h2>
 <p>To track the time complexity of students’ code, PyBryt provides the
 <a class="reference internal" href="../api_reference.html#pybryt.execution.check_time_complexity" title="pybryt.execution.check_time_complexity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_time_complexity</span></code></a> context manager. This
@@ -218,8 +221,8 @@ complexity of a student-implemented <code class="docutils literal notranslate"><
         <span class="n">sort</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="evaluating-code-complexity">
+</section>
+<section id="evaluating-code-complexity">
 <h2>Evaluating Code Complexity<a class="headerlink" href="#evaluating-code-complexity" title="Permalink to this headline">¶</a></h2>
 <p>When evaluating whether a time complexity annotation has been satisfied, PyBryt uses the method of
 the <a class="reference external" href="https://github.com/pberkes/big_O"><code class="docutils literal notranslate"><span class="pre">big_O</span></code></a> Python package. The annotation is evaluated by
@@ -231,8 +234,8 @@ the time data (incorporating the transformations needed for each complexity) and
 residuals of this fit. The complexity with the smallest residuals (incorporating a slight preference
 for simpler complexities) is determined to be the best match, and is used to determine whether or not
 the annotation was satisfied.</p>
-</div>
-</div>
+</section>
+</section>
 
       </article>
       <footer>
@@ -308,9 +311,10 @@ the annotation was satisfied.</p>
   </main>
 </div>
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
 </html>

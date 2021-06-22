@@ -2,13 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Invariants" href="invariants.html" /><link rel="prev" title="Type Annotations" href="type_annotations.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Invariants" href="invariants.html" /><link rel="prev" title="Type Annotations" href="type_annotations.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.0.2, furo 2021.06.18.beta36"/>
         <title>Annotation Collections - PyBryt documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=9b17055c4366e8b2949c66d6a9d8b0efe4dbaa60">
     <link rel="stylesheet" href="../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
     
 
 
@@ -37,7 +37,10 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+</style><link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css" />
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=ee12cdd73c4bbac24afec78d92c4afd7c2d8ea7f"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -137,7 +140,7 @@
         <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="annotation-collections">
+        <section id="annotation-collections">
 <span id="collections"></span><h1>Annotation Collections<a class="headerlink" href="#annotation-collections" title="Permalink to this headline">¶</a></h1>
 <p>To faciliate the easy grouping and management of annotations, PyBryt provides the
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.collection.Collection" title="pybryt.annotations.collection.Collection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a> annotation, which collects a series
@@ -154,7 +157,7 @@ To add additional annotations to the collection, use
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)):</span>
     <span class="n">prod</span> <span class="o">*=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod</span>
-    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Annotations can be removed from the collection using
@@ -167,8 +170,8 @@ To add additional annotations to the collection, use
 <p>Collection annotations can be used to simplify the creation of temporal annotations. Rather than
 reassigning variables and using the <code class="docutils literal notranslate"><span class="pre">before</span></code> method over and over again, you can simply create
 a collection and set <code class="docutils literal notranslate"><span class="pre">enforce_order=True</span></code> in the constructor. This will mean that the collection
-is only satified if the satisfying timestamps of its annotations occur in non-decreasing order based
-on the order the annotations were added in. For the example above, this can be done with</p>
+is only satisfied if the satisfying timestamps of its annotations occur in non-decreasing order based
+on the order the annotations were added in. For the example above, this can be done with:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 
 <span class="n">collection</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Collection</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">enforce_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># this is the only difference!</span>
@@ -178,7 +181,7 @@ on the order the annotations were added in. For the example above, this can be d
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)):</span>
     <span class="n">prod</span> <span class="o">*=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod</span>
-    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Collections can also be used to simplify the management of success and failure messages by linking
@@ -193,10 +196,10 @@ them to a specific group of annotations:</p>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)):</span>
     <span class="n">prod</span> <span class="o">*=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod</span>
-    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
+</section>
 
       </article>
       <footer>
@@ -248,6 +251,7 @@ them to a specific group of annotations:</p>
   </main>
 </div>
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
