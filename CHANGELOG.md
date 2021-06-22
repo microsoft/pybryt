@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file, and this pr
 * Added tracking and warnings for errors in student notebook execution
 * Added the `matrix_transpose` and `list_permutation` invariants
 * Fixed code tracing at top level in the `check` context manager
+* Added `pybryt.ReferenceImplementation.get` for looking up annotations by name
 
 ## 0.1.4 -  2021-06-16
 
