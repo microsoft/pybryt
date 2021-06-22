@@ -152,10 +152,12 @@ class StudentImplementation(Serializable):
         Returns:
             ``StudentImplementation``: the combined implementation
         """
-        new_mfp = []  # the new memory footprint
-        seen = set()  # set to track which values we've seen
+        new_mfp = []    # the new memory footprint
+        new_calls = []  # the new list of calls
+        seen = set()    # set to track which values we've seen
         timestamp_offset = 0  # offset for timestamps in the new memory footprint
         for impl in impls:
+            new_calls.extend(impl.calls)
             for obj, ts in impl.values:
                 h = pickle_and_hash(obj)
                 if h not in seen:
@@ -163,7 +165,7 @@ class StudentImplementation(Serializable):
                     new_mfp.append((obj, ts))
                     seen.add(h)
             timestamp_offset += impl.steps
-        return cls.from_footprint(new_mfp, timestamp_offset)
+        return cls.from_footprint(new_mfp, new_calls, timestamp_offset)
 
     @classmethod
     def from_cache(cls, cache_dir=CACHE_DIR_NAME, combine=True) -> \
@@ -198,7 +200,7 @@ class StudentImplementation(Serializable):
         footprint, the same number of steps, and the same source notebook.
         """
         return isinstance(other, type(self)) and self.values == other.values and \
-            self.steps == other.steps and self.nb == other.nb
+            self.steps == other.steps and self.nb == other.nb and self.calls == other.calls
 
     @property
     def _default_dump_dest(self) -> str:
