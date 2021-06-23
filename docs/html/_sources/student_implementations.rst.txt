@@ -23,7 +23,7 @@ The constructor reads the notebook file and stores the student's code. It then p
 the student's notebook using ``nbformat``'s ``ExecutePreprocessor``. The memory footprint of the
 student's code is constructed by executing the notebook with a trace function that tracks every 
 value created and accessed **by the student's code** and the timestamps at which those values were
-observed. 
+observed. PyBryt also tracks all of the function calls that occur during execution.
 
 To trace into code written in specific files, use the ``addl_filenames`` argument of the constructor 
 to pass a list of absolute paths of files to trace inside of. This can be useful for cases in which

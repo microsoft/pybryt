@@ -160,7 +160,7 @@ class takes in either a path to a Jupyter Notebook file or a notebook object rea
 the student’s notebook using <code class="docutils literal notranslate"><span class="pre">nbformat</span></code>’s <code class="docutils literal notranslate"><span class="pre">ExecutePreprocessor</span></code>. The memory footprint of the
 student’s code is constructed by executing the notebook with a trace function that tracks every
 value created and accessed <strong>by the student’s code</strong> and the timestamps at which those values were
-observed.</p>
+observed. PyBryt also tracks all of the function calls that occur during execution.</p>
 <p>To trace into code written in specific files, use the <code class="docutils literal notranslate"><span class="pre">addl_filenames</span></code> argument of the constructor
 to pass a list of absolute paths of files to trace inside of. This can be useful for cases in which
 a testing harness is being used to test student’s code and the student’s <em>actual</em> submission is
