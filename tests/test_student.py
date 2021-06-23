@@ -63,9 +63,14 @@ def test_constructor():
     assert stu.nb is nb
     assert stu.steps == max(t[1] for t in stu.values)
     assert len(stu.values) == 993
+    assert isinstance(stu.calls, list)
+    assert all(isinstance(c, tuple) for c in stu.calls)
+    assert all(len(c) == 2 for c in stu.calls)
+    assert all(isinstance(c[0], str) for c in stu.calls)
+    assert all(isinstance(c[1], str) for c in stu.calls)
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_exec:
-        mocked_exec.return_value = (0, [], None)
+        mocked_exec.return_value = (0, [], [], None)
 
         with tempfile.NamedTemporaryFile(mode="w+", suffix=".ipynb") as ntf:
             nbformat.write(nb, ntf.name)
@@ -73,6 +78,7 @@ def test_constructor():
             stu = StudentImplementation(ntf.name)
             assert stu.steps == 0
             assert stu.values == []
+            assert stu.calls == []
             assert stu.nb == nb
 
     with pytest.raises(TypeError, match="path_or_nb is of unsupported type <class 'int'>"):
@@ -257,7 +263,7 @@ def test_generate_student_impls():
     nbs = [nb] * num_notebooks
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_execute:
-        mocked_execute.return_value = (stu.steps, stu.values, None)
+        mocked_execute.return_value = (stu.steps, stu.values, stu.calls, None)
         stus = generate_student_impls(nbs)
 
     assert all(s == stu for s in stus)

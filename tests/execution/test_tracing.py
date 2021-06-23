@@ -23,7 +23,7 @@ def test_trace_function():
     tracked_filepath = "/path/to/tracked/file.py"
 
     frame = generate_mocked_frame("<ipython-abc123>", "foo", 3)
-    observed, cir = create_collector(addl_filenames=[tracked_filepath])
+    (observed, calls), cir = create_collector(addl_filenames=[tracked_filepath])
 
     arr = np.random.uniform(-100, 100, size=(100, 100))
     cir(frame, "return", arr)
@@ -42,6 +42,12 @@ def test_trace_function():
     
     assert len(observed) == 1
 
+    # test call event
+    assert len(calls) == 0
+    cir(frame, "call", None)
+    assert len(calls) == 1
+    assert calls[0] == ("<ipython-abc123>", "foo")
+
     frame = generate_mocked_frame(
         "<ipython-abc123>", "foo", 3, {"data": arr}
     )
@@ -54,7 +60,7 @@ def test_trace_function():
         cir(frame, "line", None)
         assert len(observed) == 2
         assert np.allclose(observed[1][0], arr.T)
-        assert observed[1][1] == 4
+        assert observed[1][1] == 5
 
         # check failed eval call for attributes
         mocked_linecache.return_value = "data.doesnt_exist"
@@ -68,7 +74,7 @@ def test_trace_function():
         cir(frame, "line", None)
         assert len(observed) == 3
         assert np.allclose(observed[2][0], frame.f_locals["more_data"])
-        assert observed[2][1] == 6
+        assert observed[2][1] == 7
 
         # check that we track assignment statements on function return
         mocked_linecache.return_value = "even_more_data = more_data ** 2"
@@ -85,11 +91,11 @@ def test_trace_function():
         cir(frame, "return", None)
         assert len(observed) == 6
         assert observed[3][0] is None
-        assert observed[3][1] == 9
+        assert observed[3][1] == 10
         assert np.allclose(observed[4][0], frame.f_locals["more_data"] ** 2)
-        assert observed[4][1] == 7
+        assert observed[4][1] == 8
         assert np.allclose(observed[5][0], frame.f_locals["more_data"] ** 3)
-        assert observed[5][1] == 8
+        assert observed[5][1] == 9
 
         # check that skip_types respected
         frame.f_locals["none_type"] = type(None)
@@ -106,7 +112,7 @@ def test_trace_function():
         cir(frame, "return", None) # run a return since arr shows up in vars_not_found
         assert len(observed) == 7
         assert np.allclose(observed[6][0], -1 * arr)
-        assert observed[6][1] == 12
+        assert observed[6][1] == 13
     
     # check that IPython child frame return values are tracked
     frame = generate_mocked_frame("/path/to/file.py", "bar", 100, f_back=frame)
@@ -116,7 +122,14 @@ def test_trace_function():
     cir(frame, "return", np.exp(arr))
     assert len(observed) == 8
     assert np.allclose(observed[7][0], np.exp(arr))
-    assert observed[7][1] == 12
+    assert observed[7][1] == 13
+
+    assert len(calls) == 1
+    frame = generate_mocked_frame("/path/to/foo.py", "bar", 100)
+    cir(frame, "call", None)
+    assert len(calls) == 2
+    assert calls[0] == ("<ipython-abc123>", "foo")
+    assert calls[1] == ("/path/to/foo.py", "bar")
 
 
 def test_tracing_control():
