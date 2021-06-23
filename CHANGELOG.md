@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.6 - 2021-06-23
+
+* Added function call tracking to trace function and student implementations
+* Fixed bug for Markdown cells in `pybryt.StudentImplementation.errors`
+
 ## 0.1.5 - 2021-06-22
 
 * Added tracking and warnings for errors in student notebook execution
