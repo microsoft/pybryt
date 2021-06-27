@@ -115,13 +115,17 @@ def execute(subm, parallel, output):
 
     stus = generate_student_impls(subm, parallel=parallel)
 
+    if output is None:
+            output = "./"
+
     if len(subm) == 1:
+        if os.path.isdir(output):
+            stem = get_stem(s)
+            output = os.path.join(output, stem + ".pkl")
+
         stus[0].dump(output)
 
     else:
-        if output is None:
-            output = "./"
-
         if not os.path.isdir(output):
             raise ValueError(f"Output directory {output} does not exist or is not a directory")
 
