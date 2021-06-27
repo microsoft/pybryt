@@ -16,7 +16,7 @@ def test_time_complexity():
             2 * 2
         return n
 
-    observed, cir = create_collector()
+    (observed, _), cir = create_collector()
 
     for e in range(1, 9):
         n = 10 ** e

@@ -49,6 +49,9 @@ class StudentImplementation(Serializable):
     values: List[Tuple[Any, int]]
     """the memory footprint (a list of tuples of objects and their timestamps)"""
 
+    calls: List[Tuple[str, str]]
+    """the list of all function calls from the student code"""
+
     steps: int
     """number of execution steps"""
 
@@ -59,7 +62,7 @@ class StudentImplementation(Serializable):
         self, path_or_nb: Optional[Union[str, nbformat.NotebookNode]], addl_filenames: List[str] = [],
         output: Optional[str] = None
     ):
-        self .executed_nb = None
+        self.executed_nb = None
         if path_or_nb is None:
             self.nb = None
             self.nb_path = None
@@ -84,7 +87,7 @@ class StudentImplementation(Serializable):
                 execution
             output (``str``, optional): a path at which to write executed notebook
         """
-        self.steps, self.values, self.executed_nb = execute_notebook(
+        self.steps, self.values, self.calls, self.executed_nb = execute_notebook(
             self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
         )
 
@@ -105,14 +108,17 @@ class StudentImplementation(Serializable):
 
         errors = []
         for cell in self.executed_nb['cells']:
-            for out in cell['outputs']:
-                if out['output_type'] == "error":
-                    errors.append(out)
+            if cell['cell_type'] == "code":
+                for out in cell['outputs']:
+                    if out['output_type'] == "error":
+                        errors.append(out)
 
         return errors
 
     @classmethod
-    def from_footprint(cls, footprint: List[Tuple[Any, int]], steps: int) -> 'StudentImplementation':
+    def from_footprint(
+        cls, footprint: List[Tuple[Any, int]], calls: List[Tuple[str, str]], steps: int
+    ) -> 'StudentImplementation':
         """
         Create a student implementation object from a memory footprint directly, rather than by
         executing a notebook. Leaves the ``nb`` and ``nb_path`` instance variables of the resulting 
@@ -120,11 +126,13 @@ class StudentImplementation(Serializable):
 
         Args:
             footprint (``list[tuple[object, int]]``): the memory footprint
+            calls (``list[tuple[str, str]]``): the list of function calls
             steps (``int``): the number of execution steps
         """
         stu = cls(None)
         stu.steps = steps
         stu.values = footprint
+        stu.calls = calls
         return stu
 
     @classmethod
@@ -145,10 +153,12 @@ class StudentImplementation(Serializable):
         Returns:
             ``StudentImplementation``: the combined implementation
         """
-        new_mfp = []  # the new memory footprint
-        seen = set()  # set to track which values we've seen
+        new_mfp = []    # the new memory footprint
+        new_calls = []  # the new list of calls
+        seen = set()    # set to track which values we've seen
         timestamp_offset = 0  # offset for timestamps in the new memory footprint
         for impl in impls:
+            new_calls.extend(impl.calls)
             for obj, ts in impl.values:
                 h = pickle_and_hash(obj)
                 if h not in seen:
@@ -156,7 +166,7 @@ class StudentImplementation(Serializable):
                     new_mfp.append((obj, ts))
                     seen.add(h)
             timestamp_offset += impl.steps
-        return cls.from_footprint(new_mfp, timestamp_offset)
+        return cls.from_footprint(new_mfp, new_calls, timestamp_offset)
 
     @classmethod
     def from_cache(cls, cache_dir=CACHE_DIR_NAME, combine=True) -> \
@@ -191,7 +201,7 @@ class StudentImplementation(Serializable):
         footprint, the same number of steps, and the same source notebook.
         """
         return isinstance(other, type(self)) and self.values == other.values and \
-            self.steps == other.steps and self.nb == other.nb
+            self.steps == other.steps and self.nb == other.nb and self.calls == other.calls
 
     @property
     def _default_dump_dest(self) -> str:
@@ -337,6 +347,9 @@ class check:
     _observed: Optional[List[Tuple[Any, int]]]
     """the memory footprint"""
 
+    _calls: Optional[List[Tuple[str, str]]]
+    """the list of calls from tracing"""
+
     _cache: bool
     """whether to cache the memory footprint and results"""
 
@@ -366,6 +379,7 @@ class check:
         self._show_only = show_only
         self._frame = None
         self._observed = None
+        self._calls = None
         self._report_on_error = report_on_error
         self._cache = cache
 
@@ -396,7 +410,7 @@ class check:
             return  # if already tracing, no action required
 
         else:
-            self._observed, cir = create_collector(**self._kwargs)
+            (self._observed, self._calls), cir = create_collector(**self._kwargs)
             self._frame = inspect.currentframe().f_back
             self._frame.f_globals[TRACING_VARNAME] = True
 
@@ -409,7 +423,7 @@ class check:
             self._frame.f_globals[TRACING_VARNAME] = False
 
             if exc_type is None or self._report_on_error:
-                stu = StudentImplementation.from_footprint(self._observed, max(t[1] for t in self._observed))
+                stu = StudentImplementation.from_footprint(self._observed, self._calls, max(t[1] for t in self._observed))
                 res = stu.check(self._ref)
                 report = generate_report(res, show_only=self._show_only)
                 if report:

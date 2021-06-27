@@ -24,7 +24,8 @@ NBFORMAT_VERSION = 4
 
 
 def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
-        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]], nbformat.NotebookNode]:
+        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]], List[Tuple[str, str]], \
+        nbformat.NotebookNode]:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -41,8 +42,9 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
         output (``str``, optional): a file path at which to write the executed notebook
 
     Returns:
-        ``tuple[int, list[tuple[object, int]], nbformat.NotebookNode]``: the number of execution steps,
-        the memory footprint, and the executed notebook
+        ``tuple[int, list[tuple[object, int]], list[tuple[str, str]], nbformat.NotebookNode]``: the 
+        number of execution steps, the memory footprint, the list of function calls, and the 
+        executed notebook
     """
     nb = deepcopy(nb)
     preprocessor = IntermediateVariablePreprocessor()
@@ -55,7 +57,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
         from pybryt.execution import create_collector
-        observed_{secret}, cir = create_collector(addl_filenames={addl_filenames})
+        cir_results_{secret}, cir = create_collector(addl_filenames={addl_filenames})
         sys.settrace(cir)
         {TRACING_VARNAME} = True
         %cd {nb_dir}
@@ -65,9 +67,9 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
         sys.settrace(None)
         import dill
         from pybryt.utils import filter_picklable_list
-        filter_picklable_list(observed_{secret})
+        filter_picklable_list(cir_results_{secret}[0])
         with open("{observed_fp}", "wb+") as f:
-            dill.dump(observed_{secret}, f)
+            dill.dump(cir_results_{secret}, f)
     """))
 
     nb['cells'].insert(0, first_cell)
@@ -82,10 +84,10 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
             nbformat.write(nb, f)
 
     with open(observed_fp, "rb") as f:
-        observed = dill.load(f)
+        observed, calls = dill.load(f)
 
     os.remove(observed_fp)
 
     n_steps = max([t[1] for t in observed])
 
-    return n_steps, observed, nb
+    return n_steps, observed, calls, nb

@@ -17,7 +17,7 @@ TRACING_FUNC = None
 
 
 def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
-        Tuple[List[Tuple[Any, int]], Callable[[FrameType, str, Any], Callable]]:
+        Tuple[Tuple[List[Tuple[Any, int]], List[Tuple[str, str]]], Callable[[FrameType, str, Any], Callable]]:
     """
     Creates a list to collect observed values and a trace function.
 
@@ -32,11 +32,14 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             IPython
         
     Returns:
-        ``tuple[list[tuple[object, int]], callable[[frame, str, object], callable]]``: the list
-        of tuples of observed objects and their timestamps, and the trace function
+        ``tuple[tuple[list[tuple[object, int]], list[tuple[str, str]]], callable[[frame, str, 
+        object], callable]]``: a 2-tuple containing a 2-tuple with the list of tuples of observed 
+        objects and their timestamps and the list of call filenames andfunction names, and the trace 
+        function
     """
     global _COLLECTOR_RET
     observed = []
+    calls = []
     vars_not_found = {}
     hashes = set()
     counter = [0]
@@ -68,6 +71,15 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         except:
             return
 
+    def track_call(frame):
+        """
+        Tracks a call in ``calls`` as a tuple of ``(filename, function name)``.
+
+        Args:
+            frame (``types.FrameType``): the frame of the call
+        """
+        calls.append((frame.f_code.co_filename, frame.f_code.co_name))
+
     # TODO: a way to track the cell of execution
     def collect_intermidiate_results(frame: FrameType, event: str, arg: Any):
         """
@@ -75,6 +87,10 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         """
         if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
             counter[0] += 1 # increment student code step counter
+
+        if event == "call":
+            track_call(frame)
+            return collect_intermidiate_results
 
         # return if tracking is disabled by a compelxity check
         from .complexity import _TRACKING_DISABLED
@@ -137,7 +153,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         return collect_intermidiate_results
 
     _COLLECTOR_RET = (observed, counter, collect_intermidiate_results)
-    return observed, collect_intermidiate_results
+    return (observed, calls), collect_intermidiate_results
 
 
 def _get_tracing_frame():
