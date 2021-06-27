@@ -120,7 +120,7 @@ def execute(subm, parallel, output):
 
     if len(subm) == 1:
         if os.path.isdir(output):
-            stem = get_stem(s)
+            stem = get_stem(subm[0])
             output = os.path.join(output, stem + ".pkl")
 
         stus[0].dump(output)
