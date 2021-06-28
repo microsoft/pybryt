@@ -101,8 +101,10 @@ def check(ref, stu, name, output_nb, output, output_type):
               help="Execute notebooks in parallel using the multiprocessing library")
 @click.option("-o", "--output", default=None, type=click.Path(), 
               help="Path at which to write the pickled student implementation")
+@click.option("--timeout", default=1200, type=click.INT, 
+              help="Timeout for notebook execution in seconds")
 @click.argument("subm", nargs=-1, type=click.Path(exists=True, dir_okay=False))
-def execute(subm, parallel, output):
+def execute(subm, parallel, output, timeout):
     """
     Execute student submissions to generate memory footprints.
 
@@ -113,7 +115,7 @@ def execute(subm, parallel, output):
     if len(subm) == 0:
         raise ValueError("You must specify at least one notebook to execute")
 
-    stus = generate_student_impls(subm, parallel=parallel)
+    stus = generate_student_impls(subm, parallel=parallel, timeout=timeout)
 
     if output is None:
             output = "./"
