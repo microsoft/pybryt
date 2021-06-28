@@ -58,15 +58,16 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
 
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
-        from pybryt.execution import create_collector
+        from pybryt.execution import create_collector, tracing_on
         cir_results_{secret}, cir = create_collector(addl_filenames={addl_filenames})
-        sys.settrace(cir)
         {TRACING_VARNAME} = True
+        tracing_on()
         %cd {nb_dir}
     """))
 
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
-        sys.settrace(None)
+        from pybryt.execution import tracing_off
+        tracing_off()
         import dill
         from pybryt.utils import filter_picklable_list
         filter_picklable_list(cir_results_{secret}[0])
