@@ -38,6 +38,8 @@ class StudentImplementation(Serializable):
         addl_filenames (``list[str]``, optional): additional filenames to trace inside during 
             execution
         output (``str``, optional): a path at which to write executed notebook
+        timeout (``int``, optional): number of seconds to allow for notebook execution; set to 
+            ``None`` for no time limit
     """
 
     nb: Optional[nbformat.NotebookNode]
@@ -60,7 +62,7 @@ class StudentImplementation(Serializable):
 
     def __init__(
         self, path_or_nb: Optional[Union[str, nbformat.NotebookNode]], addl_filenames: List[str] = [],
-        output: Optional[str] = None
+        output: Optional[str] = None, timeout: Optional[int] = 1200,
     ):
         self.executed_nb = None
         if path_or_nb is None:
@@ -76,19 +78,21 @@ class StudentImplementation(Serializable):
         else:
             raise TypeError(f"path_or_nb is of unsupported type {type(path_or_nb)}")
 
-        self._execute(addl_filenames=addl_filenames, output=output)
+        self._execute(timeout, addl_filenames=addl_filenames, output=output)
 
-    def _execute(self, addl_filenames: List[str] = [], output: Optional[str] = None) -> NoReturn:
+    def _execute(self, timeout: Optional[int], addl_filenames: List[str] = [], output: Optional[str] = None) -> NoReturn:
         """
         Executes the notebook ``self.nb``.
 
         Args:
+            timeout (``int``): number of seconds to allow for notebook execution; set to 
+                ``None`` for no time limit
             addl_filenames (``list[str]``, optional): additional filenames to trace inside during 
                 execution
             output (``str``, optional): a path at which to write executed notebook
         """
         self.steps, self.values, self.calls, self.executed_nb = execute_notebook(
-            self.nb, self.nb_path, addl_filenames=addl_filenames, output=output
+            self.nb, self.nb_path, addl_filenames=addl_filenames, output=output, timeout=timeout,
         )
 
         if self.errors:

@@ -24,8 +24,8 @@ NBFORMAT_VERSION = 4
 
 
 def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
-        output: Optional[str] = None) -> Tuple[int, List[Tuple[Any, int]], List[Tuple[str, str]], \
-        nbformat.NotebookNode]:
+        output: Optional[str] = None, timeout: Optional[int] = 1200) -> Tuple[int, List[Tuple[Any, \
+        int]], List[Tuple[str, str]], nbformat.NotebookNode]:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -40,6 +40,8 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
         nb_path (``str``): path to the notebook ``nb``
         addl_filenames (``list[str]``, optional): a list of additional files to trace inside
         output (``str``, optional): a file path at which to write the executed notebook
+        timeout (``int``, optional): number of seconds to allow for notebook execution; set to 
+            ``None`` for no time limit
 
     Returns:
         ``tuple[int, list[tuple[object, int]], list[tuple[str, str]], nbformat.NotebookNode]``: the 
@@ -75,7 +77,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     nb['cells'].insert(0, first_cell)
     nb['cells'].append(last_cell)
 
-    ep = ExecutePreprocessor(timeout=1200, allow_errors=True)
+    ep = ExecutePreprocessor(timeout=timeout, allow_errors=True)
 
     ep.preprocess(nb)
 
