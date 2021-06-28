@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+* Fixed `pybryt execute` output per [#94](https://github.com/microsoft/pybryt/issues/94)
+
 ## 0.1.6 - 2021-06-23
 
 * Added function call tracking to trace function and student implementations
