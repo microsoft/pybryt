@@ -61,7 +61,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
         from pybryt.execution import create_collector, tracing_on
         cir_results_{secret}, cir = create_collector(addl_filenames={addl_filenames})
         {TRACING_VARNAME} = True
-        tracing_on()
+        tracing_on(tracing_func=cir)
         %cd {nb_dir}
     """))
 
