@@ -34,6 +34,17 @@ written in a Python script (which PyBryt would by default not trace).
 
     stu = pybryt.StudentImplementation("harness.ipynb", addl_filenames=["subm.py"])
 
+To prevent notebooks from getting stuck in a loop or from taking up too many resources, PyBryt
+automatically sets a timeout of 1200 seconds for each notebook to execute. This cap can be changed
+using the `timeout` argument to the constructor, and can be removed by setting that value to ``None``:
+
+.. code-block:: python
+
+    stu = pybryt.StudentImplementation("subm.ipynb", timeout=2000)
+
+    # no timeout
+    stu = pybryt.StudentImplementation("subm.ipynb", timeout=None)
+
 PyBryt also employs various custom notebook preprocessors for handling special cases that occur in 
 the code to allow different types of values to be checked. To see the exact version of the code that 
 PyBryt executes, set ``output`` to a path to a notebook that PyBryt will write with the executed 
