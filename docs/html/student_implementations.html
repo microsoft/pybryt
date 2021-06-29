@@ -166,6 +166,15 @@ written in a Python script (which PyBryt would by default not trace).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"harness.ipynb"</span><span class="p">,</span> <span class="n">addl_filenames</span><span class="o">=</span><span class="p">[</span><span class="s2">"subm.py"</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>To prevent notebooks from getting stuck in a loop or from taking up too many resources, PyBryt
+automatically sets a timeout of 1200 seconds for each notebook to execute. This cap can be changed
+using the <cite>timeout</cite> argument to the constructor, and can be removed by setting that value to <code class="docutils literal notranslate"><span class="pre">None</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+
+<span class="c1"># no timeout</span>
+<span class="n">stu</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">StudentImplementation</span><span class="p">(</span><span class="s2">"subm.ipynb"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>PyBryt also employs various custom notebook preprocessors for handling special cases that occur in
 the code to allow different types of values to be checked. To see the exact version of the code that
 PyBryt executes, set <code class="docutils literal notranslate"><span class="pre">output</span></code> to a path to a notebook that PyBryt will write with the executed
