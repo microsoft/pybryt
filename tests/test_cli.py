@@ -128,15 +128,19 @@ def test_execute():
 
         result = runner.invoke(click_cli, ["execute", *fns])
         assert result.exit_code == 0
-        mocked_generate.assert_called_with(fns, parallel=False)
+        mocked_generate.assert_called_with(fns, parallel=False, timeout=1200)
 
         result = runner.invoke(click_cli, ["execute", fns[0]])
         assert result.exit_code == 0
-        mocked_generate.assert_called_with((fns[0], ), parallel=False)
+        mocked_generate.assert_called_with((fns[0], ), parallel=False, timeout=1200)
 
         result = runner.invoke(click_cli, ["execute", "-p", *fns])
         assert result.exit_code == 0
-        mocked_generate.assert_called_with(fns, parallel=True)
+        mocked_generate.assert_called_with(fns, parallel=True, timeout=1200)
+
+        result = runner.invoke(click_cli, ["execute", *fns, "--timeout", "100"])
+        assert result.exit_code == 0
+        mocked_generate.assert_called_with(fns, parallel=False, timeout=100)
 
         # check for error on nonexistance output dir
         result = runner.invoke(click_cli, ["execute", *fns, "-o", "/some/fake/path"])
