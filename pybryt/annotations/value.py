@@ -211,7 +211,7 @@ class Value(Annotation):
                 if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                res = value == other_value
+                res = np.isclose(value, other_value, atol=atol, rtol=rtol)
             except (ValueError, TypeError) as e:
                 return False
 
