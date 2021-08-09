@@ -2,10 +2,10 @@ dependencies:
   - python=3.8
   - pip
   - pip:
-    - -r file:requirements.txt
+    - -r requirements.txt
     - pytest
     - codecov
     - matplotlib
     - otter-grader
-    - -r file:docs/requirements.txt
+    - -r docs/requirements.txt
  
