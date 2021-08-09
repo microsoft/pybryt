@@ -3,6 +3,7 @@
 __all__ = ["Value", "Attribute"]
 
 import dill
+import numbers
 import pandas as pd
 import numpy as np
 
@@ -180,6 +181,9 @@ class Value(Annotation):
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
 
+        if value is None:
+            return other_value is None
+
         if atol is None:
             atol = 0
         if rtol is None:
@@ -197,7 +201,7 @@ class Value(Annotation):
             ub += rtol * np.abs(value)
             lb -= rtol * np.abs(value)
             numeric = True
-        
+
         except:
             numeric = False
 
@@ -211,7 +215,11 @@ class Value(Annotation):
                 if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                res = np.isclose(value, other_value, atol=atol, rtol=rtol)
+                if isinstance(value, Iterable) and all(isinstance(i, numbers.Real) for i in value):
+                    # Tolerances make sense only for iterables with numerical data.
+                    res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+                else:
+                    res = value == other_value
             except (ValueError, TypeError) as e:
                 return False
 
