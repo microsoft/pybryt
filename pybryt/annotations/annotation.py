@@ -4,7 +4,7 @@ __all__ = ["Annotation", "AnnotationResult"]
 
 from abc import ABC, abstractmethod
 from collections import OrderedDict
-from typing import Any, Dict, List, NoReturn, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 
 _TRACKED_ANNOTATIONS = []
@@ -67,7 +67,7 @@ class Annotation(ABC):
         ret = f"pybryt.{self.__class__.__name__}"
         return ret
     
-    def _track(self) -> NoReturn:
+    def _track(self) -> None:
         """
         Tracks this annotation in ``_TRACKED_ANNOTATIONS`` and updates ``_GROUP_INDICES`` with the
         index of the annotation if ``self.group`` is present. If the annotation has children
@@ -106,7 +106,7 @@ class Annotation(ABC):
         return _TRACKED_ANNOTATIONS
 
     @staticmethod
-    def reset_tracked_annotations() -> NoReturn:
+    def reset_tracked_annotations() -> None:
         """
         Resets the list of tracked annotations and the mapping of group names to indices in that
         list.
