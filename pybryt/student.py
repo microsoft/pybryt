@@ -14,7 +14,7 @@ from contextlib import contextmanager
 from glob import glob
 from multiprocessing import Process, Queue
 from types import FrameType
-from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .execution import (
     create_collector, execute_notebook, _get_tracing_frame, NBFORMAT_VERSION, tracing_off, 
@@ -80,7 +80,7 @@ class StudentImplementation(Serializable):
 
         self._execute(timeout, addl_filenames=addl_filenames, output=output)
 
-    def _execute(self, timeout: Optional[int], addl_filenames: List[str] = [], output: Optional[str] = None) -> NoReturn:
+    def _execute(self, timeout: Optional[int], addl_filenames: List[str] = [], output: Optional[str] = None) -> None:
         """
         Executes the notebook ``self.nb``.
 

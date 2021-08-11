@@ -11,7 +11,7 @@ import time
 import nbformat
 
 from abc import ABC, abstractmethod
-from typing import Any, List, NoReturn, Optional, Union
+from typing import Any, List, Optional, Union
 from IPython import get_ipython
 from IPython.display import publish_display_data
 
@@ -30,7 +30,7 @@ def pickle_and_hash(obj: Any) -> str:
     return hashlib.sha512(s).hexdigest()
 
 
-def filter_picklable_list(lst: List[Any]) -> NoReturn:
+def filter_picklable_list(lst: List[Any]) -> None:
     """
     Removes all elements from a list that cannot be pickled with ``dill``.
 
@@ -127,7 +127,7 @@ def save_notebook(filename, timeout=10):
         return curr != md5
 
 
-def get_stem(fp):
+def get_stem(fp) -> str:
     """
     Returns the stem of a filepath.
 
@@ -153,7 +153,7 @@ class Serializable(ABC):
         """
         ... # pragma: no cover
 
-    def dump(self, dest: Optional[str] = None) -> NoReturn:
+    def dump(self, dest: Optional[str] = None) -> None:
         """
         Pickles this object to a file.
 
