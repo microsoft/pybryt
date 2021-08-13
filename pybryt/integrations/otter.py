@@ -13,7 +13,7 @@ from otter.assign.assignment import Assignment
 from otter.plugins import AbstractOtterPlugin
 from otter.test_files import GradingResults
 from otter.utils import get_source
-from typing import Any, Dict, List, NoReturn, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from .. import ReferenceImplementation, StudentImplementation
 from ..execution import NBFORMAT_VERSION
@@ -30,7 +30,7 @@ class OtterPlugin(AbstractOtterPlugin):
     _generate_report = None
     _student_impl = None
 
-    def during_assign(self, assignment: Assignment) -> NoReturn:
+    def during_assign(self, assignment: Assignment) -> None:
         """
         This event runs during ``otter assign`` and compiles the list of references indicated in the
         plugin config, placing the pickled reference implementations in the otuput directories. The
@@ -55,7 +55,7 @@ class OtterPlugin(AbstractOtterPlugin):
             stp = assignment.result / 'student' / ref_fn
             shutil.copy(str(agp), str(stp))
 
-    def during_generate(self, otter_config: Dict[str, Any], assignment: Assignment) -> NoReturn:
+    def during_generate(self, otter_config: Dict[str, Any], assignment: Assignment) -> None:
         """
         This event runs during ``otter generate`` and, if ``otter assign`` was run, adds the cached
         reference implementations from that run or compiles the indicated references if it was not
@@ -88,7 +88,7 @@ class OtterPlugin(AbstractOtterPlugin):
         if assignment is not None:
             os.chdir(cwd)
 
-    def _generate_impl_report(self, refs: List[ReferenceImplementation], group: Optional[str] = None) -> NoReturn:
+    def _generate_impl_report(self, refs: List[ReferenceImplementation], group: Optional[str] = None) -> None:
         """
         Generates and caches a student implementation from the submission path being graded as well
         as a report of what reference(s) were satisfied, if any, and the messages received from 
@@ -124,7 +124,7 @@ class OtterPlugin(AbstractOtterPlugin):
         self._generated_report = report
         self._student_impl = stu
     
-    def _cache_student_impl(self, results: GradingResults, stu: StudentImplementation) -> NoReturn:
+    def _cache_student_impl(self, results: GradingResults, stu: StudentImplementation) -> None:
         """
         Caches the student implementation object as a base-64-encoded string in the grading results
         to be retrieved outside of the grading process.
@@ -139,7 +139,7 @@ class OtterPlugin(AbstractOtterPlugin):
         results.set_plugin_data(self.IMPORTABLE_NAME, data)
 
     @classmethod
-    def _remove_plugin_calls(cls, nb: Dict[str, Any]) -> NoReturn:
+    def _remove_plugin_calls(cls, nb: Dict[str, Any]) -> None:
         """
         Removes calls to this Otter plugin from a notebook to ensure that a loop isn't created.
         Modifies the notebook in-place.
@@ -155,7 +155,7 @@ class OtterPlugin(AbstractOtterPlugin):
                     source[i] = "# " + source[i]
             cell["source"] = "\n".join(source)
 
-    def from_notebook(self, *ref_paths: str, group: Optional[str] = None) -> NoReturn:
+    def from_notebook(self, *ref_paths: str, group: Optional[str] = None) -> None:
         """
         This event runs when ``otter.Notebook.run_plugin`` is called to execute this plugin. It
         attempts to force-save the notebook and then loads the references indicated and generates
@@ -213,7 +213,7 @@ class OtterPlugin(AbstractOtterPlugin):
         self._remove_plugin_calls(submission)
         return submission
 
-    def after_grading(self, results: GradingResults) -> NoReturn:
+    def after_grading(self, results: GradingResults) -> None:
         """
         Generates an implementation report and caches the student implementation in the grading 
         results.

@@ -11,7 +11,7 @@ import numpy as np
 
 from copy import deepcopy
 from textwrap import indent
-from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
 from .utils import get_stem, notebook_to_string, Serializable

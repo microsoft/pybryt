@@ -2,7 +2,7 @@
 
 __all__ = ["Collection"]
 
-from typing import Any, Dict, List, NoReturn, Tuple
+from typing import Any, Dict, List, Tuple
 
 from .annotation import Annotation, AnnotationResult
 
@@ -104,7 +104,7 @@ class Collection(Annotation):
         })
         return d
 
-    def add(self, annotation: Annotation) -> NoReturn:
+    def add(self, annotation: Annotation) -> None:
         """
         Adds an annotation to this collection.
 
@@ -121,7 +121,7 @@ class Collection(Annotation):
         except ValueError:  # pragma: no cover
             pass
 
-    def remove(self, annotation: Annotation) -> NoReturn:
+    def remove(self, annotation: Annotation) -> None:
         """
         Removes an annotation from this collection.
 

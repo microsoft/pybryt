@@ -33,7 +33,7 @@ Before installing, make sure you have a recent version of `Python 3 installed
 .. code-block:: console
 
     py -3 -m venv .venv
-    .\venv\scripts\activate.ps1
+    .\.venv\scripts\activate.ps1
     pip install -U pip
     pip install pybryt
 
