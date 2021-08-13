@@ -3,10 +3,15 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.9 - 2021-08-13
+
+* Fixed - 'Tolerances for iterables' per [#103](https://github.com/microsoft/pybryt/pull/103)
+* Updated - 'Incorrect path on getting started doc' per [#104](https://github.com/microsoft/pybryt/pull/104)
+* Fixed 'Invalid usage of NoReturn' per [#105](https://github.com/microsoft/pybryt/pull/105)
+
 ## 0.1.8 - 2021-06-29
 
-* Added customizable timeout to notebook execution
-* Changed the notebook execution template to use `pybryt.tracing_on` and `pybryt.tracing_off`
+* Added customizable timeout to notebook execution* Changed the notebook execution template to use `pybryt.tracing_on` and `pybryt.tracing_off`
 
 ## 0.1.7 - 2021-06-28
 
