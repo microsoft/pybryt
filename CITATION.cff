@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Stott"
+  given-names: "Lee"
+  orcid: "https://orcid.org/0000-0002-3715-0892"
+- family-names: "Gilad-Bachrach"
+  given-names: "Ran"
+  orcid: https://orcid.org/0000-0002-4001-8307
+- family-names: Pyles
+  given-names: Christopher
+  orcid: "https://orcid.org/0000-0001-8520-7593"
+- family-names: "Beg"
+  given-names: "Marijan"
+  orcid: "https://orcid.org/0000-0002-6670-3994"
+- family-names: "Levy"
+  given-names: "Nir"
+  orcid: "https://orcid.org/0000-0002-4256-4934"
+- family-names: "Gorman"
+  given-names: "Gerard John"
+  orcid: "https://orcid.org/0000-0003-0563-3678"
+- family-names: "Percival"
+  given-names: "James Robert"
+  orcid: https://orcid.org/0000-0002-6556-0055
+title: "Pybryt - Python library for pedagogical auto-assessment"
+version: 0.1.9
+date-released: 2021-01-25
+url: "https://github.com/microsoft/pybryt"
