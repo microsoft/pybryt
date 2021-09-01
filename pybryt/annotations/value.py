@@ -215,7 +215,7 @@ class Value(Annotation):
                 if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                if isinstance(value, Iterable) and all(isinstance(i, numbers.Real) for i in value):
+                if len(value) > 0 and isinstance(value, Iterable) and all(isinstance(i, numbers.Real) for i in value):
                     # Tolerances make sense only for iterables with numerical data.
                     res = np.allclose(value, other_value, atol=atol, rtol=rtol)
                 else:
