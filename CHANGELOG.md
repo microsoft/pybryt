@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.0 2021-09-01
+
+* Fixed - 'Empty iterable comparison' per [#109](https://github.com/microsoft/pybryt/pull/109)
+
 ## 0.1.9 - 2021-08-13
 
 * Fixed - 'Tolerances for iterables' per [#103](https://github.com/microsoft/pybryt/pull/103)
