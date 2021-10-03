@@ -7,7 +7,7 @@ import numbers
 import pandas as pd
 import numpy as np
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sized
 from copy import copy
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -212,14 +212,25 @@ class Value(Annotation):
                 return False
         else:
             try:
-                if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
+                if (hasattr(value, "shape") and hasattr(other_value, "shape") \
+                        and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                if len(value) > 0 and isinstance(value, Iterable) and all(isinstance(i, numbers.Real) for i in value):
-                    # Tolerances make sense only for iterables with numerical data.
-                    res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
+                # tolerances make sense only for iterables with numerical data
+                if isinstance(value, Sized) and len(value) > 0 and isinstance(value, Iterable) \
+                        and all(isinstance(i, numbers.Real) for i in value):
+                    # np.allclose doesn't work with sets
+                    if isinstance(value, set):
+                        if len(value) != len(other_value):
+                            return False
+                        res = np.array(np.isclose(v, o, atol=atol, rtol=rtol) for v, o in zip(sorted(value), sorted(other_value))).all()
+                    else:
+                        res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
                 else:
                     res = value == other_value
+
             except (ValueError, TypeError) as e:
                 return False
 
