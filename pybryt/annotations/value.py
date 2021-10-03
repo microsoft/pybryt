@@ -139,6 +139,18 @@ class Value(Annotation):
             self.check_values_equal(self.initial_value, other.initial_value) and \
             self.atol == other.atol and self.rtol == other.rtol
 
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check([(other_value, 0)]).satisfied
+
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
@@ -425,3 +437,15 @@ class Attribute(Annotation):
         """
         results = [v.check(observed_values) for v in self._annotations]        
         return AnnotationResult(None, self, children=results)
+
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check([(other_value, 0)]).satisfied
