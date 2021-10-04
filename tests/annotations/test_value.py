@@ -83,6 +83,13 @@ def test_value_annotation():
     res = v.check(mfp)
     assert res.satisfied
 
+    # test that check_against correctly calls check
+    with mock.patch.object(v, "check") as mocked_check:
+        mocked_check.return_value = mock.MagicMock()
+        mocked_check.return_value.satisfied = True
+        assert v.check_against(s.lower())
+        mocked_check.assert_called_with([(s.lower(), 0)])
+
 
 def test_attribute_annotation():
     """
@@ -134,6 +141,13 @@ def test_attribute_annotation():
         "attributes": ['T'],
         "enforce_type": False,
     }
+
+    # test that check_against correctly calls check
+    with mock.patch.object(v, "check") as mocked_check:
+        mocked_check.return_value = mock.MagicMock()
+        mocked_check.return_value.satisfied = False
+        assert not v.check_against(val)
+        mocked_check.assert_called_with([(val, 0)])
 
     # check enforce type
     class Foo:

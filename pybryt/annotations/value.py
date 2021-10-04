@@ -7,7 +7,7 @@ import numbers
 import pandas as pd
 import numpy as np
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sized
 from copy import copy
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -139,6 +139,18 @@ class Value(Annotation):
             self.check_values_equal(self.initial_value, other.initial_value) and \
             self.atol == other.atol and self.rtol == other.rtol
 
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check([(other_value, 0)]).satisfied
+
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
@@ -212,14 +224,25 @@ class Value(Annotation):
                 return False
         else:
             try:
-                if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
+                if (hasattr(value, "shape") and hasattr(other_value, "shape") \
+                        and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                if len(value) > 0 and isinstance(value, Iterable) and all(isinstance(i, numbers.Real) for i in value):
-                    # Tolerances make sense only for iterables with numerical data.
-                    res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
+                # tolerances make sense only for iterables with numerical data
+                if isinstance(value, Sized) and len(value) > 0 and isinstance(value, Iterable) \
+                        and all(isinstance(i, numbers.Real) for i in value):
+                    # np.allclose doesn't work with sets
+                    if isinstance(value, set):
+                        if len(value) != len(other_value):
+                            return False
+                        res = np.array(np.isclose(v, o, atol=atol, rtol=rtol) for v, o in zip(sorted(value), sorted(other_value))).all()
+                    else:
+                        res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
                 else:
                     res = value == other_value
+
             except (ValueError, TypeError) as e:
                 return False
 
@@ -414,3 +437,15 @@ class Attribute(Annotation):
         """
         results = [v.check(observed_values) for v in self._annotations]        
         return AnnotationResult(None, self, children=results)
+
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check([(other_value, 0)]).satisfied

@@ -103,7 +103,7 @@ class BeforeAnnotation(RelationalAnnotation):
         if all(res.satisfied for res in results):
             before = []
             for i in range(len(self._annotations) - 1):
-                before.append(results[i].satisfied_at < results[i + 1].satisfied_at)
+                before.append(results[i].satisfied_at <= results[i + 1].satisfied_at)
             
             return AnnotationResult(all(before), self, children = results)
         
