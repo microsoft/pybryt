@@ -201,6 +201,10 @@ class Value(Annotation):
         specified, the values are considered equal if ``other_value`` is within the tolerance
         bounds of ``value``.
 
+        The equivalence check provided by this function can be overridden by providing a custom
+        function to check equivalence. If provided, the value returned by this function is returned,
+        unless an error is thrown, in which case ``False`` is returned.
+
         Args:
             value (``object``): the first object to compare
             other_value (``object``): the second object to compare
@@ -210,7 +214,11 @@ class Value(Annotation):
                 for equivalence between two values, overriding the default provided by ``Value`` 
         """
         if equivalence_fn is not None:
-            return equivalence_fn(value, other_value)
+            try:
+                return equivalence_fn(value, other_value)
+
+            except:
+                return False
 
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
