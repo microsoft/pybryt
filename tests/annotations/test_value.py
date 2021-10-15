@@ -92,7 +92,7 @@ def test_value_annotation():
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
-    v = Value(s, check_equivalence=mocked_eq)
+    v = Value(s, equivalence_fn=mocked_eq)
     mocked_eq.return_value = False
     assert not v.check_against("foo")
     mocked_eq.assert_called_with(s, "foo")

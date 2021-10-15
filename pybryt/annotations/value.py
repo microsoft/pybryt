@@ -34,7 +34,7 @@ class Value(Annotation):
         rtol (``float`` or ``int``, optional): relative tolerance for numeric values
         invariants (``list[invariant]``): invariants for 
             this value
-        check_equivalence (``callable[[object, object], bool]``): an optional function to check for
+        equivalence_fn (``callable[[object, object], bool]``): an optional function to check for
             equivalence between two values, overriding the default provided by ``Value``
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
@@ -58,7 +58,7 @@ class Value(Annotation):
     invariants: List[invariant]
     """the invariants for this value"""
 
-    check_equivalence: Optional[Callable[[Any, Any], bool]]
+    equivalence_fn: Optional[Callable[[Any, Any], bool]]
     """a function that compares two values and returns True if they're "equal enough\""""
 
     def __init__(
@@ -67,7 +67,7 @@ class Value(Annotation):
         atol: Optional[Union[float, int]] = None, 
         rtol: Optional[Union[float, int]] = None, 
         invariants: List[invariant] = [], 
-        check_equivalence: Optional[Callable[[Any, Any], bool]] = None,
+        equivalence_fn: Optional[Callable[[Any, Any], bool]] = None,
         **kwargs,
     ):
         try:
@@ -80,7 +80,7 @@ class Value(Annotation):
         self.atol = atol
         self.rtol = rtol
         self.invariants = invariants
-        self.check_equivalence = check_equivalence
+        self.equivalence_fn = equivalence_fn
 
         for inv in self.invariants:
             self._values = inv(self._values)
@@ -154,7 +154,7 @@ class Value(Annotation):
         return super().__eq__(other) and self.invariants == other.invariants and \
             self.check_values_equal(self.initial_value, other.initial_value) and \
             self.atol == other.atol and self.rtol == other.rtol and \
-            self.check_equivalence == self.check_equivalence
+            self.equivalence_fn == self.equivalence_fn
 
     def check_against(self, other_value: Any) -> bool:
         """
@@ -187,7 +187,7 @@ class Value(Annotation):
         
         for value in self._values:
             for other_value in other_values:
-                if self.check_values_equal(value, other_value, self.atol, self.rtol, self.check_equivalence):
+                if self.check_values_equal(value, other_value, self.atol, self.rtol, self.equivalence_fn):
                     return True
 
         return False
