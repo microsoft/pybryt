@@ -9,7 +9,7 @@ import numpy as np
 
 from collections.abc import Iterable, Sized
 from copy import copy
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
@@ -34,6 +34,8 @@ class Value(Annotation):
         rtol (``float`` or ``int``, optional): relative tolerance for numeric values
         invariants (``list[invariant]``): invariants for 
             this value
+        check_equivalence (``callable[[object, object], bool]``): an optional function to check for
+            equivalence between two values, overriding the default provided by ``Value``
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
@@ -56,9 +58,17 @@ class Value(Annotation):
     invariants: List[invariant]
     """the invariants for this value"""
 
+    check_equivalence: Optional[Callable[[Any, Any], bool]]
+    """a function that compares two values and returns True if they're "equal enough\""""
+
     def __init__(
-        self, value: Any, atol: Optional[Union[float, int]] = None, rtol: Optional[Union[float, int]] = None, 
-        invariants: List[invariant] = [], **kwargs
+        self, 
+        value: Any, 
+        atol: Optional[Union[float, int]] = None, 
+        rtol: Optional[Union[float, int]] = None, 
+        invariants: List[invariant] = [], 
+        check_equivalence: Optional[Callable[[Any, Any], bool]] = None,
+        **kwargs,
     ):
         try:
             dill.dumps(value)
@@ -70,6 +80,7 @@ class Value(Annotation):
         self.atol = atol
         self.rtol = rtol
         self.invariants = invariants
+        self.check_equivalence = check_equivalence
 
         for inv in self.invariants:
             self._values = inv(self._values)
@@ -120,7 +131,12 @@ class Value(Annotation):
             return AnnotationResult(False, self)
 
         first_satisfier = satisfied.index(True)
-        return AnnotationResult(True, self, observed_values[first_satisfier][0], observed_values[first_satisfier][1])
+        return AnnotationResult(
+            True, 
+            self, 
+            observed_values[first_satisfier][0], 
+            observed_values[first_satisfier][1],
+        )
     
     def __eq__(self, other: Any) -> bool:
         """
@@ -137,7 +153,8 @@ class Value(Annotation):
         """
         return super().__eq__(other) and self.invariants == other.invariants and \
             self.check_values_equal(self.initial_value, other.initial_value) and \
-            self.atol == other.atol and self.rtol == other.rtol
+            self.atol == other.atol and self.rtol == other.rtol and \
+            self.check_equivalence == self.check_equivalence
 
     def check_against(self, other_value: Any) -> bool:
         """
@@ -170,13 +187,13 @@ class Value(Annotation):
         
         for value in self._values:
             for other_value in other_values:
-                if self.check_values_equal(value, other_value, self.atol, self.rtol):
+                if self.check_values_equal(value, other_value, self.atol, self.rtol, self.check_equivalence):
                     return True
 
         return False
 
     @staticmethod
-    def check_values_equal(value, other_value, atol = None, rtol = None) -> bool:
+    def check_values_equal(value, other_value, atol = None, rtol = None, equivalence_fn = None) -> bool:
         """
         Checks whether two objects are equal. 
         
@@ -189,7 +206,12 @@ class Value(Annotation):
             other_value (``object``): the second object to compare
             atol (``float``, optional): the absolute tolerance for numeric values
             rtol (``float``, optional): the relative tolerance for numeric values
+            equivalence_fn (``callable[[object, object], bool]``): an optional function to check 
+                for equivalence between two values, overriding the default provided by ``Value`` 
         """
+        if equivalence_fn is not None:
+            return equivalence_fn(value, other_value)
+
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
 
@@ -198,6 +220,7 @@ class Value(Annotation):
 
         if atol is None:
             atol = 0
+
         if rtol is None:
             rtol = 0
 
