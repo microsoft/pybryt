@@ -59,7 +59,10 @@ class Value(Annotation):
     """the invariants for this value"""
 
     equivalence_fn: Optional[Callable[[Any, Any], bool]]
-    """a function that compares two values and returns True if they're "equal enough\""""
+    """
+    a function that compares two values and returns True if they're "equal enough\" and False
+    otherwise
+    """
 
     def __init__(
         self, 
@@ -215,7 +218,10 @@ class Value(Annotation):
         """
         if equivalence_fn is not None:
             try:
-                return equivalence_fn(value, other_value)
+                ret = equivalence_fn(value, other_value)
+                if not isinstance(ret, bool):
+                    raise TypeError(f"Custom equivalence function returned value of invalid type: {type(ret)}")
+                return ret
 
             except:
                 return False
