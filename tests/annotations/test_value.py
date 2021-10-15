@@ -90,6 +90,18 @@ def test_value_annotation():
         assert v.check_against(s.lower())
         mocked_check.assert_called_with([(s.lower(), 0)])
 
+    # check custom equivalence function
+    mocked_eq = mock.MagicMock()
+    v = Value(s, check_equivalence=mocked_eq)
+    mocked_eq.return_value = False
+    assert not v.check_against("foo")
+    mocked_eq.assert_called_with(s, "foo")
+    mocked_eq.return_value = True
+    assert v.check_against("")
+    mocked_eq.assert_called_with(s, "")
+    mocked_eq.side_effect = ValueError()
+    assert not v.check_against("")
+
 
 def test_attribute_annotation():
     """
