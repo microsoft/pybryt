@@ -102,6 +102,12 @@ def test_value_annotation():
     mocked_eq.side_effect = ValueError()
     assert not v.check_against("")
 
+    # check for invalid return type error
+    mocked_eq.return_value = 1
+    mocked_eq.side_effect = None
+    with pytest.raises(TypeError, match=f"Custom equivalence function returned value of invalid type: {type(1)}"):
+        v.check_against(1)
+
 
 def test_attribute_annotation():
     """

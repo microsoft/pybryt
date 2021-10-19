@@ -219,12 +219,13 @@ class Value(Annotation):
         if equivalence_fn is not None:
             try:
                 ret = equivalence_fn(value, other_value)
-                if not isinstance(ret, bool):
-                    raise TypeError(f"Custom equivalence function returned value of invalid type: {type(ret)}")
-                return ret
-
             except:
                 return False
+
+            if not isinstance(ret, bool):
+                raise TypeError(f"Custom equivalence function returned value of invalid type: {type(ret)}")
+
+            return ret
 
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
