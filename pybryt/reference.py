@@ -319,9 +319,12 @@ def generate_report(
     report = ""
     for i, res in enumerate(filtered):
         report += f"REFERENCE: {res.name}\n"
-        report += f"SATISFIED: {res.correct}\n"
-        report += f"MESSAGES:\n"
-        report += indent("\n".join(res.messages), "  - ")
+        report += f"SATISFIED: {res.correct}"
+
+        if res.messages:
+            report += f"\nMESSAGES:\n"
+            report += indent("\n".join(res.messages), "  - ")
+
         if i != len(filtered) - 1:
             report += "\n\n"
 

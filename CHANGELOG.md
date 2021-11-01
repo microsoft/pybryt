@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file, and this pr
 * Fixed bug in timestamp comparison in `BeforeAnnotation`
 * Added `Value.check_against` and `Attribute.check_agains` per [#111](https://github.com/microsoft/pybryt/issues/111)
 * Added custom equivalence functions for value annotations per [#113](https://github.com/microsoft/pybryt/issues/113)
+* Removed the messages section from reports with no messages
 
 ## 0.2.0 2021-09-01
 
