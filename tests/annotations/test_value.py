@@ -108,6 +108,24 @@ def test_value_annotation():
     with pytest.raises(TypeError, match=f"Custom equivalence function returned value of invalid type: {type(1)}"):
         v.check_against(1)
 
+    # check debug mode errors
+    with debug_mode():
+        with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
+            Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
+
+        with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
+            Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
+
+        class FooError(Exception):
+            pass
+
+        with pytest.raises(FooError):
+            def raise_foo(x, y):
+                raise FooError()
+
+            v = Value(1, equivalence_fn=raise_foo)
+            v.check_against(1)
+
 
 def test_attribute_annotation():
     """
