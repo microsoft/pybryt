@@ -1,6 +1,12 @@
 Reference Implementations
 =========================
 
+.. toctree::
+    :maxdepth: 3
+    :hidden:
+
+    debugging
+
 The functional unit of PyBryt is a reference implementation. A **reference implenetation** is a set 
 of conditions expected of students' code that determine whether a student has correctly implemented
 some program. They are constructed by creating a series of :ref:`annotations<annotations>` that are
