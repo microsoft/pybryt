@@ -14,6 +14,8 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
 
+from ..debug import _debug_mode_enabled
+
 
 class Value(Annotation):
     """
@@ -77,6 +79,9 @@ class Value(Annotation):
             dill.dumps(value)
         except Exception as e:
             raise ValueError(f"Values must be serializable but the following error was thrown during serialization:\n{e}")
+
+        if _debug_mode_enabled() and equivalence_fn is not None and (atol is not None or rtol is not None):
+            raise ValueError("Absolute or relative tolerance specified with an equivalence function")
 
         self.initial_value = copy(value)
         self._values = [self.initial_value]
@@ -219,7 +224,11 @@ class Value(Annotation):
         if equivalence_fn is not None:
             try:
                 ret = equivalence_fn(value, other_value)
+
             except:
+                if _debug_mode_enabled():
+                    raise
+
                 return False
 
             if not isinstance(ret, bool):
