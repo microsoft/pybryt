@@ -16,8 +16,5 @@ def is_ipython_frmae(frame: FrameType) -> bool:
         ``bool``: whether the frame is an IPython frame
     """
     filename = frame.f_code.co_filename
-    try:
-        parent_dir = os.path.split(os.path.split(filename)[0])[1]
-    except:
-        parent_dir = ""
+    parent_dir = os.path.split(os.path.split(filename)[0])[1]
     return filename.startswith("<ipython") or parent_dir.startswith("ipykernel_")
