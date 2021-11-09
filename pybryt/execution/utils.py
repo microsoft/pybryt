@@ -5,7 +5,7 @@ import os
 from types import FrameType
 
 
-def is_ipython_frmae(frame: FrameType) -> bool:
+def is_ipython_frame(frame: FrameType) -> bool:
     """
     Determine whether a frame is being executed by IPython.
 
