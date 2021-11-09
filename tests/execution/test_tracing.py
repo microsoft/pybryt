@@ -131,6 +131,16 @@ def test_trace_function():
     assert calls[0] == ("<ipython-abc123>", "foo")
     assert calls[1] == ("/path/to/foo.py", "bar")
 
+    # test ipykernel v6 frame filename
+    frame = generate_mocked_frame("/var/8k/ipykernel_495995/29304985.py", "foo", 3)
+    (observed, calls), cir = create_collector(addl_filenames=[tracked_filepath])
+
+    arr = np.random.uniform(-100, 100, size=(100, 100))
+    cir(frame, "return", arr)
+    assert len(observed) == 1
+    assert np.allclose(observed[0][0], arr)
+    assert observed[0][1] == 1
+
 
 def test_tracing_control():
     """
