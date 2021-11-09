@@ -105,7 +105,7 @@ equivalent may not be suitable to the problem at hand. For cases like this, you 
 custom equivalence function that the value annotation will use instead to determine if two
 objects are equal. The equivalence function should return ``True`` if the objects are equal and
 ``False`` otherwise. If the equivalence function raises an error, this will be interpeted as 
-``False``.
+``False`` (unless :ref:`debug mode<debugging>` is enabled).
 
 For example, we could implement the ``string_capitalization`` invariant using a custom
 equivalence function:

@@ -98,6 +98,14 @@ Reference Results
 .. autofunction:: pybryt.reference.generate_report
 
 
+Debug mode
+++++++++++
+
+.. automodule:: pybryt.debug
+   :members:
+   :undoc-members:
+
+
 Student Implementations
 -----------------------
 

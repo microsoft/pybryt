@@ -1,10 +1,16 @@
 # Makefile for PyBryt
-# to generate a release, use `make release` with the `VERSION` argument:
+# -------------------
+# To generate a release, use `make release` with the `VERSION` argument:
 #   $ make release VERSION=0.0.1
-# to run tests, use `make test` with the `TESTPATH` and/or `PYTESTOPTS` arguments:
+#
+# To run tests, use `make test` with the `TESTPATH` and/or `PYTESTOPTS` arguments:
 #   $ make test
-# the `testcov` target can be used to build a local copy of the code coverage in HTML
+#
+# The `testcov` target can be used to build a local copy of the code coverage in HTML:
 #   $ make testcov
+#
+# To build the docs, use `make docs`:
+#   $ make docs
 
 PYTEST        = pytest
 TESTPATH      = tests
@@ -29,3 +35,7 @@ testcov:
 
 covhtml: testcov
 	$(COVERAGE) html
+
+.PHONY: docs
+docs:
+	$(MAKE) -C docs html
