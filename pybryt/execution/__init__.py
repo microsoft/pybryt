@@ -91,6 +91,7 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
 
     os.remove(observed_fp)
 
-    n_steps = max([t[1] for t in observed])
+    timestamps = [t[1] for t in observed]
+    n_steps = max(timestamps) if len(timestamps) else -1
 
     return n_steps, observed, calls, nb
