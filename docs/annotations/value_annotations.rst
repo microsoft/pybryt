@@ -95,3 +95,24 @@ allow the student's solution (a string) to be case-insensitive.
     pybryt.Value(correct_answer, invariants=[pybryt.invariants.string_capitalization])
 
 More information about invariants can be found :ref:`here<invariants>`.
+
+
+Custom Equivalence Functions
+----------------------------
+
+In some cases, the algorithm that value annotations use for checking if two objects are
+equivalent may not be suitable to the problem at hand. For cases like this, you can provide a 
+custom equivalence function that the value annotation will use instead to determine if two
+objects are equal. The equivalence function should return ``True`` if the objects are equal and
+``False`` otherwise. If the equivalence function raises an error, this will be interpeted as 
+``False`` (unless :ref:`debug mode<debugging>` is enabled).
+
+For example, we could implement the ``string_capitalization`` invariant using a custom
+equivalence function:
+
+.. code-block:: python
+
+    def string_lower_eq(s1, s2):
+        return s1.lower() == s2.lower()
+
+    pybryt.Value(correct_answer, equivalence_fn=string_lower_eq)

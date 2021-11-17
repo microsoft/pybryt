@@ -55,7 +55,7 @@ class StudentImplementation(Serializable):
     """the list of all function calls from the student code"""
 
     steps: int
-    """number of execution steps"""
+    """number of execution steps; -1 if there were no steps"""
 
     executed_nb: Optional[nbformat.NotebookNode]
     """the executed submission notebook"""

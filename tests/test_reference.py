@@ -239,7 +239,6 @@ def test_generate_report():
     """
     nb = generate_reference_notebook()
     ref = ReferenceImplementation.compile(nb, name="foo")
-    # _, vals = execute_notebook(nb, "")
     vals = generate_mfp(nb)
     res = ref.run(vals)
 
@@ -314,6 +313,15 @@ def test_generate_report():
           - ERROR: The sample was not sorted
           - SUCCESS: Computed the size of the sample
           - SUCCESS: computed the correct median
+    """).strip()
+
+    # check empty messages
+    ref = ReferenceImplementation("foo", [Value(vals[0][0])])
+    res = ref.run(vals)
+    report = generate_report(res)
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: True
     """).strip()
 
     # test misc. errors

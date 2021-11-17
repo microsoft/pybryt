@@ -8,6 +8,8 @@ from copy import copy
 from types import FrameType, FunctionType, ModuleType
 from typing import Any, List, Tuple, Callable
 
+from .utils import is_ipython_frame
+
 from ..utils import make_secret, pickle_and_hash
 
 
@@ -85,7 +87,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         """
         Trace function for PyBryt.
         """
-        if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
+        if is_ipython_frame(frame) or frame.f_code.co_filename in addl_filenames:
             counter[0] += 1 # increment student code step counter
 
         if event == "call":
@@ -99,7 +101,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
         name = frame.f_code.co_filename + frame.f_code.co_name
 
-        if frame.f_code.co_filename.startswith("<ipython") or frame.f_code.co_filename in addl_filenames:
+        if is_ipython_frame(frame) or frame.f_code.co_filename in addl_filenames:
             if event == "line" or event == "return":
 
                 line = linecache.getline(frame.f_code.co_filename, frame.f_lineno)
@@ -135,8 +137,8 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             if event == "return":
                 track_value(arg)
 
-        elif (frame.f_back.f_code.co_filename.startswith("<ipython") or \
-                frame.f_back.f_code.co_filename in addl_filenames) and event == "return":
+        elif (is_ipython_frame(frame) or frame.f_back.f_code.co_filename in addl_filenames) and \
+                event == "return":
             track_value(arg)
 
         if event == "return" and name in vars_not_found:

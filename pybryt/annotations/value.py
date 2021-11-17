@@ -7,12 +7,14 @@ import numbers
 import pandas as pd
 import numpy as np
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sized
 from copy import copy
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
+
+from ..debug import _debug_mode_enabled
 
 
 class Value(Annotation):
@@ -34,6 +36,8 @@ class Value(Annotation):
         rtol (``float`` or ``int``, optional): relative tolerance for numeric values
         invariants (``list[invariant]``): invariants for 
             this value
+        equivalence_fn (``callable[[object, object], bool]``): an optional function to check for
+            equivalence between two values, overriding the default provided by ``Value``
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
@@ -56,20 +60,35 @@ class Value(Annotation):
     invariants: List[invariant]
     """the invariants for this value"""
 
+    equivalence_fn: Optional[Callable[[Any, Any], bool]]
+    """
+    a function that compares two values and returns True if they're "equal enough\" and False
+    otherwise
+    """
+
     def __init__(
-        self, value: Any, atol: Optional[Union[float, int]] = None, rtol: Optional[Union[float, int]] = None, 
-        invariants: List[invariant] = [], **kwargs
+        self, 
+        value: Any, 
+        atol: Optional[Union[float, int]] = None, 
+        rtol: Optional[Union[float, int]] = None, 
+        invariants: List[invariant] = [], 
+        equivalence_fn: Optional[Callable[[Any, Any], bool]] = None,
+        **kwargs,
     ):
         try:
             dill.dumps(value)
         except Exception as e:
             raise ValueError(f"Values must be serializable but the following error was thrown during serialization:\n{e}")
 
+        if _debug_mode_enabled() and equivalence_fn is not None and (atol is not None or rtol is not None):
+            raise ValueError("Absolute or relative tolerance specified with an equivalence function")
+
         self.initial_value = copy(value)
         self._values = [self.initial_value]
         self.atol = atol
         self.rtol = rtol
         self.invariants = invariants
+        self.equivalence_fn = equivalence_fn
 
         for inv in self.invariants:
             self._values = inv(self._values)
@@ -120,7 +139,12 @@ class Value(Annotation):
             return AnnotationResult(False, self)
 
         first_satisfier = satisfied.index(True)
-        return AnnotationResult(True, self, observed_values[first_satisfier][0], observed_values[first_satisfier][1])
+        return AnnotationResult(
+            True, 
+            self, 
+            observed_values[first_satisfier][0], 
+            observed_values[first_satisfier][1],
+        )
     
     def __eq__(self, other: Any) -> bool:
         """
@@ -137,7 +161,20 @@ class Value(Annotation):
         """
         return super().__eq__(other) and self.invariants == other.invariants and \
             self.check_values_equal(self.initial_value, other.initial_value) and \
-            self.atol == other.atol and self.rtol == other.rtol
+            self.atol == other.atol and self.rtol == other.rtol and \
+            self.equivalence_fn == self.equivalence_fn
+
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check([(other_value, 0)]).satisfied
 
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
@@ -158,13 +195,13 @@ class Value(Annotation):
         
         for value in self._values:
             for other_value in other_values:
-                if self.check_values_equal(value, other_value, self.atol, self.rtol):
+                if self.check_values_equal(value, other_value, self.atol, self.rtol, self.equivalence_fn):
                     return True
 
         return False
 
     @staticmethod
-    def check_values_equal(value, other_value, atol = None, rtol = None) -> bool:
+    def check_values_equal(value, other_value, atol = None, rtol = None, equivalence_fn = None) -> bool:
         """
         Checks whether two objects are equal. 
         
@@ -172,12 +209,33 @@ class Value(Annotation):
         specified, the values are considered equal if ``other_value`` is within the tolerance
         bounds of ``value``.
 
+        The equivalence check provided by this function can be overridden by providing a custom
+        function to check equivalence. If provided, the value returned by this function is returned,
+        unless an error is thrown, in which case ``False`` is returned.
+
         Args:
             value (``object``): the first object to compare
             other_value (``object``): the second object to compare
             atol (``float``, optional): the absolute tolerance for numeric values
             rtol (``float``, optional): the relative tolerance for numeric values
+            equivalence_fn (``callable[[object, object], bool]``): an optional function to check 
+                for equivalence between two values, overriding the default provided by ``Value`` 
         """
+        if equivalence_fn is not None:
+            try:
+                ret = equivalence_fn(value, other_value)
+
+            except:
+                if _debug_mode_enabled():
+                    raise
+
+                return False
+
+            if not isinstance(ret, bool):
+                raise TypeError(f"Custom equivalence function returned value of invalid type: {type(ret)}")
+
+            return ret
+
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
 
@@ -186,6 +244,7 @@ class Value(Annotation):
 
         if atol is None:
             atol = 0
+
         if rtol is None:
             rtol = 0
 
@@ -212,14 +271,25 @@ class Value(Annotation):
                 return False
         else:
             try:
-                if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
+                if (hasattr(value, "shape") and hasattr(other_value, "shape") \
+                        and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                if len(value) > 0 and isinstance(value, Iterable) and all(isinstance(i, numbers.Real) for i in value):
-                    # Tolerances make sense only for iterables with numerical data.
-                    res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
+                # tolerances make sense only for iterables with numerical data
+                if isinstance(value, Sized) and len(value) > 0 and isinstance(value, Iterable) \
+                        and all(isinstance(i, numbers.Real) for i in value):
+                    # np.allclose doesn't work with sets
+                    if isinstance(value, set):
+                        if len(value) != len(other_value):
+                            return False
+                        res = np.array(np.isclose(v, o, atol=atol, rtol=rtol) for v, o in zip(sorted(value), sorted(other_value))).all()
+                    else:
+                        res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
                 else:
                     res = value == other_value
+
             except (ValueError, TypeError) as e:
                 return False
 
@@ -414,3 +484,15 @@ class Attribute(Annotation):
         """
         results = [v.check(observed_values) for v in self._annotations]        
         return AnnotationResult(None, self, children=results)
+
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check([(other_value, 0)]).satisfied

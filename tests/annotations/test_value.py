@@ -83,6 +83,49 @@ def test_value_annotation():
     res = v.check(mfp)
     assert res.satisfied
 
+    # test that check_against correctly calls check
+    with mock.patch.object(v, "check") as mocked_check:
+        mocked_check.return_value = mock.MagicMock()
+        mocked_check.return_value.satisfied = True
+        assert v.check_against(s.lower())
+        mocked_check.assert_called_with([(s.lower(), 0)])
+
+    # check custom equivalence function
+    mocked_eq = mock.MagicMock()
+    v = Value(s, equivalence_fn=mocked_eq)
+    mocked_eq.return_value = False
+    assert not v.check_against("foo")
+    mocked_eq.assert_called_with(s, "foo")
+    mocked_eq.return_value = True
+    assert v.check_against("")
+    mocked_eq.assert_called_with(s, "")
+    mocked_eq.side_effect = ValueError()
+    assert not v.check_against("")
+
+    # check for invalid return type error
+    mocked_eq.return_value = 1
+    mocked_eq.side_effect = None
+    with pytest.raises(TypeError, match=f"Custom equivalence function returned value of invalid type: {type(1)}"):
+        v.check_against(1)
+
+    # check debug mode errors
+    with debug_mode():
+        with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
+            Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
+
+        with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
+            Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
+
+        class FooError(Exception):
+            pass
+
+        with pytest.raises(FooError):
+            def raise_foo(x, y):
+                raise FooError()
+
+            v = Value(1, equivalence_fn=raise_foo)
+            v.check_against(1)
+
 
 def test_attribute_annotation():
     """
@@ -134,6 +177,13 @@ def test_attribute_annotation():
         "attributes": ['T'],
         "enforce_type": False,
     }
+
+    # test that check_against correctly calls check
+    with mock.patch.object(v, "check") as mocked_check:
+        mocked_check.return_value = mock.MagicMock()
+        mocked_check.return_value.satisfied = False
+        assert not v.check_against(val)
+        mocked_check.assert_called_with([(val, 0)])
 
     # check enforce type
     class Foo:
