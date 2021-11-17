@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.3.0 - 2021-11-17
 
 * Fixed bug in `Value`s tracking `set`s of numbers
 * Fixed bug in timestamp comparison in `BeforeAnnotation`
@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file, and this pr
 * Fixed ipykernel v6 issue and unpinned ipykernel per [#114](https://github.com/microsoft/pybryt/issues/114)
 * Fixed bug in handling empty student implementations per [#101](https://github.com/microsoft/pybryt/issues/101)
 
-## 0.2.0 2021-09-01
+## 0.2.0 - 2021-09-01
 
 * Fixed - 'Empty iterable comparison' per [#109](https://github.com/microsoft/pybryt/pull/109)
 
