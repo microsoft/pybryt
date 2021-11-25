@@ -43,4 +43,4 @@ def test_list_permutation():
 
 def test_alias():
     import pybryt.annotations.invariants as inv2
-    assert inv2.inv.string_capitalization is inv.string_capitalization
+    assert inv2.string_capitalization is inv.string_capitalization

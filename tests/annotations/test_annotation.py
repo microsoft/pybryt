@@ -1,6 +1,7 @@
 """Tests for abstract annotations and annotation results"""
 
 import pybryt
+from pybryt.execution.memory_footprint import MemoryFootprint
 
 from .utils import assert_object_attrs, generate_memory_footprint
 
@@ -90,7 +91,7 @@ def test_messages():
     assert len(res.messages) == 1, "Too many messages"
     assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
 
-    res = v.check([])
+    res = v.check(MemoryFootprint.from_values([]))
 
     assert len(res.messages) == 2, "Wrong number of messages"
     assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"

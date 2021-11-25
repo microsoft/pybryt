@@ -10,12 +10,12 @@ from .utils import assert_object_attrs
 
 
 def generate_complexity_footprint(name, t_transform, max_exp=8):  # TODO: fix return type
-    footprint = []
+    values = []
     for i, e in enumerate(range(1, max_exp + 1)):
         n = 10 ** e
         t = t_transform(n)
-        footprint.append((pybryt.TimeComplexityResult(name, n, 0, t), i))
-    return footprint
+        values.append((pybryt.TimeComplexityResult(name, n, 0, t), i))
+    return pybryt.MemoryFootprint.from_values(values)
 
 
 def test_complexity_abc():
