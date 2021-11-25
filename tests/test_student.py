@@ -58,18 +58,6 @@ def generate_impl():
     return deepcopy(_generate_impl_cached())
 
 
-# TODO: test output argument
-# with tempfile.NamedTemporaryFile("w+") as ntf:
-        # with tempfile.NamedTemporaryFile(delete=False) as observed_ntf:
-        #     with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
-        #         mocked_tempfile.return_value = (None, observed_ntf.name)
-
-        #         footprint = pybryt.execution.execute_notebook(nb, "", output=ntf.name)
-        #         assert len(ntf.read()) > 0
-        #         assert len(footprint.values) > 0
-        #         assert all(i in footprint.imports for i in ["pandas", "numpy", "matplotlib"])
-        #         assert len(footprint.calls) > 0
-
 def test_constructor():
     """
     """
@@ -80,6 +68,7 @@ def test_constructor():
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_exec:
         mocked_exec.return_value = MemoryFootprint()
+        mocked_exec.return_value.set_executed_notebook(nb)
 
         with tempfile.NamedTemporaryFile(mode="w+", suffix=".ipynb") as ntf:
             nbformat.write(nb, ntf.name)
@@ -89,6 +78,10 @@ def test_constructor():
             assert stu.footprint.values == []
             assert stu.footprint.calls == []
             assert stu.nb == nb
+
+            with tempfile.NamedTemporaryFile(mode="w+", suffix=".ipynb") as output_ntf:
+                stu = StudentImplementation(ntf.name, output=output_ntf.name)
+                assert nbformat.read(output_ntf.name, as_version=nbformat.NO_CONVERT) == nb
 
     with pytest.raises(TypeError, match="path_or_nb is of unsupported type <class 'int'>"):
         StudentImplementation(1)

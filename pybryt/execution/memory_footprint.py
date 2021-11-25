@@ -125,7 +125,7 @@ class MemoryFootprint:
         timestamps = [t[1] for t in self.values]
         return max(timestamps) if len(timestamps) else -1
 
-    # TODO
+    # TODO: docstring
     def __eq__(self, other: Any):
         return isinstance(other, type(self)) and self.values == other.values \
             and self.calls == other.calls and self.imports == other.imports \
