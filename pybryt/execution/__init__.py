@@ -71,10 +71,10 @@ def execute_notebook(
     """))
 
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
-        import sys
-        {footprint_varname}.add_imports(*sys.modules.keys())
         from pybryt.execution import tracing_off
         tracing_off()
+        import sys
+        {footprint_varname}.add_imports(*sys.modules.keys())
         {footprint_varname}.filter_out_unpicklable_values()
         import dill
         with open("{footprint_fp}", "wb+") as f:

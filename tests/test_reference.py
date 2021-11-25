@@ -17,7 +17,7 @@ from pybryt.execution import execute_notebook
 
 
 def generate_footprint(nb) -> MemoryFootprint:
-    return execute_notebook(nb, "")[1]
+    return execute_notebook(nb, "")
 
 
 def generate_reference_notebook():

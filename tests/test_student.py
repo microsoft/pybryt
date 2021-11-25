@@ -50,9 +50,12 @@ def generate_student_notebook():
 
 
 @lru_cache(1)
-def generate_impl():
+def _generate_impl_cached():
     nb = generate_student_notebook()
     return nb, StudentImplementation(nb)
+
+def generate_impl():
+    return deepcopy(_generate_impl_cached())
 
 
 # TODO: test output argument
@@ -72,18 +75,17 @@ def test_constructor():
     """
     nb, stu = generate_impl()
     assert stu.nb is nb
-    assert stu.steps == max(t[1] for t in stu.values)
     assert isinstance(stu.footprint, MemoryFootprint)
     assert len(stu.footprint.values) == 993
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_exec:
-        mocked_exec.return_value = (0, [], [], None)
+        mocked_exec.return_value = MemoryFootprint()
 
         with tempfile.NamedTemporaryFile(mode="w+", suffix=".ipynb") as ntf:
             nbformat.write(nb, ntf.name)
 
             stu = StudentImplementation(ntf.name)
-            assert stu.footprint.num_steps == 0
+            assert stu.footprint.num_steps == -1
             assert stu.footprint.values == []
             assert stu.footprint.calls == []
             assert stu.nb == nb
@@ -100,13 +102,13 @@ def test_load_and_dump():
         stu.dump(ntf.name)
         stu2 = StudentImplementation.load(ntf.name)
 
-        assert len(stu.values) == len(stu2.values)
-        assert stu.steps == stu2.steps
+        assert len(stu.footprint.values) == len(stu2.footprint.values)
+        assert stu.footprint.num_steps == stu2.footprint.num_steps
 
     enc_stu = stu.dumps()
     stu2 = StudentImplementation.loads(enc_stu)
-    assert len(stu.values) == len(stu2.values)
-    assert stu.steps == stu2.steps
+    assert len(stu.footprint.values) == len(stu2.footprint.values)
+    assert stu.footprint.num_steps == stu2.footprint.num_steps
 
 
 def test_check():
@@ -252,13 +254,12 @@ def test_combine():
     """
     _, stu = generate_impl()
     stu2 = deepcopy(stu)
-    stu2.steps += 1
-    stu2.values.append(([1, 2, 3, 4], stu2.steps))
+    stu2.footprint.add_value([1, 2, 3, 4], stu2.footprint.num_steps + 1)
 
     comb = StudentImplementation.combine([stu, stu2])
-    assert len(comb.values) == len(stu.values)  + 1
-    assert comb.steps == stu.steps + stu2.steps
-    assert comb.values[-1][1] == stu.steps + stu2.steps
+    assert len(comb.footprint.values) == len(stu.footprint.values) + 1
+    assert comb.footprint.num_steps == stu.footprint.num_steps + stu2.footprint.num_steps
+    assert comb.footprint.get_value(-1)[1] == stu.footprint.num_steps + stu2.footprint.num_steps
 
 
 def test_generate_student_impls():
