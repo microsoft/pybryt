@@ -4,7 +4,6 @@ from collections.abc import Sized
 from typing import Optional, Union
 
 from .memory_footprint import MemoryFootprint
-from .tracing import get_active_footprint
 
 
 COMPLEXITY_TRACING_ENABLED = False
@@ -93,7 +92,7 @@ class check_time_complexity:
 
         COMPLEXITY_TRACING_ENABLED = False
 
-        if self._curr_steps is not None:
+        if self.start_steps is not None:
             end_steps = self.footprint.counter.get_value()
             self.footprint.add_value(
                 TimeComplexityResult(self.name, self.n, self.start_steps, end_steps))
@@ -105,3 +104,6 @@ def is_complexity_tracing_enabled() -> bool:
     """
     """
     return COMPLEXITY_TRACING_ENABLED
+
+
+from .tracing import get_active_footprint

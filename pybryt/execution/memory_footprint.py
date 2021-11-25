@@ -53,6 +53,7 @@ class MemoryFootprint:
         footprint = cls()
         footprint.values.extend(values)
         footprint.offset_counter(footprint.num_steps)
+        return footprint
 
     @classmethod
     def combine(cls, *footprints: 'MemoryFootprint') -> 'MemoryFootprint':

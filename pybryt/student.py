@@ -108,11 +108,11 @@ class StudentImplementation(Serializable):
         ``list[dict[str, Union[str, list[str]]]]:``: a list of error outputs from the executed notebook
         if present
         """
-        if self.footprint.executed_nb is None:
+        if self.footprint.executed_notebook is None:
             return []
 
         errors = []
-        for cell in self.footprint.executed_nb['cells']:
+        for cell in self.footprint.executed_notebook['cells']:
             if cell['cell_type'] == "code":
                 for out in cell['outputs']:
                     if out['output_type'] == "error":

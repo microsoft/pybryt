@@ -77,7 +77,7 @@ def create_collector(
         Args:
             frame (``types.FrameType``): the frame of the call
         """
-        footprint.add(frame.f_code.co_filename, frame.f_code.co_name)
+        footprint.add_call(frame.f_code.co_filename, frame.f_code.co_name)
 
     # TODO: a way to track the cell of execution
     def collect_intermidiate_results(frame: FrameType, event: str, arg: Any):
