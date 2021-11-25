@@ -99,7 +99,7 @@ def test_messages():
 
     v2.name = "v2"
     v2.failure_message = "m4"
-    res = v.check([])
+    res = v.check(MemoryFootprint.from_values([]))
 
     assert len(res.messages) == 3, "Wrong number of messages"
     assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"

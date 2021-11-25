@@ -59,8 +59,8 @@ def test_time_complexity():
     assert res.satisfied
     assert res.value == cplx.constant
 
-    footprint.append((np.random.uniform(size=100), 9))
-    footprint.append(( pybryt.TimeComplexityResult("bar", 10, 0, 10 ** 3), 10))
+    footprint.add_value(np.random.uniform(size=100), 9)
+    footprint.add_value( pybryt.TimeComplexityResult("bar", 10, 0, 10 ** 3), 10)
     res = a.check(footprint)
     assert res.satisfied
     assert res.value == cplx.constant
