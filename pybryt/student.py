@@ -214,9 +214,9 @@ class StudentImplementation(Serializable):
             implementation checks
         """
         if isinstance(ref, ReferenceImplementation):
-            return ref.run(self.values, group=group)
+            return ref.run(self.footprint, group=group)
         elif isinstance(ref, list):
-            return [r.run(self.values, group=group) for r in ref]
+            return [r.run(self.footprint, group=group) for r in ref]
         else:
             raise TypeError(f"check cannot take values of type {type(ref)}")
 

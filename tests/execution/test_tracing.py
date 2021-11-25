@@ -133,7 +133,7 @@ def test_trace_function():
 
     # test ipykernel v6 frame filename
     frame = generate_mocked_frame("/var/8k/ipykernel_495995/29304985.py", "foo", 3)
-    (footprint.values, footprint.calls), cir = create_collector(addl_filenames=[tracked_filepath])
+    footprint, cir = create_collector(addl_filenames=[tracked_filepath])
 
     arr = np.random.uniform(-100, 100, size=(100, 100))
     cir(frame, "return", arr)
