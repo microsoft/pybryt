@@ -1,8 +1,8 @@
 """Tracing function and controls"""
 
-import re
-import linecache
 import inspect
+import linecache
+import re
 
 from copy import copy
 from types import FrameType, FunctionType, ModuleType
@@ -16,8 +16,8 @@ from ..utils import make_secret, pickle_and_hash
 
 
 ACTIVE_FOOTPRINT = None
-TRACING_VARNAME = "__PYBRYT_TRACING__"
 TRACING_FUNC = None
+TRACING_VARNAME = "__PYBRYT_TRACING__"
 
 
 def create_collector(

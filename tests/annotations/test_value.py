@@ -1,12 +1,11 @@
-"""Tests for PyBryt value annotations"""
+"""Tests for value annotations"""
 
 import time
 import pytest
 
 from unittest import mock
 
-from pybryt import *
-from pybryt.utils import pickle_and_hash
+import pybryt
 
 from .utils import *
 
@@ -15,20 +14,20 @@ def test_value_annotation():
     """
     """
     mfp = generate_memory_footprint()
-    Annotation.reset_tracked_annotations()
+    pybryt.Annotation.reset_tracked_annotations()
 
     seen = {}
     for val, ts in mfp:
-        v = Value(val)
+        v = pybryt.Value(val)
         res = v.check(mfp)
 
         assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
 
-        h = pickle_and_hash(val)
+        h = pybryt.utils.pickle_and_hash(val)
 
         # check attributes of BeforeAnnotation and AnnotationResult
-        check_obj_attributes(v, {"children__len": 0})
-        check_obj_attributes(res, {
+        assert_object_attrs(v, {"children__len": 0})
+        assert_object_attrs(res, {
             "children": [],
             "satisfied": True,
             "_satisfied": True,
@@ -40,7 +39,7 @@ def test_value_annotation():
         if h not in seen:
             seen[h] = ts
 
-    v = Value(-1) # does not occur in mfp
+    v = pybryt.Value(-1) # does not occur in mfp
     res = v.check(mfp)
 
     assert v.to_dict() == {
@@ -61,8 +60,8 @@ def test_value_annotation():
     assert repr(v) == "pybryt.Value", "wrong __repr__"
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children__len": 0})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children__len": 0})
+    assert_object_attrs(res, {
         "children": [],
         "satisfied": False,
         "_satisfied": False,
@@ -75,11 +74,11 @@ def test_value_annotation():
     with mock.patch("dill.dumps") as mocked_dumps:
         mocked_dumps.side_effect = Exception()
         with pytest.raises(ValueError):
-            v = Value(-1)
+            v = pybryt.Value(-1)
 
     # test with invariants
     s = mfp[-1][0]
-    v = Value(s.upper(), invariants=[invariants.string_capitalization])
+    v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
     res = v.check(mfp)
     assert res.satisfied
 
@@ -92,14 +91,14 @@ def test_value_annotation():
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
-    v = Value(s, equivalence_fn=mocked_eq)
+    v = pybryt.Value(s, equivalence_fn=mocked_eq)
     mocked_eq.return_value = False
     assert not v.check_against("foo")
     mocked_eq.assert_called_with(s, "foo")
     mocked_eq.return_value = True
     assert v.check_against("")
     mocked_eq.assert_called_with(s, "")
-    mocked_eq.side_effect = ValueError()
+    mocked_eq.side_effect = pybryt.ValueError()
     assert not v.check_against("")
 
     # check for invalid return type error
@@ -109,12 +108,12 @@ def test_value_annotation():
         v.check_against(1)
 
     # check debug mode errors
-    with debug_mode():
+    with pybryt.debug_mode():
         with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
-            Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
+            pybryt.Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
 
         with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
-            Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
+            pybryt.Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
 
         class FooError(Exception):
             pass
@@ -123,7 +122,7 @@ def test_value_annotation():
             def raise_foo(x, y):
                 raise FooError()
 
-            v = Value(1, equivalence_fn=raise_foo)
+            v = pybryt.Value(1, equivalence_fn=raise_foo)
             v.check_against(1)
 
 
@@ -131,15 +130,15 @@ def test_attribute_annotation():
     """
     """
     mfp = generate_memory_footprint()
-    Annotation.reset_tracked_annotations()
+    pybryt.Annotation.reset_tracked_annotations()
     val, ts = mfp[0]
 
-    v = Attribute(val, "T")
+    v = pybryt.Attribute(val, "T")
     res = v.check(mfp)
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children__len": 1})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children__len": 1})
+    assert_object_attrs(res, {
         "children__len": 1,
         "satisfied": True,
         "_satisfied": None,
@@ -193,7 +192,7 @@ def test_attribute_annotation():
     res = v.check(mfp2)
     assert res.satisfied
 
-    v = Attribute(val, "T", enforce_type=True)
+    v = pybryt.Attribute(val, "T", enforce_type=True)
     res = v.check(mfp2)
     assert not res.satisfied
 
@@ -202,10 +201,10 @@ def test_attribute_annotation():
 
     # check error raising
     with pytest.raises(TypeError):
-        Attribute(val, ["T", 1])
+        pybryt.Attribute(val, ["T", 1])
     
     with pytest.raises(TypeError):
-        Attribute(val, 1)
+        pybryt.Attribute(val, 1)
 
     with pytest.raises(AttributeError):
-        Attribute(val, "foo")
+        pybryt.Attribute(val, "foo")

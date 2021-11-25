@@ -1,5 +1,6 @@
 """Auto-assessment library for Python"""
 
+from . import utils
 from .annotations import *
 from .debug import *
 from .execution import *

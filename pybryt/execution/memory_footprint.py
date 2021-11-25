@@ -47,6 +47,14 @@ class MemoryFootprint:
         self.imports = set()
 
     @classmethod
+    def from_values(cls, values: List[Tuple[Any, int]]) -> 'MemoryFootprint':
+        """
+        """
+        footprint = cls()
+        footprint.values.extend(values)
+        footprint.offset_counter(footprint.num_steps)
+
+    @classmethod
     def combine(cls, *footprints: 'MemoryFootprint') -> 'MemoryFootprint':
         """
         """

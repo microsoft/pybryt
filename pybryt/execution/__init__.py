@@ -1,6 +1,6 @@
 """Submission execution internals for PyBryt"""
 
-__all__ = ["check_time_complexity", "MemoryFootprint", "no_tracing"]
+__all__ = ["check_time_complexity", "MemoryFootprint", "no_tracing", "TimeComplexityResult"]
 
 import os
 import dill
