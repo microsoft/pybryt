@@ -172,7 +172,7 @@ class Value(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check([(other_value, 0)]).satisfied
+        return self.check(MemoryFootprint.from_values([(other_value, 0)])).satisfied
 
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
@@ -367,10 +367,10 @@ class _AttrValue(Value):
         if self.enforce_type:  # filter out values of wrong type if enforce_type is True
             observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
-        attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
-        res = super().check(attrs)
+        attrs_fp = MemoryFootprint.from_values([(getattr(obj, self._attr), t) for obj, t in vals])
+        res = super().check(attrs_fp)
         try:
-            satisfier = vals[attrs.index((res.value, res.timestamp))][0]
+            satisfier = vals[attrs_fp.values.index((res.value, res.timestamp))][0]
         except ValueError:
             satisfier = None
         return AnnotationResult(None, self, value=satisfier, children=[res])
@@ -492,4 +492,4 @@ class Attribute(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check([(other_value, 0)]).satisfied
+        return self.check(MemoryFootprint.from_values([(other_value, 0)])).satisfied

@@ -38,13 +38,14 @@ class MemoryFootprint:
 
     imports: Set[str]
 
-    executed_notebook: nbformat.NotebookNode
+    executed_notebook: Optional[nbformat.NotebookNode]
 
     def __init__(self, counter: Optional[Counter] = None):
         self.counter = counter if counter is not None else Counter()
         self.values = []
         self.calls = []
         self.imports = set()
+        self.executed_notebook = None
 
     @classmethod
     def from_values(cls, values: List[Tuple[Any, int]]) -> 'MemoryFootprint':
@@ -125,5 +126,7 @@ class MemoryFootprint:
         return max(timestamps) if len(timestamps) else -1
 
     # TODO
-    def __eq__(self):
-        return
+    def __eq__(self, other: Any):
+        return isinstance(other, type(self)) and self.values == other.values \
+            and self.calls == other.calls and self.imports == other.imports \
+            and self.executed_notebook == other.executed_notebook

@@ -5,6 +5,7 @@ import pytest
 from unittest import mock
 
 import pybryt
+from pybryt.execution.memory_footprint import MemoryFootprint
 
 from .utils import assert_object_attrs, generate_memory_footprint
 
@@ -86,7 +87,7 @@ def test_value_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = True
         assert v.check_against(s.lower())
-        mocked_check.assert_called_with([(s.lower(), 0)])
+        mocked_check.assert_called_with(MemoryFootprint.from_values([(s.lower(), 0)]))
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
@@ -97,7 +98,7 @@ def test_value_annotation():
     mocked_eq.return_value = True
     assert v.check_against("")
     mocked_eq.assert_called_with(s, "")
-    mocked_eq.side_effect = pybryt.ValueError()
+    mocked_eq.side_effect = ValueError()
     assert not v.check_against("")
 
     # check for invalid return type error
@@ -181,7 +182,7 @@ def test_attribute_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = False
         assert not v.check_against(val)
-        mocked_check.assert_called_with([(val, 0)])
+        mocked_check.assert_called_with(MemoryFootprint.from_values([(val, 0)]))
 
     # check enforce type
     class Foo:
@@ -195,7 +196,8 @@ def test_attribute_annotation():
     res = v.check(footprint2)
     assert not res.satisfied
 
-    res = v.check(footprint + footprint2)
+    footprint3 = MemoryFootprint.from_values(footprint.values + footprint2.values)
+    res = v.check(footprint3)
     assert res.satisfied
 
     # check error raising
