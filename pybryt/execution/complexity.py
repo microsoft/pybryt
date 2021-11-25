@@ -1,11 +1,13 @@
 """"""
 
 from collections.abc import Sized
-from contextlib import contextmanager
-from typing import Union
+from typing import Optional, Union
+
+from .memory_footprint import MemoryFootprint
+from .tracing import get_active_footprint
 
 
-_TRACKING_DISABLED = False
+COMPLEXITY_TRACING_ENABLED = False
 
 
 class TimeComplexityResult:
@@ -54,6 +56,14 @@ class check_time_complexity:
         n (``Union[int, float, Sized]``): the input length or the input itself if it supports ``len``
     """
 
+    name: str
+
+    n: int
+
+    start_steps: Optional[int]
+
+    footprint: Optional[MemoryFootprint]
+
     def __init__(self, name: str, n: Union[int, float, Sized]):
         if isinstance(n, float):
             n = int(n)
@@ -65,31 +75,33 @@ class check_time_complexity:
             except:
                 raise TypeError(f"n has invalid type {type(n)}")
   
-        self._name = name
-        self._n = n
-        self._curr_steps = None
-        self._observed, self._counter = None, None
+        self.name = name
+        self.n = n
+        self.start_steps, self.footprint = None, None
 
     def __enter__(self):
-        global _TRACKING_DISABLED
+        global COMPLEXITY_TRACING_ENABLED
 
-        from .tracing import _COLLECTOR_RET
-        if _COLLECTOR_RET is not None:
-            self._observed, self._counter, _ = _COLLECTOR_RET
-            self._curr_steps = self._counter[0]
+        if get_active_footprint() is not None:
+            self.footprint = get_active_footprint()
+            self.start_steps = self.footprint.counter.get_value()
 
-        _TRACKING_DISABLED = True
+        COMPLEXITY_TRACING_ENABLED = True
 
     def __exit__(self, exc_type, exc_value, traceback):
-        global _TRACKING_DISABLED
+        global COMPLEXITY_TRACING_ENABLED
 
-        _TRACKING_DISABLED = False
+        COMPLEXITY_TRACING_ENABLED = False
 
         if self._curr_steps is not None:
-            end_steps = self._counter[0]
-            self._observed.append((
-                TimeComplexityResult(self._name, self._n, self._curr_steps, end_steps), 
-                end_steps,
-            ))
+            end_steps = self.footprint.counter.get_value()
+            self.footprint.add_value(
+                TimeComplexityResult(self.name, self.n, self.start_steps, end_steps))
 
         return False
+
+
+def is_complexity_tracing_enabled() -> bool:
+    """
+    """
+    return COMPLEXITY_TRACING_ENABLED

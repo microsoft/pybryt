@@ -10,6 +10,8 @@ from typing import Any, Dict, List, Tuple
 
 from .annotation import Annotation, AnnotationResult
 
+from ..execution import MemoryFootprint
+
 
 class RelationalAnnotation(Annotation):
     """
@@ -61,7 +63,7 @@ class RelationalAnnotation(Annotation):
         return super().__eq__(other) and self.children == other.children
 
     @abstractmethod
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         ... # pragma: no cover
 
 
@@ -83,22 +85,21 @@ class BeforeAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         """
-        Checks that all child annotations are satisfied by the values in ``observed_values`` and
+        Checks that all child annotations are satisfied by the memory footprint and
         that the timestamps of the satisfying values occur in non-decreasing order.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         results = []
         for ann in self._annotations:
-            results.append(ann.check(observed_values))
+            results.append(ann.check(footprint))
 
         if all(res.satisfied for res in results):
             before = []
@@ -122,21 +123,20 @@ class AndAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         """
-        Checks that all child annotations are satisfied by the values in ``observed_values``.
+        Checks that all child annotations are satisfied by the values in the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         results = []
         for ann in self._annotations:
-            results.append(ann.check(observed_values))
+            results.append(ann.check(footprint))
 
         return AnnotationResult(all(res.satisfied for res in results), self, children = results)
 
@@ -152,21 +152,20 @@ class OrAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         """
-        Checks that any of the child annotations are satisfied by the values in ``observed_values``.
+        Checks that any of the child annotations are satisfied by the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         results = []
         for ann in self._annotations:
-            results.append(ann.check(observed_values))
+            results.append(ann.check(footprint))
 
         return AnnotationResult(any(res.satisfied for res in results), self, children = results)
 
@@ -186,22 +185,20 @@ class XorAnnotation(RelationalAnnotation):
         super().__init__(*annotations)
         assert len(self._annotations) == 2, "Cannot use xor with more than two annotations"
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         """
-        Checks that one child annotation is satisfied and one is not by the values in 
-        ``observed_values``.
+        Checks that one child annotation is satisfied and one is not by the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         results = []
         for ann in self._annotations:
-            results.append(ann.check(observed_values))
+            results.append(ann.check(footprint))
 
         sats = [res.satisfied for res in results]
         return AnnotationResult(sats[0] ^ sats[1], self, children = results)
@@ -218,20 +215,19 @@ class NotAnnotation(RelationalAnnotation):
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         """
-        Checks that the child annotation is not satisfied by the values in ``observed_values``.
+        Checks that the child annotation is not satisfied by the values in the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         results = []
         for ann in self._annotations:
-            results.append(ann.check(observed_values))
+            results.append(ann.check(footprint))
 
         return AnnotationResult(all(not res.satisfied for res in results), self, children = results)

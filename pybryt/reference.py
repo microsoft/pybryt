@@ -2,18 +2,17 @@
 
 __all__ = ["ReferenceImplementation", "ReferenceResult", "generate_report"]
 
-import os
-import dill
-import json
-import warnings
 import nbformat
 import numpy as np
+import os
+import warnings
 
 from copy import deepcopy
 from textwrap import indent
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .annotations import Annotation, AnnotationResult
+from .execution import MemoryFootprint
 from .utils import get_stem, notebook_to_string, Serializable
 
 
@@ -89,7 +88,7 @@ class ReferenceImplementation(Serializable):
         else:
             return annots
 
-    def run(self, observed_values: List[Tuple[Any, int]], group: Optional[str] = None) -> 'ReferenceResult':        
+    def run(self, footprint: MemoryFootprint, group: Optional[str] = None) -> 'ReferenceResult':        
         """
         Runs the annotations tracked by this reference implementation against a memory footprint.
 
@@ -97,7 +96,8 @@ class ReferenceImplementation(Serializable):
         :py:class:`ReferenceResult<pybryt.ReferenceResult>` object.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): the memory footprint
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
             group (``str``, optional): if specified, only annotations in this group will be run
 
         Returns:
@@ -119,7 +119,7 @@ class ReferenceImplementation(Serializable):
         
         results = []
         for exp in annots:
-            results.append(exp.check(observed_values))
+            results.append(exp.check(footprint))
         
         return ReferenceResult(self, results, group=group)
 
