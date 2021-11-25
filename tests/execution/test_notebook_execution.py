@@ -1,16 +1,15 @@
 """Tests for PyBryt execution internals"""
 
-import re
 import dill
+import nbformat
+import numpy as np
 import pathlib
 import random
 import tempfile
-import nbformat
-import numpy as np
 
 from unittest import mock
 
-from pybryt.execution import execute_notebook
+import pybryt.execution
 
 
 def generate_test_notebook():
@@ -42,7 +41,7 @@ def test_notebook_execution():
             with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
                 mocked_tempfile.return_value = (None, observed_ntf.name)
 
-                n_steps, observed, calls, _ = execute_notebook(nb, "", output=ntf.name)
+                n_steps, observed, calls, _ = pybryt.execution.execute_notebook(nb, "", output=ntf.name)  # TODO: return value
                 assert len(ntf.read()) > 0
                 assert n_steps == max(t[1] for t in observed)
                 assert isinstance(calls, list) and isinstance(calls[0], tuple) and \
