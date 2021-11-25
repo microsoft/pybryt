@@ -1,9 +1,6 @@
 """Tests for annotation collections"""
 
-import time
 import pytest
-
-from unittest import mock
 
 import pybryt
 
@@ -13,13 +10,13 @@ from .utils import *
 def test_collection():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    v1, v2 = pybryt.Value(mfp[0][0]), pybryt.Value(mfp[2][0])
+    v1, v2 = pybryt.Value(footprint.get_value(0)[0]), pybryt.Value(footprint.get_value(2)[0])
     a = pybryt.Collection(v1, v2, success_message="foo")
 
-    res = a.check(mfp)
+    res = a.check(footprint)
     assert_object_attrs(a, {"children__len": 2})
     assert_object_attrs(res, {
         "children__len": 2,
@@ -42,20 +39,20 @@ def test_collection():
     }
 
     a = pybryt.Collection(v1, v2, enforce_order=True, success_message="foo")
-    res = a.check(mfp)
+    res = a.check(footprint)
     assert res.satisfied
 
-    v3 = pybryt.Value(mfp[1][0])
+    v3 = pybryt.Value(footprint.get_value(1)[0])
     a.add(v3)
-    res = a.check(mfp)
+    res = a.check(footprint)
     assert not res.satisfied
 
     a.remove(v3)
-    res = a.check(mfp)
+    res = a.check(footprint)
     assert res.satisfied
 
     a = pybryt.Collection(v2, v1, enforce_order=True, success_message="foo")
-    res = a.check(mfp)
+    res = a.check(footprint)
     assert not res.satisfied
 
     # test errors

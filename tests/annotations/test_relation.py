@@ -10,17 +10,17 @@ from .utils import assert_object_attrs, generate_memory_footprint
 def test_before_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, _ = footprint.get_value(0)
+    val2, ts2 = footprint.get_value(1)
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
     
     v = v1.before(v2)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
     assert_object_attrs(v, {"children": (v1, v2)})
@@ -69,7 +69,7 @@ def test_before_annotation():
     }
 
     v = v2.after(v1)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
     assert_object_attrs(v, {"children": (v1, v2)})
@@ -83,7 +83,7 @@ def test_before_annotation():
     })
 
     v = v1.after(v2)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
     assert_object_attrs(v, {"children": (v2, v1)})
@@ -100,16 +100,16 @@ def test_before_annotation():
 def test_and_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, _ = footprint.get_value(0)
+    val2, ts2 = footprint.get_value(1)
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
     
     v = v1 & v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, v2)})
     assert_object_attrs(res, {
@@ -123,7 +123,7 @@ def test_and_annotation():
 
     v3 = pybryt.Value([])
     v = v1 & v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, v3)})
     assert_object_attrs(res, {
@@ -137,7 +137,7 @@ def test_and_annotation():
 
     v4 = pybryt.Value(6.02e+23)
     v = v4 & v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v4, v2)})
     assert_object_attrs(res, {
@@ -150,7 +150,7 @@ def test_and_annotation():
     })
 
     v = v4 & v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v4, v3)})
     assert_object_attrs(res, {
@@ -166,16 +166,16 @@ def test_and_annotation():
 def test_or_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, ts1 = footprint.get_value(0)
+    val2, ts2 = footprint.get_value(1)
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
     
     v = v1 | v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, v2)})
     assert_object_attrs(res, {
@@ -189,7 +189,7 @@ def test_or_annotation():
 
     v3 = pybryt.Value([])
     v = v1 | v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, v3)})
     assert_object_attrs(res, {
@@ -203,7 +203,7 @@ def test_or_annotation():
 
     v4 = pybryt.Value(6.02e+23)
     v = v4 | v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v4, v2)})
     assert_object_attrs(res, {
@@ -216,7 +216,7 @@ def test_or_annotation():
     })
 
     v = v4 | v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v4, v3)})
     assert_object_attrs(res, {
@@ -232,16 +232,16 @@ def test_or_annotation():
 def test_xor_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, ts1 = footprint.get_value(0)
+    val2, ts2 = footprint.get_value(1)
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
     
     v = v1 ^ v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, v2)})
     assert_object_attrs(res, {
@@ -255,7 +255,7 @@ def test_xor_annotation():
 
     v3 = pybryt.Value([])
     v = v1 ^ v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, v3)})
     assert_object_attrs(res, {
@@ -269,7 +269,7 @@ def test_xor_annotation():
 
     v4 = pybryt.Value(6.02e+23)
     v = v4 ^ v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v4, v2)})
     assert_object_attrs(res, {
@@ -282,7 +282,7 @@ def test_xor_annotation():
     })
 
     v = v4 ^ v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v4, v3)})
     assert_object_attrs(res, {
@@ -298,14 +298,13 @@ def test_xor_annotation():
 def test_not_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, _ = footprint.get_value(0)
 
     v1 = pybryt.Value(val1)
     v = ~v1
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v1, )})
     assert_object_attrs(res, {
@@ -319,7 +318,7 @@ def test_not_annotation():
 
     v3 = pybryt.Value([])
     v = ~v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert_object_attrs(v, {"children": (v3, )})
     assert_object_attrs(res, {

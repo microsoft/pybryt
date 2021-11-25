@@ -1,9 +1,5 @@
 """Tests for abstract annotations and annotation results"""
 
-import pytest
-
-from unittest import mock
-
 import pybryt
 
 from .utils import assert_object_attrs, generate_memory_footprint
@@ -12,8 +8,8 @@ from .utils import assert_object_attrs, generate_memory_footprint
 def test_name_group_limit():
     """
     """
-    mfp = generate_memory_footprint()  # TODO: check all calls to this
-    val, ts = mfp[2]
+    footprint = generate_memory_footprint()  # TODO: check all calls to this
+    val, _ = footprint.get_value(2)
 
     pybryt.Annotation.reset_tracked_annotations()
     vs = []
@@ -25,18 +21,18 @@ def test_name_group_limit():
     assert tracked == vs[:11], "Wrong tracked annotations"
     assert all(v.name == "foo" and v.limit == 11 for v in vs)
 
-    res = vs[-1].check(mfp)
+    res = vs[-1].check(footprint)
     assert_object_attrs(res, {
         "name": "foo",
         "group": None,
     })
 
-    v1 = pybryt.Value(mfp[0][0], group="bar")
-    v2 = pybryt.Value(mfp[1][0], group="bar")
+    v1 = pybryt.Value(footprint.get_value(0)[0], group="bar")
+    v2 = pybryt.Value(footprint.get_value(1)[0], group="bar")
     assert_object_attrs(v1, {"group": "bar"})
     assert_object_attrs(v2, {"group": "bar"})
 
-    res = v1.check(mfp)
+    res = v1.check(footprint)
     print(res.name)
     assert_object_attrs(res, {
         "name": "Annotation 101",
@@ -73,23 +69,23 @@ def test_get_reset_tracked_annotations():
 def test_messages():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, _ = footprint.get_value(0)
+    val2, _ = footprint.get_value(1)
 
     v1 = pybryt.Value(val1, success_message="m1", failure_message="m2")
     v2 = pybryt.Value(val2)
     
     v = v1.before(v2)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert len(res.messages) == 1, "Too many messages"
     assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
 
     v.failure_message = "m3"
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     assert len(res.messages) == 1, "Too many messages"
     assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"

@@ -1,25 +1,24 @@
 """Tests for value annotations"""
 
-import time
 import pytest
 
 from unittest import mock
 
 import pybryt
 
-from .utils import *
+from .utils import assert_object_attrs, generate_memory_footprint
 
 
 def test_value_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
     seen = {}
-    for val, ts in mfp:
+    for val, ts in footprint.values:
         v = pybryt.Value(val)
-        res = v.check(mfp)
+        res = v.check(footprint)
 
         assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
 
@@ -39,8 +38,8 @@ def test_value_annotation():
         if h not in seen:
             seen[h] = ts
 
-    v = pybryt.Value(-1) # does not occur in mfp
-    res = v.check(mfp)
+    v = pybryt.Value(-1)  # does not occur in footprint
+    res = v.check(footprint)
 
     assert v.to_dict() == {
         "name": "Annotation 11",
@@ -77,9 +76,9 @@ def test_value_annotation():
             v = pybryt.Value(-1)
 
     # test with invariants
-    s = mfp[-1][0]
+    s = footprint.get_value(-1)[0]
     v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
-    res = v.check(mfp)
+    res = v.check(footprint)
     assert res.satisfied
 
     # test that check_against correctly calls check
@@ -129,12 +128,12 @@ def test_value_annotation():
 def test_attribute_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
-    val, ts = mfp[0]
+    val, ts = footprint.get_value(0)
 
     v = pybryt.Attribute(val, "T")
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
     assert_object_attrs(v, {"children__len": 1})
@@ -188,15 +187,15 @@ def test_attribute_annotation():
     class Foo:
         T = val.T
 
-    mfp2 = [(Foo(), 1)]
-    res = v.check(mfp2)
+    footprint2 = pybryt.MemoryFootprint.from_values([(Foo(), 1)])
+    res = v.check(footprint2)
     assert res.satisfied
 
     v = pybryt.Attribute(val, "T", enforce_type=True)
-    res = v.check(mfp2)
+    res = v.check(footprint2)
     assert not res.satisfied
 
-    res = v.check(mfp + mfp2)
+    res = v.check(footprint + footprint2)
     assert res.satisfied
 
     # check error raising

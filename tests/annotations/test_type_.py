@@ -7,17 +7,17 @@ from unittest import mock
 
 import pybryt
 
-from .utils import *
+from .utils import assert_object_attrs, generate_memory_footprint
 
 
 def test_forbid_type():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
     a = pybryt.ForbidType(bool)
-    res = a.check(mfp)
+    res = a.check(footprint)
 
     assert_object_attrs(a, {"children__len": 0})
     assert_object_attrs(res, {
@@ -41,7 +41,7 @@ def test_forbid_type():
     }
 
     a = pybryt.ForbidType(np.ndarray)
-    res = a.check(mfp)
+    res = a.check(footprint)
     assert_object_attrs(res, {
         "children": [],
         "satisfied": False,

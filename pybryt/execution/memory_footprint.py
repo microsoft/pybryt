@@ -92,6 +92,11 @@ class MemoryFootprint:
             timestamp = self.counter.get_value()
         self.values.append((val, timestamp))
 
+    def get_value(self, index: int) -> Tuple[Any, int]:
+        """
+        """
+        return self.values[index]
+
     def add_call(self, filename: str, fn_name: str) -> None:
         """
         """
