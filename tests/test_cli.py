@@ -1,6 +1,5 @@
 """"""
 
-import pytest
 import nbformat
 import tempfile
 
@@ -12,7 +11,6 @@ from pybryt.cli import click_cli
 from pybryt.utils import get_stem
 
 from .test_reference import generate_reference_notebook
-from .test_student import generate_impl
 
 
 def test_check():

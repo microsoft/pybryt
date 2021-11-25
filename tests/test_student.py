@@ -1,20 +1,19 @@
 """"""
 
 import os
-import tempfile
 import nbformat
-import pytest
 import pkg_resources
+import pytest
+import tempfile
 
 from copy import deepcopy
 from functools import lru_cache
 from textwrap import dedent
-from types import MethodType
 from unittest import mock
 
 from pybryt import (
-    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation
-)
+    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation)
+from pybryt.execution.memory_footprint import MemoryFootprint
 
 from .test_reference import generate_reference_notebook
 
@@ -62,12 +61,8 @@ def test_constructor():
     nb, stu = generate_impl()
     assert stu.nb is nb
     assert stu.steps == max(t[1] for t in stu.values)
-    assert len(stu.values) == 993
-    assert isinstance(stu.calls, list)
-    assert all(isinstance(c, tuple) for c in stu.calls)
-    assert all(len(c) == 2 for c in stu.calls)
-    assert all(isinstance(c[0], str) for c in stu.calls)
-    assert all(isinstance(c[1], str) for c in stu.calls)
+    assert isinstance(stu.footprint, MemoryFootprint)
+    assert len(stu.footprint.values) == 993
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_exec:
         mocked_exec.return_value = (0, [], [], None)
@@ -76,9 +71,9 @@ def test_constructor():
             nbformat.write(nb, ntf.name)
 
             stu = StudentImplementation(ntf.name)
-            assert stu.steps == 0
-            assert stu.values == []
-            assert stu.calls == []
+            assert stu.footprint.num_steps == 0
+            assert stu.footprint.values == []
+            assert stu.footprint.calls == []
             assert stu.nb == nb
 
     with pytest.raises(TypeError, match="path_or_nb is of unsupported type <class 'int'>"):
@@ -138,13 +133,12 @@ def test_check_cm(capsys):
     """
     ref = ReferenceImplementation.compile(generate_reference_notebook(), name="foo")
     _, stu = generate_impl()
-    mfp = stu.values
 
     with mock.patch.object(check, "_cache_check") as mocked_cache:
         with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
             check_cm = check(ref, cache=False)
             with check_cm:
-                check_cm._observed = mfp
+                check_cm._footprint = stu.footprint
 
             mocked_cache.assert_not_called()
 
@@ -163,7 +157,7 @@ def test_check_cm(capsys):
             ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
             check_cm = check(ref_filename)
             with check_cm:
-                check_cm._observed = mfp
+                check_cm._footprint = stu.footprint
 
             mocked_cache.assert_called()
 
@@ -214,10 +208,10 @@ def test_check_cm(capsys):
                 mock.patch("pybryt.student.os.makedirs") as mocked_makedirs:
             mocked_stu.from_footprint.return_value.check.return_value = [mock.MagicMock()]
             mocked_stu.from_footprint.return_value.check.return_value[0].name = "foo"
-            # breakpoint()
+
             check_cm = check(ref)
             with check_cm:
-                check_cm._observed = mfp
+                check_cm._footprint = stu.footprint
             
             mocked_makedirs.assert_called_with(".pybryt_cache", exist_ok=True)
             mocked_stu.from_footprint.return_value.dump.assert_called()
@@ -263,6 +257,8 @@ def test_generate_student_impls():
     nbs = [nb] * num_notebooks
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_execute:
+        mocked_execute.return_value = MemoryFootprint.from_values(stu.footprint.values)
+        mocked_execute.return_value.calls = stu.footprint.calls
         mocked_execute.return_value = (stu.steps, stu.values, stu.calls, None)
         stus = generate_student_impls(nbs)
 
