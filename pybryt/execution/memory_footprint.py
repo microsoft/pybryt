@@ -58,6 +58,9 @@ class MemoryFootprint:
     counter: Counter
     """the counter used to construct this footprint"""
 
+    _hashes: set
+    """set of hashed values present in the memory footprint"""
+
     values: List[Tuple[Any, int]]
     """the values and timestamps in the footprint"""
 
@@ -72,6 +75,7 @@ class MemoryFootprint:
 
     def __init__(self, counter: Optional[Counter] = None):
         self.counter = counter if counter is not None else Counter()
+        self._hashes = set()
         self.values = []
         self.calls = []
         self.imports = set()
@@ -140,16 +144,23 @@ class MemoryFootprint:
         """
         self.counter.offset(val)
 
-    def add_value(self, val: Any, timestamp: Optional[int] = None) -> None:
+    def add_value(self, val: Any, timestamp: Optional[int] = None, allow_duplicates: bool = False) -> None:
         """
         Add a value to the memory footprint.
 
-        If the timestamp is unspeficied, the step counter is polled for the current value.
+        If the timestamp is unspeficied, the step counter is polled for the current value. By default,
+        this method does not allow duplicate values to be entered into the footprint; this can be
+        disabled using ``allow_duplicates``.
 
         Args:
             value (``object``): the value to add
             timestamp (``int``, optional): the timestamp
+            allow_duplicates(``bool``): whether duplicate values should be allowed in the footprint
         """
+        h = pickle_and_hash(val)
+        if not allow_duplicates and h in self._hashes:
+            return
+        self._hashes.add(h)
         if timestamp is None:
             timestamp = self.counter.get_value()
         self.values.append((val, timestamp))

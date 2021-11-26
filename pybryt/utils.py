@@ -16,6 +16,12 @@ from IPython import get_ipython
 from IPython.display import publish_display_data
 
 
+class UnpicklableError(Exception):
+    """
+    An exception to raise when :py:func:`pybryt.utils.pickle_and_hash` fails.
+    """
+
+
 def pickle_and_hash(obj: Any) -> str:
     """
     Uses ``dill`` to pickle an object and returns the SHA-512 hash of the returned bytes.
@@ -25,8 +31,15 @@ def pickle_and_hash(obj: Any) -> str:
     
     Returns:
         ``str``: the hex digest of the SHA-512 hash of the pickled object
+
+    Raises:
+        :py:class:`pybryt.utils.UnpicklableError`: if the object cannot be pickled
     """
-    s = dill.dumps(obj)
+    try:
+        s = dill.dumps(obj)
+    except:
+        raise UnpicklableError()
+
     return hashlib.sha512(s).hexdigest()
 
 

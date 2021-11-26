@@ -9,7 +9,7 @@ from .utils import assert_object_attrs, generate_memory_footprint
 def test_name_group_limit():
     """
     """
-    footprint = generate_memory_footprint()  # TODO: check all calls to this
+    footprint = generate_memory_footprint()
     val, _ = footprint.get_value(2)
 
     pybryt.Annotation.reset_tracked_annotations()
