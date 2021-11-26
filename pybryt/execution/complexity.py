@@ -102,6 +102,10 @@ class check_time_complexity:
 
 def is_complexity_tracing_enabled() -> bool:
     """
+    Return whether complexity tracing is currently enabled.
+
+    Returns:
+        ``bool``: whether complexity tracing is currently enabled
     """
     return COMPLEXITY_TRACING_ENABLED
 

@@ -260,5 +260,9 @@ class no_tracing:
 
 def get_active_footprint() -> Optional[MemoryFootprint]:
     """
+    Get the active memory footprint if present, else ``None``.
+
+    Returns:
+        :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
     """
     return ACTIVE_FOOTPRINT

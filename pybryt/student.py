@@ -45,7 +45,7 @@ class StudentImplementation(Serializable):
     """the path to the notebook file"""
 
     footprint: MemoryFootprint
-    """"""
+    """the memory footprint"""
 
     def __init__(
         self,
