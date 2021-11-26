@@ -4,9 +4,8 @@ __all__ = ["Value", "Attribute"]
 
 import dill
 import numbers
-from numpy.lib.arraysetops import isin
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from collections.abc import Iterable, Sized
 from copy import copy
