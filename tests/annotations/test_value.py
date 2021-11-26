@@ -77,7 +77,7 @@ def test_value_annotation():
             v = pybryt.Value(-1)
 
     # test with invariants
-    s = footprint.get_value(-1)[0]
+    s = footprint.get_value(-1)
     v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
     res = v.check(footprint)
     assert res.satisfied
@@ -131,7 +131,7 @@ def test_attribute_annotation():
     """
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
-    val, ts = footprint.get_value(0)
+    val, ts = footprint.get_value(0), footprint.get_timestamp(0)
 
     v = pybryt.Attribute(val, "T")
     res = v.check(footprint)

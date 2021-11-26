@@ -81,6 +81,8 @@ class MemoryFootprint:
         self.imports = set()
         self.executed_notebook = None
 
+    # TODO: refactor to create an abstraction barrier. take in *values_and_timestamps, check that 
+    # len % 2 == 0, and then populate self.values
     @classmethod
     def from_values(cls, values: List[Tuple[Any, int]]) -> 'MemoryFootprint':
         """
@@ -169,17 +171,29 @@ class MemoryFootprint:
 
         self.values.append((val, timestamp))
 
-    def get_value(self, index: int) -> Tuple[Any, int]:
+    def get_value(self, index: int) -> Any:
         """
-        Get the value-timestamp tuple at the specified index.
+        Get the value at the specified index.
 
         Args:
             index (``int``): the index
 
         Returns:
-            ``tuple[object, int]``: the value-timestamp tuple
+            ``object``: the value
         """
-        return self.values[index]
+        return self.values[index][0]
+
+    def get_timestamp(self, index: int) -> int:
+        """
+        Get the timestamp of the value at the specified index.
+
+        Args:
+            index (``int``): the index
+
+        Returns:
+            ``int``: the timestamp
+        """
+        return self.values[index][1]
 
     def add_call(self, filename: str, fn_name: str) -> None:
         """

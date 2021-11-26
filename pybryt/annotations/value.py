@@ -174,6 +174,8 @@ class Value(Annotation):
         """
         return self.check(MemoryFootprint.from_values([(other_value, 0)])).satisfied
 
+    # TODO: refactor to create abstraction barrier. accept value and timestamp as separate args.
+    # (or just accept value since timestamp isn't used here)
     def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.

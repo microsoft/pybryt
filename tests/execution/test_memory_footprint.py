@@ -75,16 +75,19 @@ def test_values():
     footprint = MemoryFootprint()
     footprint.add_value(1)
     assert len(footprint.values) == 1
-    assert footprint.get_value(0) == (1, 0)
+    assert footprint.get_value(0) == 1
+    assert footprint.get_timestamp(0) == 0
 
     footprint.increment_counter()
     footprint.add_value(2)
     assert len(footprint.values) == 2
-    assert footprint.get_value(1) == (2, 1)
+    assert footprint.get_value(1) == 2
+    assert footprint.get_timestamp(1) == 1
 
     footprint.add_value(3, 10)
     assert len(footprint.values) == 3
-    assert footprint.get_value(2) == (3, 10)
+    assert footprint.get_value(2) == 3
+    assert footprint.get_timestamp(2) == 10
 
 
 def test_calls():

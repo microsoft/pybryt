@@ -311,7 +311,7 @@ def test_generate_report():
     """).strip()
 
     # check empty messages
-    ref = ReferenceImplementation("foo", [Value(footprint.get_value(0)[0])])
+    ref = ReferenceImplementation("foo", [Value(footprint.get_value(0))])
     res = ref.run(footprint)
     report = generate_report(res)
     assert report == dedent("""\

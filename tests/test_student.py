@@ -252,7 +252,7 @@ def test_combine():
     comb = StudentImplementation.combine([stu, stu2])
     assert len(comb.footprint.values) == len(stu.footprint.values) + 1
     assert comb.footprint.num_steps == stu.footprint.num_steps + stu2.footprint.num_steps
-    assert comb.footprint.get_value(-1)[1] == stu.footprint.num_steps + stu2.footprint.num_steps
+    assert comb.footprint.get_timestamp(-1) == stu.footprint.num_steps + stu2.footprint.num_steps
 
 
 def test_generate_student_impls():
