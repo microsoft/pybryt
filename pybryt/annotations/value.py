@@ -4,6 +4,7 @@ __all__ = ["Value", "Attribute"]
 
 import dill
 import numbers
+from numpy.lib.arraysetops import isin
 import pandas as pd
 import numpy as np
 
@@ -282,6 +283,15 @@ class Value(Annotation):
                         if len(value) != len(other_value):
                             return False
                         res = np.array(np.isclose(v, o, atol=atol, rtol=rtol) for v, o in zip(sorted(value), sorted(other_value))).all()
+                    elif isinstance(value, dict):
+                        if not isinstance(other_value, dict):
+                            return False
+                        if all(isinstance(i, numbers.Real) for i in value.values()):
+                            res = np.array(np.isclose(k1, k2) and np.isclose(v1, v2) \
+                                for (k1, v1), (k2, v2) in zip(sorted(value.items(), key=lambda t: t[0]), \
+                                sorted(other_value.items(), key=lambda t: t[0]))).all()
+                        else:
+                            res = value == other_value
                     else:
                         res = np.allclose(value, other_value, atol=atol, rtol=rtol)
 
