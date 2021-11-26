@@ -58,7 +58,7 @@ class MemoryFootprint:
     counter: Counter
     """the counter used to construct this footprint"""
 
-    _hashes: set
+    _hashes: Set[str]
     """set of hashed values present in the memory footprint"""
 
     values: List[Tuple[Any, int]]
