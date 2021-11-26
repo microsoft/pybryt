@@ -157,12 +157,16 @@ class MemoryFootprint:
             timestamp (``int``, optional): the timestamp
             allow_duplicates(``bool``): whether duplicate values should be allowed in the footprint
         """
-        h = pickle_and_hash(val)
-        if not allow_duplicates and h in self._hashes:
-            return
-        self._hashes.add(h)
+        if not allow_duplicates:
+            h = pickle_and_hash(val)
+            if h in self._hashes:
+                return
+
+            self._hashes.add(h)
+
         if timestamp is None:
             timestamp = self.counter.get_value()
+
         self.values.append((val, timestamp))
 
     def get_value(self, index: int) -> Tuple[Any, int]:
