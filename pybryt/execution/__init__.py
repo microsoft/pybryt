@@ -48,9 +48,7 @@ def execute_notebook(
             ``None`` for no time limit
 
     Returns:
-        ``tuple[int, list[tuple[object, int]], list[tuple[str, str]], nbformat.NotebookNode]``: the 
-        number of execution steps, the memory footprint, the list of function calls, and the 
-        executed notebook
+        :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
     """
     nb = deepcopy(nb)
     preprocessor = IntermediateVariablePreprocessor()
