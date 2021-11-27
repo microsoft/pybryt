@@ -21,8 +21,8 @@ TRACING_VARNAME = "__PYBRYT_TRACING__"
 
 
 def create_collector(
-    skip_types: List[type] = [type, type(len), ModuleType, FunctionType], 
-    addl_filenames: List[str] = []
+    skip_types: List[type] = [type, type(len), FunctionType],
+    addl_filenames: List[str] = [],
 ) -> Tuple[MemoryFootprint, Callable[[FrameType, str, Any], Callable]]:
     """
     Creates a memory footprint to collect observed values and a trace function.
@@ -56,7 +56,14 @@ def create_collector(
             seen_at (``int``, optional): an overriding step counter value
         """
         try:
+            if hasattr(val, "__module__"):
+                footprint.add_imports(val.__module__.split(".")[0])
+
             if type(val) in skip_types:
+                return
+
+            if isinstance(val, ModuleType):
+                footprint.add_imports(val.__name__.split(".")[0])
                 return
 
             footprint.add_value(copy(val), seen_at)
