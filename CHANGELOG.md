@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+* Fixed a bug that was causing floats to be added to the memory footprint prematurely per resulting in [#125](https://github.com/microsoft/pybryt/issues/125)
+
 ## 0.3.0 - 2021-11-17
 
 * Fixed bug in `Value`s tracking `set`s of numbers
