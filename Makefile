@@ -20,8 +20,11 @@ COVERAGE      = coverage
 release:
 	rm dist/* || :
 	echo '__version__ = "$(VERSION)"' > pybryt/version.py
+	sed -i "s/date-released: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/date-released: $(date +%F)/" CITATION.cff
+	sed -i "s/^version: [0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}/version: $(VERSION)/" CITATION.cff
 	git add pybryt/version.py
-	git commit -m "update pybryt.__version__ for v$(VERSION)"
+	git add CITATION.cff
+	git commit -m "update version info for v$(VERSION)"
 	python3 setup.py sdist bdist_wheel
 	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(VERSION)' $(VERSION)
 	python3 -m twine upload dist/*
