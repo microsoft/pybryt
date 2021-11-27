@@ -1,36 +1,35 @@
-""""""
+"""Tests for complexity annotations"""
 
-import pytest
 import numpy as np
+import pytest
 
-from pybryt import *
-from pybryt import complexities as cplx
-from pybryt.execution.complexity import TimeComplexityResult
+import pybryt
+import pybryt.complexities as cplx
 
-from .utils import check_obj_attributes
+from .utils import assert_object_attrs
 
 
 def generate_complexity_footprint(name, t_transform, max_exp=8):
-    footprint = []
+    values = []
     for i, e in enumerate(range(1, max_exp + 1)):
         n = 10 ** e
         t = t_transform(n)
-        footprint.append((TimeComplexityResult(name, n, 0, t), i))
-    return footprint
+        values += [pybryt.TimeComplexityResult(name, n, 0, t), i]
+    return pybryt.MemoryFootprint.from_values(*values)
 
 
 def test_complexity_abc():
     """
     """
-    Annotation.reset_tracked_annotations()
+    pybryt.Annotation.reset_tracked_annotations()
 
-    a = TimeComplexity(cplx.constant, name="foo")
-    check_obj_attributes(a, {
+    a =  pybryt.TimeComplexity(cplx.constant, name="foo")
+    assert_object_attrs(a, {
         "name": "foo",
         "complexity": cplx.constant,
     })
 
-    b = TimeComplexity(cplx.constant, name="foo")
+    b =  pybryt.TimeComplexity(cplx.constant, name="foo")
     assert a == b
 
     b.complexity = cplx.linear
@@ -44,24 +43,24 @@ def test_complexity_abc():
 
     # test constructor errors
     with pytest.raises(ValueError, match="Complexity annotations require a 'name' kwarg"):
-        TimeComplexity(cplx.constant)
+         pybryt.TimeComplexity(cplx.constant)
 
     with pytest.raises(ValueError, match="Invalid valid for argument 'complexity': 1"):
-        TimeComplexity(1, name="foo")
+         pybryt.TimeComplexity(1, name="foo")
 
 
 def test_time_complexity():
-    Annotation.reset_tracked_annotations()
+    pybryt.Annotation.reset_tracked_annotations()
 
-    a = TimeComplexity(cplx.constant, name="foo")
+    a =  pybryt.TimeComplexity(cplx.constant, name="foo")
 
     footprint = generate_complexity_footprint("foo", lambda v: 1012)
     res = a.check(footprint)
     assert res.satisfied
     assert res.value == cplx.constant
 
-    footprint.append((np.random.uniform(size=100), 9))
-    footprint.append((TimeComplexityResult("bar", 10, 0, 10 ** 3), 10))
+    footprint.add_value(np.random.uniform(size=100), 9)
+    footprint.add_value( pybryt.TimeComplexityResult("bar", 10, 0, 10 ** 3), 10)
     res = a.check(footprint)
     assert res.satisfied
     assert res.value == cplx.constant
@@ -83,5 +82,5 @@ def test_time_complexity():
 
 
 def test_alias():
-    import pybryt.complexities as cplx2
+    from pybryt.annotations.complexity import complexities as cplx2
     assert cplx.complexity_classes is cplx2.complexity_classes

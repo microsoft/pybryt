@@ -1,16 +1,15 @@
 """Tests for PyBryt execution internals"""
 
-import re
 import dill
+import nbformat
+import numpy as np
 import pathlib
 import random
 import tempfile
-import nbformat
-import numpy as np
 
 from unittest import mock
 
-from pybryt.execution import execute_notebook
+import pybryt.execution
 
 
 def generate_test_notebook():
@@ -33,17 +32,11 @@ def test_notebook_execution():
     random.seed(42)
     nb = generate_test_notebook()
 
-    observed_fn = str(pathlib.Path(__file__).parent.parent / 'files' / 'expected_observed.pkl')
-    with open(observed_fn, "rb") as f:
-        expected_observed = dill.load(f)
+    with tempfile.NamedTemporaryFile(delete=False) as observed_ntf:
+        with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
+            mocked_tempfile.return_value = (None, observed_ntf.name)
 
-    with tempfile.NamedTemporaryFile("w+") as ntf:
-        with tempfile.NamedTemporaryFile(delete=False) as observed_ntf:
-            with mock.patch("pybryt.execution.mkstemp") as mocked_tempfile:
-                mocked_tempfile.return_value = (None, observed_ntf.name)
-
-                n_steps, observed, calls, _ = execute_notebook(nb, "", output=ntf.name)
-                assert len(ntf.read()) > 0
-                assert n_steps == max(t[1] for t in observed)
-                assert isinstance(calls, list) and isinstance(calls[0], tuple) and \
-                    isinstance(calls[0][0], str) and isinstance(calls[0][1], str)
+            footprint = pybryt.execution.execute_notebook(nb, "")
+            assert len(footprint.values) > 0
+            assert all(i in footprint.imports for i in ["pandas", "numpy", "matplotlib"])
+            assert len(footprint.calls) > 0

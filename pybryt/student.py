@@ -2,30 +2,26 @@
 
 __all__ = ["StudentImplementation", "check", "generate_student_impls"]
 
-import os
-import dill
-import base64
-import nbformat
-import inspect
 import hashlib
+import inspect
+import nbformat
+import os
 import warnings
 
-from contextlib import contextmanager
 from glob import glob
 from multiprocessing import Process, Queue
 from types import FrameType
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .execution import (
-    create_collector, execute_notebook, _get_tracing_frame, NBFORMAT_VERSION, tracing_off, 
-    tracing_on, TRACING_VARNAME
-)
+    create_collector, execute_notebook, get_tracing_frame, MemoryFootprint, NBFORMAT_VERSION, 
+    tracing_off, tracing_on, TRACING_VARNAME)
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
 from .utils import pickle_and_hash, Serializable
 
 
 CACHE_DIR_NAME = ".pybryt_cache"
-_CACHE_STUDENT_IMPL_PREFIX = "student_impl_{}.pkl"
+CACHE_STUDENT_IMPL_PREFIX = "student_impl_{}.pkl"
 
 
 class StudentImplementation(Serializable):
@@ -48,23 +44,16 @@ class StudentImplementation(Serializable):
     nb_path: Optional[str]
     """the path to the notebook file"""
 
-    values: List[Tuple[Any, int]]
-    """the memory footprint (a list of tuples of objects and their timestamps)"""
-
-    calls: List[Tuple[str, str]]
-    """the list of all function calls from the student code"""
-
-    steps: int
-    """number of execution steps; -1 if there were no steps"""
-
-    executed_nb: Optional[nbformat.NotebookNode]
-    """the executed submission notebook"""
+    footprint: MemoryFootprint
+    """the memory footprint"""
 
     def __init__(
-        self, path_or_nb: Optional[Union[str, nbformat.NotebookNode]], addl_filenames: List[str] = [],
-        output: Optional[str] = None, timeout: Optional[int] = 1200,
+        self,
+        path_or_nb: Optional[Union[str, nbformat.NotebookNode]],
+        addl_filenames: List[str] = [],
+        output: Optional[str] = None,
+        timeout: Optional[int] = 1200,
     ):
-        self.executed_nb = None
         if path_or_nb is None:
             self.nb = None
             self.nb_path = None
@@ -80,7 +69,12 @@ class StudentImplementation(Serializable):
 
         self._execute(timeout, addl_filenames=addl_filenames, output=output)
 
-    def _execute(self, timeout: Optional[int], addl_filenames: List[str] = [], output: Optional[str] = None) -> None:
+    def _execute(
+        self, 
+        timeout: Optional[int], 
+        addl_filenames: List[str] = [], 
+        output: Optional[str] = None
+    ) -> None:
         """
         Executes the notebook ``self.nb``.
 
@@ -91,9 +85,16 @@ class StudentImplementation(Serializable):
                 execution
             output (``str``, optional): a path at which to write executed notebook
         """
-        self.steps, self.values, self.calls, self.executed_nb = execute_notebook(
-            self.nb, self.nb_path, addl_filenames=addl_filenames, output=output, timeout=timeout,
+        self.footprint = execute_notebook(
+            self.nb, 
+            self.nb_path, 
+            addl_filenames=addl_filenames, 
+            timeout=timeout,
         )
+
+        if output:
+            with open(output, "w+") as f:
+                nbformat.write(self.footprint.executed_notebook, f)
 
         if self.errors:
             nb_path = self.nb_path
@@ -107,11 +108,11 @@ class StudentImplementation(Serializable):
         ``list[dict[str, Union[str, list[str]]]]:``: a list of error outputs from the executed notebook
         if present
         """
-        if self.executed_nb is None:
+        if self.footprint.executed_notebook is None:
             return []
 
         errors = []
-        for cell in self.executed_nb['cells']:
+        for cell in self.footprint.executed_notebook['cells']:
             if cell['cell_type'] == "code":
                 for out in cell['outputs']:
                     if out['output_type'] == "error":
@@ -120,23 +121,18 @@ class StudentImplementation(Serializable):
         return errors
 
     @classmethod
-    def from_footprint(
-        cls, footprint: List[Tuple[Any, int]], calls: List[Tuple[str, str]], steps: int
-    ) -> 'StudentImplementation':
+    def from_footprint(cls, footprint: MemoryFootprint) -> 'StudentImplementation':
         """
         Create a student implementation object from a memory footprint directly, rather than by
         executing a notebook. Leaves the ``nb`` and ``nb_path`` instance variables of the resulting 
         object empty.
 
         Args:
-            footprint (``list[tuple[object, int]]``): the memory footprint
-            calls (``list[tuple[str, str]]``): the list of function calls
-            steps (``int``): the number of execution steps
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the memory 
+                footprint
         """
         stu = cls(None)
-        stu.steps = steps
-        stu.values = footprint
-        stu.calls = calls
+        stu.footprint = footprint
         return stu
 
     @classmethod
@@ -157,20 +153,8 @@ class StudentImplementation(Serializable):
         Returns:
             ``StudentImplementation``: the combined implementation
         """
-        new_mfp = []    # the new memory footprint
-        new_calls = []  # the new list of calls
-        seen = set()    # set to track which values we've seen
-        timestamp_offset = 0  # offset for timestamps in the new memory footprint
-        for impl in impls:
-            new_calls.extend(impl.calls)
-            for obj, ts in impl.values:
-                h = pickle_and_hash(obj)
-                if h not in seen:
-                    ts += timestamp_offset
-                    new_mfp.append((obj, ts))
-                    seen.add(h)
-            timestamp_offset += impl.steps
-        return cls.from_footprint(new_mfp, new_calls, timestamp_offset)
+        footprint = MemoryFootprint.combine(*[impl.footprint for impl in impls])
+        return cls.from_footprint(footprint)
 
     @classmethod
     def from_cache(cls, cache_dir=CACHE_DIR_NAME, combine=True) -> \
@@ -190,7 +174,7 @@ class StudentImplementation(Serializable):
             loaded from the cache.
         """
         impls = []
-        for impl_path in glob(os.path.join(cache_dir, _CACHE_STUDENT_IMPL_PREFIX.format("*"))):
+        for impl_path in glob(os.path.join(cache_dir, CACHE_STUDENT_IMPL_PREFIX.format("*"))):
             impls.append(cls.load(impl_path))
         if combine:
             return cls.combine(impls)
@@ -204,8 +188,8 @@ class StudentImplementation(Serializable):
         The object is considered equal if it is also a student implementation, has the same memory
         footprint, the same number of steps, and the same source notebook.
         """
-        return isinstance(other, type(self)) and self.values == other.values and \
-            self.steps == other.steps and self.nb == other.nb and self.calls == other.calls
+        return isinstance(other, type(self)) and self.footprint == other.footprint \
+            and self.nb == other.nb
 
     @property
     def _default_dump_dest(self) -> str:
@@ -228,9 +212,9 @@ class StudentImplementation(Serializable):
             implementation checks
         """
         if isinstance(ref, ReferenceImplementation):
-            return ref.run(self.values, group=group)
+            return ref.run(self.footprint, group=group)
         elif isinstance(ref, list):
-            return [r.run(self.values, group=group) for r in ref]
+            return [r.run(self.footprint, group=group) for r in ref]
         else:
             raise TypeError(f"check cannot take values of type {type(ref)}")
 
@@ -348,11 +332,8 @@ class check:
     _frame: Optional[FrameType]
     """the frame containing the student's code"""
 
-    _observed: Optional[List[Tuple[Any, int]]]
+    _footprint: Optional[MemoryFootprint]
     """the memory footprint"""
-
-    _calls: Optional[List[Tuple[str, str]]]
-    """the list of calls from tracing"""
 
     _cache: bool
     """whether to cache the memory footprint and results"""
@@ -382,8 +363,7 @@ class check:
         self._kwargs = kwargs
         self._show_only = show_only
         self._frame = None
-        self._observed = None
-        self._calls = None
+        self._footprint = None
         self._report_on_error = report_on_error
         self._cache = cache
 
@@ -406,15 +386,15 @@ class check:
             r.dump(res_path)
 
         ref_hash = hashlib.sha1("".join(r.name for r in res).encode()).hexdigest()
-        stu_path = os.path.join(CACHE_DIR_NAME, _CACHE_STUDENT_IMPL_PREFIX.format(ref_hash))
+        stu_path = os.path.join(CACHE_DIR_NAME, CACHE_STUDENT_IMPL_PREFIX.format(ref_hash))
         stu.dump(stu_path)
 
     def __enter__(self):
-        if _get_tracing_frame() is not None:
+        if get_tracing_frame() is not None:
             return  # if already tracing, no action required
 
         else:
-            (self._observed, self._calls), cir = create_collector(**self._kwargs)
+            self._footprint, cir = create_collector(**self._kwargs)
             self._frame = inspect.currentframe().f_back
             self._frame.f_globals[TRACING_VARNAME] = True
 
@@ -427,7 +407,7 @@ class check:
             self._frame.f_globals[TRACING_VARNAME] = False
 
             if exc_type is None or self._report_on_error:
-                stu = StudentImplementation.from_footprint(self._observed, self._calls, max(t[1] for t in self._observed))
+                stu = StudentImplementation.from_footprint(self._footprint)
                 res = stu.check(self._ref)
                 report = generate_report(res, show_only=self._show_only)
                 if report:

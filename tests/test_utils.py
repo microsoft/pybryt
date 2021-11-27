@@ -68,7 +68,6 @@ def test_make_secret():
     """
     random.seed(42)
     s = make_secret()
-    print(s)
     assert s == "HBRPOI"
 
 

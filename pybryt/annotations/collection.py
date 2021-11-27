@@ -6,6 +6,8 @@ from typing import Any, Dict, List, Tuple
 
 from .annotation import Annotation, AnnotationResult
 
+from ..execution import MemoryFootprint
+
 
 class Collection(Annotation):
     """
@@ -62,23 +64,22 @@ class Collection(Annotation):
         return super().__eq__(other) and self.children == other.children and \
             self.enforce_order == other.enforce_order
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks that all child annotations are satisfied by the values in ``observed_values``, and
+        Checks that all child annotations are satisfied by the values in the memory footprint, and
         that the timestamps of the satisfying values occur in non-decreasing order if 
         ``self.enforce_order`` is true.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         results = []
         for ann in self.children:
-            results.append(ann.check(observed_values))
+            results.append(ann.check(footprint))
         
         if self.enforce_order and all(res.satisfied for res in results):
                 before = []
