@@ -2,7 +2,7 @@
 
 import nbformat
 
-from typing import Any, List, Optional, Set, Tuple
+from typing import Any, List, Optional, Set, Tuple, Union
 
 from ..utils import filter_picklable_list, pickle_and_hash
 
@@ -81,19 +81,39 @@ class MemoryFootprint:
         self.imports = set()
         self.executed_notebook = None
 
-    # TODO: refactor to create an abstraction barrier. take in *values_and_timestamps, check that 
-    # len % 2 == 0, and then populate self.values
     @classmethod
-    def from_values(cls, values: List[Tuple[Any, int]]) -> 'MemoryFootprint':
+    def from_values(cls, *values_and_timestamps: Union[Any, int]) -> 'MemoryFootprint':
         """
-        Generate a memory footprint from a list of value-timestamp tuples.
+        Generate a memory footprint from values and their timestamps.
+
+        Values and timestamps should be provided in sequence, with a value followed by its timestmap.
+        For example:
+
+        .. code-block:: python
+
+            MemoryFootprint.from_values(val1, ts1, val2, ts2, val3, ts3, ...)
 
         Args:
-            values (``list[tuple[object, int]]``): the values and timestamps
+            values_and_timestamps (``object | int``): the values and timestamps
 
         Returns:
             :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
+
+        Raises:
+            ``ValueError``: if an odd number of arguments is provided
+            ``TypeError``: if one of the timestamps is not an ``int``
         """
+        if len(values_and_timestamps) % 2 != 0:
+            raise ValueError("Uneven number of arguments provided")
+
+        values = [(values_and_timestamps[2 * i], values_and_timestamps[2 * i + 1]) \
+            for i in range(len(values_and_timestamps) // 2)]
+
+        not_ints = [not isinstance(ts, int) for _, ts in values]
+        if any(not_ints):
+            bad_idx = not_ints.index(True)
+            raise TypeError(f"Provided timestamp is not an integer: {values[bad_idx][1]}")
+
         footprint = cls()
         footprint.values.extend(values)
         footprint.offset_counter(footprint.num_steps)

@@ -14,8 +14,8 @@ def generate_complexity_footprint(name, t_transform, max_exp=8):  # TODO: fix re
     for i, e in enumerate(range(1, max_exp + 1)):
         n = 10 ** e
         t = t_transform(n)
-        values.append((pybryt.TimeComplexityResult(name, n, 0, t), i))
-    return pybryt.MemoryFootprint.from_values(values)
+        values += [pybryt.TimeComplexityResult(name, n, 0, t), i]
+    return pybryt.MemoryFootprint.from_values(*values)
 
 
 def test_complexity_abc():

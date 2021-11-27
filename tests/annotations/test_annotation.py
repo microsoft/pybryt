@@ -91,7 +91,7 @@ def test_messages():
     assert len(res.messages) == 1, "Too many messages"
     assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
 
-    res = v.check(MemoryFootprint.from_values([]))
+    res = v.check(MemoryFootprint.from_values())
 
     assert len(res.messages) == 2, "Wrong number of messages"
     assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"
@@ -99,7 +99,7 @@ def test_messages():
 
     v2.name = "v2"
     v2.failure_message = "m4"
-    res = v.check(MemoryFootprint.from_values([]))
+    res = v.check(MemoryFootprint.from_values())
 
     assert len(res.messages) == 3, "Wrong number of messages"
     assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"

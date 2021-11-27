@@ -1,8 +1,10 @@
 """Tests for memory footprint objects"""
 
 import nbformat
+import pytest
 
 from copy import deepcopy
+from itertools import chain
 from unittest import mock
 
 from pybryt.execution.memory_footprint import Counter, MemoryFootprint
@@ -44,10 +46,17 @@ def test_memory_footprint_constructor():
 
 def test_from_values():
     vals = generate_values()
-    footprint = MemoryFootprint.from_values(vals)
+    footprint = MemoryFootprint.from_values(*chain.from_iterable(vals))
     assert footprint.values == vals
     assert footprint.num_steps == len(vals)
     assert footprint.counter.get_value() == len(vals)
+
+    # check errors
+    with pytest.raises(ValueError):
+        MemoryFootprint.from_values(1, 1, 1)
+
+    with pytest.raises(TypeError):
+        MemoryFootprint.from_values([1], 1, True, 2.0)
 
 
 def test_combine():
@@ -55,7 +64,7 @@ def test_combine():
     v1, v2 = vals[:3], vals[3:]
     v2.extend(v1)
 
-    f1, f2 = MemoryFootprint.from_values(v1), MemoryFootprint.from_values(v2)
+    f1, f2 = MemoryFootprint.from_values(*chain.from_iterable(v1)), MemoryFootprint.from_values(*chain.from_iterable(v2))
     footprint = MemoryFootprint.combine(f1, f2)
 
     sorted_fp_vals = sorted(footprint.values, key=lambda t: t[1])
@@ -118,7 +127,7 @@ def test_set_executed_notebook():
 
 def test_filter_out_unpicklable_values():
     vals = generate_values()
-    footprint = MemoryFootprint.from_values(vals)
+    footprint = MemoryFootprint.from_values(*chain.from_iterable(vals))
 
     with mock.patch("pybryt.execution.memory_footprint.filter_picklable_list") as mocked_filter:
         footprint.filter_out_unpicklable_values()
@@ -127,7 +136,7 @@ def test_filter_out_unpicklable_values():
 
 def test_eq():
     vals = generate_values()
-    f1, f2 = MemoryFootprint.from_values(vals), MemoryFootprint([])
+    f1, f2 = MemoryFootprint.from_values(*chain.from_iterable(vals)), MemoryFootprint()
     f3 = deepcopy(f1)
 
     assert f1 != f2

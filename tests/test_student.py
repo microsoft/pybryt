@@ -263,10 +263,7 @@ def test_generate_student_impls():
     nbs = [nb] * num_notebooks
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_execute:
-        mocked_execute.return_value = MemoryFootprint.from_values(stu.footprint.values)
-        mocked_execute.return_value.calls = stu.footprint.calls
-        mocked_execute.return_value.imports = stu.footprint.imports
-        mocked_execute.return_value.set_executed_notebook(stu.footprint.executed_notebook)
+        mocked_execute.return_value = deepcopy(stu.footprint)
         stus = generate_student_impls(nbs)
     
     assert all(s == stu for s in stus)
