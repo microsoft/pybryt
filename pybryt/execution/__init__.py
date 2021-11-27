@@ -17,7 +17,7 @@ from .memory_footprint import MemoryFootprint
 from .tracing import (
     create_collector, get_tracing_frame, no_tracing, tracing_off, tracing_on, TRACING_VARNAME)
 
-from ..preprocessors import IntermediateVariablePreprocessor
+from ..preprocessors import NotebookPreprocessor
 from ..utils import make_secret
 
 
@@ -51,7 +51,7 @@ def execute_notebook(
         :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
     """
     nb = deepcopy(nb)
-    preprocessor = IntermediateVariablePreprocessor()
+    preprocessor = NotebookPreprocessor()
     nb = preprocessor.preprocess(nb)
 
     secret = make_secret()
@@ -71,8 +71,6 @@ def execute_notebook(
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
         from pybryt.execution import tracing_off
         tracing_off()
-        import sys
-        {footprint_varname}.add_imports(*sys.modules.keys())
         {footprint_varname}.filter_out_unpicklable_values()
         import dill
         with open("{footprint_fp}", "wb+") as f:
@@ -87,10 +85,11 @@ def execute_notebook(
     ep.preprocess(nb)
 
     with open(footprint_fp, "rb") as f:
-        footprint = dill.load(f)
+        footprint: MemoryFootprint = dill.load(f)
 
     os.remove(footprint_fp)
 
+    footprint.add_imports(*preprocessor.get_imports())
     footprint.set_executed_notebook(nb)
 
     return footprint
