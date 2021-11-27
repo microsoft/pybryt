@@ -63,6 +63,13 @@ Type Annotations
    :members:
    :undoc-members:
 
+Import Annotations
+++++++++++++++++++
+
+.. automodule:: pybryt.annotations.import_
+   :members:
+   :undoc-members:
+
 
 Annotation Collections
 ++++++++++++++++++++++
