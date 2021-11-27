@@ -131,8 +131,7 @@ class Value(Annotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        observed_values = footprint.values
-        satisfied = [self._check_observed_value(v) for v in observed_values]
+        satisfied = [self._check_observed_value(v) for v, _ in footprint.values]
         if not any(satisfied):
             return AnnotationResult(False, self)
 
@@ -140,10 +139,10 @@ class Value(Annotation):
         return AnnotationResult(
             True, 
             self, 
-            observed_values[first_satisfier][0], 
-            observed_values[first_satisfier][1],
+            footprint.values[first_satisfier][0],
+            footprint.values[first_satisfier][1],
         )
-    
+
     def __eq__(self, other: Any) -> bool:
         """
         Checks whether this annotation is equal to another object.
@@ -174,9 +173,7 @@ class Value(Annotation):
         """
         return self.check(MemoryFootprint.from_values([(other_value, 0)])).satisfied
 
-    # TODO: refactor to create abstraction barrier. accept value and timestamp as separate args.
-    # (or just accept value since timestamp isn't used here)
-    def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
+    def _check_observed_value(self, observed_value: Any) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
 
@@ -184,12 +181,12 @@ class Value(Annotation):
         resulting values match and of the values in ``self._values``.
 
         Args:
-            observed_value (``tuple[object, int]``): the observed value tuple
+            observed_value (``object``): the observed value
 
         Returns:
             ``bool``: whether the value matched
         """
-        other_values = [observed_value[0]]
+        other_values = [observed_value]
         for inv in self.invariants:
             other_values = inv(other_values)
         
