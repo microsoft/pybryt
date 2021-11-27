@@ -12,7 +12,7 @@ from .complexity import is_complexity_tracing_enabled
 from .memory_footprint import MemoryFootprint
 from .utils import is_ipython_frame
 
-from ..utils import make_secret, pickle_and_hash
+from ..utils import make_secret, pickle_and_hash, UnpicklableError
 
 
 ACTIVE_FOOTPRINT = None
@@ -43,7 +43,6 @@ def create_collector(
     """
     global ACTIVE_FOOTPRINT
     vars_not_found = {}
-    hashes = set()  # TODO: add this set to the MemoryFootprint class?
     footprint = MemoryFootprint()
 
     def track_value(val, seen_at=None):
@@ -60,14 +59,10 @@ def create_collector(
             if type(val) in skip_types:
                 return
 
-            h = pickle_and_hash(val)
-            
-            if h not in hashes:
-                footprint.add_value(copy(val), seen_at)
-                hashes.add(h)
+            footprint.add_value(copy(val), seen_at)
 
         # if something fails, don't track
-        except:
+        except UnpicklableError:
             return
 
     def track_call(frame):
@@ -260,5 +255,9 @@ class no_tracing:
 
 def get_active_footprint() -> Optional[MemoryFootprint]:
     """
+    Get the active memory footprint if present, else ``None``.
+
+    Returns:
+        :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
     """
     return ACTIVE_FOOTPRINT

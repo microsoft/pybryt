@@ -13,7 +13,7 @@ def test_collection():
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    v1, v2 = pybryt.Value(footprint.get_value(0)[0]), pybryt.Value(footprint.get_value(2)[0])
+    v1, v2 = pybryt.Value(footprint.get_value(0)), pybryt.Value(footprint.get_value(2))
     a = pybryt.Collection(v1, v2, success_message="foo")
 
     res = a.check(footprint)
@@ -42,7 +42,7 @@ def test_collection():
     res = a.check(footprint)
     assert res.satisfied
 
-    v3 = pybryt.Value(footprint.get_value(1)[0])
+    v3 = pybryt.Value(footprint.get_value(1))
     a.add(v3)
     res = a.check(footprint)
     assert not res.satisfied

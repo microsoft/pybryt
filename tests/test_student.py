@@ -252,7 +252,7 @@ def test_combine():
     comb = StudentImplementation.combine([stu, stu2])
     assert len(comb.footprint.values) == len(stu.footprint.values) + 1
     assert comb.footprint.num_steps == stu.footprint.num_steps + stu2.footprint.num_steps
-    assert comb.footprint.get_value(-1)[1] == stu.footprint.num_steps + stu2.footprint.num_steps
+    assert comb.footprint.get_timestamp(-1) == stu.footprint.num_steps + stu2.footprint.num_steps
 
 
 def test_generate_student_impls():
@@ -263,10 +263,7 @@ def test_generate_student_impls():
     nbs = [nb] * num_notebooks
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_execute:
-        mocked_execute.return_value = MemoryFootprint.from_values(stu.footprint.values)
-        mocked_execute.return_value.calls = stu.footprint.calls
-        mocked_execute.return_value.imports = stu.footprint.imports
-        mocked_execute.return_value.set_executed_notebook(stu.footprint.executed_notebook)
+        mocked_execute.return_value = deepcopy(stu.footprint)
         stus = generate_student_impls(nbs)
     
     assert all(s == stu for s in stus)

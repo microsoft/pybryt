@@ -136,6 +136,19 @@ argument, which takes on 3 values: ``{"satisfied", "unsatisfied", None}``. If it
 ``fill_empty`` is ``True``), and similarly for ``"unsatisfied"``.
 
 
+Working with Memory Footprints
+------------------------------
+
+Once the notebook has been executed, which happens when the constructor is called, the submission's
+memory footprint can be found in the ``footprint`` field of the 
+:py:class:`StudentImplementation<pybryt.student.StudentImplementation>` object. This field contains a 
+:py:class:`MemoryFootprint<pybryt.execution.memory_footprint.MemoryFootprint>` object, which has 
+fields and method for accessing the values in the footprint, the function calls observed by the 
+trace function, the set of imported modules, and the processed notebook that was executed by PyBryt. 
+See the API reference for
+:py:class:`MemoryFootprint<pybryt.execution.memory_footprint.MemoryFootprint>` objects for more information.
+
+
 Storing Implementations
 -----------------------
 

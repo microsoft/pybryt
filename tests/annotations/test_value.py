@@ -2,6 +2,7 @@
 
 import pytest
 
+from itertools import chain
 from unittest import mock
 
 import pybryt
@@ -77,7 +78,7 @@ def test_value_annotation():
             v = pybryt.Value(-1)
 
     # test with invariants
-    s = footprint.get_value(-1)[0]
+    s = footprint.get_value(-1)
     v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
     res = v.check(footprint)
     assert res.satisfied
@@ -87,7 +88,7 @@ def test_value_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = True
         assert v.check_against(s.lower())
-        mocked_check.assert_called_with(MemoryFootprint.from_values([(s.lower(), 0)]))
+        mocked_check.assert_called_with(MemoryFootprint.from_values(s.lower(), 0))
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
@@ -131,7 +132,7 @@ def test_attribute_annotation():
     """
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
-    val, ts = footprint.get_value(0)
+    val, ts = footprint.get_value(0), footprint.get_timestamp(0)
 
     v = pybryt.Attribute(val, "T")
     res = v.check(footprint)
@@ -182,13 +183,13 @@ def test_attribute_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = False
         assert not v.check_against(val)
-        mocked_check.assert_called_with(MemoryFootprint.from_values([(val, 0)]))
+        mocked_check.assert_called_with(MemoryFootprint.from_values(val, 0))
 
     # check enforce type
     class Foo:
         T = val.T
 
-    footprint2 = pybryt.MemoryFootprint.from_values([(Foo(), 1)])
+    footprint2 = pybryt.MemoryFootprint.from_values(Foo(), 1)
     res = v.check(footprint2)
     assert res.satisfied
 
@@ -196,7 +197,7 @@ def test_attribute_annotation():
     res = v.check(footprint2)
     assert not res.satisfied
 
-    footprint3 = MemoryFootprint.from_values(footprint.values + footprint2.values)
+    footprint3 = MemoryFootprint.from_values(*chain.from_iterable(footprint.values + footprint2.values))
     res = v.check(footprint3)
     assert res.satisfied
 

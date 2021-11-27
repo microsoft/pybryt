@@ -94,14 +94,18 @@ class check_time_complexity:
 
         if self.start_steps is not None:
             end_steps = self.footprint.counter.get_value()
-            self.footprint.add_value(
-                TimeComplexityResult(self.name, self.n, self.start_steps, end_steps))
+            self.footprint.add_value(TimeComplexityResult(
+                self.name, self.n, self.start_steps, end_steps), allow_duplicates=True)
 
         return False
 
 
 def is_complexity_tracing_enabled() -> bool:
     """
+    Return whether complexity tracing is currently enabled.
+
+    Returns:
+        ``bool``: whether complexity tracing is currently enabled
     """
     return COMPLEXITY_TRACING_ENABLED
 

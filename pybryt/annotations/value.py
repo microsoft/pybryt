@@ -4,12 +4,12 @@ __all__ = ["Value", "Attribute"]
 
 import dill
 import numbers
-from numpy.lib.arraysetops import isin
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from collections.abc import Iterable, Sized
 from copy import copy
+from itertools import chain
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
@@ -132,8 +132,7 @@ class Value(Annotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        observed_values = footprint.values
-        satisfied = [self._check_observed_value(v) for v in observed_values]
+        satisfied = [self._check_observed_value(v) for v, _ in footprint.values]
         if not any(satisfied):
             return AnnotationResult(False, self)
 
@@ -141,10 +140,10 @@ class Value(Annotation):
         return AnnotationResult(
             True, 
             self, 
-            observed_values[first_satisfier][0], 
-            observed_values[first_satisfier][1],
+            footprint.values[first_satisfier][0],
+            footprint.values[first_satisfier][1],
         )
-    
+
     def __eq__(self, other: Any) -> bool:
         """
         Checks whether this annotation is equal to another object.
@@ -173,9 +172,9 @@ class Value(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check(MemoryFootprint.from_values([(other_value, 0)])).satisfied
+        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
 
-    def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
+    def _check_observed_value(self, observed_value: Any) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
 
@@ -183,12 +182,12 @@ class Value(Annotation):
         resulting values match and of the values in ``self._values``.
 
         Args:
-            observed_value (``tuple[object, int]``): the observed value tuple
+            observed_value (``object``): the observed value
 
         Returns:
             ``bool``: whether the value matched
         """
-        other_values = [observed_value[0]]
+        other_values = [observed_value]
         for inv in self.invariants:
             other_values = inv(other_values)
         
@@ -377,7 +376,8 @@ class _AttrValue(Value):
         if self.enforce_type:  # filter out values of wrong type if enforce_type is True
             observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
-        attrs_fp = MemoryFootprint.from_values([(getattr(obj, self._attr), t) for obj, t in vals])
+        args = chain.from_iterable((getattr(obj, self._attr), ts) for obj, ts in vals)
+        attrs_fp = MemoryFootprint.from_values(*args)
         res = super().check(attrs_fp)
         try:
             satisfier = vals[attrs_fp.values.index((res.value, res.timestamp))][0]
@@ -502,4 +502,4 @@ class Attribute(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check(MemoryFootprint.from_values([(other_value, 0)])).satisfied
+        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied

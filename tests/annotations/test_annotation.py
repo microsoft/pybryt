@@ -9,8 +9,8 @@ from .utils import assert_object_attrs, generate_memory_footprint
 def test_name_group_limit():
     """
     """
-    footprint = generate_memory_footprint()  # TODO: check all calls to this
-    val, _ = footprint.get_value(2)
+    footprint = generate_memory_footprint()
+    val = footprint.get_value(2)
 
     pybryt.Annotation.reset_tracked_annotations()
     vs = []
@@ -28,8 +28,8 @@ def test_name_group_limit():
         "group": None,
     })
 
-    v1 = pybryt.Value(footprint.get_value(0)[0], group="bar")
-    v2 = pybryt.Value(footprint.get_value(1)[0], group="bar")
+    v1 = pybryt.Value(footprint.get_value(0), group="bar")
+    v2 = pybryt.Value(footprint.get_value(1), group="bar")
     assert_object_attrs(v1, {"group": "bar"})
     assert_object_attrs(v2, {"group": "bar"})
 
@@ -73,8 +73,8 @@ def test_messages():
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    val1, _ = footprint.get_value(0)
-    val2, _ = footprint.get_value(1)
+    val1 = footprint.get_value(0)
+    val2 = footprint.get_value(1)
 
     v1 = pybryt.Value(val1, success_message="m1", failure_message="m2")
     v2 = pybryt.Value(val2)
@@ -91,7 +91,7 @@ def test_messages():
     assert len(res.messages) == 1, "Too many messages"
     assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
 
-    res = v.check(MemoryFootprint.from_values([]))
+    res = v.check(MemoryFootprint.from_values())
 
     assert len(res.messages) == 2, "Wrong number of messages"
     assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"
@@ -99,7 +99,7 @@ def test_messages():
 
     v2.name = "v2"
     v2.failure_message = "m4"
-    res = v.check(MemoryFootprint.from_values([]))
+    res = v.check(MemoryFootprint.from_values())
 
     assert len(res.messages) == 3, "Wrong number of messages"
     assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"

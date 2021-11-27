@@ -45,7 +45,7 @@ class StudentImplementation(Serializable):
     """the path to the notebook file"""
 
     footprint: MemoryFootprint
-    """"""
+    """the memory footprint"""
 
     def __init__(
         self,
@@ -130,8 +130,6 @@ class StudentImplementation(Serializable):
         Args:
             footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the memory 
                 footprint
-            calls (``list[tuple[str, str]]``): the list of function calls
-            steps (``int``): the number of execution steps
         """
         stu = cls(None)
         stu.footprint = footprint
