@@ -25,7 +25,7 @@ class NotebookPreprocessor(AbstractPreprocessor):
     def __init__(self) -> None:
         self.preprocessors = []
         for preprocessor_class in PREPROCESSORS:
-            self.preprocess.append(preprocessor_class())
+            self.preprocessors.append(preprocessor_class())
 
     def preprocess(self, nb: nbformat.NotebookNode) -> nbformat.NotebookNode:
         for preprocessor in self.preprocessors:

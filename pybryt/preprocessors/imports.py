@@ -9,14 +9,24 @@ from .abstract_preprocessor import AbstractPreprocessor
 
 
 class ImportFinder(ast.NodeVisitor):
+    """
+    An AST walker for collecting imported modules.
+    """
+
     def __init__(self) -> None:
         self.imports = set()
 
     def visit_Import(self, node: ast.AST) -> None:
+        """
+        Visit an import statement and collect the names of the imported modules
+        """
         for alias in node.names:
-            self.imports.add(alias.name)
+            self.imports.add(alias.name.split(".")[0])
 
     def visit_ImportFrom(self, node: ast.AST) -> None:
+        """
+        Visit an import from statement and collect the names of the imported modules
+        """
         self.imports.add(node.module)
 
 
@@ -29,6 +39,7 @@ class ImportFindingPreprocessor(AbstractPreprocessor):
 
     def __init__(self) -> None:
         self.imports = set()
+        super().__init__()
 
     def preprocess(self, nb: nbformat.NotebookNode) -> nbformat.NotebookNode:
         """
@@ -47,6 +58,6 @@ class ImportFindingPreprocessor(AbstractPreprocessor):
                 tree = ast.parse(code)
                 import_finder = ImportFinder()
                 import_finder.visit(tree)
-                self.imports.union(import_finder.imports)
+                self.imports.update(import_finder.imports)
 
         return nb
