@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file, and this pr
 ## Unreleased
 
 * Refactored internal representation of memory footprints to create abstraction barriers
+* Added the `RequireImport` and `ForbidImport` annotations per [#123](https://github.com/microsoft/pybryt/issues/123)
 
 ## 0.3.0 - 2021-11-17
 
