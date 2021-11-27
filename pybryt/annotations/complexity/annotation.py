@@ -5,8 +5,10 @@ __all__ = ["ComplexityAnnotation", "TimeComplexity"]
 from typing import Any, List, Tuple
 
 from . import complexities as cplx
+
 from ..annotation import Annotation, AnnotationResult
-from ...execution import TimeComplexityResult
+
+from ...execution import MemoryFootprint, TimeComplexityResult
 
 
 EPS = 1e-6 # a value to set a slight preference for simpler methods
@@ -74,7 +76,7 @@ class TimeComplexity(ComplexityAnnotation):
     check.
     """
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
         Checks the time complexity of a block of student code and returns a results object.
 
@@ -87,18 +89,17 @@ class TimeComplexity(ComplexityAnnotation):
         is set to the matching complexity class.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         if self.complexity not in cplx.complexity_classes:
             self.addl_complexities.insert(0, self.complexity)
 
         complexity_data = {}
-        for v, ts in observed_values:
+        for v, ts in footprint.values:
             if not isinstance(v, TimeComplexityResult) or v.name != self.name:
                 continue
 

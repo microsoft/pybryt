@@ -8,6 +8,8 @@ from typing import Any, Dict, List, Tuple
 
 from .annotation import Annotation, AnnotationResult
 
+from ..execution import MemoryFootprint
+
 
 class ForbidType(Annotation):
     """
@@ -43,18 +45,18 @@ class ForbidType(Annotation):
     def children(self) -> List[Annotation]:
         return []
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
         Checks that there are no values of type ``self.type_`` in the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        for val, _ in observed_values:
+        for val, _ in footprint.values:
             if isinstance(val, self.type_):
                 return AnnotationResult(False, self)
         return AnnotationResult(True, self)
