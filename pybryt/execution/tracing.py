@@ -113,6 +113,12 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                 for t in tokens:
                     if "." in t:
                         try:
+                            float(t)  # prevent adding floats prematurely
+                            continue
+                        except ValueError:
+                            pass
+
+                        try:
                             val = eval(t, frame.f_globals, frame.f_locals)
                             track_value(val)
                         except:
