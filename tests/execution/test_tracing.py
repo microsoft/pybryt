@@ -88,7 +88,7 @@ def test_trace_function():
         # check that floats aren't added with the eval call
         mocked_linecache.return_value = "event_more_data_3 = [2.1, 1000, 100.3]"
         cir(frame, "line", None)
-        assert len(observed) == 3
+        assert len(footprint.values) == 3
 
         frame.f_locals["even_more_data"] = frame.f_locals["more_data"] ** 2
         frame.f_globals["even_more_data_2"] = frame.f_locals["more_data"] ** 3
