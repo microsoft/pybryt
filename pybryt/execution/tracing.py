@@ -69,7 +69,7 @@ def create_collector(
             footprint.add_value(copy(val), seen_at)
 
         # if something fails, don't track
-        except UnpicklableError:
+        except:
             return
 
     def track_call(frame):
