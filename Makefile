@@ -36,7 +36,7 @@ testcov:
 	$(COVERAGE) run -m pytest $(TESTPATH) $(PYTESTOPTS) 
 	$(COVERAGE) combine
 
-covhtml: testcov
+htmlcov: testcov
 	$(COVERAGE) html
 
 .PHONY: docs

@@ -38,7 +38,7 @@ class ImportAnnotation(Annotation):
             already_imported = module in sys.modules
             importlib.import_module(module)
             if not already_imported:  # clean up sys.modules if needed
-                del sys.modules[module]
+                sys.modules.pop(module)
         except Exception as e:
             raise ValueError(f"{module} is not importable")
 
