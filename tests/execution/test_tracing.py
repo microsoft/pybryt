@@ -85,13 +85,18 @@ def test_trace_function():
         cir(frame, "line", None)
         assert len(footprint.values) == 3
 
+        # check that floats aren't added with the eval call
+        mocked_linecache.return_value = "event_more_data_3 = [2.1, 1000, 100.3]"
+        cir(frame, "line", None)
+        assert len(footprint.values) == 3
+
         frame.f_locals["even_more_data"] = frame.f_locals["more_data"] ** 2
         frame.f_globals["even_more_data_2"] = frame.f_locals["more_data"] ** 3
         mocked_linecache.return_value = ""
         cir(frame, "return", None)
         assert len(footprint.values) == 6
         assert footprint.values[3][0] is None
-        assert footprint.values[3][1] == 10
+        assert footprint.values[3][1] == 11
         assert np.allclose(footprint.values[4][0], frame.f_locals["more_data"] ** 2)
         assert footprint.values[4][1] == 8
         assert np.allclose(footprint.values[5][0], frame.f_locals["more_data"] ** 3)
@@ -112,7 +117,7 @@ def test_trace_function():
         cir(frame, "return", None) # run a return since arr shows up in vars_not_found
         assert len(footprint.values) == 7
         assert np.allclose(footprint.values[6][0], -1 * arr)
-        assert footprint.values[6][1] == 13
+        assert footprint.values[6][1] == 14
     
     # check that IPython child frame return values are tracked
     frame = generate_mocked_frame("/path/to/file.py", "bar", 100, f_back=frame)
@@ -122,7 +127,7 @@ def test_trace_function():
     cir(frame, "return", np.exp(arr))
     assert len(footprint.values) == 8
     assert np.allclose(footprint.values[7][0], np.exp(arr))
-    assert footprint.values[7][1] == 13
+    assert footprint.values[7][1] == 14
 
     assert len(footprint.calls) == 1
     frame = generate_mocked_frame("/path/to/foo.py", "bar", 100)
