@@ -1,34 +1,34 @@
-"""Tests for PyBryt value annotations"""
+"""Tests for value annotations"""
 
-import time
 import pytest
 
+from itertools import chain
 from unittest import mock
 
-from pybryt import *
-from pybryt.utils import pickle_and_hash
+import pybryt
+from pybryt.execution.memory_footprint import MemoryFootprint
 
-from .utils import *
+from .utils import assert_object_attrs, generate_memory_footprint
 
 
 def test_value_annotation():
     """
     """
-    mfp = generate_memory_footprint()
-    Annotation.reset_tracked_annotations()
+    footprint = generate_memory_footprint()
+    pybryt.Annotation.reset_tracked_annotations()
 
     seen = {}
-    for val, ts in mfp:
-        v = Value(val)
-        res = v.check(mfp)
+    for val, ts in footprint.values:
+        v = pybryt.Value(val)
+        res = v.check(footprint)
 
         assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
 
-        h = pickle_and_hash(val)
+        h = pybryt.utils.pickle_and_hash(val)
 
         # check attributes of BeforeAnnotation and AnnotationResult
-        check_obj_attributes(v, {"children__len": 0})
-        check_obj_attributes(res, {
+        assert_object_attrs(v, {"children__len": 0})
+        assert_object_attrs(res, {
             "children": [],
             "satisfied": True,
             "_satisfied": True,
@@ -40,8 +40,8 @@ def test_value_annotation():
         if h not in seen:
             seen[h] = ts
 
-    v = Value(-1) # does not occur in mfp
-    res = v.check(mfp)
+    v = pybryt.Value(-1)  # does not occur in footprint
+    res = v.check(footprint)
 
     assert v.to_dict() == {
         "name": "Annotation 11",
@@ -61,8 +61,8 @@ def test_value_annotation():
     assert repr(v) == "pybryt.Value", "wrong __repr__"
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children__len": 0})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children__len": 0})
+    assert_object_attrs(res, {
         "children": [],
         "satisfied": False,
         "_satisfied": False,
@@ -75,28 +75,71 @@ def test_value_annotation():
     with mock.patch("dill.dumps") as mocked_dumps:
         mocked_dumps.side_effect = Exception()
         with pytest.raises(ValueError):
-            v = Value(-1)
+            v = pybryt.Value(-1)
 
     # test with invariants
-    s = mfp[-1][0]
-    v = Value(s.upper(), invariants=[invariants.string_capitalization])
-    res = v.check(mfp)
+    s = footprint.get_value(-1)
+    v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
+    res = v.check(footprint)
     assert res.satisfied
+
+    # test that check_against correctly calls check
+    with mock.patch.object(v, "check") as mocked_check:
+        mocked_check.return_value = mock.MagicMock()
+        mocked_check.return_value.satisfied = True
+        assert v.check_against(s.lower())
+        mocked_check.assert_called_with(MemoryFootprint.from_values(s.lower(), 0))
+
+    # check custom equivalence function
+    mocked_eq = mock.MagicMock()
+    v = pybryt.Value(s, equivalence_fn=mocked_eq)
+    mocked_eq.return_value = False
+    assert not v.check_against("foo")
+    mocked_eq.assert_called_with(s, "foo")
+    mocked_eq.return_value = True
+    assert v.check_against("")
+    mocked_eq.assert_called_with(s, "")
+    mocked_eq.side_effect = ValueError()
+    assert not v.check_against("")
+
+    # check for invalid return type error
+    mocked_eq.return_value = 1
+    mocked_eq.side_effect = None
+    with pytest.raises(TypeError, match=f"Custom equivalence function returned value of invalid type: {type(1)}"):
+        v.check_against(1)
+
+    # check debug mode errors
+    with pybryt.debug_mode():
+        with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
+            pybryt.Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
+
+        with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
+            pybryt.Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
+
+        class FooError(Exception):
+            pass
+
+        with pytest.raises(FooError):
+            def raise_foo(x, y):
+                raise FooError()
+
+            v = pybryt.Value(1, equivalence_fn=raise_foo)
+            v.check_against(1)
 
 
 def test_attribute_annotation():
     """
     """
-    mfp = generate_memory_footprint()
-    Annotation.reset_tracked_annotations()
-    val, ts = mfp[0]
+    footprint = generate_memory_footprint()
+    pybryt.Annotation.reset_tracked_annotations()
+    val, ts = footprint.get_value(0), footprint.get_timestamp(0)
 
-    v = Attribute(val, "T")
-    res = v.check(mfp)
+    v = pybryt.Attribute(val, "T")
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children__len": 1})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children__len": 1})
+    assert_object_attrs(res, {
         "children__len": 1,
         "satisfied": True,
         "_satisfied": None,
@@ -135,27 +178,35 @@ def test_attribute_annotation():
         "enforce_type": False,
     }
 
+    # test that check_against correctly calls check
+    with mock.patch.object(v, "check") as mocked_check:
+        mocked_check.return_value = mock.MagicMock()
+        mocked_check.return_value.satisfied = False
+        assert not v.check_against(val)
+        mocked_check.assert_called_with(MemoryFootprint.from_values(val, 0))
+
     # check enforce type
     class Foo:
         T = val.T
 
-    mfp2 = [(Foo(), 1)]
-    res = v.check(mfp2)
+    footprint2 = pybryt.MemoryFootprint.from_values(Foo(), 1)
+    res = v.check(footprint2)
     assert res.satisfied
 
-    v = Attribute(val, "T", enforce_type=True)
-    res = v.check(mfp2)
+    v = pybryt.Attribute(val, "T", enforce_type=True)
+    res = v.check(footprint2)
     assert not res.satisfied
 
-    res = v.check(mfp + mfp2)
+    footprint3 = MemoryFootprint.from_values(*chain.from_iterable(footprint.values + footprint2.values))
+    res = v.check(footprint3)
     assert res.satisfied
 
     # check error raising
     with pytest.raises(TypeError):
-        Attribute(val, ["T", 1])
+        pybryt.Attribute(val, ["T", 1])
     
     with pytest.raises(TypeError):
-        Attribute(val, 1)
+        pybryt.Attribute(val, 1)
 
     with pytest.raises(AttributeError):
-        Attribute(val, "foo")
+        pybryt.Attribute(val, "foo")

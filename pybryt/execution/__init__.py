@@ -1,6 +1,6 @@
 """Submission execution internals for PyBryt"""
 
-__all__ = ["check_time_complexity", "no_tracing"]
+__all__ = ["check_time_complexity", "MemoryFootprint", "no_tracing", "TimeComplexityResult"]
 
 import os
 import dill
@@ -12,10 +12,11 @@ from tempfile import mkstemp
 from typing import Any, List, Tuple, Optional
 from textwrap import dedent
 
-from .complexity import check_time_complexity, TimeComplexityResult
+from .complexity import check_time_complexity, is_complexity_tracing_enabled, TimeComplexityResult
+from .memory_footprint import MemoryFootprint
 from .tracing import (
-    create_collector, _get_tracing_frame, no_tracing, tracing_off, tracing_on, TRACING_VARNAME
-)
+    create_collector, get_tracing_frame, no_tracing, tracing_off, tracing_on, TRACING_VARNAME)
+
 from ..preprocessors import IntermediateVariablePreprocessor
 from ..utils import make_secret
 
@@ -23,9 +24,12 @@ from ..utils import make_secret
 NBFORMAT_VERSION = 4
 
 
-def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: List[str] = [], 
-        output: Optional[str] = None, timeout: Optional[int] = 1200) -> Tuple[int, List[Tuple[Any, \
-        int]], List[Tuple[str, str]], nbformat.NotebookNode]:
+def execute_notebook(
+    nb: nbformat.NotebookNode, 
+    nb_path: str, 
+    addl_filenames: List[str] = [], 
+    timeout: Optional[int] = 1200
+) -> MemoryFootprint:
     """
     Executes a submission using ``nbconvert`` and returns the memory footprint.
 
@@ -44,22 +48,21 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
             ``None`` for no time limit
 
     Returns:
-        ``tuple[int, list[tuple[object, int]], list[tuple[str, str]], nbformat.NotebookNode]``: the 
-        number of execution steps, the memory footprint, the list of function calls, and the 
-        executed notebook
+        :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
     """
     nb = deepcopy(nb)
     preprocessor = IntermediateVariablePreprocessor()
     nb = preprocessor.preprocess(nb)
 
     secret = make_secret()
-    _, observed_fp = mkstemp()
+    footprint_varname = f"footprint_{secret}"
+    _, footprint_fp = mkstemp()
     nb_dir = os.path.abspath(os.path.split(nb_path)[0])
 
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
         import sys
         from pybryt.execution import create_collector, tracing_on
-        cir_results_{secret}, cir = create_collector(addl_filenames={addl_filenames})
+        {footprint_varname}, cir = create_collector(addl_filenames={addl_filenames})
         {TRACING_VARNAME} = True
         tracing_on(tracing_func=cir)
         %cd {nb_dir}
@@ -68,11 +71,12 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
         from pybryt.execution import tracing_off
         tracing_off()
+        import sys
+        {footprint_varname}.add_imports(*sys.modules.keys())
+        {footprint_varname}.filter_out_unpicklable_values()
         import dill
-        from pybryt.utils import filter_picklable_list
-        filter_picklable_list(cir_results_{secret}[0])
-        with open("{observed_fp}", "wb+") as f:
-            dill.dump(cir_results_{secret}, f)
+        with open("{footprint_fp}", "wb+") as f:
+            dill.dump({footprint_varname}, f)
     """))
 
     nb['cells'].insert(0, first_cell)
@@ -82,15 +86,11 @@ def execute_notebook(nb: nbformat.NotebookNode, nb_path: str, addl_filenames: Li
 
     ep.preprocess(nb)
 
-    if output:
-        with open(output, "w+") as f:
-            nbformat.write(nb, f)
+    with open(footprint_fp, "rb") as f:
+        footprint = dill.load(f)
 
-    with open(observed_fp, "rb") as f:
-        observed, calls = dill.load(f)
+    os.remove(footprint_fp)
 
-    os.remove(observed_fp)
+    footprint.set_executed_notebook(nb)
 
-    n_steps = max([t[1] for t in observed])
-
-    return n_steps, observed, calls, nb
+    return footprint

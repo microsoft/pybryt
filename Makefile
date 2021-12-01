@@ -1,10 +1,16 @@
 # Makefile for PyBryt
-# to generate a release, use `make release` with the `VERSION` argument:
+# -------------------
+# To generate a release, use `make release` with the `VERSION` argument:
 #   $ make release VERSION=0.0.1
-# to run tests, use `make test` with the `TESTPATH` and/or `PYTESTOPTS` arguments:
+#
+# To run tests, use `make test` with the `TESTPATH` and/or `PYTESTOPTS` arguments:
 #   $ make test
-# the `testcov` target can be used to build a local copy of the code coverage in HTML
+#
+# The `testcov` target can be used to build a local copy of the code coverage in HTML:
 #   $ make testcov
+#
+# To build the docs, use `make docs`:
+#   $ make docs
 
 PYTEST        = pytest
 TESTPATH      = tests
@@ -14,8 +20,11 @@ COVERAGE      = coverage
 release:
 	rm dist/* || :
 	echo '__version__ = "$(VERSION)"' > pybryt/version.py
+	sed -i "s/date-released: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/date-released: $(date +%F)/" CITATION.cff
+	sed -i "s/^version: [0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}/version: $(VERSION)/" CITATION.cff
 	git add pybryt/version.py
-	git commit -m "update pybryt.__version__ for v$(VERSION)"
+	git add CITATION.cff
+	git commit -m "update version info for v$(VERSION)"
 	python3 setup.py sdist bdist_wheel
 	hub release create -a dist/*.tar.gz -a dist/*.whl -m 'v$(VERSION)' $(VERSION)
 	python3 -m twine upload dist/*
@@ -29,3 +38,7 @@ testcov:
 
 covhtml: testcov
 	$(COVERAGE) html
+
+.PHONY: docs
+docs:
+	$(MAKE) -C docs html

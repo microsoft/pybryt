@@ -1,6 +1,5 @@
 """"""
 
-import pytest
 import nbformat
 import tempfile
 
@@ -12,7 +11,6 @@ from pybryt.cli import click_cli
 from pybryt.utils import get_stem
 
 from .test_reference import generate_reference_notebook
-from .test_student import generate_impl
 
 
 def test_check():
@@ -143,10 +141,10 @@ def test_execute():
         mocked_generate.assert_called_with(fns, parallel=False, timeout=100)
 
         # check for error on nonexistance output dir
-        result = runner.invoke(click_cli, ["execute", *fns, "-o", "/some/fake/path"])
+        result = runner.invoke(click_cli, ["execute", *fns, "-d", "/some/fake/path"])
         assert result.exit_code == 1
         assert isinstance(result.exception, ValueError)
-        assert result.exception.args[0] == "Output directory /some/fake/path does not exist or is not a directory"
+        assert result.exception.args[0] == "Destination directory /some/fake/path does not exist or is not a directory"
 
     # check other errors
     result = runner.invoke(click_cli, ["execute"])

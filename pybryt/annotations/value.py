@@ -3,15 +3,20 @@
 __all__ = ["Value", "Attribute"]
 
 import dill
-import pandas as pd
+import numbers
 import numpy as np
+import pandas as pd
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sized
 from copy import copy
-from typing import Any, Dict, List, Optional, Tuple, Union
+from itertools import chain
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
+
+from ..debug import _debug_mode_enabled
+from ..execution import MemoryFootprint
 
 
 class Value(Annotation):
@@ -33,6 +38,8 @@ class Value(Annotation):
         rtol (``float`` or ``int``, optional): relative tolerance for numeric values
         invariants (``list[invariant]``): invariants for 
             this value
+        equivalence_fn (``callable[[object, object], bool]``): an optional function to check for
+            equivalence between two values, overriding the default provided by ``Value``
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
@@ -55,20 +62,35 @@ class Value(Annotation):
     invariants: List[invariant]
     """the invariants for this value"""
 
+    equivalence_fn: Optional[Callable[[Any, Any], bool]]
+    """
+    a function that compares two values and returns True if they're "equal enough\" and False
+    otherwise
+    """
+
     def __init__(
-        self, value: Any, atol: Optional[Union[float, int]] = None, rtol: Optional[Union[float, int]] = None, 
-        invariants: List[invariant] = [], **kwargs
+        self, 
+        value: Any, 
+        atol: Optional[Union[float, int]] = None, 
+        rtol: Optional[Union[float, int]] = None, 
+        invariants: List[invariant] = [], 
+        equivalence_fn: Optional[Callable[[Any, Any], bool]] = None,
+        **kwargs,
     ):
         try:
             dill.dumps(value)
         except Exception as e:
             raise ValueError(f"Values must be serializable but the following error was thrown during serialization:\n{e}")
 
+        if _debug_mode_enabled() and equivalence_fn is not None and (atol is not None or rtol is not None):
+            raise ValueError("Absolute or relative tolerance specified with an equivalence function")
+
         self.initial_value = copy(value)
         self._values = [self.initial_value]
         self.atol = atol
         self.rtol = rtol
         self.invariants = invariants
+        self.equivalence_fn = equivalence_fn
 
         for inv in self.invariants:
             self._values = inv(self._values)
@@ -99,28 +121,29 @@ class Value(Annotation):
         })
         return d
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks that the value tracked by this annotation occurs in the list of observed values.
-
-        Checks that the value under the conditions of its invariants occurs in the list of tuples of
-        observed values and timestamps ``observed_values``. Creates and returns an 
-        :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
+        Checks that the value tracked by this annotation occurs in the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        satisfied = [self._check_observed_value(v) for v in observed_values]
+        satisfied = [self._check_observed_value(v) for v, _ in footprint.values]
         if not any(satisfied):
             return AnnotationResult(False, self)
 
         first_satisfier = satisfied.index(True)
-        return AnnotationResult(True, self, observed_values[first_satisfier][0], observed_values[first_satisfier][1])
-    
+        return AnnotationResult(
+            True, 
+            self, 
+            footprint.values[first_satisfier][0],
+            footprint.values[first_satisfier][1],
+        )
+
     def __eq__(self, other: Any) -> bool:
         """
         Checks whether this annotation is equal to another object.
@@ -136,9 +159,22 @@ class Value(Annotation):
         """
         return super().__eq__(other) and self.invariants == other.invariants and \
             self.check_values_equal(self.initial_value, other.initial_value) and \
-            self.atol == other.atol and self.rtol == other.rtol
+            self.atol == other.atol and self.rtol == other.rtol and \
+            self.equivalence_fn == self.equivalence_fn
 
-    def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
+
+    def _check_observed_value(self, observed_value: Any) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
 
@@ -146,24 +182,24 @@ class Value(Annotation):
         resulting values match and of the values in ``self._values``.
 
         Args:
-            observed_value (``tuple[object, int]``): the observed value tuple
+            observed_value (``object``): the observed value
 
         Returns:
             ``bool``: whether the value matched
         """
-        other_values = [observed_value[0]]
+        other_values = [observed_value]
         for inv in self.invariants:
             other_values = inv(other_values)
         
         for value in self._values:
             for other_value in other_values:
-                if self.check_values_equal(value, other_value, self.atol, self.rtol):
+                if self.check_values_equal(value, other_value, self.atol, self.rtol, self.equivalence_fn):
                     return True
 
         return False
 
     @staticmethod
-    def check_values_equal(value, other_value, atol = None, rtol = None) -> bool:
+    def check_values_equal(value, other_value, atol = None, rtol = None, equivalence_fn = None) -> bool:
         """
         Checks whether two objects are equal. 
         
@@ -171,17 +207,42 @@ class Value(Annotation):
         specified, the values are considered equal if ``other_value`` is within the tolerance
         bounds of ``value``.
 
+        The equivalence check provided by this function can be overridden by providing a custom
+        function to check equivalence. If provided, the value returned by this function is returned,
+        unless an error is thrown, in which case ``False`` is returned.
+
         Args:
             value (``object``): the first object to compare
             other_value (``object``): the second object to compare
             atol (``float``, optional): the absolute tolerance for numeric values
             rtol (``float``, optional): the relative tolerance for numeric values
+            equivalence_fn (``callable[[object, object], bool]``): an optional function to check 
+                for equivalence between two values, overriding the default provided by ``Value`` 
         """
+        if equivalence_fn is not None:
+            try:
+                ret = equivalence_fn(value, other_value)
+
+            except:
+                if _debug_mode_enabled():
+                    raise
+
+                return False
+
+            if not isinstance(ret, bool):
+                raise TypeError(f"Custom equivalence function returned value of invalid type: {type(ret)}")
+
+            return ret
+
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
 
+        if value is None:
+            return other_value is None
+
         if atol is None:
             atol = 0
+
         if rtol is None:
             rtol = 0
 
@@ -197,7 +258,7 @@ class Value(Annotation):
             ub += rtol * np.abs(value)
             lb -= rtol * np.abs(value)
             numeric = True
-        
+
         except:
             numeric = False
 
@@ -208,10 +269,34 @@ class Value(Annotation):
                 return False
         else:
             try:
-                if (hasattr(value, "shape") and hasattr(other_value, "shape") and value.shape != other_value.shape) \
+                if (hasattr(value, "shape") and hasattr(other_value, "shape") \
+                        and value.shape != other_value.shape) \
                         or (hasattr(value, "shape") ^ hasattr(other_value, "shape")):
                     return False
-                res = value == other_value
+
+                # tolerances make sense only for iterables with numerical data
+                if isinstance(value, Sized) and len(value) > 0 and isinstance(value, Iterable) \
+                        and all(isinstance(i, numbers.Real) for i in value):
+                    # np.allclose doesn't work with sets
+                    if isinstance(value, set):
+                        if len(value) != len(other_value):
+                            return False
+                        res = np.array(np.isclose(v, o, atol=atol, rtol=rtol) for v, o in zip(sorted(value), sorted(other_value))).all()
+                    elif isinstance(value, dict):
+                        if not isinstance(other_value, dict):
+                            return False
+                        if all(isinstance(i, numbers.Real) for i in value.values()):
+                            res = np.array(np.isclose(k1, k2) and np.isclose(v1, v2) \
+                                for (k1, v1), (k2, v2) in zip(sorted(value.items(), key=lambda t: t[0]), \
+                                sorted(other_value.items(), key=lambda t: t[0]))).all()
+                        else:
+                            res = value == other_value
+                    else:
+                        res = np.allclose(value, other_value, atol=atol, rtol=rtol)
+
+                else:
+                    res = value == other_value
+
             except (ValueError, TypeError) as e:
                 return False
 
@@ -275,26 +360,27 @@ class _AttrValue(Value):
         return super().__eq__(other) and self.check_values_equal(self._object, other._object) and \
             self._attr == other._attr and self.enforce_type == other.enforce_type
     
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks whether any of the values in ``observed_values`` has an attribute matching the value
+        Checks whether any of the values in the memory footprint has an attribute matching the value
         in this annotation.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
+        observed_values = footprint.values
         if self.enforce_type:  # filter out values of wrong type if enforce_type is True
             observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
-        attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
-        res = super().check(attrs)
+        args = chain.from_iterable((getattr(obj, self._attr), ts) for obj, ts in vals)
+        attrs_fp = MemoryFootprint.from_values(*args)
+        res = super().check(attrs_fp)
         try:
-            satisfier = vals[attrs.index((res.value, res.timestamp))][0]
+            satisfier = vals[attrs_fp.values.index((res.value, res.timestamp))][0]
         except ValueError:
             satisfier = None
         return AnnotationResult(None, self, value=satisfier, children=[res])
@@ -391,18 +477,29 @@ class Attribute(Annotation):
         })
         return d
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks whether any of the values in ``observed_values`` has all of the required attributes,
+        Checks whether any of the values in the memory footprint has all of the required attributes,
         each matching the values expected.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        results = [v.check(observed_values) for v in self._annotations]        
+        results = [v.check(footprint) for v in self._annotations]        
         return AnnotationResult(None, self, children=results)
+
+    def check_against(self, other_value: Any) -> bool:
+        """
+        Check whether an object satisfies this annotation.
+
+        Args:
+            other_value (``object``): the value to check against
+
+        Returns:
+            ``bool``: whether this annotation is satisfied by the provided value
+        """
+        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied

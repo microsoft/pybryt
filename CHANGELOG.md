@@ -3,10 +3,35 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.3.1 - 2021-12-01
+
+* Fixed a bug that was causing floats to be added to the memory footprint prematurely per resulting in [#125](https://github.com/microsoft/pybryt/issues/125)
+* Refactored internal representation of memory footprints to create abstraction barriers
+
+## 0.3.0 - 2021-11-17
+
+* Fixed bug in `Value`s tracking `set`s of numbers
+* Fixed bug in timestamp comparison in `BeforeAnnotation`
+* Added `Value.check_against` and `Attribute.check_agains` per [#111](https://github.com/microsoft/pybryt/issues/111)
+* Added custom equivalence functions for value annotations per [#113](https://github.com/microsoft/pybryt/issues/113)
+* Removed the messages section from reports with no messages
+* Added debug mode per [#116](https://github.com/microsoft/pybryt/issues/116)
+* Fixed ipykernel v6 issue and unpinned ipykernel per [#114](https://github.com/microsoft/pybryt/issues/114)
+* Fixed bug in handling empty student implementations per [#101](https://github.com/microsoft/pybryt/issues/101)
+
+## 0.2.0 - 2021-09-01
+
+* Fixed - 'Empty iterable comparison' per [#109](https://github.com/microsoft/pybryt/pull/109)
+
+## 0.1.9 - 2021-08-13
+
+* Fixed - 'Tolerances for iterables' per [#103](https://github.com/microsoft/pybryt/pull/103)
+* Updated - 'Incorrect path on getting started doc' per [#104](https://github.com/microsoft/pybryt/pull/104)
+* Fixed 'Invalid usage of NoReturn' per [#105](https://github.com/microsoft/pybryt/pull/105)
+
 ## 0.1.8 - 2021-06-29
 
-* Added customizable timeout to notebook execution
-* Changed the notebook execution template to use `pybryt.tracing_on` and `pybryt.tracing_off`
+* Added customizable timeout to notebook execution* Changed the notebook execution template to use `pybryt.tracing_on` and `pybryt.tracing_off`
 
 ## 0.1.7 - 2021-06-28
 

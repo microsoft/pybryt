@@ -4,7 +4,9 @@ __all__ = ["Annotation", "AnnotationResult"]
 
 from abc import ABC, abstractmethod
 from collections import OrderedDict
-from typing import Any, Dict, List, NoReturn, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+
+from ..execution import is_complexity_tracing_enabled, MemoryFootprint
 
 
 _TRACKED_ANNOTATIONS = []
@@ -67,14 +69,13 @@ class Annotation(ABC):
         ret = f"pybryt.{self.__class__.__name__}"
         return ret
     
-    def _track(self) -> NoReturn:
+    def _track(self) -> None:
         """
         Tracks this annotation in ``_TRACKED_ANNOTATIONS`` and updates ``_GROUP_INDICES`` with the
         index of the annotation if ``self.group`` is present. If the annotation has children
         (returned by ``self.children``), the children are removed from ``_TRACKED_ANNOTATIONS``.
         """
-        from ..execution.complexity import _TRACKING_DISABLED
-        if _TRACKING_DISABLED:
+        if is_complexity_tracing_enabled():
             return
 
         global _GROUP_INDICES, _TRACKED_ANNOTATIONS
@@ -106,7 +107,7 @@ class Annotation(ABC):
         return _TRACKED_ANNOTATIONS
 
     @staticmethod
-    def reset_tracked_annotations() -> NoReturn:
+    def reset_tracked_annotations() -> None:
         """
         Resets the list of tracked annotations and the mapping of group names to indices in that
         list.
@@ -126,21 +127,16 @@ class Annotation(ABC):
         ... # pragma: no cover
 
     @abstractmethod
-    def check(self, observed_values: List[Tuple[Any, int]]) -> "AnnotationResult":
+    def check(self, footprint: MemoryFootprint) -> "AnnotationResult":
         """
-        Runs the check on the condition asserted by this annotation and returns a results object.
-
-        Checks that the condition required by this annotation is met using the list of tuples of
-        observed values and timestamps ``observed_values``. Creates and returns an 
-        :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
+        Run the check on the condition asserted by this annotation and return a results object.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
         ... # pragma: no cover
 

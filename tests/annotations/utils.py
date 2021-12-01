@@ -1,12 +1,14 @@
 """Utilities for PyBryt annotation tests"""
 
-import time
 import numpy as np
 
 from functools import lru_cache
+from itertools import chain
+
+from pybryt.execution import MemoryFootprint
 
 
-def check_obj_attributes(obj, attrs):
+def assert_object_attrs(obj, attrs):
     """
     """
     for k, v in attrs.items():
@@ -26,7 +28,7 @@ def check_obj_attributes(obj, attrs):
 
 
 @lru_cache(1)
-def generate_memory_footprint():
+def generate_memory_footprint() -> MemoryFootprint:
     """
     """
     np.random.seed(42)
@@ -42,4 +44,4 @@ def generate_memory_footprint():
         4.0,
         "some CasE insenSITIve StrINg!",
     ]
-    return [(o, i) for i, o in enumerate(objs)]
+    return MemoryFootprint.from_values(*chain.from_iterable((o, i) for i, o in enumerate(objs)))

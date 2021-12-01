@@ -1,26 +1,23 @@
 """"""
 
-import os
 import dill
 import json
-import base64
-import tempfile
 import nbformat
 import numpy as np
+import os
 import pkg_resources
 import pytest
+import tempfile
 
 from copy import deepcopy
-from functools import lru_cache
 from textwrap import dedent
-from unittest import mock
 
-from pybryt import generate_report, ReferenceImplementation, Value
+from pybryt import generate_report, MemoryFootprint, ReferenceImplementation, Value
 from pybryt.execution import execute_notebook
 
 
-def generate_mfp(nb):
-    return execute_notebook(nb, "")[1]
+def generate_footprint(nb) -> MemoryFootprint:
+    return execute_notebook(nb, "")
 
 
 def generate_reference_notebook():
@@ -169,10 +166,9 @@ def test_run_and_results():
             failure_message="ERROR: failed to compute the median")
     """)))
     ref = ReferenceImplementation.compile(nb, name="foo")
-    # _, vals = execute_notebook(nb, "")
-    vals = generate_mfp(nb)
+    footprint = generate_footprint(nb)
     
-    res = ref.run(vals)
+    res = ref.run(footprint)
     assert res.name == ref.name
     assert len(res.results) == 27
     assert res.reference is ref
@@ -186,7 +182,7 @@ def test_run_and_results():
         'SUCCESS: computed the correct median x2',
     ]
 
-    res = ref.run(vals, group="median")
+    res = ref.run(footprint, group="median")
     assert len(res.results) == 26
     assert res.reference is ref
     assert res.correct is True
@@ -199,10 +195,9 @@ def test_run_and_results():
     ]
 
     nb.cells.insert(2, nbformat.v4.new_code_cell("import numpy as np\ndef median(S):\n    return np.median(S)"))
-    # _, vals = execute_notebook(nb, "")
-    vals = generate_mfp(nb)
+    footprint = generate_footprint(nb)
     
-    res = ref.run(vals)
+    res = ref.run(footprint)
     assert len(res.results) == 27
     assert res.reference is ref
     assert res.correct is False
@@ -231,7 +226,7 @@ def test_run_and_results():
     assert res_dict == expected_res_dict
 
     with pytest.raises(ValueError, match="Group 'foo' not found"):
-        ref.run(vals, group="foo")
+        ref.run(footprint, group="foo")
 
 
 def test_generate_report():
@@ -239,9 +234,8 @@ def test_generate_report():
     """
     nb = generate_reference_notebook()
     ref = ReferenceImplementation.compile(nb, name="foo")
-    # _, vals = execute_notebook(nb, "")
-    vals = generate_mfp(nb)
-    res = ref.run(vals)
+    footprint = generate_footprint(nb)
+    res = ref.run(footprint)
 
     report = generate_report(res)
     assert report == dedent("""\
@@ -314,6 +308,15 @@ def test_generate_report():
           - ERROR: The sample was not sorted
           - SUCCESS: Computed the size of the sample
           - SUCCESS: computed the correct median
+    """).strip()
+
+    # check empty messages
+    ref = ReferenceImplementation("foo", [Value(footprint.get_value(0))])
+    res = ref.run(footprint)
+    report = generate_report(res)
+    assert report == dedent("""\
+        REFERENCE: foo
+        SATISFIED: True
     """).strip()
 
     # test misc. errors
