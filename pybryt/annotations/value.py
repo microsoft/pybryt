@@ -4,17 +4,19 @@ __all__ = ["Value", "Attribute"]
 
 import dill
 import numbers
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from collections.abc import Iterable, Sized
 from copy import copy
+from itertools import chain
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
 
 from ..debug import _debug_mode_enabled
+from ..execution import MemoryFootprint
 
 
 class Value(Annotation):
@@ -119,22 +121,18 @@ class Value(Annotation):
         })
         return d
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks that the value tracked by this annotation occurs in the list of observed values.
-
-        Checks that the value under the conditions of its invariants occurs in the list of tuples of
-        observed values and timestamps ``observed_values``. Creates and returns an 
-        :py:class:`AnnotationResult<pybryt.AnnotationResult>` object with the results of this check.
+        Checks that the value tracked by this annotation occurs in the memory footprint.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        satisfied = [self._check_observed_value(v) for v in observed_values]
+        satisfied = [self._check_observed_value(v) for v, _ in footprint.values]
         if not any(satisfied):
             return AnnotationResult(False, self)
 
@@ -142,10 +140,10 @@ class Value(Annotation):
         return AnnotationResult(
             True, 
             self, 
-            observed_values[first_satisfier][0], 
-            observed_values[first_satisfier][1],
+            footprint.values[first_satisfier][0],
+            footprint.values[first_satisfier][1],
         )
-    
+
     def __eq__(self, other: Any) -> bool:
         """
         Checks whether this annotation is equal to another object.
@@ -174,9 +172,9 @@ class Value(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check([(other_value, 0)]).satisfied
+        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
 
-    def _check_observed_value(self, observed_value: Tuple[Any, int]) -> bool:
+    def _check_observed_value(self, observed_value: Any) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
 
@@ -184,12 +182,12 @@ class Value(Annotation):
         resulting values match and of the values in ``self._values``.
 
         Args:
-            observed_value (``tuple[object, int]``): the observed value tuple
+            observed_value (``object``): the observed value
 
         Returns:
             ``bool``: whether the value matched
         """
-        other_values = [observed_value[0]]
+        other_values = [observed_value]
         for inv in self.invariants:
             other_values = inv(other_values)
         
@@ -284,6 +282,15 @@ class Value(Annotation):
                         if len(value) != len(other_value):
                             return False
                         res = np.array(np.isclose(v, o, atol=atol, rtol=rtol) for v, o in zip(sorted(value), sorted(other_value))).all()
+                    elif isinstance(value, dict):
+                        if not isinstance(other_value, dict):
+                            return False
+                        if all(isinstance(i, numbers.Real) for i in value.values()):
+                            res = np.array(np.isclose(k1, k2) and np.isclose(v1, v2) \
+                                for (k1, v1), (k2, v2) in zip(sorted(value.items(), key=lambda t: t[0]), \
+                                sorted(other_value.items(), key=lambda t: t[0]))).all()
+                        else:
+                            res = value == other_value
                     else:
                         res = np.allclose(value, other_value, atol=atol, rtol=rtol)
 
@@ -353,26 +360,27 @@ class _AttrValue(Value):
         return super().__eq__(other) and self.check_values_equal(self._object, other._object) and \
             self._attr == other._attr and self.enforce_type == other.enforce_type
     
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks whether any of the values in ``observed_values`` has an attribute matching the value
+        Checks whether any of the values in the memory footprint has an attribute matching the value
         in this annotation.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
+        observed_values = footprint.values
         if self.enforce_type:  # filter out values of wrong type if enforce_type is True
             observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
         vals = [t for t in observed_values if hasattr(t[0], self._attr)]
-        attrs = [(getattr(obj, self._attr), t) for obj, t in vals]
-        res = super().check(attrs)
+        args = chain.from_iterable((getattr(obj, self._attr), ts) for obj, ts in vals)
+        attrs_fp = MemoryFootprint.from_values(*args)
+        res = super().check(attrs_fp)
         try:
-            satisfier = vals[attrs.index((res.value, res.timestamp))][0]
+            satisfier = vals[attrs_fp.values.index((res.value, res.timestamp))][0]
         except ValueError:
             satisfier = None
         return AnnotationResult(None, self, value=satisfier, children=[res])
@@ -469,20 +477,19 @@ class Attribute(Annotation):
         })
         return d
 
-    def check(self, observed_values: List[Tuple[Any, int]]) -> AnnotationResult:
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
-        Checks whether any of the values in ``observed_values`` has all of the required attributes,
+        Checks whether any of the values in the memory footprint has all of the required attributes,
         each matching the values expected.
 
         Args:
-            observed_values (``list[tuple[object, int]]``): a list of tuples of values observed
-                during execution and the timestamps of those values
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
         
         Returns:
-            :py:class:`AnnotationResult`: the results of this annotation based on 
-            ``observed_values``
+            :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        results = [v.check(observed_values) for v in self._annotations]        
+        results = [v.check(footprint) for v in self._annotations]        
         return AnnotationResult(None, self, children=results)
 
     def check_against(self, other_value: Any) -> bool:
@@ -495,4 +502,4 @@ class Attribute(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check([(other_value, 0)]).satisfied
+        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied

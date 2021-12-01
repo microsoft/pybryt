@@ -1,27 +1,31 @@
 """Tracing function and controls"""
 
-import re
-import linecache
 import inspect
+import linecache
+import re
 
 from copy import copy
 from types import FrameType, FunctionType, ModuleType
-from typing import Any, List, Tuple, Callable
+from typing import Any, List, Optional, Tuple, Callable
 
+from .complexity import is_complexity_tracing_enabled
+from .memory_footprint import MemoryFootprint
 from .utils import is_ipython_frame
 
-from ..utils import make_secret, pickle_and_hash
+from ..utils import make_secret, pickle_and_hash, UnpicklableError
 
 
-_COLLECTOR_RET = None
-TRACING_VARNAME = "__PYBRYT_TRACING__"
+ACTIVE_FOOTPRINT = None
 TRACING_FUNC = None
+TRACING_VARNAME = "__PYBRYT_TRACING__"
 
 
-def create_collector(skip_types: List[type] = [type, type(len), ModuleType, FunctionType], addl_filenames: List[str] = []) -> \
-        Tuple[Tuple[List[Tuple[Any, int]], List[Tuple[str, str]]], Callable[[FrameType, str, Any], Callable]]:
+def create_collector(
+    skip_types: List[type] = [type, type(len), ModuleType, FunctionType], 
+    addl_filenames: List[str] = []
+) -> Tuple[MemoryFootprint, Callable[[FrameType, str, Any], Callable]]:
     """
-    Creates a list to collect observed values and a trace function.
+    Creates a memory footprint to collect observed values and a trace function.
 
     Any types in ``skip_types`` won't be tracked by the trace function. The trace function by 
     default only traces inside IPython but can be set to trace inside specific files using the
@@ -34,21 +38,16 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             IPython
         
     Returns:
-        ``tuple[tuple[list[tuple[object, int]], list[tuple[str, str]]], callable[[frame, str, 
-        object], callable]]``: a 2-tuple containing a 2-tuple with the list of tuples of observed 
-        objects and their timestamps and the list of call filenames andfunction names, and the trace 
-        function
+        ``tuple[MemoryFootprint, callable[[frame, str, object], callable]]``: the memory footprint
+        and the trace function
     """
-    global _COLLECTOR_RET
-    observed = []
-    calls = []
+    global ACTIVE_FOOTPRINT
     vars_not_found = {}
-    hashes = set()
-    counter = [0]
+    footprint = MemoryFootprint()
 
     def track_value(val, seen_at=None):
         """
-        Tracks a value in ``observed``. Checks that the value has not already been tracked by 
+        Tracks a value in ``footprint``. Checks that the value has not already been tracked by 
         pickling it and hashing the pickled object and comparing it to ``hashes``. If pickling is
         unsuccessful, the value is not tracked.
 
@@ -60,14 +59,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
             if type(val) in skip_types:
                 return
 
-            h = pickle_and_hash(val)
-
-            if seen_at is None:
-                seen_at = counter[0]
-            
-            if h not in hashes:
-                observed.append((copy(val), seen_at))
-                hashes.add(h)
+            footprint.add_value(copy(val), seen_at)
 
         # if something fails, don't track
         except:
@@ -80,7 +72,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         Args:
             frame (``types.FrameType``): the frame of the call
         """
-        calls.append((frame.f_code.co_filename, frame.f_code.co_name))
+        footprint.add_call(frame.f_code.co_filename, frame.f_code.co_name)
 
     # TODO: a way to track the cell of execution
     def collect_intermidiate_results(frame: FrameType, event: str, arg: Any):
@@ -88,15 +80,14 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
         Trace function for PyBryt.
         """
         if is_ipython_frame(frame) or frame.f_code.co_filename in addl_filenames:
-            counter[0] += 1 # increment student code step counter
+            footprint.increment_counter()  # increment student code step counter
 
         if event == "call":
             track_call(frame)
             return collect_intermidiate_results
 
         # return if tracking is disabled by a compelxity check
-        from .complexity import _TRACKING_DISABLED
-        if _TRACKING_DISABLED:
+        if is_complexity_tracing_enabled():
             return collect_intermidiate_results
 
         name = frame.f_code.co_filename + frame.f_code.co_name
@@ -108,10 +99,16 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                 tokens = set("".join(char if char.isalnum() or char == '_' else "\n" for char in line).split("\n"))
                 for t in "".join(char if char.isalnum() or char == '_' or char == '.' else "\n" for char in line).split("\n"):
                     tokens.add(t)
-                tokens = sorted(tokens) # sort for stable ordering
+                tokens = sorted(tokens)  # sort for stable ordering
                 
                 for t in tokens:
                     if "." in t:
+                        try:
+                            float(t)  # prevent adding floats prematurely
+                            continue
+                        except ValueError:
+                            pass
+
                         try:
                             val = eval(t, frame.f_globals, frame.f_locals)
                             track_value(val)
@@ -132,7 +129,7 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
                 if m:
                     if name not in vars_not_found:
                         vars_not_found[name] = []
-                    vars_not_found[name].append((m.group(1), counter[0]))
+                    vars_not_found[name].append((m.group(1), footprint.counter.get_value()))
 
             if event == "return":
                 track_value(arg)
@@ -154,11 +151,11 @@ def create_collector(skip_types: List[type] = [type, type(len), ModuleType, Func
 
         return collect_intermidiate_results
 
-    _COLLECTOR_RET = (observed, counter, collect_intermidiate_results)
-    return (observed, calls), collect_intermidiate_results
+    ACTIVE_FOOTPRINT = footprint
+    return footprint, collect_intermidiate_results
 
 
-def _get_tracing_frame():
+def get_tracing_frame():
     """
     Returns the frame that is being traced by looking for the ``__PYBRYT_TRACING__`` global variable.
 
@@ -193,7 +190,7 @@ def tracing_off(frame=None, save_func=True):
         x3 = pow(x, 3)
     """
     global TRACING_FUNC
-    frame = _get_tracing_frame() if frame is None else frame
+    frame = get_tracing_frame() if frame is None else frame
     if frame is None:
         return
     if save_func:
@@ -225,7 +222,7 @@ def tracing_on(frame=None, tracing_func=None):
         x4 = pow(x, 4)
     """
     global TRACING_FUNC
-    frame = _get_tracing_frame() if frame is None else frame
+    frame = get_tracing_frame() if frame is None else frame
     if frame is None or (TRACING_FUNC is None and tracing_func is None):
         return
     if TRACING_FUNC is not None and tracing_func is None:
@@ -260,3 +257,13 @@ class no_tracing:
     def __exit__(self, exc_type, exc_value, traceback):
         tracing_on()
         return False
+
+
+def get_active_footprint() -> Optional[MemoryFootprint]:
+    """
+    Get the active memory footprint if present, else ``None``.
+
+    Returns:
+        :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
+    """
+    return ACTIVE_FOOTPRINT

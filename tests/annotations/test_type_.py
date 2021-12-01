@@ -1,28 +1,26 @@
-"""Tests for PyBryt type annotations"""
+"""Tests for type annotations"""
 
-import time
-import pytest
 import numpy as np
+import pytest
 
 from unittest import mock
 
-from pybryt import *
-from pybryt.utils import pickle_and_hash
+import pybryt
 
-from .utils import *
+from .utils import assert_object_attrs, generate_memory_footprint
 
 
 def test_forbid_type():
     """
     """
-    mfp = generate_memory_footprint()
-    Annotation.reset_tracked_annotations()
+    footprint = generate_memory_footprint()
+    pybryt.Annotation.reset_tracked_annotations()
 
-    a = ForbidType(bool)
-    res = a.check(mfp)
+    a = pybryt.ForbidType(bool)
+    res = a.check(footprint)
 
-    check_obj_attributes(a, {"children__len": 0})
-    check_obj_attributes(res, {
+    assert_object_attrs(a, {"children__len": 0})
+    assert_object_attrs(res, {
         "children": [],
         "satisfied": True,
         "_satisfied": True,
@@ -42,9 +40,9 @@ def test_forbid_type():
         "type_": "<class 'bool'>",
     }
 
-    a = ForbidType(np.ndarray)
-    res = a.check(mfp)
-    check_obj_attributes(res, {
+    a = pybryt.ForbidType(np.ndarray)
+    res = a.check(footprint)
+    assert_object_attrs(res, {
         "children": [],
         "satisfied": False,
         "_satisfied": False,
@@ -55,10 +53,10 @@ def test_forbid_type():
 
     # check constructor errors
     with pytest.raises(TypeError, match=f"1 is not a type"):
-        ForbidType(1)
+        pybryt.ForbidType(1)
 
     with mock.patch("pybryt.annotations.type_.dill") as mocked_dill:
         mocked_dill.dumps.side_effect = Exception()
 
         with pytest.raises(ValueError, match="Types must be serializable but the following error was thrown during serialization:\n"):
-            ForbidType(np.ndarray)
+            pybryt.ForbidType(np.ndarray)

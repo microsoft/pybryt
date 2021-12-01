@@ -1,30 +1,30 @@
-"""Tests for PyBryt relational annotations"""
+"""Tests for relational annotations"""
 
 import pytest
 
-from pybryt import *
+import pybryt
 
-from .utils import *
+from .utils import assert_object_attrs, generate_memory_footprint
 
 
 def test_before_annotation():
     """
     """
-    mfp = generate_memory_footprint()
-    Annotation.reset_tracked_annotations()
+    footprint = generate_memory_footprint()
+    pybryt.Annotation.reset_tracked_annotations()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1 = footprint.get_value(0)
+    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
 
-    v1 = Value(val1)
-    v2 = Value(val2)
+    v1 = pybryt.Value(val1)
+    v2 = pybryt.Value(val2)
     
     v = v1.before(v2)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children": (v1, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -69,11 +69,11 @@ def test_before_annotation():
     }
 
     v = v2.after(v1)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children": (v1, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -83,11 +83,11 @@ def test_before_annotation():
     })
 
     v = v1.after(v2)
-    res = v.check(mfp)
+    res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
-    check_obj_attributes(v, {"children": (v2, v1)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v2, v1)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -100,19 +100,19 @@ def test_before_annotation():
 def test_and_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1 = footprint.get_value(0)
+    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
 
-    v1 = Value(val1)
-    v2 = Value(val2)
+    v1 = pybryt.Value(val1)
+    v2 = pybryt.Value(val2)
     
     v = v1 & v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -121,12 +121,12 @@ def test_and_annotation():
         "satisfied_at": ts2,
     })
 
-    v3 = Value([])
+    v3 = pybryt.Value([])
     v = v1 & v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, v3)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v3)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -135,12 +135,12 @@ def test_and_annotation():
         "satisfied_at": -1,
     })
 
-    v4 = Value(6.02e+23)
+    v4 = pybryt.Value(6.02e+23)
     v = v4 & v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v4, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v4, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -150,10 +150,10 @@ def test_and_annotation():
     })
 
     v = v4 & v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v4, v3)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v4, v3)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -166,19 +166,19 @@ def test_and_annotation():
 def test_or_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, ts1 = footprint.get_value(0), footprint.get_timestamp(0)
+    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
 
-    v1 = Value(val1)
-    v2 = Value(val2)
+    v1 = pybryt.Value(val1)
+    v2 = pybryt.Value(val2)
     
     v = v1 | v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -187,12 +187,12 @@ def test_or_annotation():
         "satisfied_at": ts2,
     })
 
-    v3 = Value([])
+    v3 = pybryt.Value([])
     v = v1 | v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, v3)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v3)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -201,12 +201,12 @@ def test_or_annotation():
         "satisfied_at": ts1,
     })
 
-    v4 = Value(6.02e+23)
+    v4 = pybryt.Value(6.02e+23)
     v = v4 | v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v4, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v4, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -216,10 +216,10 @@ def test_or_annotation():
     })
 
     v = v4 | v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v4, v3)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v4, v3)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -232,19 +232,19 @@ def test_or_annotation():
 def test_xor_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1, ts1 = footprint.get_value(0), footprint.get_timestamp(0)
+    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
 
-    v1 = Value(val1)
-    v2 = Value(val2)
+    v1 = pybryt.Value(val1)
+    v2 = pybryt.Value(val2)
     
     v = v1 ^ v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -253,12 +253,12 @@ def test_xor_annotation():
         "satisfied_at": -1,
     })
 
-    v3 = Value([])
+    v3 = pybryt.Value([])
     v = v1 ^ v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, v3)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, v3)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -267,12 +267,12 @@ def test_xor_annotation():
         "satisfied_at": ts1,
     })
 
-    v4 = Value(6.02e+23)
+    v4 = pybryt.Value(6.02e+23)
     v = v4 ^ v2
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v4, v2)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v4, v2)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": True,
         "_satisfied": True,
@@ -282,10 +282,10 @@ def test_xor_annotation():
     })
 
     v = v4 ^ v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v4, v3)})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v4, v3)})
+    assert_object_attrs(res, {
         "children__len": 2,
         "satisfied": False,
         "_satisfied": False,
@@ -298,17 +298,16 @@ def test_xor_annotation():
 def test_not_annotation():
     """
     """
-    mfp = generate_memory_footprint()
+    footprint = generate_memory_footprint()
 
-    val1, ts1 = mfp[0]
-    val2, ts2 = mfp[1]
+    val1 = footprint.get_value(0)
 
-    v1 = Value(val1)
+    v1 = pybryt.Value(val1)
     v = ~v1
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v1, )})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v1, )})
+    assert_object_attrs(res, {
         "children__len": 1,
         "satisfied": False,
         "_satisfied": False,
@@ -317,12 +316,12 @@ def test_not_annotation():
         "satisfied_at": -1,
     })
 
-    v3 = Value([])
+    v3 = pybryt.Value([])
     v = ~v3
-    res = v.check(mfp)
+    res = v.check(footprint)
 
-    check_obj_attributes(v, {"children": (v3, )})
-    check_obj_attributes(res, {
+    assert_object_attrs(v, {"children": (v3, )})
+    assert_object_attrs(res, {
         "children__len": 1,
         "satisfied": True,
         "_satisfied": True,
@@ -336,4 +335,4 @@ def test_constructor_errors():
     """
     """
     with pytest.raises(ValueError):
-        AndAnnotation([Value(1), "not an annotation"])
+        pybryt.AndAnnotation([pybryt.Value(1), "not an annotation"])
