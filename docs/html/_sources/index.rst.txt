@@ -12,7 +12,7 @@ PyBryt Documentation
 
    getting_started
    annotations/index
-   reference_implementations
+   reference_implementations/index
    student_implementations
    cli_reference
    api_reference
