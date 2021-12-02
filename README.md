@@ -37,6 +37,21 @@ Educators and Institutions can leverage the PyBryt Library to integrate auto ass
 
 See the [Getting Started](https://microsoft.github.io/pybryt/html/getting_started.html) page on the pybryt documentation for steps to install and use pybryt for the first time.
 
+## Learning How to use PyBryt 
+Microsoft Learn Introduction to PyBryt content length 48 min
+1 Module, 6 Units
+Level: Beginner
+
+### Learning objectives 
+
+In this module you will:
+- Understand the concept of annotations in context of reference implementations
+- Combine annotations into reference implementations
+- Explore how combining reference implementations can support different kinds of solutions
+- Explore the process of creating a Fibonacci sequence assignment using PyBryt
+
+[Learn how to use PyBryt, an open-source auto-assessment tool, to create assignments with targeted feedback and generalizable grading.](http://aka.ms/pybrytlearn)
+
 ## Testing
 
 To run the demos, all demos are located in the demo folder. 
