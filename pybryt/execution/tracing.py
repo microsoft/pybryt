@@ -261,17 +261,29 @@ class no_tracing:
 
 class FrameTracer:
     """
+    A class for managing the tracing of a call stack.
+
+    Args:
+        frame (``FrameType``): the frame to initialize tracing in
     """
 
     footprint: Optional[MemoryFootprint]
+    """the memory footprint being populated"""
 
     frame: FrameType
+    """the frame being traced"""
 
     def __init__(self, frame: FrameType) -> None:
         self.frame = frame
         self.footprint = None
 
     def start_trace(self, **kwargs) -> None:
+        """
+        Create a collector and memory footprint and start tracing execution in the frame.
+
+        Args:
+            **kwargs: additional keyword arguments passed to ``create_collector``
+        """
         if get_tracing_frame() is not None:
             return  # if already tracing, no action required
 
@@ -280,11 +292,20 @@ class FrameTracer:
         tracing_on(tracing_func=cir)
 
     def end_trace(self) -> None:
+        """
+        End execution tracing in the frame.
+        """
         if self.footprint is not None:
             tracing_off(save_func=False)
             self.frame.f_globals[TRACING_VARNAME] = False
 
     def get_footprint(self) -> MemoryFootprint:
+        """
+        Return the memory footprint that was populated by the trace function.
+
+        Returns:
+            :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
+        """
         return self.footprint
 
 
