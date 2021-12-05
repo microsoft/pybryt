@@ -7,7 +7,7 @@ import numpy as np
 from unittest import mock
 
 from pybryt import *
-from pybryt.execution import create_collector, tracing_off, tracing_on, TRACING_VARNAME
+from pybryt.execution import create_collector, tracing_off, tracing_on
 
 from .utils import generate_mocked_frame
 

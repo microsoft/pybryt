@@ -6,7 +6,7 @@ import re
 
 from copy import copy
 from types import FrameType, FunctionType, ModuleType
-from typing import Any, List, Optional, Tuple, Callable
+from typing import Any, Dict, List, Optional, Tuple, Callable
 
 from .complexity import is_complexity_tracing_enabled
 from .memory_footprint import MemoryFootprint
@@ -257,6 +257,35 @@ class no_tracing:
     def __exit__(self, exc_type, exc_value, traceback):
         tracing_on()
         return False
+
+
+class FrameTracer:
+    """
+    """
+
+    footprint: Optional[MemoryFootprint]
+
+    frame: FrameType
+
+    def __init__(self, frame: FrameType) -> None:
+        self.frame = frame
+        self.footprint = None
+
+    def start_trace(self, **kwargs) -> None:
+        if get_tracing_frame() is not None:
+            return  # if already tracing, no action required
+
+        self.footprint, cir = create_collector(**kwargs)
+        self.frame.f_globals[TRACING_VARNAME] = True
+        tracing_on(tracing_func=cir)
+
+    def end_trace(self) -> None:
+        if self.footprint is not None:
+            tracing_off(save_func=False)
+            self.frame.f_globals[TRACING_VARNAME] = False
+
+    def get_footprint(self) -> MemoryFootprint:
+        return self.footprint
 
 
 def get_active_footprint() -> Optional[MemoryFootprint]:

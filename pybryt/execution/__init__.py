@@ -15,7 +15,14 @@ from textwrap import dedent
 from .complexity import check_time_complexity, is_complexity_tracing_enabled, TimeComplexityResult
 from .memory_footprint import MemoryFootprint
 from .tracing import (
-    create_collector, get_tracing_frame, no_tracing, tracing_off, tracing_on, TRACING_VARNAME)
+    create_collector,
+    FrameTracer,
+    get_tracing_frame,
+    no_tracing,
+    tracing_off, 
+    tracing_on,
+    TRACING_VARNAME,
+)
 
 from ..preprocessors import IntermediateVariablePreprocessor
 from ..utils import make_secret
