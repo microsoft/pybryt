@@ -4,8 +4,7 @@ import inspect
 
 from collections.abc import Sized
 from itertools import chain
-from types import FrameType
-from typing import List, Optional, Union
+from typing import List, Union
 
 from .annotations import complexities as cplx, TimeComplexity
 from .execution import (
