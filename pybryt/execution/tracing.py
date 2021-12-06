@@ -274,7 +274,7 @@ class FrameTracer:
     """the frame being traced"""
 
     _tracing_already_enabled: bool
-    """"""
+    """whether tracing was already enabled when ``start_trace`` was called"""
 
     def __init__(self, frame: FrameType) -> None:
         self.frame = frame

@@ -30,7 +30,7 @@ class TimeComplexityChecker:
     """
 
     name: str
-    """"""
+    """the name to use for the annotation"""
 
     results: List[TimeComplexityResult]
     """the result objects holding the step data for each input length"""

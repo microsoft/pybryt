@@ -327,7 +327,7 @@ class check:
     """which types of eference results to include in the report"""
 
     _frame_tracer: Optional[FrameTracer]
-    """"""
+    """the frame tracer being used to manage tracing"""
 
     _cache: bool
     """whether to cache the memory footprint and results"""
