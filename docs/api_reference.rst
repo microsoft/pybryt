@@ -128,3 +128,11 @@ Execution
 .. automodule:: pybryt.execution
    :members:
    :undoc-members:
+
+
+Complexity Analysis
+-------------------
+
+.. automodule:: pybryt.complexity
+   :members:
+   :undoc-members:

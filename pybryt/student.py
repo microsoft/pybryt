@@ -10,14 +10,11 @@ import warnings
 
 from glob import glob
 from multiprocessing import Process, Queue
-from types import FrameType
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
-from .execution import (
-    create_collector, execute_notebook, get_tracing_frame, MemoryFootprint, NBFORMAT_VERSION, 
-    tracing_off, tracing_on, TRACING_VARNAME)
+from .execution import execute_notebook, FrameTracer, MemoryFootprint, NBFORMAT_VERSION
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
-from .utils import pickle_and_hash, Serializable
+from .utils import Serializable
 
 
 CACHE_DIR_NAME = ".pybryt_cache"
@@ -329,17 +326,17 @@ class check:
     _show_only: Optional[str]
     """which types of eference results to include in the report"""
 
-    _frame: Optional[FrameType]
-    """the frame containing the student's code"""
-
-    _footprint: Optional[MemoryFootprint]
-    """the memory footprint"""
+    _frame_tracer: Optional[FrameTracer]
+    """the frame tracer being used to manage tracing"""
 
     _cache: bool
     """whether to cache the memory footprint and results"""
 
     _kwargs: Dict[str, Any]
     """keyword arguments passed to ``pybryt.execution.create_collector``"""
+
+    _disabled: bool
+    """whether this check is disbaled (because PyBryt is already tracing)"""
 
     def __init__(
         self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
@@ -362,10 +359,9 @@ class check:
         self._ref = ref
         self._kwargs = kwargs
         self._show_only = show_only
-        self._frame = None
-        self._footprint = None
         self._report_on_error = report_on_error
         self._cache = cache
+        self._disabled = False
 
     def _cache_check(self, stu, res):
         """
@@ -390,24 +386,16 @@ class check:
         stu.dump(stu_path)
 
     def __enter__(self):
-        if get_tracing_frame() is not None:
-            return  # if already tracing, no action required
-
-        else:
-            self._footprint, cir = create_collector(**self._kwargs)
-            self._frame = inspect.currentframe().f_back
-            self._frame.f_globals[TRACING_VARNAME] = True
-
-            tracing_on(tracing_func=cir)
+        self._frame_tracer = FrameTracer(inspect.currentframe().f_back)
+        self._disabled = not self._frame_tracer.start_trace(**self._kwargs)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        tracing_off(save_func=False)
-
-        if self._frame is not None:
-            self._frame.f_globals[TRACING_VARNAME] = False
+        if not self._disabled:
+            self._frame_tracer.end_trace()
 
             if exc_type is None or self._report_on_error:
-                stu = StudentImplementation.from_footprint(self._footprint)
+                footprint = self._frame_tracer.get_footprint()
+                stu = StudentImplementation.from_footprint(footprint)
                 res = stu.check(self._ref)
                 report = generate_report(res, show_only=self._show_only)
                 if report:

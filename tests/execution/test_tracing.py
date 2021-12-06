@@ -1,13 +1,12 @@
 """"""
 
-import sys
-import inspect
 import numpy as np
+import sys
 
 from unittest import mock
 
 from pybryt import *
-from pybryt.execution import create_collector, tracing_off, tracing_on, TRACING_VARNAME
+from pybryt.execution import create_collector, FrameTracer, tracing_off, tracing_on
 
 from .utils import generate_mocked_frame
 
@@ -193,3 +192,40 @@ def test_tracing_context_manager():
             mocked_off.assert_called()
             mocked_on.assert_not_called()
         mocked_on.assert_called()
+
+
+def test_frame_tracer():
+    """
+    Tests for ``pybryt.execution.tracing.FrameTracer``.
+    """
+    frame = generate_mocked_frame("<ipython-abc123>", "foo", 3)
+    tracer = FrameTracer(frame)
+
+    with mock.patch("pybryt.execution.tracing.tracing_on") as mocked_on, \
+            mock.patch("pybryt.execution.tracing.tracing_off") as mocked_off, \
+            mock.patch("pybryt.execution.tracing.create_collector") as mocked_create, \
+            mock.patch("pybryt.execution.tracing.get_tracing_frame") as mocked_get:
+        kwargs = {"foo": "bar"}
+        mocked_create.return_value = (MemoryFootprint(), lambda a, b, c: None)
+
+        # check that when tracing is enabled no action is taken
+        mocked_get.return_value = frame
+        assert not tracer.start_trace()
+        mocked_on.assert_not_called()
+
+        tracer.end_trace()
+        mocked_off.assert_not_called()
+
+        mocked_get.return_value = None
+
+        assert tracer.start_trace(**kwargs)
+        mocked_create.assert_called_once_with(**kwargs)
+        mocked_on.assert_called_once_with(tracing_func=mocked_create.return_value[1])
+        assert frame.f_globals["__PYBRYT_TRACING__"]
+        assert isinstance(tracer.footprint, MemoryFootprint)
+
+        tracer.end_trace()
+        mocked_off.assert_called_once_with(save_func=False)
+        assert not frame.f_globals["__PYBRYT_TRACING__"]
+
+        assert isinstance(tracer.get_footprint(), MemoryFootprint)
