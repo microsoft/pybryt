@@ -10,14 +10,11 @@ import warnings
 
 from glob import glob
 from multiprocessing import Process, Queue
-from types import FrameType
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
-from .execution import (
-    execute_notebook, FrameTracer,
-    get_tracing_frame, MemoryFootprint, NBFORMAT_VERSION)
+from .execution import execute_notebook, FrameTracer, MemoryFootprint, NBFORMAT_VERSION
 from .reference import generate_report, ReferenceImplementation, ReferenceResult
-from .utils import pickle_and_hash, Serializable
+from .utils import Serializable
 
 
 CACHE_DIR_NAME = ".pybryt_cache"
