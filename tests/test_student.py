@@ -142,12 +142,15 @@ def test_check_cm(capsys):
     _, stu = generate_impl()
 
     with mock.patch.object(check, "_cache_check") as mocked_cache:
-        with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
+        with mock.patch("pybryt.student.FrameTracer") as mocked_frame_tracer:
+            mocked_frame_tracer.return_value.get_footprint.return_value = stu.footprint
             check_cm = check(ref, cache=False)
             with check_cm:
-                check_cm._footprint = stu.footprint
+                pass
 
             mocked_cache.assert_not_called()
+            mocked_frame_tracer.return_value.start_trace.assert_called()
+            mocked_frame_tracer.return_value.end_trace.assert_called()
 
         captured = capsys.readouterr()
         expected = dedent("""\
@@ -160,11 +163,12 @@ def test_check_cm(capsys):
         """)
         assert captured.out == expected
 
-        with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
+        with mock.patch("pybryt.student.FrameTracer") as mocked_frame_tracer:
+            mocked_frame_tracer.return_value.get_footprint.return_value = stu.footprint
             ref_filename = pkg_resources.resource_filename(__name__, os.path.join("files", "expected_ref.pkl"))
             check_cm = check(ref_filename)
             with check_cm:
-                check_cm._footprint = stu.footprint
+                pass
 
             mocked_cache.assert_called()
 
@@ -182,25 +186,6 @@ def test_check_cm(capsys):
         """)
         assert captured.out == expected
 
-        # check no action when tracing
-        global __PYBRYT_TRACING__
-        __PYBRYT_TRACING__ = True
-
-        try:
-            with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
-                check_cm = check(ref)
-                with check_cm:
-                    pass
-
-                mocked_tracing.assert_not_called()
-
-        except:
-            __PYBRYT_TRACING__ = False
-            raise
-
-        else:
-            __PYBRYT_TRACING__ = False
-
         # test errors
         with pytest.raises(ValueError, match="Cannot check against an empty list of references"):
             check([])
@@ -209,7 +194,7 @@ def test_check_cm(capsys):
             check([ref, "path", 1])
 
     # check caching
-    with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
+    with mock.patch("pybryt.student.FrameTracer") as mocked_frame_tracer:
         with mock.patch("pybryt.student.StudentImplementation") as mocked_stu, \
                 mock.patch("pybryt.student.generate_report") as mocked_generate, \
                 mock.patch("pybryt.student.os.makedirs") as mocked_makedirs:

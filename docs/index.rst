@@ -14,6 +14,7 @@ PyBryt Documentation
    annotations/index
    reference_implementations/index
    student_implementations
+   complexity
    cli_reference
    api_reference
    Changelog <https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md>

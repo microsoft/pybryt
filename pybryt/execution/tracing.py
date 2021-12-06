@@ -6,7 +6,7 @@ import re
 
 from copy import copy
 from types import FrameType, FunctionType, ModuleType
-from typing import Any, List, Optional, Tuple, Callable
+from typing import Any, Dict, List, Optional, Tuple, Callable
 
 from .complexity import is_complexity_tracing_enabled
 from .memory_footprint import MemoryFootprint
@@ -257,6 +257,67 @@ class no_tracing:
     def __exit__(self, exc_type, exc_value, traceback):
         tracing_on()
         return False
+
+
+class FrameTracer:
+    """
+    A class for managing the tracing of a call stack.
+
+    Args:
+        frame (``FrameType``): the frame to initialize tracing in
+    """
+
+    footprint: Optional[MemoryFootprint]
+    """the memory footprint being populated"""
+
+    frame: FrameType
+    """the frame being traced"""
+
+    _tracing_already_enabled: bool
+    """whether tracing was already enabled when ``start_trace`` was called"""
+
+    def __init__(self, frame: FrameType) -> None:
+        self.frame = frame
+        self.footprint = None
+        self._tracing_already_enabled = False
+
+    def start_trace(self, **kwargs) -> None:
+        """
+        Create a collector and memory footprint and start tracing execution in the frame. Returns
+        a boolean indicating whether tracing was enabled.
+
+        Args:
+            **kwargs: additional keyword arguments passed to ``create_collector``
+
+        Returns:
+            ``bool``: whether this call initiated tracing (``False`` if tracing was already enabled)
+        """
+        self._tracing_already_enabled = get_tracing_frame() is not None
+        if self._tracing_already_enabled:
+            self.footprint = get_active_footprint()
+            return False
+
+        self.footprint, cir = create_collector(**kwargs)
+        self.frame.f_globals[TRACING_VARNAME] = True
+        tracing_on(tracing_func=cir)
+        return True
+
+    def end_trace(self) -> None:
+        """
+        End execution tracing in the frame.
+        """
+        if not self._tracing_already_enabled:
+            tracing_off(save_func=False)
+            self.frame.f_globals[TRACING_VARNAME] = False
+
+    def get_footprint(self) -> MemoryFootprint:
+        """
+        Return the memory footprint that was populated by the trace function.
+
+        Returns:
+            :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
+        """
+        return self.footprint
 
 
 def get_active_footprint() -> Optional[MemoryFootprint]:
