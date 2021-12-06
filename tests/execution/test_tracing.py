@@ -199,7 +199,7 @@ def test_frame_tracer():
 
         # check that when tracing is enabled no action is taken
         mocked_get.return_value = frame
-        tracer.start_trace()
+        assert not tracer.start_trace()
         mocked_on.assert_not_called()
 
         tracer.end_trace()
@@ -207,7 +207,7 @@ def test_frame_tracer():
 
         mocked_get.return_value = None
 
-        tracer.start_trace(**kwargs)
+        assert tracer.start_trace(**kwargs)
         mocked_create.assert_called_once_with(**kwargs)
         mocked_on.assert_called_once_with(tracing_func=mocked_create.return_value[1])
         assert frame.f_globals["__PYBRYT_TRACING__"]

@@ -113,6 +113,7 @@ class _check_time_complexity_wrapper:
 
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
         self.check_context.__exit__(exc_type, exc_value, traceback)
+        self.frame_tracer.end_trace()
 
         result = None
         for val, _ in self.frame_tracer.get_footprint().values:
