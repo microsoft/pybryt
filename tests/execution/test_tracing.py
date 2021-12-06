@@ -145,6 +145,17 @@ def test_trace_function():
     assert np.allclose(footprint.values[0][0], arr)
     assert footprint.values[0][1] == 1
 
+    # check that imported modules are correctly tracked
+    with mock.patch.object(footprint, "add_imports") as mocked_add_imports:
+        class Foo:
+            pass
+
+        cir(frame, "return", Foo)
+        mocked_add_imports.assert_called_with(Foo.__module__.split(".")[0])
+
+        cir(frame, "return", np)
+        mocked_add_imports.assert_called_with(np.__name__)
+
 
 def test_tracing_control():
     """
