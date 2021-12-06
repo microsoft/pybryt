@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+* Added `TimeComplexityChecker` for analyzing complexity without annotations per [#137](https://github.com/microsoft/pybryt/issues/137)
+
 ## 0.3.1 - 2021-12-01
 
 * Fixed a bug that was causing floats to be added to the memory footprint prematurely per resulting in [#125](https://github.com/microsoft/pybryt/issues/125)
