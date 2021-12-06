@@ -186,26 +186,6 @@ def test_check_cm(capsys):
         """)
         assert captured.out == expected
 
-        # TODO: move this check into tests for FrameTracer
-        # # check no action when tracing
-        # global __PYBRYT_TRACING__
-        # __PYBRYT_TRACING__ = True
-
-        # try:
-        #     with mock.patch("pybryt.student.tracing_on") as mocked_tracing, mock.patch("pybryt.student.tracing_off"):
-        #         check_cm = check(ref)
-        #         with check_cm:
-        #             pass
-
-        #         mocked_tracing.assert_not_called()
-
-        # except:
-        #     __PYBRYT_TRACING__ = False
-        #     raise
-
-        # else:
-        #     __PYBRYT_TRACING__ = False
-
         # test errors
         with pytest.raises(ValueError, match="Cannot check against an empty list of references"):
             check([])
