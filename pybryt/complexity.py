@@ -4,7 +4,7 @@ import inspect
 
 from collections.abc import Sized
 from itertools import chain
-from typing import List, Union
+from typing import List, Optional, Union
 
 from .annotations import complexities as cplx, TimeComplexity
 from .execution import (
@@ -29,10 +29,14 @@ class TimeComplexityChecker:
     best-matched complexity class of the block.
     """
 
+    name: str
+    """"""
+
     results: List[TimeComplexityResult]
     """the result objects holding the step data for each input length"""
 
-    def __init__(self) -> None:
+    def __init__(self, name: Optional[str] = None) -> None:
+        self.name = name if name is not None else ANNOTATION_NAME
         self.results = []
 
     def __call__(self, n: Union[int, float, Sized]) -> "_check_time_complexity_wrapper":
@@ -66,7 +70,7 @@ class TimeComplexityChecker:
             :py:class:`pybryt.annotations.complexity.complexities.complexity`: the complexity class
             corresponding to the best-matched complexity
         """
-        annot = TimeComplexity(cplx.constant, name=ANNOTATION_NAME)
+        annot = TimeComplexity(cplx.constant, name=self.name)
         footprint = MemoryFootprint.from_values(
             *chain.from_iterable([(tcr, i) for i, tcr in enumerate(self.results)]))
         result = annot.check(footprint)
@@ -102,19 +106,13 @@ class _check_time_complexity_wrapper:
         self.frame_tracer = None
 
     def __enter__(self) -> None:
-        if get_tracing_frame() is not None:
-            return  # if already tracing, no action required
-
         self.frame_tracer = FrameTracer(inspect.currentframe().f_back)
         self.frame_tracer.start_trace()
-        self.check_context = check_time_complexity(ANNOTATION_NAME, self.n)
+        self.check_context = check_time_complexity(self.checker.name, self.n)
         self.check_context.__enter__()
 
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
         self.check_context.__exit__(exc_type, exc_value, traceback)
-
-        if self.frame_tracer is not None:
-            self.frame_tracer.end_trace()
 
         result = None
         for val, _ in self.frame_tracer.get_footprint().values:

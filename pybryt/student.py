@@ -338,6 +338,9 @@ class check:
     _kwargs: Dict[str, Any]
     """keyword arguments passed to ``pybryt.execution.create_collector``"""
 
+    _disabled: bool
+    """whether this check is disbaled (because PyBryt is already tracing)"""
+
     def __init__(
         self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
         report_on_error: bool = True, show_only: Optional[str] = None, cache: bool = True, **kwargs
@@ -361,6 +364,7 @@ class check:
         self._show_only = show_only
         self._report_on_error = report_on_error
         self._cache = cache
+        self._disabled = False
 
     def _cache_check(self, stu, res):
         """
@@ -385,14 +389,11 @@ class check:
         stu.dump(stu_path)
 
     def __enter__(self):
-        if get_tracing_frame() is not None:
-            return  # if already tracing, no action required
-
         self._frame_tracer = FrameTracer(inspect.currentframe().f_back)
-        self._frame_tracer.start_trace(**self._kwargs)
+        self._disabled = not self._frame_tracer.start_trace(**self._kwargs)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if self._frame_tracer is not None:
+        if not self._disabled:
             self._frame_tracer.end_trace()
 
             if exc_type is None or self._report_on_error:

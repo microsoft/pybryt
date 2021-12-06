@@ -273,29 +273,40 @@ class FrameTracer:
     frame: FrameType
     """the frame being traced"""
 
+    _should_disable_tracing: bool
+    """"""
+
     def __init__(self, frame: FrameType) -> None:
         self.frame = frame
         self.footprint = None
+        self._should_disable_tracing = True
 
     def start_trace(self, **kwargs) -> None:
         """
-        Create a collector and memory footprint and start tracing execution in the frame.
+        Create a collector and memory footprint and start tracing execution in the frame. Returns
+        a boolean indicating whether tracing was enabled.
 
         Args:
             **kwargs: additional keyword arguments passed to ``create_collector``
+
+        Returns:
+            ``bool``: whether this call initiated tracing (``False`` if tracing was already enabled)
         """
         if get_tracing_frame() is not None:
-            return  # if already tracing, no action required
+            self.footprint = get_active_footprint()
+            self._should_disable_tracing = False
+            return False
 
         self.footprint, cir = create_collector(**kwargs)
         self.frame.f_globals[TRACING_VARNAME] = True
         tracing_on(tracing_func=cir)
+        return True
 
     def end_trace(self) -> None:
         """
         End execution tracing in the frame.
         """
-        if self.footprint is not None:
+        if self._should_disable_tracing:
             tracing_off(save_func=False)
             self.frame.f_globals[TRACING_VARNAME] = False
 
