@@ -10,7 +10,6 @@ All notable changes to this project will be documented in this file, and this pr
 * Fixed annotation message filtering bug per [#145](https://github.com/microsoft/pybryt/issues/145)
 * Added `dataclasses` backport to required modules for Python &lt; 3.7
 * Added a `group` argument to the `check` context manager per [#146](https://github.com/microsoft/pybryt/issues/146)
-* Moved named annotation filtering into `ReferenceImplementation` constructor per [#147](https://github.com/microsoft/pybryt/issues/147)
 
 ## 0.3.1 - 2021-12-01
 
