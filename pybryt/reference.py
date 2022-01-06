@@ -38,7 +38,19 @@ class ReferenceImplementation(Serializable):
         if not all(isinstance(ann, Annotation) for ann in annotations):
             raise TypeError("Found non-annotation in annotations")
         
-        self.annotations = annotations
+        self.annotations, name_counts = [], {}
+        for ann in annotations:
+            track = True
+            if ann.name is not None:
+                count = name_counts.get(ann.name, 0)
+                if ann.limit is None or ann.limit > count:
+                    name_counts[ann.name] = count + 1
+                else:
+                    track = False
+
+            if track:
+                self.annotations.append(ann)
+
         self.name = name
 
     def __eq__(self, other: Any) -> bool:
