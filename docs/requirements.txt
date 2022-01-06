@@ -2,3 +2,4 @@ furo
 sphinxcontrib-apidoc
 sphinx-argparse
 sphinx-click
+nbsphinx
