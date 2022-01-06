@@ -310,9 +310,10 @@ class check:
     Args:
         ref (``Union[str, ReferenceImplementation, list[str], list[ReferenceImplementation]]``): the
             reference(s) to check against or the path(s) to them
+        group (``str``, optional): the name of the group of annotations to run in each reference
         report_on_error (``bool``, optional): whether to print the report when an error is thrown
             by the block
-        show_only (one of ``{'satisified', 'unsatisfied', None}``, optional): which types of
+        show_only (one of ``{'satisfied', 'unsatisfied', None}``, optional): which types of
             reference results to include in the report; if ``None``, all are included
         **kwargs: additional keyword arguments passed to ``pybryt.execution.create_collector``
     """
@@ -320,11 +321,14 @@ class check:
     _ref: List[ReferenceImplementation]
     """the references being checked against"""
 
+    _group: Optional[str]
+    """the group of annotations in the references to run"""
+
     _report_on_error: bool
     """whether to print the report when an error is thrown by the block"""
 
     _show_only: Optional[str]
-    """which types of eference results to include in the report"""
+    """which types of reference results to include in the report"""
 
     _frame_tracer: Optional[FrameTracer]
     """the frame tracer being used to manage tracing"""
@@ -339,8 +343,13 @@ class check:
     """whether this check is disbaled (because PyBryt is already tracing)"""
 
     def __init__(
-        self, ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
-        report_on_error: bool = True, show_only: Optional[str] = None, cache: bool = True, **kwargs
+        self,
+        ref: Union[str, ReferenceImplementation, List[str], List[ReferenceImplementation]], 
+        group: Optional[str] = None,
+        report_on_error: bool = True,
+        show_only: Optional[str] = None,
+        cache: bool = True,
+        **kwargs,
     ):
         if isinstance(ref, str):
             ref = ReferenceImplementation.load(ref)
@@ -357,6 +366,7 @@ class check:
             raise TypeError("Invalid values provided for reference(s)")
 
         self._ref = ref
+        self._group = group
         self._kwargs = kwargs
         self._show_only = show_only
         self._report_on_error = report_on_error
@@ -396,7 +406,7 @@ class check:
             if exc_type is None or self._report_on_error:
                 footprint = self._frame_tracer.get_footprint()
                 stu = StudentImplementation.from_footprint(footprint)
-                res = stu.check(self._ref)
+                res = stu.check(self._ref, group=self._group)
                 report = generate_report(res, show_only=self._show_only)
                 if report:
                     print(report)
