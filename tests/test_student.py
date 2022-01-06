@@ -12,7 +12,9 @@ from textwrap import dedent
 from unittest import mock
 
 from pybryt import (
-    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation)
+    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation,
+    Value,
+)
 from pybryt.execution.memory_footprint import MemoryFootprint
 
 from .test_reference import generate_reference_notebook
@@ -208,6 +210,44 @@ def test_check_cm(capsys):
             mocked_makedirs.assert_called_with(".pybryt_cache", exist_ok=True)
             mocked_stu.from_footprint.return_value.dump.assert_called()
             mocked_stu.from_footprint.return_value.check.return_value[0].dump.assert_called_with(".pybryt_cache/foo_results.pkl")
+
+    # check by annotation group
+    ref = ReferenceImplementation("groups", [
+        Value(1, group="1"),
+        Value(2, group="1"),
+        Value(3, group="2"),
+        Value(4, group="2"),
+        Value(5),
+    ])
+
+    mocked_methods_by_group = {}
+    for ann in ref.annotations:
+        if ann.group not in mocked_methods_by_group:
+            mocked_methods_by_group[ann.group] = []
+        mocked_methods_by_group[ann.group].append(mock.patch.object(ann, "check"))
+
+    def run_group_and_check_calls(run_group):
+        with check(ref, group=run_group):
+            pass
+
+        for group, methods in mocked_methods_by_group.items():
+            for method in methods:
+                if group == run_group:
+                    method.assert_called()
+                else:
+                    method.assert_not_called()
+
+                method.reset_mock()
+
+    run_group_and_check_calls("1")
+    run_group_and_check_calls("2")
+
+    with check(ref):
+        pass
+
+    for _, methods in mocked_methods_by_group.items():
+        for method in methods:
+            method.assert_called()
 
 
 def test_from_cache():
