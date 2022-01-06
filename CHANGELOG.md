@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file, and this pr
 
 * Added the `RequireImport` and `ForbidImport` annotations per [#123](https://github.com/microsoft/pybryt/issues/123)
 * Added `TimeComplexityChecker` for analyzing complexity without annotations per [#137](https://github.com/microsoft/pybryt/issues/137)
+* Fixed annotation message filtering bug per [#145](https://github.com/microsoft/pybryt/issues/145)
+* Added `dataclasses` backport to required modules for Python &lt; 3.7
 
 ## 0.3.1 - 2021-12-01
 
