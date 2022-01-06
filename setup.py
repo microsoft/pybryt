@@ -1,10 +1,15 @@
 import setuptools
+import sys
 
 with open("README.md", "r") as fh:
 	long_description = fh.read()
 
 with open("requirements.txt") as f:
 	install_requires = f.readlines()
+
+# add dataclasses backport for python 3.6
+if sys.version_info.minor < 7:
+	install_requires.append("dataclasses")
 
 # get version
 env = {}
