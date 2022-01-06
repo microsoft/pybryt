@@ -12,9 +12,7 @@ from textwrap import dedent
 from unittest import mock
 
 from pybryt import (
-    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation,
-    Value,
-)
+    check, generate_student_impls, ReferenceImplementation, ReferenceResult, StudentImplementation)
 from pybryt.execution.memory_footprint import MemoryFootprint
 
 from .test_reference import generate_reference_notebook
@@ -195,6 +193,17 @@ def test_check_cm(capsys):
         with pytest.raises(TypeError, match="Invalid values in the reference list"):
             check([ref, "path", 1])
 
+        # check by annotation group
+        with mock.patch.object(StudentImplementation, "from_footprint") as mocked_ff, \
+                mock.patch("pybryt.student.FrameTracer"), \
+                mock.patch("pybryt.student.generate_report"):
+            ref = ReferenceImplementation("groups", [])
+            for run_group in ["1", "2", None]:
+                with check(ref, group=run_group):
+                    pass
+
+                mocked_ff.return_value.check.assert_called_with([ref], group=run_group)
+
     # check caching
     with mock.patch("pybryt.student.FrameTracer") as mocked_frame_tracer:
         with mock.patch("pybryt.student.StudentImplementation") as mocked_stu, \
@@ -210,45 +219,6 @@ def test_check_cm(capsys):
             mocked_makedirs.assert_called_with(".pybryt_cache", exist_ok=True)
             mocked_stu.from_footprint.return_value.dump.assert_called()
             mocked_stu.from_footprint.return_value.check.return_value[0].dump.assert_called_with(".pybryt_cache/foo_results.pkl")
-
-    # check by annotation group
-    ref = ReferenceImplementation("groups", [
-        Value(1, group="1"),
-        Value(2, group="1"),
-        Value(3, group="2"),
-        Value(4, group="2"),
-        Value(5),
-    ])
-
-    mocked_methods_by_group = {}
-    for ann in ref.annotations:
-        if ann.group not in mocked_methods_by_group:
-            mocked_methods_by_group[ann.group] = []
-        patcher = mock.patch.object(ann, "check")
-        mocked_methods_by_group[ann.group].append(patcher.start())
-
-    def run_group_and_check_calls(run_group):
-        with check(ref, group=run_group, cache=False):  # disable caching due to mock pickling issues
-            pass
-
-        for group, methods in mocked_methods_by_group.items():
-            for method in methods:
-                if group == run_group:
-                    method.assert_called()
-                else:
-                    method.assert_not_called()
-
-                method.reset_mock()
-
-    run_group_and_check_calls("1")
-    run_group_and_check_calls("2")
-
-    with check(ref, cache=False):
-        pass
-
-    for _, methods in mocked_methods_by_group.items():
-        for method in methods:
-            method.assert_called()
 
 
 def test_from_cache():
