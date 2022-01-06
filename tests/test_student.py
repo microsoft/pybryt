@@ -193,6 +193,17 @@ def test_check_cm(capsys):
         with pytest.raises(TypeError, match="Invalid values in the reference list"):
             check([ref, "path", 1])
 
+        # check by annotation group
+        with mock.patch.object(StudentImplementation, "from_footprint") as mocked_ff, \
+                mock.patch("pybryt.student.FrameTracer"), \
+                mock.patch("pybryt.student.generate_report"):
+            ref = ReferenceImplementation("groups", [])
+            for run_group in ["1", "2", None]:
+                with check(ref, group=run_group):
+                    pass
+
+                mocked_ff.return_value.check.assert_called_with([ref], group=run_group)
+
     # check caching
     with mock.patch("pybryt.student.FrameTracer") as mocked_frame_tracer:
         with mock.patch("pybryt.student.StudentImplementation") as mocked_stu, \
