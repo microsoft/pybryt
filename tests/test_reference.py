@@ -125,6 +125,21 @@ def test_reference_construction():
         ref2 = more_refs[0]
         assert ref2 == expected_ref2
 
+    # check filtering named annotations (#147)
+    annots = [
+        Value(0),
+        Value(1, name="1"),
+        Value(2, name="1"),
+        Value(3, name="1"),
+        Value(4, name="2", limit=2),
+        Value(5, name="2", limit=2),
+        Value(6, name="2", limit=2),
+        Value(7, name="3", limit=2),
+    ]
+    ref = ReferenceImplementation("named-annotations", annots)
+    assert len(ref.annotations) == 7
+    assert annots[-2] not in ref.annotations
+
 
 def test_construction_errors():
     """
