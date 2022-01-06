@@ -224,10 +224,11 @@ def test_check_cm(capsys):
     for ann in ref.annotations:
         if ann.group not in mocked_methods_by_group:
             mocked_methods_by_group[ann.group] = []
-        mocked_methods_by_group[ann.group].append(mock.patch.object(ann, "check"))
+        patcher = mock.patch.object(ann, "check")
+        mocked_methods_by_group[ann.group].append(patcher.start())
 
     def run_group_and_check_calls(run_group):
-        with check(ref, group=run_group):
+        with check(ref, group=run_group, cache=False):  # disable caching due to mock pickling issues
             pass
 
         for group, methods in mocked_methods_by_group.items():
@@ -242,7 +243,7 @@ def test_check_cm(capsys):
     run_group_and_check_calls("1")
     run_group_and_check_calls("2")
 
-    with check(ref):
+    with check(ref, cache=False):
         pass
 
     for _, methods in mocked_methods_by_group.items():
