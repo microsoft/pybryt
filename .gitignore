@@ -138,3 +138,7 @@ dmypy.json
 
 # ignore docs build
 /docs/html
+
+# ignore extraneous files from the getting started guide
+/docs/*.pkl
+/docs/hashes.json
