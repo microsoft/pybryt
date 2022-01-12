@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.4.0 - 2022-01-12
 
 * Added the `RequireImport` and `ForbidImport` annotations per [#123](https://github.com/microsoft/pybryt/issues/123)
 * Added `TimeComplexityChecker` for analyzing complexity without annotations per [#137](https://github.com/microsoft/pybryt/issues/137)
