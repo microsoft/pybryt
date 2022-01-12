@@ -11,6 +11,7 @@ Annotations
     relational_annotations
     complexity_annotations
     type_annotations
+    import_annotations
     collections
     invariants
 
@@ -31,6 +32,7 @@ are five main types of annotations:
 * :ref:`relational annotations<relational>`
 * :ref:`complexity annotations<complexity>`
 * :ref:`type annotations<type>`
+* :ref:`import annotations<import>`
 * :ref:`annotation collections<collections>`
 
 

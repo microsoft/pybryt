@@ -6,7 +6,9 @@ import nbformat
 
 from IPython.core.inputtransformer2 import TransformerManager
 
-from ..utils import make_secret, notebook_to_string
+from .abstract_preprocessor import AbstractPreprocessor
+
+from ..utils import make_secret
 
 
 class UnassignedVarWrapper(ast.NodeTransformer):
@@ -183,12 +185,15 @@ class UnassignedVarWrapper(ast.NodeTransformer):
         return self.transform_unassigned_node(node)
 
 
-class IntermediateVariablePreprocessor():
+class IntermediateVariablePreprocessor(AbstractPreprocessor):
     """
     Preprocessor for inserting intermediate variables in a notebook to assist in tracing.
     """
 
-    def preprocess(self, nb):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def preprocess(self, nb: nbformat.NotebookNode) -> nbformat.NotebookNode:
         """
         Preprocesses a notebook by inserting intermediate variables.
 
@@ -203,11 +208,10 @@ class IntermediateVariablePreprocessor():
         Returns:
             ``nbformat.NotebookNode``: the updated notebook
         """
-        transformer_mgr = TransformerManager()
         for cell in nb['cells']:
             if cell['cell_type'] == 'code':
                 code = cell['source']
-                code = transformer_mgr.transform_cell(code)
+                code = self.transformer_manager.transform_cell(code)
                 tree = ast.parse(code)
                 transformer = UnassignedVarWrapper()
                 transformer.add_parents(tree)

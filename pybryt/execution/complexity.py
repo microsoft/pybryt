@@ -1,4 +1,4 @@
-""""""
+"""Complexity analysis internals"""
 
 from collections.abc import Sized
 from typing import Optional, Union

@@ -18,9 +18,8 @@ def test_name_group_limit():
         vs.append(pybryt.Value(val, name="foo", limit=11))
     
     tracked = pybryt.Annotation.get_tracked_annotations()
-    assert len(tracked) == 11, "Too many tracked annotations"
-    assert tracked == vs[:11], "Wrong tracked annotations"
-    assert all(v.name == "foo" and v.limit == 11 for v in vs)
+    assert len(tracked) == 100
+    assert tracked == vs, "Wrong tracked annotations"
 
     res = vs[-1].check(footprint)
     assert_object_attrs(res, {
@@ -82,29 +81,27 @@ def test_messages():
     v = v1.before(v2)
     res = v.check(footprint)
 
-    assert len(res.messages) == 1, "Too many messages"
-    assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
+    assert len(res.messages) == 3
+    assert_object_attrs(res.messages[0], {"message": "m1", "satisfied": True})
 
     v.failure_message = "m3"
     res = v.check(footprint)
 
-    assert len(res.messages) == 1, "Too many messages"
-    assert res.messages[0] == ("m1", 'Annotation 1', True), "Wrong message"
+    assert len(res.messages) == 3
 
     res = v.check(MemoryFootprint.from_values())
 
-    assert len(res.messages) == 2, "Wrong number of messages"
-    assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"
-    assert res.messages[1] == ("m3", 'Annotation 3', False), "Wrong message"
+    assert len(res.messages) == 3
+    assert_object_attrs(res.messages[0], {"message": "m2", "satisfied": False})
+    assert_object_attrs(res.messages[1], {"message": None, "satisfied": False})
+    assert_object_attrs(res.messages[2], {"message": "m3", "satisfied": False})
 
     v2.name = "v2"
     v2.failure_message = "m4"
     res = v.check(MemoryFootprint.from_values())
 
-    assert len(res.messages) == 3, "Wrong number of messages"
-    assert res.messages[0] == ("m2", 'Annotation 1', False), "Wrong message"
-    assert res.messages[1] == ("m4", "v2", False), "Wrong message"
-    assert res.messages[2] == ("m3", 'Annotation 3', False), "Wrong message"
+    assert len(res.messages) == 3
+    assert_object_attrs(res.messages[1], {"message": "m4", "name": "v2", "satisfied": False})
 
 
 def test_bitwise_ops():

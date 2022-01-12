@@ -38,7 +38,19 @@ class ReferenceImplementation(Serializable):
         if not all(isinstance(ann, Annotation) for ann in annotations):
             raise TypeError("Found non-annotation in annotations")
         
-        self.annotations = annotations
+        self.annotations, name_counts = [], {}
+        for ann in annotations:
+            track = True
+            if ann.name is not None:
+                count = name_counts.get(ann.name, 0)
+                if ann.limit is None or ann.limit > count:
+                    name_counts[ann.name] = count + 1
+                else:
+                    track = False
+
+            if track:
+                self.annotations.append(ann)
+
         self.name = name
 
     def __eq__(self, other: Any) -> bool:
@@ -234,18 +246,18 @@ class ReferenceResult(Serializable):
         implementation; if ``self.group`` is not ``None``, only messages from annotations in that
         group are returned
         """
-        messages = []
-        message_names = {}
+        finalized_messages, message_indices_by_name = [], {}
         for r in self.results:
-            m = r.messages
-            for msg in m:
-                if msg[1] in message_names and not msg[2]:
-                    idx = message_names[msg[1]]
-                    messages[idx] = msg[0]
-                elif msg[1] not in message_names:
-                    message_names[msg[1]] = len(messages)
-                    messages.append(msg[0])
-        return messages
+            for msg in r.messages:
+                if msg.name in message_indices_by_name and not msg.satisfied:
+                    idx = message_indices_by_name[msg.name]
+                    finalized_messages[idx] = msg.message
+
+                elif msg.name not in message_indices_by_name:
+                    message_indices_by_name[msg.name] = len(finalized_messages)
+                    finalized_messages.append(msg.message)
+
+        return [m for m in finalized_messages if m is not None]
 
     def to_dict(self) -> Dict[str, Any]:
         """

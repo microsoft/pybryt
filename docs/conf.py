@@ -34,6 +34,7 @@ extensions = [
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
     'sphinx_click',
+    'nbsphinx',
 ]
 
 # extension configurations
@@ -92,3 +93,5 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+nbsphinx_execute = 'never'
