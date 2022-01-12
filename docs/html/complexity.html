@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" /><link rel="prev" title="Installation" href="installation.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Command-Line Interface" href="cli_reference.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/>
-        <title>Getting Started - PyBryt documentation</title>
+        <title>Complexity Analysis - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
@@ -156,7 +156,7 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
@@ -172,7 +172,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="complexity.html">Complexity Analysis</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Complexity Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -202,121 +202,56 @@
           </label>
         </div>
         <article role="main">
-          <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<section id="installing-pybryt">
-<h2>Installing PyBryt<a class="headerlink" href="#installing-pybryt" title="Permalink to this headline">¶</a></h2>
-<p>We can install PyBryt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.</p>
-<section id="installing-within-a-jupyter-notebook">
-<h3>Installing within a Jupyter Notebook<a class="headerlink" href="#installing-within-a-jupyter-notebook" title="Permalink to this headline">¶</a></h3>
-<p>We can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
-</pre></div>
-</div>
-<p>or, similarly, for a conda environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">conda</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
-</pre></div>
-</div>
-</section>
-<section id="installing-on-windows-powershell">
-<h3>Installing on Windows PowerShell<a class="headerlink" href="#installing-on-windows-powershell" title="Permalink to this headline">¶</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">py -3 -m venv .venv</span>
-<span class="go">.\.venv\scripts\activate.ps1</span>
-<span class="go">pip install -U pip</span>
-<span class="go">pip install pybryt</span>
-</pre></div>
-</div>
-</section>
-<section id="installing-on-macos-or-linux-command-line">
-<h3>Installing on macOS or Linux command-line<a class="headerlink" href="#installing-on-macos-or-linux-command-line" title="Permalink to this headline">¶</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3 -m venv .venv</span>
-<span class="go">source .venv/bin/activate</span>
-<span class="go">pip install -U pip</span>
-<span class="go">pip install pybryt</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="annotating-a-working-example">
-<h2>Annotating a working example<a class="headerlink" href="#annotating-a-working-example" title="Permalink to this headline">¶</a></h2>
-<p>PyBryt works by observing working reference implementations and looking for
-annotated types and variables in other implementations. The first step after
-installing PyBryt would be to create a working example to serve as a reference
-implementation.</p>
-<p>Let us say we want students to complete a simple task of counting the number of
-words in a string. We send them the signature of the function and ask them to
-complete it inside a Jupyter notebook:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="k">pass</span>
-</pre></div>
-</div>
-<p>We could write this function by splitting the string using the builtin
-<code class="docutils literal notranslate"><span class="pre">str.split()</span></code> method, which will automatically remove empty strings, and then
-count the number of items in the resulting list:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+          <section id="complexity-analysis">
+<h1>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Permalink to this headline">¶</a></h1>
+<p>PyBryt exposes its code complexity analysis tools so that they can be used to analyze blocks of code
+without necessitating the use of the annotation framework. These tools can be used to give students
+a way to test the complexity of their implementations, or just to analyze code complexity in a manner
+that is more reliable than using a timer.</p>
+<p>These tools use PyBryt’s internal tracing mechanisms, meaning that the data used to determine the
+complexity is based on a step counter rather than the system clock, making it deterministic and more
+accurate for analyzing the runtime of solutions.</p>
+<p>To make use of these analysis tools, use the
+<a class="reference internal" href="api_reference.html#pybryt.complexity.TimeComplexityChecker" title="pybryt.complexity.TimeComplexityChecker"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeComplexityChecker</span></code></a> class. This class, once
+instantiated, can be used as a context manager to track the runtime data for a block of code given
+an input length. The context manager functions similarly to <a class="reference internal" href="annotations/complexity_annotations.html#complexity-annotation-cm"><span class="std std-ref">PyBryt’s context manager for
+complexity annotations</span></a> in that you provide it with the input length (or
+the input itself if it supports <code class="docutils literal notranslate"><span class="pre">len</span></code>) and use it multiple times to gather observations for each
+input length.</p>
+<p>Once the data has been gathered, use the
+<a class="reference internal" href="api_reference.html#pybryt.complexity.TimeComplexityChecker.determine_complexity" title="pybryt.complexity.TimeComplexityChecker.determine_complexity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeComplexityChecker.determine_complexity</span></code></a>
+method to determine the complexity class. This uses PyBryt’s complexity analysis framework to find
+the complexity and returns the corresponding complexity class from
+<a class="reference internal" href="api_reference.html#module-pybryt.annotations.complexity.complexities" title="pybryt.annotations.complexity.complexities"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pybryt.complexities</span></code></a>. For more information on
+how the complexity class is determined, see <a class="reference internal" href="annotations/complexity_annotations.html#complexity"><span class="std std-ref">Complexity Annotations</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">checker</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">TimeComplexityChecker</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">exp</span>
+    <span class="k">with</span> <span class="n">checker</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">some_function</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
+<span class="n">checker</span><span class="o">.</span><span class="n">determine_complexity</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>To annotate this example and train PyBryt what values (variables) to look for in
-other implementations, we use the <code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> class from the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a>.
-<code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> takes any Python value as an input for its constructor.</p>
-<p>The two key variables we want to observe in our example are:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">list</span></code> of words created by splitting the text (<code class="docutils literal notranslate"><span class="pre">fragments</span></code>)</p></li>
-<li><p>The count of words as a Python <code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">length</span></code>)</p></li>
-</ul>
-<p>Now, let us update the reference implementation and create a <code class="docutils literal notranslate"><span class="pre">pybryt.Value()</span></code>
-instance for both of these variables:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
+<p>Note that, unlike <a class="reference internal" href="api_reference.html#pybryt.execution.check_time_complexity" title="pybryt.execution.complexity.check_time_complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">check_time_complexity</span></code></a>,
+you must use the same instance of the class for each entry into the context so that the observations
+can be gathered together.</p>
+<section id="working-with-annotations">
+<h2>Working with Annotations<a class="headerlink" href="#working-with-annotations" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="api_reference.html#pybryt.complexity.TimeComplexityChecker" title="pybryt.complexity.TimeComplexityChecker"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeComplexityChecker</span></code></a> uses
+<a class="reference internal" href="api_reference.html#pybryt.execution.check_time_complexity" title="pybryt.execution.complexity.check_time_complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">check_time_complexity</span></code></a> under the hood,
+so it is also compatible with PyBryt’s annotation framework. To use a checker that will also track
+results for satisfying annotations, pass the name of the annotation to the constructor, just like
+with <a class="reference internal" href="api_reference.html#pybryt.execution.check_time_complexity" title="pybryt.execution.complexity.check_time_complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">check_time_complexity</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">checker</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">TimeComplexityChecker</span><span class="p">(</span><span class="s2">"fib_runtime"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">checker</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Next, we check our implementation with some text samples that we will also use to test the student implementations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Waltz, bad nymph, for quick jigs vex."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"The five boxing wizards-- </span><span class="se">\n</span><span class="s2">jump quickly!"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Sphinx of black quartz,          judge my vow."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
-</pre></div>
-</div>
-</section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
-<p>PyBryt can do much more beyond this simple example, such as automating the
-assessment of student implementations and detecting plagiarism. To learn more
-about pybryt, check out the following</p>
-<ul class="simple">
-<li><p>The example projects in the <a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/demo/">demos folder</a></p></li>
-<li><p>Read the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a> for details on the annotation types</p></li>
-</ul>
+<p>This is a good alternative to <a class="reference internal" href="api_reference.html#pybryt.execution.check_time_complexity" title="pybryt.execution.complexity.check_time_complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">check_time_complexity</span></code></a>
+when you want students to be able to check the complexity of their code easily, without
+having to run PyBryt on the submission each time.</p>
 </section>
 </section>
 
@@ -325,23 +260,23 @@ about pybryt, check out the following</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="annotations/index.html">
+          <a class="next-page" href="cli_reference.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Annotations</div>
+                <div class="title">Command-Line Interface</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="installation.html">
+          <a class="prev-page" href="student_implementations.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Installation</div>
+                <div class="title">Student Implementations</div>
                 
               </div>
             </a>
@@ -351,7 +286,7 @@ about pybryt, check out the following</p>
               Copyright &#169; 2021, Microsoft |
           Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
           <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            | <a class="muted-link" href="_sources/getting_started.rst.txt"
+            | <a class="muted-link" href="_sources/complexity.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -371,15 +306,8 @@ about pybryt, check out the following</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#installing-pybryt">Installing PyBryt</a><ul>
-<li><a class="reference internal" href="#installing-within-a-jupyter-notebook">Installing within a Jupyter Notebook</a></li>
-<li><a class="reference internal" href="#installing-on-windows-powershell">Installing on Windows PowerShell</a></li>
-<li><a class="reference internal" href="#installing-on-macos-or-linux-command-line">Installing on macOS or Linux command-line</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#annotating-a-working-example">Annotating a working example</a></li>
-<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li><a class="reference internal" href="#">Complexity Analysis</a><ul>
+<li><a class="reference internal" href="#working-with-annotations">Working with Annotations</a></li>
 </ul>
 </li>
 </ul>

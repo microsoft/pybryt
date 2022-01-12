@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="api_reference.html" /><link rel="prev" title="Student Implementations" href="student_implementations.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="api_reference.html" /><link rel="prev" title="Complexity Analysis" href="complexity.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.11.23"/>
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/>
         <title>Command-Line Interface - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=0af69da206d614734f649b27d4cdc2dd6c31f41d" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
     
     
 
@@ -155,12 +155,14 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
@@ -170,6 +172,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complexity.html">Complexity Analysis</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -300,12 +303,12 @@ the console and OUTPUT is ignored.</p>
 </dd></dl>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-check-d">
-<span id="cmdoption-pybryt-check-dest"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-d" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the results of the check</p>
 </dd></dl>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-check-t">
-<span id="cmdoption-pybryt-check-type"></span><span class="sig-name descname"><span class="pre">-t</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--type</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_type&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-t" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">-t</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--type</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_type&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-check-t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type of output to write</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default</dt>
@@ -319,12 +322,12 @@ the console and OUTPUT is ignored.</p>
 <p class="rubric">Arguments</p>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-check-arg-REF">
-<span id="cmdoption-pybryt-check-arg-ref"></span><span class="sig-name descname"><span class="pre">REF</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-check-arg-REF" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">REF</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-check-arg-REF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-check-arg-STU">
-<span id="cmdoption-pybryt-check-arg-stu"></span><span class="sig-name descname"><span class="pre">STU</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-check-arg-STU" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">STU</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-check-arg-STU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
 </section>
@@ -338,18 +341,18 @@ the console and OUTPUT is ignored.</p>
 <p class="rubric">Options</p>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-compile-d">
-<span id="cmdoption-pybryt-compile-dest"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-compile-d" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-compile-d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the pickled reference implementation</p>
 </dd></dl>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-compile-n">
-<span id="cmdoption-pybryt-compile-name"></span><span class="sig-name descname"><span class="pre">-n</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-compile-n" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">-n</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;name&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-compile-n" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optional name for the reference implementation</p>
 </dd></dl>
 <p class="rubric">Arguments</p>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-compile-arg-SRC">
-<span id="cmdoption-pybryt-compile-arg-src"></span><span class="sig-name descname"><span class="pre">SRC</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-compile-arg-SRC" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SRC</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-compile-arg-SRC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
 </section>
@@ -365,12 +368,12 @@ DEST is unspecified, this defaults to “./{SUBM.stem}.pkl” (e.g. for SUBM
 <p class="rubric">Options</p>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-execute-p">
-<span id="cmdoption-pybryt-execute-parallel"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-execute-p" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-execute-p" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute notebooks in parallel using the multiprocessing library</p>
 </dd></dl>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-execute-d">
-<span id="cmdoption-pybryt-execute-dest"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-execute-d" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--dest</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dest&gt;</span></span><a class="headerlink" href="#cmdoption-pybryt-execute-d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path at which to write the pickled student implementation</p>
 </dd></dl>
 <dl class="std option">
@@ -381,7 +384,7 @@ DEST is unspecified, this defaults to “./{SUBM.stem}.pkl” (e.g. for SUBM
 <p class="rubric">Arguments</p>
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-pybryt-execute-arg-SUBM">
-<span id="cmdoption-pybryt-execute-arg-subm"></span><span class="sig-name descname"><span class="pre">SUBM</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-execute-arg-SUBM" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SUBM</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-pybryt-execute-arg-SUBM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optional argument(s)</p>
 </dd></dl>
 </section>
@@ -403,14 +406,14 @@ DEST is unspecified, this defaults to “./{SUBM.stem}.pkl” (e.g. for SUBM
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="student_implementations.html">
+          <a class="prev-page" href="complexity.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Student Implementations</div>
+                <div class="title">Complexity Analysis</div>
                 
               </div>
             </a>
@@ -472,5 +475,6 @@ DEST is unspecified, this defaults to “./{SUBM.stem}.pkl” (e.g. for SUBM
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Command-Line Interface" href="cli_reference.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.11.23"/>
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/>
         <title>API Reference - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=0af69da206d614734f649b27d4cdc2dd6c31f41d" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
     
     
 
@@ -155,12 +155,14 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
@@ -170,6 +172,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complexity.html">Complexity Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -1323,6 +1326,172 @@ failure message, as well as the type as a string.</p>
 </dd></dl>
 </dd></dl>
 </section>
+<section id="module-pybryt.annotations.import_">
+<span id="import-annotations"></span><h3>Import Annotations<a class="headerlink" href="#module-pybryt.annotations.import_" title="Permalink to this headline">¶</a></h3>
+<p>Annotations for checking imported modules within memory footprints</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ForbidImport">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.annotations.import_.</span></span><span class="sig-name descname"><span class="pre">ForbidImport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.import_.ForbidImport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotation class for asserting that a specific module was not imported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the module name to forbid in importable form</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ForbidImport.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a></span></span><a class="headerlink" href="#pybryt.annotations.import_.ForbidImport.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the memory footprint’s imports don’t contain the specified module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>footprint</strong> (<a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></code></a>) – the
+memory footprint to check against</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the results of this annotation against <code class="docutils literal notranslate"><span class="pre">footprint</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ForbidImport.module">
+<span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.import_.ForbidImport.module" title="Permalink to this definition">¶</a></dt>
+<dd><p>the module name to forbid</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ImportAnnotation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.annotations.import_.</span></span><span class="sig-name descname"><span class="pre">ImportAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.import_.ImportAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotation class for asserting conditions on the set of imported modules</p>
+<p>The set of modules imported in the student implementation is determined using <code class="docutils literal notranslate"><span class="pre">sys.modules</span></code>,
+meaning that subclasses count any modules imported by third-party libaries, not just directly
+by the student’s code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the module name to forbid in importable form</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ImportAnnotation.check">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a></span></span><a class="headerlink" href="#pybryt.annotations.import_.ImportAnnotation.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the check on the condition asserted by this annotation and return a results object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>footprint</strong> (<a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></code></a>) – the
+memory footprint to check against</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the results of this annotation against <code class="docutils literal notranslate"><span class="pre">footprint</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ImportAnnotation.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.import_.ImportAnnotation.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>the child annotations of this annotation. If this annotation has no
+children, an empty list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[Annotation]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ImportAnnotation.module">
+<span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.import_.ImportAnnotation.module" title="Permalink to this definition">¶</a></dt>
+<dd><p>the module name to forbid</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.ImportAnnotation.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pybryt.annotations.import_.ImportAnnotation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this annotation’s details to a JSON-friendly dictionary format.</p>
+<p>Output dictionary contains the annotation’s name, group, limit number, success message, and
+failure message, as well as the module name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary representation of this annotation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.annotations.import_.</span></span><span class="sig-name descname"><span class="pre">RequireImport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.import_.RequireImport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotation class for asserting that a specific module was imported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the module name to forbid in importable form</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to the
+<a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></a> constructor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybryt.annotations.annotation.AnnotationResult" title="pybryt.annotations.annotation.AnnotationResult"><span class="pre">pybryt.annotations.annotation.AnnotationResult</span></a></span></span><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the memory footprint’s imports contain the specified module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>footprint</strong> (<a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></code></a>) – the
+memory footprint to check against</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the results of this annotation against <code class="docutils literal notranslate"><span class="pre">footprint</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationResult</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.failure_message">
+<span class="sig-name descname"><span class="pre">failure_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.failure_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>a message to relay to the student if not satisfied</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.group">
+<span class="sig-name descname"><span class="pre">group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the group that this annotation belongs to</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.limit">
+<span class="sig-name descname"><span class="pre">limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>the maximum number of annotations with this name to track in <code class="xref py py-obj docutils literal notranslate"><span class="pre">_TRACKED_ANNOTATIONS</span></code></p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.module">
+<span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.module" title="Permalink to this definition">¶</a></dt>
+<dd><p>the module name to forbid</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the annotation</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.import_.RequireImport.success_message">
+<span class="sig-name descname"><span class="pre">success_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.import_.RequireImport.success_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>a message to relay to the student if satisfied</p>
+</dd></dl>
+</dd></dl>
+</section>
 <section id="module-pybryt.annotations.collection">
 <span id="annotation-collections"></span><h3>Annotation Collections<a class="headerlink" href="#module-pybryt.annotations.collection" title="Permalink to this headline">¶</a></h3>
 <p>Class for gathering and operating on collections of annotations</p>
@@ -1459,14 +1628,12 @@ result</p></li>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pybryt.annotations.annotation.AnnotationResult.messages">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">messages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.messages" title="Permalink to this definition">¶</a></dt>
-<dd><p>The messages returned by this annotation and its
-children based on whether or not the annotations were satisfied. A list of tuples where the
-first element is the message, the second is the name of the annotation (or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no
-name is  present), and the third is whether the annotation was satisfied.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">messages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pybryt.annotations.annotation.AnnotationResultMessage</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.annotation.AnnotationResult.messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>the messages returned by this annotation and its
+children based on whether or not the annotations were satisfied</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[tuple[str,</span> <span class="pre">Optional[str],</span> <span class="pre">bool]]</span></code></p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list[AnnotationResultMessage]</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1929,7 +2096,7 @@ footprint</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="pybryt.student.check">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.student.</span></span><span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_on_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.check" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.student.</span></span><span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_on_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.student.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>A context manager for running a block of student code against a reference implementation.</p>
 <p>This context manager, designed to be used in students’ notebooks, can be used to check a block
 of student code against one or a series of reference implementations. The context manager turns
@@ -1949,9 +2116,10 @@ a Fibonacci generator <code class="docutils literal notranslate"><span class="pr
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ref</strong> (<code class="docutils literal notranslate"><span class="pre">Union[str,</span> <span class="pre">ReferenceImplementation,</span> <span class="pre">list[str],</span> <span class="pre">list[ReferenceImplementation]]</span></code>) – the
 reference(s) to check against or the path(s) to them</p></li>
+<li><p><strong>group</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – the name of the group of annotations to run in each reference</p></li>
 <li><p><strong>report_on_error</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to print the report when an error is thrown
 by the block</p></li>
-<li><p><strong>show_only</strong> (one of <code class="docutils literal notranslate"><span class="pre">{'satisified',</span> <span class="pre">'unsatisfied',</span> <span class="pre">None}</span></code>, optional) – which types of
+<li><p><strong>show_only</strong> (one of <code class="docutils literal notranslate"><span class="pre">{'satisfied',</span> <span class="pre">'unsatisfied',</span> <span class="pre">None}</span></code>, optional) – which types of
 reference results to include in the report; if <code class="docutils literal notranslate"><span class="pre">None</span></code>, all are included</p></li>
 <li><p><strong>**kwargs</strong> – additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">pybryt.execution.create_collector</span></code></p></li>
 </ul>
@@ -2264,6 +2432,53 @@ If PyBryt is not tracing, no action is taken.</p>
 </dd></dl>
 </section>
 </section>
+<section id="module-pybryt.complexity">
+<span id="complexity-analysis"></span><h2>Complexity Analysis<a class="headerlink" href="#module-pybryt.complexity" title="Permalink to this headline">¶</a></h2>
+<p>Time complexity analysis utilities</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybryt.complexity.TimeComplexityChecker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.complexity.</span></span><span class="sig-name descname"><span class="pre">TimeComplexityChecker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.complexity.TimeComplexityChecker" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility class for using PyBryt’s tracing functionality to check the time complexity of a block
+of code.</p>
+<p>Uses PyBryt’s tracing internals to set a trace function that counts the number of steps taken
+to execute a block of code, and then uses the complexity annotation framework to determine the
+best-matched complexity class of the block.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.complexity.TimeComplexityChecker.add_result">
+<span class="sig-name descname"><span class="pre">add_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pybryt.execution.TimeComplexityResult" title="pybryt.execution.complexity.TimeComplexityResult"><span class="pre">pybryt.execution.complexity.TimeComplexityResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pybryt.complexity.TimeComplexityChecker.add_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a time complexity result to the collection of results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<code class="docutils literal notranslate"><span class="pre">TimeComplexityResult</span></code>) – the result object</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.complexity.TimeComplexityChecker.determine_complexity">
+<span class="sig-name descname"><span class="pre">determine_complexity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></a></span></span><a class="headerlink" href="#pybryt.complexity.TimeComplexityChecker.determine_complexity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the best-matched complexity class based on the results collected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the complexity class
+corresponding to the best-matched complexity</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pybryt.annotations.complexity.complexities.complexity" title="pybryt.annotations.complexity.complexities.complexity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pybryt.annotations.complexity.complexities.complexity</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.complexity.TimeComplexityChecker.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.complexity.TimeComplexityChecker.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name to use for the annotation</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.complexity.TimeComplexityChecker.results">
+<span class="sig-name descname"><span class="pre">results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.execution.TimeComplexityResult" title="pybryt.execution.complexity.TimeComplexityResult"><span class="pre">pybryt.execution.complexity.TimeComplexityResult</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.complexity.TimeComplexityChecker.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>the result objects holding the step data for each input length</p>
+</dd></dl>
+</dd></dl>
+</section>
 </section>
 
         </article>
@@ -2321,6 +2536,7 @@ If PyBryt is not tracing, no action is taken.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-pybryt.annotations.type_">Type Annotations</a></li>
+<li><a class="reference internal" href="#module-pybryt.annotations.import_">Import Annotations</a></li>
 <li><a class="reference internal" href="#module-pybryt.annotations.collection">Annotation Collections</a></li>
 <li><a class="reference internal" href="#annotation-results">Annotation Results</a></li>
 </ul>
@@ -2334,6 +2550,7 @@ If PyBryt is not tracing, no action is taken.</p>
 <li><a class="reference internal" href="#module-pybryt.execution">Execution</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-pybryt.complexity">Complexity Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -2350,6 +2567,8 @@ If PyBryt is not tracing, no action is taken.</p>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     </body>
 </html>

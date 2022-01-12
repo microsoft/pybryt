@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Complexity Annotations" href="complexity_annotations.html" /><link rel="prev" title="Value Annotations" href="value_annotations.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Annotation Collections" href="collections.html" /><link rel="prev" title="Type Annotations" href="type_annotations.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/>
-        <title>Relational Annotations - PyBryt documentation</title>
+        <title>Import Annotations - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
@@ -159,10 +159,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Annotations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="value_annotations.html">Value Annotations</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Relational Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="type_annotations.html">Type Annotations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_annotations.html">Import Annotations</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="collections.html">Annotation Collections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="invariants.html">Invariants</a></li>
 </ul>
@@ -202,101 +202,33 @@
           </label>
         </div>
         <article role="main">
-          <section id="relational-annotations">
-<span id="relational"></span><h1>Relational Annotations<a class="headerlink" href="#relational-annotations" title="Permalink to this headline">¶</a></h1>
-<p>Relational annotations define some kind of relationship between two or more
-annotations. Currently, PyBryt supports two types of relational annotations:</p>
-<ul class="simple">
-<li><p>temporal annotations and</p></li>
-<li><p>boolean annotations.</p></li>
-</ul>
-<p>All relational annotations are subclasses of the abstract
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a>
-class, which defines some helpful defaults for working with annotations that
-have child annotations.</p>
-<section id="temporal-annotations">
-<h2>Temporal Annotations<a class="headerlink" href="#temporal-annotations" title="Permalink to this headline">¶</a></h2>
-<p>Temporal annotations describe <em>when</em> variables should appear in student’s code
-relative to one another. For example, let us consider the problem of a dynamic
-programming algorithm to compute the Fibonacci sequence: the array containing
-<span class="math notranslate nohighlight">\(n-1\)</span> first Fibonacci numbers should appear in memory before the array
-with <span class="math notranslate nohighlight">\(n\)</span> first Fibonacci numbers. To enforce such a constraint, the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> class defines a <code class="docutils literal notranslate"><span class="pre">before</span></code> method that
-asserts that one annotation occurs before another:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Compute and return an array of the first n Fibonacci numbers using dynamic programming.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">    n (``int``): the number of Fibonacci numbers to return</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">    ``np.ndarray``: the first ``n`` Fibonacci numbers</span>
-
-<span class="sd">    """</span>
-    <span class="n">fibs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-
-    <span class="n">fibs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">curr_val</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">fibs</span>
-
-    <span class="n">fibs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span>
-    <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># we expect curr_val to appear in memory before v</span>
-    <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">fibs</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fibs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-
-        <span class="n">v</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fibs</span><span class="p">)</span> <span class="c1"># array of first n Fibonacci numbers</span>
-        <span class="n">curr_val</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>     <span class="c1"># check that first n-1 appear before first n Fibonacci numbers</span>
-        <span class="n">curr_val</span> <span class="o">=</span> <span class="n">v</span>           <span class="c1"># update curr_val for next iteration</span>
-
-    <span class="k">return</span> <span class="n">fibs</span>
+          <section id="import-annotations">
+<span id="import"></span><h1>Import Annotations<a class="headerlink" href="#import-annotations" title="Permalink to this headline">¶</a></h1>
+<p>Import annotations can be used to either require or forbid the use of specific libraries. When PyBryt
+executes a notebook, it parses the AST of each code cell to determine any libraries imported in the
+code. It also captures the modules that any functions or classes it finds belong to when it is
+tracing through the notebook’s code. These are collected into a set of library names, which are
+included in the memory footprint.</p>
+<p>All import annotations are subclasses of the abstract
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.import_.ImportAnnotation" title="pybryt.annotations.import_.ImportAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportAnnotation</span></code></a> class. When these
+annotations are instantiated, they attempt to import the module to ensure that the string passed
+for the module name is valid. This means that any modules used in import annotations must be installed
+in the environment in which the reference implementation is compiled.</p>
+<section id="require-import">
+<h2>Require Import<a class="headerlink" href="#require-import" title="Permalink to this headline">¶</a></h2>
+<p>To require an import, use the <a class="reference internal" href="../api_reference.html#pybryt.annotations.import_.RequireImport" title="pybryt.annotations.import_.RequireImport"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequireImport</span></code></a>
+annotation, which takes the name of the library as a string (along with the usual set of arguments
+that annotation constructors accept).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">RequireImport</span><span class="p">(</span><span class="s2">"pandas"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In the example above, updating <code class="docutils literal notranslate"><span class="pre">curr_val</span></code> in the loop allows us to create a
-<code class="docutils literal notranslate"><span class="pre">before</span></code> condition to ensure the student followed the correct dynamic
-programming algorithm by checking each update to the <code class="docutils literal notranslate"><span class="pre">fibs</span></code> array.</p>
-<p>Temporal annotations are satisfied when the student’s code satisfies all of the
-child <code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code> annotations and when the first annotation
-(the one calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code>) has a
-timestamp greater than or equal to the timestamp of the second annotation.</p>
-<p>Note that <code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.before</span></code> returns an
-instance of the
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a>
-class, which is itself a subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code>
-and supports all of the same operations.
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> also provides
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">Annotation.after</span></code>, which also returns an
-instance of the
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.BeforeAnnotation" title="pybryt.annotations.relation.BeforeAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BeforeAnnotation</span></code></a>
-class, but with the operands switched.</p>
 </section>
-<section id="boolean-annotations">
-<h2>Boolean Annotations<a class="headerlink" href="#boolean-annotations" title="Permalink to this headline">¶</a></h2>
-<p>Boolean annotations define conditions on the presence of different values. For
-example, in solving an exercise, students may be able to take two different
-paths, and this logic can be enforced using a
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.XorAnnotation" title="pybryt.annotations.relation.XorAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">XorAnnotation</span></code></a> to ensure
-that only one of the two possible values is present.</p>
-<p>Relational annotations can be created either by instantiating the classes
-directly using the constructor or, as it is more recommended, by using Python’s
-bitwise logical operators, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>, <code class="docutils literal notranslate"><span class="pre">^</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>, on annotations. The
-special (dunder) methods for these operators have been overridden in
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> class, and return the
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.relation.RelationalAnnotation" title="pybryt.annotations.relation.RelationalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelationalAnnotation</span></code></a>
-subclass instance corresponding to the logical operator used.</p>
-<p>To create the XOR example from two values <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code>, we write</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">v1</span> <span class="o">^</span> <span class="n">v2</span>
-</pre></div>
-</div>
-<p>To assert that a student should <em>not</em> have a specific value <code class="docutils literal notranslate"><span class="pre">v</span></code> in their code,
-we use</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">~</span><span class="n">v</span>
+<section id="forbid-import">
+<h2>Forbid Import<a class="headerlink" href="#forbid-import" title="Permalink to this headline">¶</a></h2>
+<p>To forbid an import, use the <a class="reference internal" href="../api_reference.html#pybryt.annotations.import_.ForbidImport" title="pybryt.annotations.import_.ForbidImport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForbidImport</span></code></a>
+annotation, which, like the <a class="reference internal" href="../api_reference.html#pybryt.annotations.import_.RequireImport" title="pybryt.annotations.import_.RequireImport"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequireImport</span></code></a>
+annotation, takes the name of the libary as its only positional argument.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">ForbidImport</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -307,23 +239,23 @@ we use</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="complexity_annotations.html">
+          <a class="next-page" href="collections.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Complexity Annotations</div>
+                <div class="title">Annotation Collections</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="value_annotations.html">
+          <a class="prev-page" href="type_annotations.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Value Annotations</div>
+                <div class="title">Type Annotations</div>
                 
               </div>
             </a>
@@ -333,7 +265,7 @@ we use</p>
               Copyright &#169; 2021, Microsoft |
           Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
           <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            | <a class="muted-link" href="../_sources/annotations/relational_annotations.rst.txt"
+            | <a class="muted-link" href="../_sources/annotations/import_annotations.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -353,9 +285,9 @@ we use</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Relational Annotations</a><ul>
-<li><a class="reference internal" href="#temporal-annotations">Temporal Annotations</a></li>
-<li><a class="reference internal" href="#boolean-annotations">Boolean Annotations</a></li>
+<li><a class="reference internal" href="#">Import Annotations</a><ul>
+<li><a class="reference internal" href="#require-import">Require Import</a></li>
+<li><a class="reference internal" href="#forbid-import">Forbid Import</a></li>
 </ul>
 </li>
 </ul>
@@ -373,7 +305,5 @@ we use</p>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     </body>
 </html>

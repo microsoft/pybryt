@@ -68,6 +68,8 @@ To use these custom complexity classes, they can either be passed as the first a
     pybryt.TimeComplexity(my_cplx.quartic, name="foo", addl_complexities=[my_cplx.factorial])
 
 
+.. _complexity_annotation_cm:
+
 Tracking Code Complexity
 ------------------------
 

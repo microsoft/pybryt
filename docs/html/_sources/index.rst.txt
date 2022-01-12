@@ -10,10 +10,12 @@ PyBryt Documentation
    :maxdepth: 3
    :hidden:
 
+   installation
    getting_started
    annotations/index
    reference_implementations/index
    student_implementations
+   complexity
    cli_reference
    api_reference
    Changelog <https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md>

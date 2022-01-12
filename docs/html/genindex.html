@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.11.23"/><title>Index - PyBryt documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/><title>Index - PyBryt documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=0af69da206d614734f649b27d4cdc2dd6c31f41d" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
     
     
 
@@ -153,12 +153,14 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
@@ -168,6 +170,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complexity.html">Complexity Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -307,14 +310,16 @@
 </li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.add_imports">add_imports() (pybryt.execution.MemoryFootprint method)</a>
 </li>
+        <li><a href="api_reference.html#pybryt.complexity.TimeComplexityChecker.add_result">add_result() (pybryt.complexity.TimeComplexityChecker method)</a>
+</li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.add_value">add_value() (pybryt.execution.MemoryFootprint method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.after">after() (pybryt.annotations.annotation.Annotation method)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.annotations.relation.AndAnnotation">AndAnnotation (class in pybryt.annotations.relation)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.relation.AndAnnotation">AndAnnotation (class in pybryt.annotations.relation)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation">Annotation (class in pybryt.annotations.annotation)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.AnnotationResult.annotation">annotation (pybryt.annotations.annotation.AnnotationResult attribute)</a>
@@ -360,6 +365,12 @@
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.check">(pybryt.annotations.complexity.annotation.TimeComplexity method)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.ForbidImport.check">(pybryt.annotations.import_.ForbidImport method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.ImportAnnotation.check">(pybryt.annotations.import_.ImportAnnotation method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.check">(pybryt.annotations.import_.RequireImport method)</a>
+</li>
           <li><a href="api_reference.html#pybryt.annotations.relation.AndAnnotation.check">(pybryt.annotations.relation.AndAnnotation method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.relation.BeforeAnnotation.check">(pybryt.annotations.relation.BeforeAnnotation method)</a>
@@ -389,10 +400,10 @@
         </ul></li>
         <li><a href="api_reference.html#pybryt.student.StudentImplementation.check_plagiarism">check_plagiarism() (pybryt.student.StudentImplementation method)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.execution.check_time_complexity">check_time_complexity (class in pybryt.execution)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.execution.check_time_complexity">check_time_complexity (class in pybryt.execution)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.value.Value.check_values_equal">check_values_equal() (pybryt.annotations.value.Value static method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.children">children (pybryt.annotations.annotation.Annotation property)</a>
@@ -403,6 +414,8 @@
           <li><a href="api_reference.html#pybryt.annotations.collection.Collection.children">(pybryt.annotations.collection.Collection property)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.children">(pybryt.annotations.complexity.annotation.ComplexityAnnotation property)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.ImportAnnotation.children">(pybryt.annotations.import_.ImportAnnotation property)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.relation.RelationalAnnotation.children">(pybryt.annotations.relation.RelationalAnnotation property)</a>
 </li>
@@ -447,6 +460,8 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.complexity.TimeComplexityChecker.determine_complexity">determine_complexity() (pybryt.complexity.TimeComplexityChecker method)</a>
+</li>
         <li><a href="api_reference.html#pybryt.debug.disable_debug_mode">disable_debug_mode() (in module pybryt.debug)</a>
 </li>
     </ul></td>
@@ -488,6 +503,8 @@
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.failure_message">(pybryt.annotations.complexity.annotation.TimeComplexity attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.failure_message">(pybryt.annotations.import_.RequireImport attribute)</a>
+</li>
         </ul></li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.filter_out_unpicklable_values">filter_out_unpicklable_values() (pybryt.execution.MemoryFootprint method)</a>
 </li>
@@ -499,6 +516,8 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.import_.ForbidImport">ForbidImport (class in pybryt.annotations.import_)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.type_.ForbidType">ForbidType (class in pybryt.annotations.type_)</a>
 </li>
         <li><a href="api_reference.html#pybryt.student.StudentImplementation.from_cache">from_cache() (pybryt.student.StudentImplementation class method)</a>
@@ -525,10 +544,10 @@
 </li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.get_tracked_annotations">get_tracked_annotations() (pybryt.annotations.annotation.Annotation static method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.get_value">get_value() (pybryt.execution.MemoryFootprint method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.group">group (pybryt.annotations.annotation.Annotation attribute)</a>
 
         <ul>
@@ -537,6 +556,8 @@
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.group">(pybryt.annotations.complexity.annotation.ComplexityAnnotation attribute)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.group">(pybryt.annotations.complexity.annotation.TimeComplexity attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.group">(pybryt.annotations.import_.RequireImport attribute)</a>
 </li>
           <li><a href="api_reference.html#pybryt.reference.ReferenceResult.group">(pybryt.reference.ReferenceResult attribute)</a>
 </li>
@@ -549,6 +570,8 @@
   <h2>I</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.import_.ImportAnnotation">ImportAnnotation (class in pybryt.annotations.import_)</a>
+</li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.imports">imports (pybryt.execution.MemoryFootprint attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.increment_counter">increment_counter() (pybryt.execution.MemoryFootprint method)</a>
@@ -575,6 +598,8 @@
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.limit">(pybryt.annotations.complexity.annotation.ComplexityAnnotation attribute)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.limit">(pybryt.annotations.complexity.annotation.TimeComplexity attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.limit">(pybryt.annotations.import_.RequireImport attribute)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -615,6 +640,8 @@
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.complexity.complexities">pybryt.annotations.complexity.complexities</a>
 </li>
+          <li><a href="api_reference.html#module-pybryt.annotations.import_">pybryt.annotations.import_</a>
+</li>
           <li><a href="api_reference.html#module-pybryt.annotations.invariants">pybryt.annotations.invariants</a>
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.relation">pybryt.annotations.relation</a>
@@ -623,11 +650,23 @@
 </li>
           <li><a href="api_reference.html#module-pybryt.annotations.value">pybryt.annotations.value</a>
 </li>
+          <li><a href="api_reference.html#module-pybryt.complexity">pybryt.complexity</a>
+</li>
           <li><a href="api_reference.html#module-pybryt.debug">pybryt.debug</a>
 </li>
           <li><a href="api_reference.html#module-pybryt.execution">pybryt.execution</a>
 </li>
           <li><a href="api_reference.html#module-pybryt.student">pybryt.student</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.import_.ForbidImport.module">module (pybryt.annotations.import_.ForbidImport attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.annotations.import_.ImportAnnotation.module">(pybryt.annotations.import_.ImportAnnotation attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.module">(pybryt.annotations.import_.RequireImport attribute)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -652,6 +691,10 @@
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.ComplexityAnnotation.name">(pybryt.annotations.complexity.annotation.ComplexityAnnotation attribute)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.name">(pybryt.annotations.complexity.annotation.TimeComplexity attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.name">(pybryt.annotations.import_.RequireImport attribute)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.complexity.TimeComplexityChecker.name">(pybryt.complexity.TimeComplexityChecker attribute)</a>
 </li>
           <li><a href="api_reference.html#pybryt.execution.check_time_complexity.name">(pybryt.execution.check_time_complexity attribute)</a>
 </li>
@@ -778,6 +821,13 @@
 </li>
         </ul></li>
         <li>
+    pybryt.annotations.import_
+
+        <ul>
+          <li><a href="api_reference.html#module-pybryt.annotations.import_">module</a>
+</li>
+        </ul></li>
+        <li>
     pybryt.annotations.invariants
 
         <ul>
@@ -803,6 +853,13 @@
 
         <ul>
           <li><a href="api_reference.html#module-pybryt.annotations.value">module</a>
+</li>
+        </ul></li>
+        <li>
+    pybryt.complexity
+
+        <ul>
+          <li><a href="api_reference.html#module-pybryt.complexity">module</a>
 </li>
         </ul></li>
         <li>
@@ -861,12 +918,18 @@
 </li>
         <li><a href="api_reference.html#pybryt.annotations.collection.Collection.remove">remove() (pybryt.annotations.collection.Collection method)</a>
 </li>
+        <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport">RequireImport (class in pybryt.annotations.import_)</a>
+</li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.reset_tracked_annotations">reset_tracked_annotations() (pybryt.annotations.annotation.Annotation static method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api_reference.html#pybryt.reference.ReferenceResult.results">results (pybryt.reference.ReferenceResult attribute)</a>
+        <li><a href="api_reference.html#pybryt.complexity.TimeComplexityChecker.results">results (pybryt.complexity.TimeComplexityChecker attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.reference.ReferenceResult.results">(pybryt.reference.ReferenceResult attribute)</a>
 </li>
+        </ul></li>
         <li><a href="api_reference.html#pybryt.annotations.value.Value.rtol">rtol (pybryt.annotations.value.Value attribute)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.complexity.complexities.complexity.run">run() (pybryt.annotations.complexity.complexities.complexity class method)</a>
@@ -910,10 +973,10 @@
 </li>
         <li><a href="api_reference.html#pybryt.execution.TimeComplexityResult.stop">stop (pybryt.execution.TimeComplexityResult attribute)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.invariants.string_capitalization">string_capitalization (class in pybryt.annotations.invariants)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     STU
 
@@ -937,6 +1000,8 @@
 </li>
           <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity.success_message">(pybryt.annotations.complexity.annotation.TimeComplexity attribute)</a>
 </li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.RequireImport.success_message">(pybryt.annotations.import_.RequireImport attribute)</a>
+</li>
         </ul></li>
     </ul></td>
   </tr></table>
@@ -947,6 +1012,8 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.annotations.complexity.annotation.TimeComplexity">TimeComplexity (class in pybryt.annotations.complexity.annotation)</a>
+</li>
+        <li><a href="api_reference.html#pybryt.complexity.TimeComplexityChecker">TimeComplexityChecker (class in pybryt.complexity)</a>
 </li>
         <li><a href="api_reference.html#pybryt.execution.TimeComplexityResult">TimeComplexityResult (class in pybryt.execution)</a>
 </li>
@@ -960,6 +1027,8 @@
           <li><a href="api_reference.html#pybryt.annotations.annotation.AnnotationResult.to_dict">(pybryt.annotations.annotation.AnnotationResult method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.collection.Collection.to_dict">(pybryt.annotations.collection.Collection method)</a>
+</li>
+          <li><a href="api_reference.html#pybryt.annotations.import_.ImportAnnotation.to_dict">(pybryt.annotations.import_.ImportAnnotation method)</a>
 </li>
           <li><a href="api_reference.html#pybryt.annotations.type_.ForbidType.to_dict">(pybryt.annotations.type_.ForbidType method)</a>
 </li>
@@ -1057,5 +1126,6 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

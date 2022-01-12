@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" /><link rel="prev" title="Installation" href="installation.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Getting Started" href="getting_started.html" /><link rel="prev" title="PyBryt Documentation" href="index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/>
-        <title>Getting Started - PyBryt documentation</title>
+        <title>Installation - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
@@ -155,8 +155,8 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
@@ -202,28 +202,27 @@
           </label>
         </div>
         <article role="main">
-          <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<section id="installing-pybryt">
-<h2>Installing PyBryt<a class="headerlink" href="#installing-pybryt" title="Permalink to this headline">¶</a></h2>
-<p>We can install PyBryt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.</p>
-<section id="installing-within-a-jupyter-notebook">
-<h3>Installing within a Jupyter Notebook<a class="headerlink" href="#installing-within-a-jupyter-notebook" title="Permalink to this headline">¶</a></h3>
-<p>We can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
+          <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>PyBryt can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code>, in a Python virtual environment, or using line magic in a
+Jupyter Notebook.</p>
+<section id="installing-with-pip">
+<h2>Installing with <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#installing-with-pip" title="Permalink to this headline">¶</a></h2>
+<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Then, you can install PyBryt with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install pybryt</span>
 </pre></div>
 </div>
-<p>or, similarly, for a conda environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">conda</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
+<p>This method also works for installing PyBryt in a Conda environment, as long as you have activated
+the environment in which you want PyBryt installed. You can also use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda run -n ENVIRONMENT_NAME pip install pybryt</span>
 </pre></div>
 </div>
 </section>
-<section id="installing-on-windows-powershell">
-<h3>Installing on Windows PowerShell<a class="headerlink" href="#installing-on-windows-powershell" title="Permalink to this headline">¶</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
+<section id="installing-in-a-python-virtual-environment">
+<h2>Installing in a Python Virtual Environment<a class="headerlink" href="#installing-in-a-python-virtual-environment" title="Permalink to this headline">¶</a></h2>
+<p>To install PyBryt in a Python virtual environment, update <code class="docutils literal notranslate"><span class="pre">pip</span></code> and install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>.</p>
+<section id="windows-powershell">
+<h3>Windows PowerShell<a class="headerlink" href="#windows-powershell" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">py -3 -m venv .venv</span>
 <span class="go">.\.venv\scripts\activate.ps1</span>
 <span class="go">pip install -U pip</span>
@@ -231,10 +230,8 @@
 </pre></div>
 </div>
 </section>
-<section id="installing-on-macos-or-linux-command-line">
-<h3>Installing on macOS or Linux command-line<a class="headerlink" href="#installing-on-macos-or-linux-command-line" title="Permalink to this headline">¶</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
+<section id="macos-or-linux-command-line">
+<h3>macOS or Linux command-line<a class="headerlink" href="#macos-or-linux-command-line" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3 -m venv .venv</span>
 <span class="go">source .venv/bin/activate</span>
 <span class="go">pip install -U pip</span>
@@ -243,80 +240,14 @@
 </div>
 </section>
 </section>
-<section id="annotating-a-working-example">
-<h2>Annotating a working example<a class="headerlink" href="#annotating-a-working-example" title="Permalink to this headline">¶</a></h2>
-<p>PyBryt works by observing working reference implementations and looking for
-annotated types and variables in other implementations. The first step after
-installing PyBryt would be to create a working example to serve as a reference
-implementation.</p>
-<p>Let us say we want students to complete a simple task of counting the number of
-words in a string. We send them the signature of the function and ask them to
-complete it inside a Jupyter notebook:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="k">pass</span>
+<section id="installing-within-a-jupyter-notebook">
+<h2>Installing within a Jupyter Notebook<a class="headerlink" href="#installing-within-a-jupyter-notebook" title="Permalink to this headline">¶</a></h2>
+<p>You can add a line magic command to a Jupyter notebook to install the requirements for a <code class="docutils literal notranslate"><span class="pre">pip</span></code>
+environment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
+<span class="kn">import</span> <span class="nn">pybryt</span>
 </pre></div>
 </div>
-<p>We could write this function by splitting the string using the builtin
-<code class="docutils literal notranslate"><span class="pre">str.split()</span></code> method, which will automatically remove empty strings, and then
-count the number of items in the resulting list:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
-</pre></div>
-</div>
-<p>To annotate this example and train PyBryt what values (variables) to look for in
-other implementations, we use the <code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> class from the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a>.
-<code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> takes any Python value as an input for its constructor.</p>
-<p>The two key variables we want to observe in our example are:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">list</span></code> of words created by splitting the text (<code class="docutils literal notranslate"><span class="pre">fragments</span></code>)</p></li>
-<li><p>The count of words as a Python <code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">length</span></code>)</p></li>
-</ul>
-<p>Now, let us update the reference implementation and create a <code class="docutils literal notranslate"><span class="pre">pybryt.Value()</span></code>
-instance for both of these variables:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
-</pre></div>
-</div>
-<p>Next, we check our implementation with some text samples that we will also use to test the student implementations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Waltz, bad nymph, for quick jigs vex."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"The five boxing wizards-- </span><span class="se">\n</span><span class="s2">jump quickly!"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Sphinx of black quartz,          judge my vow."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
-</pre></div>
-</div>
-</section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
-<p>PyBryt can do much more beyond this simple example, such as automating the
-assessment of student implementations and detecting plagiarism. To learn more
-about pybryt, check out the following</p>
-<ul class="simple">
-<li><p>The example projects in the <a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/demo/">demos folder</a></p></li>
-<li><p>Read the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a> for details on the annotation types</p></li>
-</ul>
 </section>
 </section>
 
@@ -325,23 +256,23 @@ about pybryt, check out the following</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="annotations/index.html">
+          <a class="next-page" href="getting_started.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Annotations</div>
+                <div class="title">Getting Started</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="installation.html">
+          <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Installation</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -351,7 +282,7 @@ about pybryt, check out the following</p>
               Copyright &#169; 2021, Microsoft |
           Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
           <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            | <a class="muted-link" href="_sources/getting_started.rst.txt"
+            | <a class="muted-link" href="_sources/installation.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -371,15 +302,14 @@ about pybryt, check out the following</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#installing-pybryt">Installing PyBryt</a><ul>
-<li><a class="reference internal" href="#installing-within-a-jupyter-notebook">Installing within a Jupyter Notebook</a></li>
-<li><a class="reference internal" href="#installing-on-windows-powershell">Installing on Windows PowerShell</a></li>
-<li><a class="reference internal" href="#installing-on-macos-or-linux-command-line">Installing on macOS or Linux command-line</a></li>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installing-with-pip">Installing with <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li><a class="reference internal" href="#installing-in-a-python-virtual-environment">Installing in a Python Virtual Environment</a><ul>
+<li><a class="reference internal" href="#windows-powershell">Windows PowerShell</a></li>
+<li><a class="reference internal" href="#macos-or-linux-command-line">macOS or Linux command-line</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#annotating-a-working-example">Annotating a working example</a></li>
-<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li><a class="reference internal" href="#installing-within-a-jupyter-notebook">Installing within a Jupyter Notebook</a></li>
 </ul>
 </li>
 </ul>
