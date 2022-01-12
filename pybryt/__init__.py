@@ -2,6 +2,7 @@
 
 from . import utils
 from .annotations import *
+from .complexity import TimeComplexityChecker
 from .debug import *
 from .execution import *
 from .reference import *

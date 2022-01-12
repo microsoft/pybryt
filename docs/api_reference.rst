@@ -64,6 +64,14 @@ Type Annotations
    :undoc-members:
 
 
+Import Annotations
+++++++++++++++++++
+
+.. automodule:: pybryt.annotations.import_
+   :members:
+   :undoc-members:
+
+
 Annotation Collections
 ++++++++++++++++++++++
 
@@ -118,5 +126,13 @@ Execution
 +++++++++
 
 .. automodule:: pybryt.execution
+   :members:
+   :undoc-members:
+
+
+Complexity Analysis
+-------------------
+
+.. automodule:: pybryt.complexity
    :members:
    :undoc-members:

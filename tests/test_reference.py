@@ -125,6 +125,21 @@ def test_reference_construction():
         ref2 = more_refs[0]
         assert ref2 == expected_ref2
 
+    # check filtering named annotations (#147)
+    annots = [
+        Value(0),
+        Value(1, name="1"),
+        Value(2, name="1"),
+        Value(3, name="1"),
+        Value(4, name="2", limit=2),
+        Value(5, name="2", limit=2),
+        Value(6, name="2", limit=2),
+        Value(7, name="3", limit=2),
+    ]
+    ref = ReferenceImplementation("named-annotations", annots)
+    assert len(ref.annotations) == 7
+    assert annots[-2] not in ref.annotations
+
 
 def test_construction_errors():
     """
@@ -227,6 +242,25 @@ def test_run_and_results():
 
     with pytest.raises(ValueError, match="Group 'foo' not found"):
         ref.run(footprint, group="foo")
+
+    # check message filtering (#145)
+    ref = ReferenceImplementation("foo", [
+        Value(1, name="1", success_message="sm1"),
+        Value(2, name="1", success_message="sm1"),
+        Value(3, name="2", failure_message="fm2"),
+        Value(4, name="2", failure_message="fm2"),
+        Value(5, name="3", success_message="sm3", failure_message="fm3"),
+        Value(6, name="3", success_message="sm3", failure_message="fm3"),
+    ])
+
+    res = ref.run(MemoryFootprint.from_values(1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6))
+    assert res.messages == ["sm1", "sm3"]
+
+    res = ref.run(MemoryFootprint.from_values(1, 1, 3, 3, 4, 4))
+    assert res.messages == ["fm3"]
+
+    res = ref.run(MemoryFootprint.from_values(1, 1, 2, 2, 5, 5))
+    assert res.messages == ["sm1", "fm2", "fm3"]
 
 
 def test_generate_report():
