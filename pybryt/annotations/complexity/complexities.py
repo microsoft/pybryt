@@ -70,7 +70,7 @@ class complexity(ABC):
 
             _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
             if len(resid) == 0:
-                return np.inf
+                return ComplexityClassResult(self, np.inf)
             return ComplexityClassResult(self, resid[0])
         except:
             return ComplexityClassResult(self, np.inf)
