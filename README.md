@@ -35,7 +35,7 @@ Educators and Institutions can leverage the PyBryt Library to integrate auto ass
 
 ## Getting Started
 
-See the [Getting Started](https://microsoft.github.io/pybryt/html/getting_started.html) page on the pybryt documentation for steps to install and use pybryt for the first time. You can also check the [Microsoft Learn interactive module on pybryt](http://aka.ms/pybrytlearn) to learn how to use the library.
+See the [Getting Started](https://microsoft.github.io/pybryt/html/getting_started.html) page on the pybryt documentation for steps to install and use pybryt for the first time. You can also check the [Microsoft Learn interactive modules](http://docs.microsoft.com/learn)on [Introductions to pybryt](http://aka.ms/pybrytlearn) and [Advanced PyBryt](http://aka.ms/advancedpybryt) to learn more about to use the library to autoassess your learners activities.
 
 ## Testing
 
