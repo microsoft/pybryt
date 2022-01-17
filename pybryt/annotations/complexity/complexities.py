@@ -103,7 +103,7 @@ class complexity(ABC):
         return t
 
 
-class constant(complexity):
+class _constant(complexity):
     """
     Complexity class for constant time: :math:`\\mathcal{O}(1)`
     """
@@ -114,10 +114,10 @@ class constant(complexity):
 
 
 # complexity classes are singletons
-constant = constant()
+constant = _constant()
 
 
-class logarithmic(complexity):
+class _logarithmic(complexity):
     """
     Complexity class for logarithmic time: :math:`\\mathcal{O}(\\log n)`
     """
@@ -127,10 +127,10 @@ class logarithmic(complexity):
         return np.vstack((np.ones(len(n)), np.log2(n))).T
 
 
-logarithmic = logarithmic()
+logarithmic = _logarithmic()
 
 
-class linear(complexity):
+class _linear(complexity):
     """
     Complexity class for linear time: :math:`\\mathcal{O}(n)`
     """
@@ -140,10 +140,10 @@ class linear(complexity):
         return np.vstack((np.ones(len(n)), n)).T
 
 
-linear = linear()
+linear = _linear()
 
 
-class linearithmic(complexity):
+class _linearithmic(complexity):
     """
     Complexity class for linearithmic time: :math:`\\mathcal{O}(n \\log n)`
     """
@@ -153,10 +153,10 @@ class linearithmic(complexity):
         return np.vstack((np.ones(len(n)), n * np.log2(n))).T
 
 
-linearithmic = linearithmic()
+linearithmic = _linearithmic()
 
 
-class quadratic(complexity):
+class _quadratic(complexity):
     """
     Complexity class for quadratic time: :math:`\\mathcal{O}(n^2)`
     """
@@ -166,10 +166,10 @@ class quadratic(complexity):
         return np.vstack((np.ones(len(n)), n * n)).T
 
 
-quadratic = quadratic()
+quadratic = _quadratic()
 
 
-class cubic(complexity):
+class _cubic(complexity):
     """
     Complexity class for cubic time: :math:`\\mathcal{O}(n^3)`
     """
@@ -179,10 +179,10 @@ class cubic(complexity):
         return np.vstack((np.ones(len(n)), n * n * n)).T
 
 
-cubic = cubic()
+cubic = _cubic()
 
 
-class exponential(complexity):
+class _exponential(complexity):
     """
     Complexity class for exponential time: :math:`\\mathcal{O}(2^n)`
     """
@@ -196,7 +196,7 @@ class exponential(complexity):
         return np.log2(t)
 
 
-exponential = exponential()
+exponential = _exponential()
 
 
 complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic]#, exponential]
@@ -221,6 +221,18 @@ class ComplexityUnion:
 
     def __init__(self, *complexity_classes: complexity):
         self._complexity_classes = list(complexity_classes)
+
+    def __or__(self, other: Any) -> "ComplexityUnion":
+        """
+        Create a complexity union through use of the ``|`` operator.
+
+        Args:
+            other (any): the other object in the union
+
+        Returns:
+            :py:class:`ComplexityUnion`: the union
+        """
+        return self.from_or(self, other)
 
     @classmethod
     def from_or(

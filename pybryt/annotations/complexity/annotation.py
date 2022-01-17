@@ -46,7 +46,9 @@ class ComplexityAnnotation(Annotation):
     ):
         if "name" not in kwargs:
             raise ValueError("Complexity annotations require a 'name' kwarg")
-        if complexity not in cplx.complexity_classes and not isinstance(complexity, cplx.complexity):
+        if complexity not in cplx.complexity_classes and \
+                not isinstance(complexity, cplx.complexity) and \
+                not isinstance(complexity, cplx.ComplexityUnion):
             raise ValueError(f"Invalid valid for argument 'complexity': {complexity}")
         self.complexity = complexity
         self.addl_complexities = addl_complexities
