@@ -3,7 +3,21 @@
 import numpy as np
 
 from abc import ABC, abstractmethod
-from typing import Dict
+from dataclasses import dataclass
+from typing import Any, Dict, List, Union
+
+
+@dataclass
+class ComplexityClassResult:
+    """
+    A container class for the results of complexity checks.
+    """
+
+    complexity_class: "complexity"
+    """the complexity class associated with this result"""
+
+    residual: float
+    """the residual from the least-squares fit"""
 
 
 class complexity(ABC):
@@ -16,9 +30,50 @@ class complexity(ABC):
     from https://github.com/pberkes/big_O.
     """
 
-    @staticmethod
-    def __new__(cls, complexity_data: Dict[int, int]) -> float:
-        return cls.run(complexity_data)
+    def __or__(self, other: Any) -> "ComplexityUnion":
+        """
+        Create a complexity union through use of the ``|`` operator.
+
+        Args:
+            other (any): the other object in the union
+
+        Returns:
+            :py:class:`ComplexityUnion`: the union
+        """
+        return ComplexityUnion.from_or(self, other)
+
+    def __call__(self, complexity_data: Dict[int, int]) -> ComplexityClassResult:
+        """
+        Return the sum of residuals by performing least squares on the input length data and timings.
+
+        Uses ``transform_n`` and ``transform_t`` to transform the data from ``complexity_data``, which
+        is a dictionary mapping input lengths to step counts. Performs least squares on the resulting
+        arrays and returns the sum of residuals.
+
+        Args:
+            complexity_data (``dict[int, int]``): the complexity information
+
+        Returns:
+            ``float``: the sum of residuals from least squares
+        """
+        ns, ts = [], []
+        for n, t in complexity_data.items():
+            ns.append(n)
+            ts.append(t)
+        
+        n = np.array(ns, dtype=int)
+        t = np.array(ts, dtype=int)
+
+        try:
+            n = self.transform_n(n)
+            t = self.transform_t(t)
+
+            _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
+            if len(resid) == 0:
+                return np.inf
+            return ComplexityClassResult(self, resid[0])
+        except:
+            return ComplexityClassResult(self, np.inf)
 
     @staticmethod
     @abstractmethod
@@ -47,40 +102,6 @@ class complexity(ABC):
         """
         return t
 
-    @classmethod
-    def run(cls, complexity_data: Dict[int, int]) -> float:
-        """
-        Returns the sum of residuals by performing least squares on the input length data and timings.
-
-        Uses ``transform_n`` and ``transform_t`` to transform the data from ``complexity_data``, which
-        is a dictionary mapping input lengths to step counts. Performs least squares on the resulting
-        arrays and returns the sum of residuals.
-
-        Args:
-            complexity_data (``dict[int, int]``): the complexity information
-
-        Returns:
-            ``float``: the sum of residuals from least squares
-        """
-        ns, ts = [], []
-        for n, t in complexity_data.items():
-            ns.append(n)
-            ts.append(t)
-        
-        n = np.array(ns, dtype=int)
-        t = np.array(ts, dtype=int)
-
-        try:
-            n = cls.transform_n(n)
-            t = cls.transform_t(t)
-
-            _, resid, _, _ = np.linalg.lstsq(n, t, rcond=-1)
-            if len(resid) == 0:
-                return np.inf
-            return resid[0]
-        except:
-            return np.inf
-
 
 class constant(complexity):
     """
@@ -90,6 +111,10 @@ class constant(complexity):
     @staticmethod
     def transform_n(n: np.ndarray) -> np.ndarray:
         return np.ones((len(n), 1))
+
+
+# complexity classes are singletons
+constant = constant()
 
 
 class logarithmic(complexity):
@@ -102,6 +127,9 @@ class logarithmic(complexity):
         return np.vstack((np.ones(len(n)), np.log2(n))).T
 
 
+logarithmic = logarithmic()
+
+
 class linear(complexity):
     """
     Complexity class for linear time: :math:`\\mathcal{O}(n)`
@@ -110,6 +138,9 @@ class linear(complexity):
     @staticmethod
     def transform_n(n: np.ndarray) -> np.ndarray:
         return np.vstack((np.ones(len(n)), n)).T
+
+
+linear = linear()
 
 
 class linearithmic(complexity):
@@ -122,6 +153,9 @@ class linearithmic(complexity):
         return np.vstack((np.ones(len(n)), n * np.log2(n))).T
 
 
+linearithmic = linearithmic()
+
+
 class quadratic(complexity):
     """
     Complexity class for quadratic time: :math:`\\mathcal{O}(n^2)`
@@ -132,6 +166,9 @@ class quadratic(complexity):
         return np.vstack((np.ones(len(n)), n * n)).T
 
 
+quadratic = quadratic()
+
+
 class cubic(complexity):
     """
     Complexity class for cubic time: :math:`\\mathcal{O}(n^3)`
@@ -140,6 +177,9 @@ class cubic(complexity):
     @staticmethod
     def transform_n(n: np.ndarray) -> np.ndarray:
         return np.vstack((np.ones(len(n)), n * n * n)).T
+
+
+cubic = cubic()
 
 
 class exponential(complexity):
@@ -156,4 +196,95 @@ class exponential(complexity):
         return np.log2(t)
 
 
+exponential = exponential()
+
+
 complexity_classes = [constant, logarithmic, linear, linearithmic, quadratic, cubic]#, exponential]
+
+
+class ComplexityUnion:
+    """
+    A complexity class that represents a union of multiple complexity classes.
+
+    Complexity unions can be used to write annotations but cannot be used as classes to determine
+    the complexity of a block of code; they are simply collections of acceptable complexity classes.
+
+    This class does not ensure the uniqueness of the complexity classes it tracks; that is, if the
+    same complexity class is added twice, it will be tracked twice.
+
+    Args:
+        *complexity_classes (:py:class:`complexity`): the complexity classes in the union
+    """
+
+    _complexity_classes = List[complexity]
+    """the complexity classes contained in the union"""
+
+    def __init__(self, *complexity_classes: complexity):
+        self._complexity_classes = list(complexity_classes)
+
+    @classmethod
+    def from_or(
+        cls,
+        left: Union[complexity, "ComplexityUnion"],
+        right: Union[complexity, "ComplexityUnion"],
+    ) -> "ComplexityUnion":
+        """
+        Create a complexity union from two operands.
+
+        Args:
+            left (:py:class:`complexity` or :py:class:`ComplexityUnion`): the left operand
+            right (:py:class:`complexity` or :py:class:`ComplexityUnion`): the right operand
+
+        Returns:
+            :py:class:`ComplexityUnion`: the union containing both operands
+
+        Raises:
+            ``TypeError``: if either operand is not a complexity class or complexity union
+        """
+        if not isinstance(left, (complexity, cls)):
+            raise TypeError(f"Attempted to combine a complexity class with an object of type {type(left)}")
+
+        if not isinstance(right, (complexity, cls)):
+            raise TypeError(f"Attempted to combine a complexity class with an object of type {type(right)}")
+
+        if isinstance(left, cls):
+            right_complexities = [right]
+            if isinstance(right, cls):
+                right_complexities = right.get_complexities()
+            return cls(*left.get_complexities(), *right_complexities)
+
+        elif isinstance(right, cls):
+            return cls(left, *right.get_complexities())
+
+        return cls(left, right)
+
+    def add_complexity(self, complexity_class: complexity) -> None:
+        """
+        Add another complexity class to this union.
+
+        Args:
+            complexity_class (:py:class:`complexity`): the complexity class to add
+        """
+        self._complexity_classes.append(complexity_class)
+
+    def get_complexities(self) -> List[complexity]:
+        """
+        Return a list of the complexity classes in this union.
+
+        Returns:
+            ``list[complexity]``: the complexity classes
+        """
+        return [*self._complexity_classes]
+
+    def __eq__(self, other: Any) -> bool:
+        """
+        Determine whether another object is equal to this complexity union.
+
+        An object is equal to a complexity union if it is also a complexity union and contains the
+        same complexity classes.
+
+        Returns:
+            ``bool``: whether the other object is equal to this one
+        """
+        return isinstance(other, type(self)) and \
+            set(self.get_complexities()) == set(other.get_complexities())

@@ -2,7 +2,7 @@
 
 __all__ = ["ComplexityAnnotation", "TimeComplexity"]
 
-from typing import Any, List, Tuple
+from typing import Any, List, Union
 
 from . import complexities as cplx
 
@@ -24,14 +24,26 @@ class ComplexityAnnotation(Annotation):
     from the student's memory footprint.
 
     Args:
-        complexity (:py:class:`complexity<pybryt.complexities.complexity>`): the complexity class
+        complexity (:py:class:`complexity<pybryt.complexities.complexity>` or 
+            :py:class:`ComplexityUnion<pybryt.complexities.ComplexityUnion>`): the complexity class
             being asserted
         addl_complexities(``list[complexity]``): additional custom complexity classes to consider
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.Annotation>` constructor
     """
 
-    def __init__(self, complexity: cplx.complexity, addl_complexities=[], **kwargs):
+    complexity: Union[cplx.complexity, cplx.ComplexityUnion]
+    """the complexity class of this annotation"""
+
+    addl_complexities: List[cplx.complexity]
+    """additional complexity classes to consider"""
+
+    def __init__(
+        self,
+        complexity: Union[cplx.complexity, cplx.ComplexityUnion],
+        addl_complexities: List[cplx.complexity] = [],
+        **kwargs,
+    ):
         if "name" not in kwargs:
             raise ValueError("Complexity annotations require a 'name' kwarg")
         if complexity not in cplx.complexity_classes and not isinstance(complexity, cplx.complexity):
@@ -61,7 +73,7 @@ class ComplexityAnnotation(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
-        return super().__eq__(other) and self.complexity is other.complexity
+        return super().__eq__(other) and self.complexity == other.complexity
 
 
 class TimeComplexity(ComplexityAnnotation):
@@ -95,22 +107,26 @@ class TimeComplexity(ComplexityAnnotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        if self.complexity not in cplx.complexity_classes:
+        is_union = isinstance(self.complexity, cplx.ComplexityUnion)
+        if not is_union and self.complexity not in cplx.complexity_classes:
             self.addl_complexities.insert(0, self.complexity)
 
         complexity_data = {}
-        for v, ts in footprint.values:
+        for v, _ in footprint.values:
             if not isinstance(v, TimeComplexityResult) or v.name != self.name:
                 continue
 
             complexity_data[v.n] = v.stop - v.start
 
-        best_cls, best_res = None, None
-        complexities = cplx.complexity_classes + self.addl_complexities
-        for cplxy in complexities:
-            res = cplxy(complexity_data)
+        best_res = None
+        complexities: List[cplx.complexity] = cplx.complexity_classes + self.addl_complexities
+        for complexity in complexities:
+            result = complexity(complexity_data)
 
-            if best_res is None or res < best_res - EPS:
-                best_cls, best_res = cplxy, res
+            if best_res is None or result.residual < best_res.residual - EPS:
+                best_res = result
 
-        return AnnotationResult(best_cls is self.complexity, self, value=best_cls)
+        satisfied = best_res.complexity_class == self.complexity
+        if is_union:
+            satisfied = best_res.complexity_class in self.complexity.get_complexities()
+        return AnnotationResult(satisfied, self, value=best_res.complexity_class)
