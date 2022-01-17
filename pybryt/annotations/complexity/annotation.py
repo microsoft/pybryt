@@ -24,9 +24,8 @@ class ComplexityAnnotation(Annotation):
     from the student's memory footprint.
 
     Args:
-        complexity (:py:class:`complexity<pybryt.complexities.complexity>` or 
-            :py:class:`ComplexityUnion<pybryt.complexities.ComplexityUnion>`): the complexity class
-            being asserted
+        complexity (:py:class:`complexity<pybryt.complexities.complexity>` or :py:class:`ComplexityUnion<pybryt.complexities.ComplexityUnion>`):
+            the complexity class being asserted
         addl_complexities(``list[complexity]``): additional custom complexity classes to consider
         **kwargs: additional keyword arguments passed to the 
             :py:class:`Annotation<pybryt.Annotation>` constructor
