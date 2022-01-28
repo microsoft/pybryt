@@ -132,16 +132,47 @@ class Value(Annotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
+        satisfier = self._get_satisfying_index(footprint)
+        return self._generate_annotation_result(footprint, satisfier)
+
+    def _get_satisfying_index(self, footprint: MemoryFootprint) -> Optional[int]:
+        """
+        Return the index of the first value in the memory footprint that satisfies this annotation.
+
+        Args:
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
+
+        Returns:
+            ``int | None``: the index, or ``None`` if no value satisfies this annotation.
+        """
         satisfied = [self._check_observed_value(mfp_val.value) for mfp_val in footprint]
-        if not any(satisfied):
+        return satisfied.index(True) if any(satisfied) else None
+
+    def _generate_annotation_result(
+        self,
+        footprint: MemoryFootprint,
+        satisfying_index: Optional[int],
+    ) -> AnnotationResult:
+        """
+        Return an ``AnnotationResult`` based on the provided satisfying index.
+
+        Args:
+            footprint (``MemoryFootprint``): the footprint being checked
+            satisfying_index (``int | None``): the index of the value in the memory footprint that
+                satisfies the annotation, otherwise ``None``
+
+        Returns:
+            ``AnnotationResult``: the result
+        """
+        if satisfying_index is None:
             return AnnotationResult(False, self)
 
-        first_satisfier = satisfied.index(True)
         return AnnotationResult(
             True, 
             self, 
-            footprint.get_value(first_satisfier).value,
-            footprint.get_value(first_satisfier).timestamp,
+            footprint.get_value(satisfying_index).value,
+            footprint.get_value(satisfying_index).timestamp,
         )
 
     def __eq__(self, other: Any) -> bool:
@@ -380,14 +411,10 @@ class _AttrValue(Value):
                 mfp_vals.append(MemoryFootprintValue(*mfp_lst))
 
         attrs_fp = MemoryFootprint.from_values(*mfp_vals)
-        res = super().check(attrs_fp)
-        try:
-            satisfier = mfp_vals[] # TODO: figure out which value satisfies here
-            
-            # vals[attrs_fp values.index((res.value, res.timestamp))][0]
-        except ValueError:
-            satisfier = None
-        return AnnotationResult(None, self, value=satisfier, children=[res])
+        satisfying_index = self._get_satisfying_index(attrs_fp)
+        child_res = self._generate_annotation_result(attrs_fp, satisfying_index)
+        satisfier = None if satisfying_index is None else attrs_fp.get_value(satisfying_index).value
+        return AnnotationResult(None, self, value=satisfier, children=[child_res])
 
 
 class Attribute(Annotation):
