@@ -5,8 +5,9 @@ import sys
 
 from unittest import mock
 
-from pybryt import *
+from pybryt import MemoryFootprint, no_tracing
 from pybryt.execution import create_collector, FrameTracer, tracing_off, tracing_on
+from pybryt.execution.memory_footprint import Event
 
 from .utils import generate_mocked_frame
 
@@ -26,20 +27,21 @@ def test_trace_function():
 
     arr = np.random.uniform(-100, 100, size=(100, 100))
     cir(frame, "return", arr)
-    assert len(footprint.values) == 1
-    assert np.allclose(footprint.values[0][0], arr)
-    assert footprint.values[0][1] == 1
+    assert len(footprint) == 1
+    assert np.allclose(footprint.get_value(0).value, arr)
+    assert footprint.get_value(0).timestamp == 1
+    assert footprint.get_value(1).event == Event.RETURN
 
     # test value in skip_types
     cir(frame, "return", type(1))
-    assert len(footprint.values) == 1
+    assert len(footprint) == 1
 
     # test pickling error
     with mock.patch("dill.dumps") as mocked_dumps:
         mocked_dumps.side_effect = Exception()
         cir(frame, "return", 1)
     
-    assert len(footprint.values) == 1
+    assert len(footprint) == 1
 
     # test call event
     assert len(footprint.calls) == 0
@@ -57,55 +59,56 @@ def test_trace_function():
         # check eval call for attributes
         mocked_linecache.return_value = "data.T"
         cir(frame, "line", None)
-        assert len(footprint.values) == 2
-        assert np.allclose(footprint.values[1][0], arr.T)
-        assert footprint.values[1][1] == 5
+        assert len(footprint) == 2
+        assert np.allclose(footprint.get_value(1).value, arr.T)
+        assert footprint.get_value(1).timestamp == 5
+        assert footprint.get_value(1).event == Event.LINE
 
         # check failed eval call for attributes
         mocked_linecache.return_value = "data.doesnt_exist"
         cir(frame, "line", None)
-        assert len(footprint.values) == 2
+        assert len(footprint) == 2
 
         # check looking in frame locals + globals
         frame.f_globals["more_data"] = np.random.uniform(-100, 100, size=(100, 100))
         frame.f_locals["more_data"] = np.random.uniform(-100, 100, size=(100, 100))
         mocked_linecache.return_value = "more_data"
         cir(frame, "line", None)
-        assert len(footprint.values) == 3
-        assert np.allclose(footprint.values[2][0], frame.f_locals["more_data"])
-        assert footprint.values[2][1] == 7
+        assert len(footprint) == 3
+        assert np.allclose(footprint.get_value(2).value, frame.f_locals["more_data"])
+        assert footprint.get_value(2).timestamp == 7
 
         # check that we track assignment statements on function return
         mocked_linecache.return_value = "even_more_data = more_data ** 2"
         cir(frame, "line", None)
-        assert len(footprint.values) == 3
+        assert len(footprint) == 3
 
         mocked_linecache.return_value = "even_more_data_2 = more_data ** 3"
         cir(frame, "line", None)
-        assert len(footprint.values) == 3
+        assert len(footprint) == 3
 
         # check that floats aren't added with the eval call
         mocked_linecache.return_value = "event_more_data_3 = [2.1, 1000, 100.3]"
         cir(frame, "line", None)
-        assert len(footprint.values) == 3
+        assert len(footprint) == 3
 
         frame.f_locals["even_more_data"] = frame.f_locals["more_data"] ** 2
         frame.f_globals["even_more_data_2"] = frame.f_locals["more_data"] ** 3
         mocked_linecache.return_value = ""
         cir(frame, "return", None)
-        assert len(footprint.values) == 6
-        assert footprint.values[3][0] is None
-        assert footprint.values[3][1] == 11
-        assert np.allclose(footprint.values[4][0], frame.f_locals["more_data"] ** 2)
-        assert footprint.values[4][1] == 8
-        assert np.allclose(footprint.values[5][0], frame.f_locals["more_data"] ** 3)
-        assert footprint.values[5][1] == 9
+        assert len(footprint) == 6
+        assert footprint.get_value(3).value is None
+        assert footprint.get_value(3).timestamp == 11
+        assert np.allclose(footprint.get_value(4).value, frame.f_locals["more_data"] ** 2)
+        assert footprint.get_value(4).timestamp == 8
+        assert np.allclose(footprint.get_value(5).value, frame.f_locals["more_data"] ** 3)
+        assert footprint.get_value(5).timestamp == 9
 
         # check that skip_types respected
         frame.f_locals["none_type"] = type(None)
         mocked_linecache.return_vaue = "none_type"
         cir(frame, "line", None)
-        assert len(footprint.values) == 6
+        assert len(footprint) == 6
 
         # check that addl_filenames respected
         frame = generate_mocked_frame(tracked_filepath, "bar", 100, f_back=frame)
@@ -114,19 +117,19 @@ def test_trace_function():
         cir(frame, "line", None)
         frame.f_locals["arr"] = -1 * arr
         cir(frame, "return", None) # run a return since arr shows up in vars_not_found
-        assert len(footprint.values) == 7
-        assert np.allclose(footprint.values[6][0], -1 * arr)
-        assert footprint.values[6][1] == 14
+        assert len(footprint) == 7
+        assert np.allclose(footprint.get_value(6).value, -1 * arr)
+        assert footprint.get_value(6).timestamp == 14
     
     # check that IPython child frame return values are tracked
     frame = generate_mocked_frame("/path/to/file.py", "bar", 100, f_back=frame)
     cir(frame, "line", None)
-    assert len(footprint.values) == 7
+    assert len(footprint) == 7
 
     cir(frame, "return", np.exp(arr))
-    assert len(footprint.values) == 8
-    assert np.allclose(footprint.values[7][0], np.exp(arr))
-    assert footprint.values[7][1] == 14
+    assert len(footprint) == 8
+    assert np.allclose(footprint.get_value(7).value, np.exp(arr))
+    assert footprint.get_value(7).timestamp == 14
 
     assert len(footprint.calls) == 1
     frame = generate_mocked_frame("/path/to/foo.py", "bar", 100)
@@ -141,9 +144,9 @@ def test_trace_function():
 
     arr = np.random.uniform(-100, 100, size=(100, 100))
     cir(frame, "return", arr)
-    assert len(footprint.values) == 1
-    assert np.allclose(footprint.values[0][0], arr)
-    assert footprint.values[0][1] == 1
+    assert len(footprint) == 1
+    assert np.allclose(footprint.get_value(0).value, arr)
+    assert footprint.get_value(0).timestamp == 1
 
     # check that imported modules are correctly tracked
     with mock.patch.object(footprint, "add_imports") as mocked_add_imports:

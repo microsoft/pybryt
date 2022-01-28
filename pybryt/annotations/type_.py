@@ -56,8 +56,8 @@ class ForbidType(Annotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        for val, _ in footprint.values:
-            if isinstance(val, self.type_):
+        for mfp_val in footprint:
+            if isinstance(mfp_val.value, self.type_):
                 return AnnotationResult(False, self)
         return AnnotationResult(True, self)
 

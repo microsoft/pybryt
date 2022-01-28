@@ -2,9 +2,34 @@
 
 import nbformat
 
+from dataclasses import astuple, dataclass
+from enum import Enum
 from typing import Any, List, Optional, Set, Tuple, Union
 
-from ..utils import filter_picklable_list, pickle_and_hash
+from ..utils import filter_pickleable_list, pickle_and_hash
+
+
+class Event(Enum):
+    """
+    An enum of event ``sys.settrace`` event types traced by PyBryt.
+    """
+
+    LINE = "line"
+    RETURN = "return"
+
+    @classmethod
+    def from_event_name(cls, event_name: str) -> Optional["Event"]:
+        """
+        Return the enum value corresponding to the event name, if present.
+
+        Args:
+            event_name (``str``): the event name provided by ``sys.settrace``
+
+        Returns:
+            :py:class:`Event`: the enum value corresponding to the event name if present,
+                otherwise ``None``
+        """
+        return cls(event_name) if event_name in cls.__members__ else None
 
 
 class Counter:
@@ -46,6 +71,28 @@ class Counter:
         self.val += val
 
 
+@dataclass
+class MemoryFootprintValue:
+    """
+    A data class for an observed value in the memory footprint.
+
+    The fields and their order should correspond to the structure of the tuples in
+    :py:attribute:`MemoryFootprint.values`.
+    """
+
+    value: Any
+    """the value"""
+
+    timestamp: int
+    """the timestamp at which this value was observed"""
+
+    event: Optional[Event]
+    """the trace function event that created this value, if applicable"""
+
+    def to_list(self):
+        return list(astuple(self))
+
+
 class MemoryFootprint:
     """
     A memory footprint for an executed notebook.
@@ -61,8 +108,8 @@ class MemoryFootprint:
     _hashes: Set[str]
     """set of hashed values present in the memory footprint"""
 
-    values: List[Tuple[Any, int]]
-    """the values and timestamps in the footprint"""
+    values: List[Tuple[Any, int, Optional[Event]]]
+    """the values, timestamps, and event types in the footprint"""
 
     calls: List[Tuple[str, str]]
     """the list of function calls tracked by the trace function"""
@@ -82,37 +129,22 @@ class MemoryFootprint:
         self.executed_notebook = None
 
     @classmethod
-    def from_values(cls, *values_and_timestamps: Union[Any, int]) -> 'MemoryFootprint':
+    def from_values(cls, *values: MemoryFootprintValue) -> 'MemoryFootprint':
         """
         Generate a memory footprint from values and their timestamps.
-
-        Values and timestamps should be provided in sequence, with a value followed by its timestmap.
-        For example:
-
-        .. code-block:: python
-
-            MemoryFootprint.from_values(val1, ts1, val2, ts2, val3, ts3, ...)
-
         Args:
-            values_and_timestamps (``object | int``): the values and timestamps
+            values_and_timestamps (:py:class:`MemoryFootprintValue`): the values
 
         Returns:
             :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
 
         Raises:
-            ``ValueError``: if an odd number of arguments is provided
-            ``TypeError``: if one of the timestamps is not an ``int``
+            ``TypeError``: if any of the values is of the wrong type
         """
-        if len(values_and_timestamps) % 2 != 0:
-            raise ValueError("Uneven number of arguments provided")
+        if not all(isinstance(v, MemoryFootprintValue) for v in values):
+            raise TypeError("Arguments to from_values must be of type MemoryFootprintValue")
 
-        values = [(values_and_timestamps[2 * i], values_and_timestamps[2 * i + 1]) \
-            for i in range(len(values_and_timestamps) // 2)]
-
-        not_ints = [not isinstance(ts, int) for _, ts in values]
-        if any(not_ints):
-            bad_idx = not_ints.index(True)
-            raise TypeError(f"Provided timestamp is not an integer: {values[bad_idx][1]}")
+        values = [astuple(v) for v in values]
 
         footprint = cls()
         footprint.values.extend(values)
@@ -125,7 +157,7 @@ class MemoryFootprint:
         Generate a memory footprint by combining memory footprints in-sequence.
 
         Duplicate values in different footprints are removed, keeping the first instance seen. The
-        timestmaps of each footprint are offset by the number of steps in all preceeding footprints.
+        timestmaps of each footprint are offset by the number of steps in all preceding footprints.
 
         Args:
             *footprints (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the 
@@ -139,11 +171,16 @@ class MemoryFootprint:
         timestamp_offset = 0  # offset for timestamps in the new memory footprint
         for fp in footprints:
             map(lambda c: new_fp.add_call(*c), fp.calls)
-            for obj, ts in fp.values:
-                h = pickle_and_hash(obj)
+            for fp_val in fp:
+                h = pickle_and_hash(fp_val.value)
                 if h not in seen:
-                    ts += timestamp_offset
-                    new_fp.add_value(obj, ts)
+                    fp_val.timestamp += timestamp_offset
+                    new_fp.add_value(
+                        fp_val.value,
+                        fp_val.timestamp,
+                        fp_val.event,
+                        allow_duplicates=True,
+                    )
                     seen.add(h)
 
             timestamp_offset += fp.num_steps
@@ -166,7 +203,13 @@ class MemoryFootprint:
         """
         self.counter.offset(val)
 
-    def add_value(self, val: Any, timestamp: Optional[int] = None, allow_duplicates: bool = False) -> None:
+    def add_value(
+        self,
+        val: Any,
+        timestamp: Optional[int] = None,
+        event: Optional[Event] = None,
+        allow_duplicates: bool = False,
+    ) -> None:
         """
         Add a value to the memory footprint.
 
@@ -177,6 +220,7 @@ class MemoryFootprint:
         Args:
             value (``object``): the value to add
             timestamp (``int``, optional): the timestamp
+            event (:py:class:`Event`, optional): the event that produced the value
             allow_duplicates(``bool``): whether duplicate values should be allowed in the footprint
         """
         if not allow_duplicates:
@@ -189,9 +233,9 @@ class MemoryFootprint:
         if timestamp is None:
             timestamp = self.counter.get_value()
 
-        self.values.append((val, timestamp))
+        self.values.append((val, timestamp, event))
 
-    def get_value(self, index: int) -> Any:
+    def get_value(self, index: int) -> MemoryFootprintValue: # TODO: change name??
         """
         Get the value at the specified index.
 
@@ -199,21 +243,9 @@ class MemoryFootprint:
             index (``int``): the index
 
         Returns:
-            ``object``: the value
+            :py:class:`MemoryFootprintValue`: the value
         """
-        return self.values[index][0]
-
-    def get_timestamp(self, index: int) -> int:
-        """
-        Get the timestamp of the value at the specified index.
-
-        Args:
-            index (``int``): the index
-
-        Returns:
-            ``int``: the timestamp
-        """
-        return self.values[index][1]
+        return MemoryFootprintValue(*self.values[index])
 
     def add_call(self, filename: str, fn_name: str) -> None:
         """
@@ -243,11 +275,16 @@ class MemoryFootprint:
         """
         self.executed_notebook = nb
 
-    def filter_out_unpicklable_values(self) -> None:
+    def filter_out_unpickleable_values(self) -> None:
         """
-        Filter any unpicklable objects out of the list of value-timestamp tuples in-place.
+        Filter any unpickleable objects out of the list of value-timestamp tuples in-place.
         """
-        filter_picklable_list(self.values)
+        filter_pickleable_list(self.values)
+
+    def clear(self) -> None:
+        """
+        """
+        self.values.clear()
 
     @property
     def num_steps(self) -> int:
@@ -257,13 +294,46 @@ class MemoryFootprint:
         timestamps = [t[1] for t in self.values]
         return max(timestamps) if len(timestamps) else -1
 
+    def __len__(self):
+        return len(self.values)
+
+    def __iter__(self):
+        return MemoryFootprintIterator(self)
+
     def __eq__(self, other: Any):
         """
         Return whether another object is equal to this one.
 
-        An object is equal to a memory footprint if it is also a memory fotprint and has the same
+        An object is equal to a memory footprint if it is also a memory footprint and has the same
         values, calls, imports, and executed notebook.
         """
         return isinstance(other, type(self)) and self.values == other.values \
             and self.calls == other.calls and self.imports == other.imports \
             and self.executed_notebook == other.executed_notebook
+
+
+class MemoryFootprintIterator:
+    """
+    An iterator class for memory footprints.
+
+    Args:
+        footprint (:py:class:`MemoryFootprint`): the memory footprint to iterate over
+        start (``int``, optional): the index to start at
+    """
+
+    footprint: MemoryFootprint
+    """the memory footprint being iterated over"""
+
+    _index: int
+    """the next index in the memory footprint to yield"""
+
+    def __init__(self, footprint: MemoryFootprint, start: int = 0):
+        self.footprint = footprint
+        self._index = start
+
+    def __next__(self) -> MemoryFootprintValue:
+        if self._index < len(self.footprint):
+            value = self.footprint.get_value(self._index)
+            self._index += 1
+            return value
+        raise StopIteration()

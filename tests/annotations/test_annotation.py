@@ -27,8 +27,8 @@ def test_name_group_limit():
         "group": None,
     })
 
-    v1 = pybryt.Value(footprint.get_value(0), group="bar")
-    v2 = pybryt.Value(footprint.get_value(1), group="bar")
+    v1 = pybryt.Value(footprint.get_value(0).value, group="bar")
+    v2 = pybryt.Value(footprint.get_value(1).value, group="bar")
     assert_object_attrs(v1, {"group": "bar"})
     assert_object_attrs(v2, {"group": "bar"})
 

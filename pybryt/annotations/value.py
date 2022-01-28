@@ -16,7 +16,7 @@ from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
 
 from ..debug import _debug_mode_enabled
-from ..execution import MemoryFootprint
+from ..execution import MemoryFootprint, MemoryFootprintValue
 
 
 class Value(Annotation):
@@ -24,7 +24,7 @@ class Value(Annotation):
     Annotation class for asserting that a value should be observed.
 
     Indicates that a value passed to the constructor should be observed while tracing through the
-    students' code. Values can be of any type that is picklable by ``dill``. Values can specify a
+    students' code. Values can be of any type that is pickleable by ``dill``. Values can specify a
     list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
     values that support arithemtic operators, absolute tolerances can be specified as well.
 
@@ -132,7 +132,7 @@ class Value(Annotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        satisfied = [self._check_observed_value(v) for v, _ in footprint.values]
+        satisfied = [self._check_observed_value(mfp_val.value) for mfp_val in footprint]
         if not any(satisfied):
             return AnnotationResult(False, self)
 
@@ -140,8 +140,8 @@ class Value(Annotation):
         return AnnotationResult(
             True, 
             self, 
-            footprint.values[first_satisfier][0],
-            footprint.values[first_satisfier][1],
+            footprint.get_value(first_satisfier).value,
+            footprint.get_value(first_satisfier).timestamp,
         )
 
     def __eq__(self, other: Any) -> bool:
@@ -372,15 +372,19 @@ class _AttrValue(Value):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        observed_values = footprint.values
-        if self.enforce_type:  # filter out values of wrong type if enforce_type is True
-            observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
-        vals = [t for t in observed_values if hasattr(t[0], self._attr)]
-        args = chain.from_iterable((getattr(obj, self._attr), ts) for obj, ts in vals)
-        attrs_fp = MemoryFootprint.from_values(*args)
+        mfp_vals = []
+        for mfp_val in footprint:
+            if not self.enforce_type or isinstance(mfp_val.value, type(self._object)):
+                mfp_lst = mfp_val.to_list()
+                mfp_lst[0] = getattr(mfp_val.value, self._attr)
+                mfp_vals.append(MemoryFootprintValue(*mfp_lst))
+
+        attrs_fp = MemoryFootprint.from_values(*mfp_vals)
         res = super().check(attrs_fp)
         try:
-            satisfier = vals[attrs_fp.values.index((res.value, res.timestamp))][0]
+            satisfier = mfp_vals[] # TODO: figure out which value satisfies here
+            
+            # vals[attrs_fp values.index((res.value, res.timestamp))][0]
         except ValueError:
             satisfier = None
         return AnnotationResult(None, self, value=satisfier, children=[res])

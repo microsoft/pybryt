@@ -9,10 +9,10 @@ from types import FrameType, FunctionType, ModuleType
 from typing import Any, Dict, List, Optional, Tuple, Callable
 
 from .complexity import is_complexity_tracing_enabled
-from .memory_footprint import MemoryFootprint
+from .memory_footprint import Event, MemoryFootprint
 from .utils import is_ipython_frame
 
-from ..utils import make_secret, pickle_and_hash, UnpicklableError
+from ..utils import make_secret, pickle_and_hash, UnpickleableError
 
 
 ACTIVE_FOOTPRINT = None
@@ -42,10 +42,10 @@ def create_collector(
         and the trace function
     """
     global ACTIVE_FOOTPRINT
-    vars_not_found = {}
+    vars_not_found: Dict[str, List[Tuple[str, str, int]]] = {}
     footprint = MemoryFootprint()
 
-    def track_value(val, seen_at=None):
+    def track_value(val: Any, event_name: str, seen_at: Optional[int] = None):
         """
         Tracks a value in ``footprint``. Checks that the value has not already been tracked by 
         pickling it and hashing the pickled object and comparing it to ``hashes``. If pickling is
@@ -53,6 +53,7 @@ def create_collector(
 
         Args:
             val (``object``): the object to be tracked
+            event_name (``str``): the event name provided by ``sys.settrace``
             seen_at (``int``, optional): an overriding step counter value
         """
         try:
@@ -66,7 +67,8 @@ def create_collector(
                 footprint.add_imports(val.__name__.split(".")[0])
                 return
 
-            footprint.add_value(copy(val), seen_at)
+            event = Event.from_event_name(event_name)
+            footprint.add_value(copy(val), seen_at, event)
 
         # if something fails, don't track
         except:
@@ -118,43 +120,43 @@ def create_collector(
 
                         try:
                             val = eval(t, frame.f_globals, frame.f_locals)
-                            track_value(val)
+                            track_value(val, event)
                         except:
                             pass
 
                     else:
                         if t in frame.f_locals:
                             val = frame.f_locals[t]
-                            track_value(val)
+                            track_value(val, event)
                                 
                         elif t in frame.f_globals:
                             val = frame.f_globals[t]
-                            track_value(val)
+                            track_value(val, event)
                 
                 # for tracking the results of an assignment statement
                 m = re.match(r"^\s*(\w+)(\[[^\]]\]|(\.\w+)+)*\s=.*", line)
                 if m:
                     if name not in vars_not_found:
                         vars_not_found[name] = []
-                    vars_not_found[name].append((m.group(1), footprint.counter.get_value()))
+                    vars_not_found[name].append((m.group(1), event, footprint.counter.get_value()))
 
             if event == "return":
-                track_value(arg)
+                track_value(arg, event)
 
         elif (is_ipython_frame(frame) or frame.f_back.f_code.co_filename in addl_filenames) and \
                 event == "return":
-            track_value(arg)
+            track_value(arg, event)
 
         if event == "return" and name in vars_not_found:
             varnames = vars_not_found.pop(name)
-            for t, step in varnames:
+            for t, event_name, step in varnames:
                 if t in frame.f_locals:
                     val = frame.f_locals[t]
-                    track_value(val, step)
+                    track_value(val, event_name, step)
 
                 elif t in frame.f_globals:
                     val = frame.f_globals[t]
-                    track_value(val, step)
+                    track_value(val, event_name, step)
 
         return collect_intermidiate_results
 

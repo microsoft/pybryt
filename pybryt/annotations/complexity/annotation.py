@@ -113,11 +113,11 @@ class TimeComplexity(ComplexityAnnotation):
             self.addl_complexities.insert(0, self.complexity)
 
         complexity_data = {}
-        for v, _ in footprint.values:
-            if not isinstance(v, TimeComplexityResult) or v.name != self.name:
+        for mfp_val in footprint:
+            if not isinstance(mfp_val.value, TimeComplexityResult) or mfp_val.value.name != self.name:
                 continue
 
-            complexity_data[v.n] = v.stop - v.start
+            complexity_data[mfp_val.value.n] = mfp_val.value.stop - mfp_val.value.start
 
         best_res = None
         complexities: List[cplx.complexity] = cplx.complexity_classes + self.addl_complexities

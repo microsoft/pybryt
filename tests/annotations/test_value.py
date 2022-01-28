@@ -18,13 +18,13 @@ def test_value_annotation():
     pybryt.Annotation.reset_tracked_annotations()
 
     seen = {}
-    for val, ts in footprint.values:
-        v = pybryt.Value(val)
+    for mfp_val in footprint:
+        v = pybryt.Value(mfp_val.value)
         res = v.check(footprint)
 
         assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
 
-        h = pybryt.utils.pickle_and_hash(val)
+        h = pybryt.utils.pickle_and_hash(mfp_val.value)
 
         # check attributes of BeforeAnnotation and AnnotationResult
         assert_object_attrs(v, {"children__len": 0})
@@ -33,12 +33,12 @@ def test_value_annotation():
             "satisfied": True,
             "_satisfied": True,
             "annotation": v,
-            "timestamp": seen[h] if h in seen else ts,
-            "value": val,
+            "timestamp": seen[h] if h in seen else mfp_val.timestamp,
+            "value": mfp_val.value,
         })
 
         if h not in seen:
-            seen[h] = ts
+            seen[h] = mfp_val.timestamp
 
     v = pybryt.Value(-1)  # does not occur in footprint
     res = v.check(footprint)
@@ -132,7 +132,7 @@ def test_attribute_annotation():
     """
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
-    val, ts = footprint.get_value(0), footprint.get_timestamp(0)
+    val, ts = footprint.get_value(0).value, footprint.get_value(0).timestamp
 
     v = pybryt.Attribute(val, "T")
     res = v.check(footprint)
@@ -197,7 +197,7 @@ def test_attribute_annotation():
     res = v.check(footprint2)
     assert not res.satisfied
 
-    footprint3 = MemoryFootprint.from_values(*chain.from_iterable(footprint.values + footprint2.values))
+    footprint3 = MemoryFootprint.from_values(*chain(footprint, footprint2))
     res = v.check(footprint3)
     assert res.satisfied
 
