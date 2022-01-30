@@ -7,7 +7,8 @@ from copy import deepcopy
 from itertools import chain
 from unittest import mock
 
-from pybryt.execution.memory_footprint import Counter, MemoryFootprint, MemoryFootprintValue
+from pybryt.execution.memory_footprint import (
+    Counter, MemoryFootprint, MemoryFootprintIterator, MemoryFootprintValue)
 
 
 def generate_values():
@@ -174,3 +175,21 @@ def test_eq():
 
     assert f1 != f2
     assert f1 == f3
+
+
+def test_misc_dunder_methods():
+    """
+    Tests for misc. dunder methods of ``MemoryFootprint``.
+    """
+    vals = generate_values()
+    fp = MemoryFootprint.from_values(*vals)
+
+    assert len(fp) == len(vals)
+
+    fpi = iter(fp)
+    assert isinstance(fpi, MemoryFootprintIterator)
+    for e, a in zip(vals, fp):
+        assert isinstance(a, MemoryFootprintValue)
+        assert e == a
+
+
