@@ -64,11 +64,8 @@ def test_from_values():
     assert footprint.counter.get_value() == len(vals)
 
     # check errors
-    with pytest.raises(ValueError):
-        MemoryFootprint.from_values(1, 1, 1)
-
     with pytest.raises(TypeError):
-        MemoryFootprint.from_values([1], 1, True, 2.0)
+        MemoryFootprint.from_values(MemoryFootprintValue(1, 1, None), 2)
 
 
 def test_combine():

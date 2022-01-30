@@ -29,7 +29,7 @@ class Event(Enum):
             :py:class:`Event`: the enum value corresponding to the event name if present,
                 otherwise ``None``
         """
-        return cls(event_name) if event_name in cls.__members__ else None
+        return cls(event_name) if event_name in {v.value for v in cls.__members__.values()} else None
 
 
 class Counter:
@@ -307,9 +307,10 @@ class MemoryFootprint:
         An object is equal to a memory footprint if it is also a memory footprint and has the same
         values, calls, imports, and executed notebook.
         """
-        return isinstance(other, type(self)) and self.values == other.values \
-            and self.calls == other.calls and self.imports == other.imports \
-            and self.executed_notebook == other.executed_notebook
+        return isinstance(other, type(self)) and self.calls == other.calls \
+            and self.imports == other.imports \
+            and self.executed_notebook == other.executed_notebook \
+            and pickle_and_hash(self.values) == pickle_and_hash(other.values)
 
 
 class MemoryFootprintIterator:

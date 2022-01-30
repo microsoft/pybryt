@@ -72,8 +72,8 @@ def test_messages():
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    val1 = footprint.get_value(0)
-    val2 = footprint.get_value(1)
+    val1 = footprint.get_value(0).value
+    val2 = footprint.get_value(1).value
 
     v1 = pybryt.Value(val1, success_message="m1", failure_message="m2")
     v2 = pybryt.Value(val2)

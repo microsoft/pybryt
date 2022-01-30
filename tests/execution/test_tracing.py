@@ -30,7 +30,7 @@ def test_trace_function():
     assert len(footprint) == 1
     assert np.allclose(footprint.get_value(0).value, arr)
     assert footprint.get_value(0).timestamp == 1
-    assert footprint.get_value(1).event == Event.RETURN
+    assert footprint.get_value(0).event == Event.RETURN
 
     # test value in skip_types
     cir(frame, "return", type(1))

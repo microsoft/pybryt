@@ -6,6 +6,8 @@ from collections.abc import Sized
 from itertools import chain
 from typing import List, Optional, Union
 
+from pybryt.execution.memory_footprint import MemoryFootprintValue
+
 from .annotations import complexities as cplx, TimeComplexity
 from .execution import (
     check_time_complexity, 
@@ -72,7 +74,7 @@ class TimeComplexityChecker:
         """
         annot = TimeComplexity(cplx.constant, name=self.name)
         footprint = MemoryFootprint.from_values(
-            *chain.from_iterable([(tcr, i) for i, tcr in enumerate(self.results)]))
+            *[MemoryFootprintValue(tcr, i, None) for i, tcr in enumerate(self.results)])
         result = annot.check(footprint)
         return result.value
 

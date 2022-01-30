@@ -6,7 +6,7 @@ from itertools import chain
 from unittest import mock
 
 import pybryt
-from pybryt.execution.memory_footprint import MemoryFootprint
+from pybryt.execution.memory_footprint import MemoryFootprint, MemoryFootprintValue
 
 from .utils import assert_object_attrs, generate_memory_footprint
 
@@ -78,7 +78,7 @@ def test_value_annotation():
             v = pybryt.Value(-1)
 
     # test with invariants
-    s = footprint.get_value(-1)
+    s = footprint.get_value(-1).value
     v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
     res = v.check(footprint)
     assert res.satisfied
@@ -88,7 +88,7 @@ def test_value_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = True
         assert v.check_against(s.lower())
-        mocked_check.assert_called_with(MemoryFootprint.from_values(s.lower(), 0))
+        mocked_check.assert_called_with(MemoryFootprint.from_values(MemoryFootprintValue(s.lower(), 0, None)))
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
@@ -183,13 +183,13 @@ def test_attribute_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = False
         assert not v.check_against(val)
-        mocked_check.assert_called_with(MemoryFootprint.from_values(val, 0))
+        mocked_check.assert_called_with(MemoryFootprint.from_values(MemoryFootprintValue(val, 0, None)))
 
     # check enforce type
     class Foo:
         T = val.T
 
-    footprint2 = pybryt.MemoryFootprint.from_values(Foo(), 1)
+    footprint2 = pybryt.MemoryFootprint.from_values(MemoryFootprintValue(Foo(), 1, None))
     res = v.check(footprint2)
     assert res.satisfied
 

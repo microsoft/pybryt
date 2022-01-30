@@ -203,7 +203,7 @@ class Value(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
+        return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
 
     def _check_observed_value(self, observed_value: Any) -> bool:
         """
@@ -403,17 +403,19 @@ class _AttrValue(Value):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        mfp_vals = []
+        orig_mfp_vals, attr_mfp_vals = [], []
         for mfp_val in footprint:
             if not self.enforce_type or isinstance(mfp_val.value, type(self._object)):
                 mfp_lst = mfp_val.to_list()
-                mfp_lst[0] = getattr(mfp_val.value, self._attr)
-                mfp_vals.append(MemoryFootprintValue(*mfp_lst))
+                if hasattr(mfp_val.value, self._attr):
+                    mfp_lst[0] = getattr(mfp_val.value, self._attr)
+                    attr_mfp_vals.append(MemoryFootprintValue(*mfp_lst))
+                    orig_mfp_vals.append(mfp_val)
 
-        attrs_fp = MemoryFootprint.from_values(*mfp_vals)
+        attrs_fp = MemoryFootprint.from_values(*attr_mfp_vals)
         satisfying_index = self._get_satisfying_index(attrs_fp)
         child_res = self._generate_annotation_result(attrs_fp, satisfying_index)
-        satisfier = None if satisfying_index is None else attrs_fp.get_value(satisfying_index).value
+        satisfier = None if satisfying_index is None else orig_mfp_vals[satisfying_index].value
         return AnnotationResult(None, self, value=satisfier, children=[child_res])
 
 
@@ -533,4 +535,4 @@ class Attribute(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
+        return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
