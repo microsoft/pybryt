@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file, and this pr
 ## Unreleased
 
 * Added complexity unions for combining complexity classes per [#155](https://github.com/microsoft/pybryt/issues/155)
+* Added a return value annotation per [#144](https://github.com/microsoft/pybryt/issues/144)
 
 ## 0.4.0 - 2022-01-12
 
