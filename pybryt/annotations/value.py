@@ -1,6 +1,6 @@
 """Annotations for asserting the presence of a value"""
 
-__all__ = ["Value", "Attribute"]
+__all__ = ["Value", "Attribute", "ReturnValue"]
 
 import dill
 import numbers
@@ -16,7 +16,7 @@ from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
 
 from ..debug import _debug_mode_enabled
-from ..execution import MemoryFootprint, MemoryFootprintValue
+from ..execution import Event, MemoryFootprint, MemoryFootprintValue
 
 
 class Value(Annotation):
@@ -26,7 +26,7 @@ class Value(Annotation):
     Indicates that a value passed to the constructor should be observed while tracing through the
     students' code. Values can be of any type that is pickleable by ``dill``. Values can specify a
     list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
-    values that support arithemtic operators, absolute tolerances can be specified as well.
+    values that support arithmetic operators, absolute tolerances can be specified as well.
 
     Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
     enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \\cdot |v|)`, where 
@@ -536,3 +536,35 @@ class Attribute(Annotation):
             ``bool``: whether this annotation is satisfied by the provided value
         """
         return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
+
+
+class ReturnValue(Value):
+    """
+    Annotation class for asserting that a value should be returned by a student-written function.
+
+    Indicates that a value passed to the constructor should be returned by a call to a student's
+    function. Values can be of any type that is pickleable by ``dill``. Values can specify a
+    list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
+    values that support arithmetic operators, absolute tolerances can be specified as well.
+
+    Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
+    enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \\cdot |v|)`, where 
+    :math:`v` is the value of the annotation.
+
+    Args:
+        value (``object``): the value that should be observed
+        atol (``float`` or ``int``, optional): absolute tolerance for numeric values
+        rtol (``float`` or ``int``, optional): relative tolerance for numeric values
+        invariants (``list[invariant]``): invariants for 
+            this value
+        equivalence_fn (``callable[[object, object], bool]``): an optional function to check for
+            equivalence between two values, overriding the default provided by ``Value``
+        **kwargs: additional keyword arguments passed to the 
+            :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
+    """
+
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
+        satisfier = self._get_satisfying_index(footprint)
+        if satisfier is not None and footprint.get_value(satisfier).event != Event.RETURN:
+            satisfier = None
+        return self._generate_annotation_result(satisfier)
