@@ -13,7 +13,7 @@ from typing import Any, List, Tuple, Optional
 from textwrap import dedent
 
 from .complexity import check_time_complexity, is_complexity_tracing_enabled, TimeComplexityResult
-from .memory_footprint import MemoryFootprint, MemoryFootprintValue
+from .memory_footprint import Event, MemoryFootprint, MemoryFootprintValue
 from .tracing import (
     create_collector,
     FrameTracer,

@@ -563,8 +563,10 @@ class ReturnValue(Value):
             :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
 
+    VALID_EVENTS = {Event.RETURN, Event.LINE_AND_RETURN}
+
     def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         satisfier = self._get_satisfying_index(footprint)
-        if satisfier is not None and footprint.get_value(satisfier).event != Event.RETURN:
+        if satisfier is not None and footprint.get_value(satisfier).event not in type(self).VALID_EVENTS:
             satisfier = None
-        return self._generate_annotation_result(satisfier)
+        return self._generate_annotation_result(footprint, satisfier)

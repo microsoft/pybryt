@@ -4,7 +4,7 @@ import nbformat
 
 from dataclasses import astuple, dataclass
 from enum import Enum
-from typing import Any, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 from ..utils import filter_pickleable_list, pickle_and_hash
 
@@ -15,7 +15,13 @@ class Event(Enum):
     """
 
     LINE = "line"
+    """indicates that a value was seen in a "line" event"""
+
     RETURN = "return"
+    """indicates that a value was seen in a "return" event"""
+
+    LINE_AND_RETURN = "line_and_return"
+    """indicates that a value was seen in both a "line" and "return" event"""
 
     @classmethod
     def from_event_name(cls, event_name: str) -> Optional["Event"]:
@@ -105,8 +111,8 @@ class MemoryFootprint:
     counter: Counter
     """the counter used to construct this footprint"""
 
-    _hashes: Set[str]
-    """set of hashed values present in the memory footprint"""
+    _value_indices_by_hash: Dict[str, int]
+    """indices of values keyed on their hashes"""
 
     values: List[Tuple[Any, int, Optional[Event]]]
     """the values, timestamps, and event types in the footprint"""
@@ -122,7 +128,7 @@ class MemoryFootprint:
 
     def __init__(self, counter: Optional[Counter] = None):
         self.counter = counter if counter is not None else Counter()
-        self._hashes = set()
+        self._value_indices_by_hash = {}
         self.values = []
         self.calls = []
         self.imports = set()
@@ -225,10 +231,21 @@ class MemoryFootprint:
         """
         if not allow_duplicates:
             h = pickle_and_hash(val)
-            if h in self._hashes:
+            if h in self._value_indices_by_hash:
+                tup = self.values[self._value_indices_by_hash[h]]
+                tup_event = tup[2]
+
+                # update the event type if necessary
+                if tup_event is None and event is not None:
+                    tup_event = event
+                elif tup_event is not None and event is not None and tup_event != event:
+                    tup_event = Event.LINE_AND_RETURN
+                
+                self.values[self._value_indices_by_hash[h]] = (tup[0], tup[1], tup_event)
+
                 return
 
-            self._hashes.add(h)
+            self._value_indices_by_hash[h] = len(self.values)
 
         if timestamp is None:
             timestamp = self.counter.get_value()

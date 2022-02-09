@@ -8,7 +8,7 @@ from itertools import chain
 from unittest import mock
 
 from pybryt.execution.memory_footprint import (
-    Counter, MemoryFootprint, MemoryFootprintIterator, MemoryFootprintValue)
+    Counter, Event, MemoryFootprint, MemoryFootprintIterator, MemoryFootprintValue)
 
 
 def generate_values():
@@ -111,11 +111,25 @@ def test_values():
     assert len(footprint) == 2
     assert footprint.get_value(1).value == 2
     assert footprint.get_value(1).timestamp == 1
+    assert footprint.get_value(1).event is None
 
     footprint.add_value(3, 10)
     assert len(footprint) == 3
     assert footprint.get_value(2).value == 3
     assert footprint.get_value(2).timestamp == 10
+
+    footprint.increment_counter()
+    footprint.add_value(2, event=Event.LINE)
+    assert len(footprint) == 3
+    assert footprint.get_value(1).event == Event.LINE
+
+    footprint.add_value(2)
+    assert len(footprint) == 3
+    assert footprint.get_value(1).event == Event.LINE
+
+    footprint.add_value(2, event=Event.RETURN)
+    assert len(footprint) == 3
+    assert footprint.get_value(1).event == Event.LINE_AND_RETURN
 
 
 def test_calls():

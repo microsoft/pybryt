@@ -6,7 +6,7 @@ from itertools import chain
 from unittest import mock
 
 import pybryt
-from pybryt.execution.memory_footprint import MemoryFootprint, MemoryFootprintValue
+from pybryt.execution.memory_footprint import Event, MemoryFootprint, MemoryFootprintValue
 
 from .utils import assert_object_attrs, generate_memory_footprint
 
@@ -210,3 +210,54 @@ def test_attribute_annotation():
 
     with pytest.raises(AttributeError):
         pybryt.Attribute(val, "foo")
+
+
+def test_return_value():
+    """
+    Tests for the ``ReturnValue`` annotation.
+    """
+    rv = pybryt.ReturnValue(1)
+    footprint = MemoryFootprint.from_values(
+        MemoryFootprintValue(1, 0, Event.RETURN),
+        MemoryFootprintValue(2, 1, Event.LINE_AND_RETURN),
+    )
+
+    res = rv.check(footprint)
+    assert_object_attrs(res, {
+        "children": [],
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": rv,
+        "timestamp": 0,
+        "value": 1,
+    })
+
+    footprint = MemoryFootprint.from_values(
+        MemoryFootprintValue(1, 0, Event.LINE_AND_RETURN),
+        MemoryFootprintValue(2, 1, Event.RETURN),
+    )
+
+    res = rv.check(footprint)
+    assert_object_attrs(res, {
+        "children": [],
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": rv,
+        "timestamp": 0,
+        "value": 1,
+    })
+
+    footprint = MemoryFootprint.from_values(
+        MemoryFootprintValue(1, 0, Event.LINE),
+        MemoryFootprintValue(2, 1, Event.RETURN),
+    )
+
+    res = rv.check(footprint)
+    assert_object_attrs(res, {
+        "children": [],
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": rv,
+        "timestamp": -1,
+        "value": None,
+    })
