@@ -37,6 +37,6 @@ def test_notebook_execution():
             mocked_tempfile.return_value = (None, observed_ntf.name)
 
             footprint = pybryt.execution.execute_notebook(nb, "")
-            assert len(footprint.values) > 0
+            assert len(footprint) > 0
             assert all(i in footprint.imports for i in ["pandas", "numpy", "matplotlib"])
             assert len(footprint.calls) > 0

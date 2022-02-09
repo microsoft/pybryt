@@ -23,10 +23,10 @@ def test_time_complexity():
         with pybryt.check_time_complexity("foo", n):
             do_work(n, lambda v: v)
 
-    assert len(footprint.values) == 8
-    assert all(isinstance(t[0], pybryt.TimeComplexityResult) for t in footprint.values)
+    assert len(footprint) == 8
+    assert all(isinstance(mfp_val.value, pybryt.TimeComplexityResult) for mfp_val in footprint)
 
-    footprint.values.clear()
+    footprint.clear()
 
     for e in range(1, 9):
         n = float(10 ** e)
@@ -37,9 +37,9 @@ def test_time_complexity():
         with pybryt.check_time_complexity("bar", n):
             do_work(n, len)
 
-    assert len(footprint.values) == 16
-    assert all(isinstance(t[0], pybryt.TimeComplexityResult) for t in footprint.values)
-    assert [t[0].name for t in footprint.values] == ["foo", "bar"] * 8
+    assert len(footprint) == 16
+    assert all(isinstance(mfp_val.value, pybryt.TimeComplexityResult) for mfp_val in footprint)
+    assert [mfp_val.value.name for mfp_val in footprint] == ["foo", "bar"] * 8
 
     # test error
     n = lambda v: v
@@ -51,4 +51,4 @@ def test_time_complexity():
     frame = generate_mocked_frame("<ipython-abc-123>", "bar", 1)
     with pybryt.check_time_complexity("foo", 10):
         cir(frame, "return", 10)
-        assert len(footprint.values) == 16
+        assert len(footprint) == 16

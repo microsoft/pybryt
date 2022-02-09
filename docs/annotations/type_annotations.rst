@@ -23,4 +23,4 @@ arrays:
     pybryt.ForbidType(np.ndarray, failure_message="Arrays are not allowed!")
 
 Checking for values is performed using Python's built-in ``isinstance`` function. Types passed to 
-the constructor must be picklable with the ``dill`` library.
+the constructor must be pickleable with the ``dill`` library.

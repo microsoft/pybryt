@@ -61,6 +61,24 @@ To ensure that the annotation is only satisfied when the object is of the same t
         failure_message="Your model doesn't have the correct coefficients.")
 
 
+Return Value Annotations
+------------------------
+
+In addition to checking for the presence of a value, PyBryt also has an annotation that asserts that
+a value was returned by a student's function. The annotation does not specify anything about the
+function that returns it except that the function is part of the submission code (i.e. not part of
+an imported library); it merely checks that the value was seen at least once in a return event
+passed to the trace function.
+
+You can create a return value annotation with the
+:py:class:`ReturnValue<pybryt.annotations.value.ReturnValue>` constructor; it accepts all the same
+arguments as the :py:class:`Value<pybryt.annotations.value.Value>` constructor:
+
+.. code-block:: python
+
+    pybryt.ReturnValue(df, success_message="...", failure_message="...")
+
+
 Numerical Tolerances
 ---------------------
 

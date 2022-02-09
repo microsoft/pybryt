@@ -4,7 +4,7 @@ from unittest import mock
 
 from pybryt import complexities as cplx
 from pybryt.complexity import ANNOTATION_NAME, _check_time_complexity_wrapper, TimeComplexityChecker
-from pybryt.execution import TimeComplexityResult
+from pybryt.execution import MemoryFootprintValue, TimeComplexityResult
 
 
 def test_time_complexity_checker():
@@ -40,8 +40,8 @@ def test_wrapper():
             mock.patch("pybryt.complexity.FrameTracer") as mocked_tracer, \
             mock.patch("pybryt.complexity.inspect") as mocked_inspect, \
             mock.patch("pybryt.complexity.check_time_complexity") as mocked_cm:
-        mocked_tracer.return_value.get_footprint.return_value.values = \
-            [(res, 0)]
+        mocked_tracer.return_value.get_footprint.return_value.__iter__ = \
+            mock.Mock(return_value=iter([MemoryFootprintValue(res, 0, None)]))
         wrapper = _check_time_complexity_wrapper(checker, n)
         with wrapper:
             mocked_tracer.assert_called_once_with(mocked_inspect.currentframe.return_value.f_back)

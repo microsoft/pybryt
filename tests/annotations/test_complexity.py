@@ -8,6 +8,8 @@ import pytest
 import pybryt
 import pybryt.complexities as cplx
 
+from pybryt.execution import MemoryFootprintValue
+
 from .utils import assert_object_attrs
 
 
@@ -16,7 +18,7 @@ def generate_complexity_footprint(name, t_transform, max_exp=8):
     for i, e in enumerate(range(1, max_exp + 1)):
         n = 10 ** e
         t = t_transform(n)
-        values += [pybryt.TimeComplexityResult(name, n, 0, t), i]
+        values.append(MemoryFootprintValue(pybryt.TimeComplexityResult(name, n, 0, t), i, None))
     return pybryt.MemoryFootprint.from_values(*values)
 
 
