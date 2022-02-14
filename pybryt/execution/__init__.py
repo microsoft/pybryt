@@ -9,7 +9,7 @@ import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 from copy import deepcopy
 from tempfile import mkstemp
-from typing import Any, List, Tuple, Optional
+from typing import List, Optional
 from textwrap import dedent
 
 from .complexity import check_time_complexity, is_complexity_tracing_enabled, TimeComplexityResult
@@ -21,7 +21,6 @@ from .tracing import (
     no_tracing,
     tracing_off, 
     tracing_on,
-    TRACING_VARNAME,
 )
 
 from ..preprocessors import NotebookPreprocessor
@@ -61,34 +60,34 @@ def execute_notebook(
     preprocessor = NotebookPreprocessor()
     nb = preprocessor.preprocess(nb)
 
-    secret = make_secret()
-    footprint_varname = f"footprint_{secret}"
     _, footprint_fp = mkstemp()
     nb_dir = os.path.abspath(os.path.split(nb_path)[0])
 
+    secret = make_secret()
+    frame_tracer_varname = f"frame_tracer_{secret}"
+
     first_cell = nbformat.v4.new_code_cell(dedent(f"""\
+        import inspect
         import sys
-        from pybryt.execution import create_collector, tracing_on
-        {footprint_varname}, cir = create_collector(addl_filenames={addl_filenames})
-        {TRACING_VARNAME} = True
-        tracing_on(tracing_func=cir)
+        from pybryt.execution import FrameTracer
+        {frame_tracer_varname} = FrameTracer(inspect.currentframe())
+        {frame_tracer_varname}.start_trace(addl_filenames={addl_filenames})
         %cd {nb_dir}
     """))
 
     last_cell = nbformat.v4.new_code_cell(dedent(f"""\
-        from pybryt.execution import tracing_off
-        tracing_off()
-        {footprint_varname}.filter_out_unpickleable_values()
+        {frame_tracer_varname}.end_trace()
+        footprint = {frame_tracer_varname}.get_footprint()
+        footprint.filter_out_unpickleable_values()
         import dill
         with open("{footprint_fp}", "wb+") as f:
-            dill.dump({footprint_varname}, f)
+            dill.dump(footprint, f)
     """))
 
     nb['cells'].insert(0, first_cell)
     nb['cells'].append(last_cell)
 
     ep = ExecutePreprocessor(timeout=timeout, allow_errors=True)
-
     ep.preprocess(nb)
 
     with open(footprint_fp, "rb") as f:
