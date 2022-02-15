@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Annotations" href="annotations/index.html" /><link rel="prev" title="Installation" href="installation.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Command-Line Interface" href="cli_reference.html" /><link rel="prev" title="Complexity Analysis" href="complexity.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
-        <title>Getting Started - PyBryt documentation</title>
+        <title>PyBryt GitHub Action - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
@@ -130,7 +130,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -152,7 +152,7 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
@@ -169,7 +169,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="complexity.html">Complexity Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github_action.html">PyBryt GitHub Action</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">PyBryt GitHub Action</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -193,128 +193,109 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
-<section id="installing-pybryt">
-<h2>Installing PyBryt<a class="headerlink" href="#installing-pybryt" title="Permalink to this headline">#</a></h2>
-<p>We can install PyBryt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.</p>
-<section id="installing-within-a-jupyter-notebook">
-<h3>Installing within a Jupyter Notebook<a class="headerlink" href="#installing-within-a-jupyter-notebook" title="Permalink to this headline">#</a></h3>
-<p>We can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
+          <section id="pybryt-github-action">
+<h1>PyBryt GitHub Action<a class="headerlink" href="#pybryt-github-action" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://docs.github.com/en/actions">GitHub Actions</a> allow you to automate workflows for repositories for tasks like CI/CD. With GitHub
+Actions, or indeed any CI/CD service, you can automate PyBryt to run on repositories of student
+code.</p>
+<p>PyBryt has a pre-made action that can be used in GitHub Actions workflows called
+<a class="reference external" href="https://github.com/microsoft/pybryt-action"><code class="docutils literal notranslate"><span class="pre">microsoft/pybryt-action</span></code></a>. With this action, you can set up PyBryt to run automatically on
+students’ submissions whenever they push to their repositories.</p>
+<p>Let’s consider an example assignment with student repositories structured like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── refs
+│   ├── ref-1.pkl
+│   └── ref-2.pkl
+└── submission.ipynb
 </pre></div>
 </div>
-<p>or, similarly, for a conda environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">conda</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
+<p>To automate PyBryt for the submission <code class="docutils literal notranslate"><span class="pre">submission.ipynb</span></code>, you would add a new GitHub Actions
+workflow file in <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── .github
+│   └── workflows
+│       └── run-pybryt.yml
+├── refs
+│   ├── ref-1.pkl
+│   └── ref-2.pkl
+└── submission.ipynb
 </pre></div>
 </div>
-</section>
-<section id="installing-on-windows-powershell">
-<h3>Installing on Windows PowerShell<a class="headerlink" href="#installing-on-windows-powershell" title="Permalink to this headline">#</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">py -3 -m venv .venv</span>
-<span class="go">.\.venv\scripts\activate.ps1</span>
-<span class="go">pip install -U pip</span>
-<span class="go">pip install pybryt</span>
-</pre></div>
-</div>
-</section>
-<section id="installing-on-macos-or-linux-command-line">
-<h3>Installing on macOS or Linux command-line<a class="headerlink" href="#installing-on-macos-or-linux-command-line" title="Permalink to this headline">#</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3 -m venv .venv</span>
-<span class="go">source .venv/bin/activate</span>
-<span class="go">pip install -U pip</span>
-<span class="go">pip install pybryt</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="annotating-a-working-example">
-<h2>Annotating a working example<a class="headerlink" href="#annotating-a-working-example" title="Permalink to this headline">#</a></h2>
-<p>PyBryt works by observing working reference implementations and looking for
-annotated types and variables in other implementations. The first step after
-installing PyBryt would be to create a working example to serve as a reference
-implementation.</p>
-<p>Let us say we want students to complete a simple task of counting the number of
-words in a string. We send them the signature of the function and ask them to
-complete it inside a Jupyter notebook:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="k">pass</span>
-</pre></div>
-</div>
-<p>We could write this function by splitting the string using the builtin
-<code class="docutils literal notranslate"><span class="pre">str.split()</span></code> method, which will automatically remove empty strings, and then
-count the number of items in the resulting list:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<p>Inside this file, define the following action configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run PyBryt</span><span class="w"></span>
 
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
-</pre></div>
-</div>
-<p>To annotate this example and train PyBryt what values (variables) to look for in
-other implementations, we use the <code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> class from the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a>.
-<code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> takes any Python value as an input for its constructor.</p>
-<p>The two key variables we want to observe in our example are:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">list</span></code> of words created by splitting the text (<code class="docutils literal notranslate"><span class="pre">fragments</span></code>)</p></li>
-<li><p>The count of words as a Python <code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">length</span></code>)</p></li>
-</ul>
-<p>Now, let us update the reference implementation and create a <code class="docutils literal notranslate"><span class="pre">pybryt.Value()</span></code>
-instance for both of these variables:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
+<span class="nt">on</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span><span class="w"></span>
 
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
+<span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w"></span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run PyBryt</span><span class="w"></span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">microsoft/pybryt-action@v0.1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">submission-path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">submission.ipynb</span><span class="w"></span>
+<span class="w">          </span><span class="nt">references</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">            </span><span class="no">refs/ref-1.pkl</span><span class="w"></span>
+<span class="w">            </span><span class="no">refs/ref-2.pkl</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Next, we check our implementation with some text samples that we will also use to test the student implementations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Waltz, bad nymph, for quick jigs vex."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"The five boxing wizards-- </span><span class="se">\n</span><span class="s2">jump quickly!"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Sphinx of black quartz,          judge my vow."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
+<p>This configuration tells the PyBryt action that it should execute the student implementation
+<code class="docutils literal notranslate"><span class="pre">submission.ipynb</span></code> against the references listed in the <code class="docutils literal notranslate"><span class="pre">references</span></code> key. (Elements of the
+<code class="docutils literal notranslate"><span class="pre">references</span></code> key can be either paths to files or URLs.) It is set up to run whenever a commit is
+pushed to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch or when triggered manually by the user.</p>
+<p>When this action runs, PyBryt will execute the submission specified to generate a student
+implementation and then it will run that implementation against the provided references. It will
+then print a report to the console containing the details of the passing and failing of the
+implementation for each reference as well as any messages generated by the reference.</p>
+<p>In some cases, you may want a record of the objects PyBryt generates, like the report and student
+implementation and results objects. The PyBryt action stores these artifacts in files that can be
+found by looking at the outputs of the step that runs PyBryt.</p>
+<p>For example, to save all of these artifacts as files in a <code class="docutils literal notranslate"><span class="pre">results</span></code> directory, you could use a
+configuration like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run PyBryt</span><span class="w"></span>
+
+<span class="nt">on</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span><span class="w"></span>
+
+<span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w"></span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run PyBryt</span><span class="w"></span>
+<span class="w">        </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pybryt</span><span class="w"></span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">microsoft/pybryt-action@v0.1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">submission-path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">submission.ipynb</span><span class="w"></span>
+<span class="w">          </span><span class="nt">references</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">            </span><span class="no">refs/ref-1.pkl</span><span class="w"></span>
+<span class="w">            </span><span class="no">refs/ref-2.pkl</span><span class="w"></span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Save, commit, and push results</span><span class="w"></span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">mkdir -p results</span><span class="w"></span>
+<span class="w">          </span><span class="no">cp ${{ steps.pybryt.outputs.report-path }} results/report.txt</span><span class="w"></span>
+<span class="w">          </span><span class="no">cp ${{ steps.pybryt.outputs.results-path }} results/results.pkl</span><span class="w"></span>
+<span class="w">          </span><span class="no">cp ${{ steps.pybryt.outputs.student-implementation-path }} results/student-implementation.pkl</span><span class="w"></span>
+<span class="w">          </span><span class="no">git add results</span><span class="w"></span>
+<span class="w">          </span><span class="no">git commit -m "PyBryt results for ${{ github.sha }}"</span><span class="w"></span>
+<span class="w">          </span><span class="no">git push</span><span class="w"></span>
 </pre></div>
 </div>
-</section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
-<p>PyBryt can do much more beyond this simple example, such as automating the
-assessment of student implementations and detecting plagiarism. To learn more
-about pybryt, check out the following</p>
-<ul class="simple">
-<li><p>The example projects in the <a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/demo/">demos folder</a></p></li>
-<li><p>Read the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a> for details on the annotation types</p></li>
-</ul>
-</section>
+<p>The second step of the action above copies the files from the paths listed in the outputs from the
+PyBryt action into files in the <code class="docutils literal notranslate"><span class="pre">results</span></code> directory before committing and pushing them. The two
+<code class="docutils literal notranslate"><span class="pre">.pkl</span></code> files can be unpickled with the <code class="docutils literal notranslate"><span class="pre">dill</span></code> library for further use.</p>
+<p>For more information about the PyBryt action and how to use it, see its <a class="reference external" href="https://github.com/microsoft/pybryt-action">documentation</a>.</p>
 </section>
 
         </article>
@@ -322,23 +303,23 @@ about pybryt, check out the following</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="annotations/index.html">
+          <a class="next-page" href="cli_reference.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Annotations</div>
+                <div class="title">Command-Line Interface</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="installation.html">
+          <a class="prev-page" href="complexity.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Installation</div>
+                <div class="title">Complexity Analysis</div>
                 
               </div>
             </a>
@@ -362,34 +343,8 @@ about pybryt, check out the following</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            Contents
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#installing-pybryt">Installing PyBryt</a><ul>
-<li><a class="reference internal" href="#installing-within-a-jupyter-notebook">Installing within a Jupyter Notebook</a></li>
-<li><a class="reference internal" href="#installing-on-windows-powershell">Installing on Windows PowerShell</a></li>
-<li><a class="reference internal" href="#installing-on-macos-or-linux-command-line">Installing on macOS or Linux command-line</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#annotating-a-working-example">Annotating a working example</a></li>
-<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

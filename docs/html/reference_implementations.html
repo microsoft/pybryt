@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.01.02"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
         <title>Reference Implementations - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
     
 
@@ -41,17 +41,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z" />
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -60,14 +56,14 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -82,7 +78,7 @@
   </symbol>
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
@@ -90,7 +86,7 @@
   </symbol>
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
@@ -173,6 +169,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="student_implementations.html">Student Implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="complexity.html">Complexity Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github_action.html">PyBryt GitHub Action</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -180,6 +177,7 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
@@ -187,8 +185,7 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -203,13 +200,13 @@
         </div>
         <article role="main">
           <section id="reference-implementations">
-<h1>Reference Implementations<a class="headerlink" href="#reference-implementations" title="Permalink to this headline">¶</a></h1>
+<h1>Reference Implementations<a class="headerlink" href="#reference-implementations" title="Permalink to this headline">#</a></h1>
 <p>The functional unit of PyBryt is a reference implementation. A <strong>reference implenetation</strong> is a set
 of conditions expected of students’ code that determine whether a student has correctly implemented
 some program. They are constructed by creating a series of <a class="reference internal" href="annotations/index.html#annotations"><span class="std std-ref">annotations</span></a> that are
 tracked in a <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> object.</p>
 <section id="creating-reference-implementations">
-<h2>Creating Reference Implementations<a class="headerlink" href="#creating-reference-implementations" title="Permalink to this headline">¶</a></h2>
+<h2>Creating Reference Implementations<a class="headerlink" href="#creating-reference-implementations" title="Permalink to this headline">#</a></h2>
 <p>Reference implemenations can be created by compiling Jupyter Notebooks that have been marked-up
 with annotations. To compile a reference implementation, use
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.compile</span></code>, which takes in
@@ -228,7 +225,7 @@ implementation if only one is found). If it doesn’t find any reference impleme
 of the annotations <a class="reference internal" href="reference_implementations/index.html#tracked-annotations"><span class="std std-ref">tracked by</span></a> PyBryt and turns those into a single
 reference implementation.</p>
 <section id="automatic-reference-creation">
-<h3>Automatic Reference Creation<a class="headerlink" href="#automatic-reference-creation" title="Permalink to this headline">¶</a></h3>
+<h3>Automatic Reference Creation<a class="headerlink" href="#automatic-reference-creation" title="Permalink to this headline">#</a></h3>
 <p>To create a single reference implementation from a notebook, create
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> instances (assigning them to variables is not necessary).
 After annotating the notebook, when PyBryt compiles the notebook, it will find all of the
@@ -262,7 +259,7 @@ are to be made later down the line.</p>
 </div>
 </section>
 <section id="manual-reference-creation">
-<h3>Manual Reference Creation<a class="headerlink" href="#manual-reference-creation" title="Permalink to this headline">¶</a></h3>
+<h3>Manual Reference Creation<a class="headerlink" href="#manual-reference-creation" title="Permalink to this headline">#</a></h3>
 <p>To create multiple reference implementations from a single notebook, begin by creating
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> instances and grouping them into lists. These lists will
 be passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> constructor
@@ -330,7 +327,7 @@ sequence generator:</p>
 </section>
 </section>
 <section id="interacting-with-reference-implementations">
-<h2>Interacting with Reference Implementations<a class="headerlink" href="#interacting-with-reference-implementations" title="Permalink to this headline">¶</a></h2>
+<h2>Interacting with Reference Implementations<a class="headerlink" href="#interacting-with-reference-implementations" title="Permalink to this headline">#</a></h2>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> class defines an API for
 working with reference implementations. The core method for reconciling a student implementation,
 encoded as a list of 2-tuples, is
@@ -339,7 +336,7 @@ abstracted away by the <code class="xref py py-meth docutils literal notranslate
 method, which calls it for that student implementation.</p>
 </section>
 <section id="storing-reference-implementations">
-<span id="storing-refs"></span><h2>Storing Reference Implementations<a class="headerlink" href="#storing-reference-implementations" title="Permalink to this headline">¶</a></h2>
+<span id="storing-refs"></span><h2>Storing Reference Implementations<a class="headerlink" href="#storing-reference-implementations" title="Permalink to this headline">#</a></h2>
 <p>Reference implementation objects can be saved to a file by calling
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.dump</span></code>, which takes in the
 path to the file and uses the <code class="docutils literal notranslate"><span class="pre">dill</span></code> library to serialize the object. To load a reference
@@ -361,15 +358,21 @@ implementation, or a list of reference implementations, from a file, use the sta
           
           
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2021, Microsoft |
-          Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-          <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            | <a class="muted-link" href="_sources/reference_implementations.rst.txt"
-               rel="nofollow">
-              Show Source
-            </a>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021, Microsoft
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
         </div>
         
       </footer>

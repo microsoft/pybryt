@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Relational Annotations" href="relational_annotations.html" /><link rel="prev" title="Annotations" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.01.02"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
         <title>Value Annotations - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=fade93df149f7c5fedb3ff897f799dc7d283b420" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
     
 
@@ -41,17 +41,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z" />
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -60,14 +56,14 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -82,7 +78,7 @@
   </symbol>
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
@@ -90,7 +86,7 @@
   </symbol>
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
@@ -173,6 +169,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../student_implementations.html">Student Implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../complexity.html">Complexity Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github_action.html">PyBryt GitHub Action</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli_reference.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md">Changelog</a></li>
@@ -180,6 +177,7 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
@@ -187,8 +185,7 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -203,7 +200,7 @@
         </div>
         <article role="main">
           <section id="value-annotations">
-<span id="value"></span><h1>Value Annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">¶</a></h1>
+<span id="value"></span><h1>Value Annotations<a class="headerlink" href="#value-annotations" title="Permalink to this headline">#</a></h1>
 <p>Value annotations are the most basic type of annotation. They expect a specific
 value to appear while executing the student’s code. To create a value
 annotation, create an instance of <a class="reference internal" href="../api_reference.html#pybryt.annotations.value.Value" title="pybryt.annotations.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> and pass to
@@ -216,7 +213,7 @@ its constructor the value expected in the student’s code:</p>
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">copy.copy()</span></code> is called on the argument passed to it, so values cannot be
 affected by mutability.</p>
 <section id="attribute-annotations">
-<h2>Attribute Annotations<a class="headerlink" href="#attribute-annotations" title="Permalink to this headline">¶</a></h2>
+<h2>Attribute Annotations<a class="headerlink" href="#attribute-annotations" title="Permalink to this headline">#</a></h2>
 <p>PyBryt supports checking for the presence of an object with a specific attribute value using the
 <a class="reference internal" href="../api_reference.html#pybryt.annotations.value.Attribute" title="pybryt.annotations.value.Attribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code></a> annotation. This annotation takes in an
 object and one or more strings representing an instance variable, and asserts that the student’s
@@ -250,8 +247,22 @@ in the above example, the following student code would satisfy that annotation:<
 </pre></div>
 </div>
 </section>
+<section id="return-value-annotations">
+<h2>Return Value Annotations<a class="headerlink" href="#return-value-annotations" title="Permalink to this headline">#</a></h2>
+<p>In addition to checking for the presence of a value, PyBryt also has an annotation that asserts that
+a value was returned by a student’s function. The annotation does not specify anything about the
+function that returns it except that the function is part of the submission code (i.e. not part of
+an imported library); it merely checks that the value was seen at least once in a return event
+passed to the trace function.</p>
+<p>You can create a return value annotation with the
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.value.ReturnValue" title="pybryt.annotations.value.ReturnValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReturnValue</span></code></a> constructor; it accepts all the same
+arguments as the <a class="reference internal" href="../api_reference.html#pybryt.annotations.value.Value" title="pybryt.annotations.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> constructor:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">ReturnValue</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">success_message</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">failure_message</span><span class="o">=</span><span class="s2">"..."</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="numerical-tolerances">
-<h2>Numerical Tolerances<a class="headerlink" href="#numerical-tolerances" title="Permalink to this headline">¶</a></h2>
+<h2>Numerical Tolerances<a class="headerlink" href="#numerical-tolerances" title="Permalink to this headline">#</a></h2>
 <p>For numerical values, or iterables of numerical values that support vectorized
 math, it is also possible to define an absolute tolerance (<code class="docutils literal notranslate"><span class="pre">atol</span></code>) and/or a
 relative tolerance (<code class="docutils literal notranslate"><span class="pre">rtol</span></code>) to allow the student’s solution to deviate from
@@ -265,7 +276,7 @@ annotation is defined:</p>
 </div>
 </section>
 <section id="invariants">
-<h2>Invariants<a class="headerlink" href="#invariants" title="Permalink to this headline">¶</a></h2>
+<h2>Invariants<a class="headerlink" href="#invariants" title="Permalink to this headline">#</a></h2>
 <p>Similar to numerical tolerances, which allow the student’s solution to deviate
 from the reference value, PyBryt allows specifying conditions when other data
 types should be considered equal. PyBryt supports defining these conditions
@@ -280,7 +291,7 @@ allow the student’s solution (a string) to be case-insensitive.</p>
 <p>More information about invariants can be found <a class="reference internal" href="invariants.html#invariants"><span class="std std-ref">here</span></a>.</p>
 </section>
 <section id="custom-equivalence-functions">
-<h2>Custom Equivalence Functions<a class="headerlink" href="#custom-equivalence-functions" title="Permalink to this headline">¶</a></h2>
+<h2>Custom Equivalence Functions<a class="headerlink" href="#custom-equivalence-functions" title="Permalink to this headline">#</a></h2>
 <p>In some cases, the algorithm that value annotations use for checking if two objects are
 equivalent may not be suitable to the problem at hand. For cases like this, you can provide a
 custom equivalence function that the value annotation will use instead to determine if two
@@ -324,15 +335,21 @@ equivalence function:</p>
               </div>
             </a>
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2021, Microsoft |
-          Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-          <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            | <a class="muted-link" href="../_sources/annotations/value_annotations.rst.txt"
-               rel="nofollow">
-              Show Source
-            </a>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021, Microsoft
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
         </div>
         
       </footer>
@@ -351,6 +368,7 @@ equivalence function:</p>
             <ul>
 <li><a class="reference internal" href="#">Value Annotations</a><ul>
 <li><a class="reference internal" href="#attribute-annotations">Attribute Annotations</a></li>
+<li><a class="reference internal" href="#return-value-annotations">Return Value Annotations</a></li>
 <li><a class="reference internal" href="#numerical-tolerances">Numerical Tolerances</a></li>
 <li><a class="reference internal" href="#invariants">Invariants</a></li>
 <li><a class="reference internal" href="#custom-equivalence-functions">Custom Equivalence Functions</a></li>
