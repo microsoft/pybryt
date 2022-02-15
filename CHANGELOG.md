@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.5.0 - 2022-02-15
 
 * Added complexity unions for combining complexity classes per [#155](https://github.com/microsoft/pybryt/issues/155)
 * Added a return value annotation per [#144](https://github.com/microsoft/pybryt/issues/144)
