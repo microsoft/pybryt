@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.5.0 - 2022-02-15
+
+* Added complexity unions for combining complexity classes per [#155](https://github.com/microsoft/pybryt/issues/155)
+* Added a return value annotation per [#144](https://github.com/microsoft/pybryt/issues/144)
+* Updated the notebook execution template to use `FrameTracer`
+
 ## 0.4.0 - 2022-01-12
 
 * Added the `RequireImport` and `ForbidImport` annotations per [#123](https://github.com/microsoft/pybryt/issues/123)

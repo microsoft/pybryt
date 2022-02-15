@@ -64,7 +64,7 @@ def test_constructor():
     nb, stu = generate_impl()
     assert stu.nb is nb
     assert isinstance(stu.footprint, MemoryFootprint)
-    assert len(stu.footprint.values) == 993
+    assert len(stu.footprint) == 993
 
     with mock.patch("pybryt.student.execute_notebook") as mocked_exec:
         mocked_exec.return_value = MemoryFootprint()
@@ -75,7 +75,7 @@ def test_constructor():
 
             stu = StudentImplementation(ntf.name)
             assert stu.footprint.num_steps == -1
-            assert stu.footprint.values == []
+            assert list(stu.footprint) == []
             assert stu.footprint.calls == []
             assert stu.nb == nb
 
@@ -95,12 +95,12 @@ def test_load_and_dump():
         stu.dump(ntf.name)
         stu2 = StudentImplementation.load(ntf.name)
 
-        assert len(stu.footprint.values) == len(stu2.footprint.values)
+        assert len(stu.footprint) == len(stu2.footprint)
         assert stu.footprint.num_steps == stu2.footprint.num_steps
 
     enc_stu = stu.dumps()
     stu2 = StudentImplementation.loads(enc_stu)
-    assert len(stu.footprint.values) == len(stu2.footprint.values)
+    assert len(stu.footprint) == len(stu2.footprint)
     assert stu.footprint.num_steps == stu2.footprint.num_steps
 
 
@@ -246,9 +246,9 @@ def test_combine():
     stu2.footprint.add_value([1, 2, 3, 4], stu2.footprint.num_steps + 1)
 
     comb = StudentImplementation.combine([stu, stu2])
-    assert len(comb.footprint.values) == len(stu.footprint.values) + 1
+    assert len(comb.footprint) == len(stu.footprint) + 1
     assert comb.footprint.num_steps == stu.footprint.num_steps + stu2.footprint.num_steps
-    assert comb.footprint.get_timestamp(-1) == stu.footprint.num_steps + stu2.footprint.num_steps
+    assert comb.footprint.get_value(-1).timestamp == stu.footprint.num_steps + stu2.footprint.num_steps
 
 
 def test_generate_student_impls():

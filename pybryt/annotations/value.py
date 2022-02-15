@@ -1,6 +1,6 @@
 """Annotations for asserting the presence of a value"""
 
-__all__ = ["Value", "Attribute"]
+__all__ = ["Value", "Attribute", "ReturnValue"]
 
 import dill
 import numbers
@@ -16,7 +16,7 @@ from .annotation import Annotation, AnnotationResult
 from .invariants import invariant
 
 from ..debug import _debug_mode_enabled
-from ..execution import MemoryFootprint
+from ..execution import Event, MemoryFootprint, MemoryFootprintValue
 
 
 class Value(Annotation):
@@ -24,9 +24,9 @@ class Value(Annotation):
     Annotation class for asserting that a value should be observed.
 
     Indicates that a value passed to the constructor should be observed while tracing through the
-    students' code. Values can be of any type that is picklable by ``dill``. Values can specify a
+    students' code. Values can be of any type that is pickleable by ``dill``. Values can specify a
     list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
-    values that support arithemtic operators, absolute tolerances can be specified as well.
+    values that support arithmetic operators, absolute tolerances can be specified as well.
 
     Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
     enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \\cdot |v|)`, where 
@@ -132,16 +132,47 @@ class Value(Annotation):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        satisfied = [self._check_observed_value(v) for v, _ in footprint.values]
-        if not any(satisfied):
+        satisfier = self._get_satisfying_index(footprint)
+        return self._generate_annotation_result(footprint, satisfier)
+
+    def _get_satisfying_index(self, footprint: MemoryFootprint) -> Optional[int]:
+        """
+        Return the index of the first value in the memory footprint that satisfies this annotation.
+
+        Args:
+            footprint (:py:class:`pybryt.execution.memory_footprint.MemoryFootprint`): the
+                memory footprint to check against
+
+        Returns:
+            ``int | None``: the index, or ``None`` if no value satisfies this annotation.
+        """
+        satisfied = [self._check_observed_value(mfp_val.value) for mfp_val in footprint]
+        return satisfied.index(True) if any(satisfied) else None
+
+    def _generate_annotation_result(
+        self,
+        footprint: MemoryFootprint,
+        satisfying_index: Optional[int],
+    ) -> AnnotationResult:
+        """
+        Return an ``AnnotationResult`` based on the provided satisfying index.
+
+        Args:
+            footprint (``MemoryFootprint``): the footprint being checked
+            satisfying_index (``int | None``): the index of the value in the memory footprint that
+                satisfies the annotation, otherwise ``None``
+
+        Returns:
+            ``AnnotationResult``: the result
+        """
+        if satisfying_index is None:
             return AnnotationResult(False, self)
 
-        first_satisfier = satisfied.index(True)
         return AnnotationResult(
             True, 
             self, 
-            footprint.values[first_satisfier][0],
-            footprint.values[first_satisfier][1],
+            footprint.get_value(satisfying_index).value,
+            footprint.get_value(satisfying_index).timestamp,
         )
 
     def __eq__(self, other: Any) -> bool:
@@ -172,7 +203,7 @@ class Value(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
+        return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
 
     def _check_observed_value(self, observed_value: Any) -> bool:
         """
@@ -372,18 +403,20 @@ class _AttrValue(Value):
         Returns:
             :py:class:`AnnotationResult`: the results of this annotation against ``footprint``
         """
-        observed_values = footprint.values
-        if self.enforce_type:  # filter out values of wrong type if enforce_type is True
-            observed_values = [t for t in observed_values if isinstance(t[0], type(self._object))]
-        vals = [t for t in observed_values if hasattr(t[0], self._attr)]
-        args = chain.from_iterable((getattr(obj, self._attr), ts) for obj, ts in vals)
-        attrs_fp = MemoryFootprint.from_values(*args)
-        res = super().check(attrs_fp)
-        try:
-            satisfier = vals[attrs_fp.values.index((res.value, res.timestamp))][0]
-        except ValueError:
-            satisfier = None
-        return AnnotationResult(None, self, value=satisfier, children=[res])
+        orig_mfp_vals, attr_mfp_vals = [], []
+        for mfp_val in footprint:
+            if not self.enforce_type or isinstance(mfp_val.value, type(self._object)):
+                mfp_lst = mfp_val.to_list()
+                if hasattr(mfp_val.value, self._attr):
+                    mfp_lst[0] = getattr(mfp_val.value, self._attr)
+                    attr_mfp_vals.append(MemoryFootprintValue(*mfp_lst))
+                    orig_mfp_vals.append(mfp_val)
+
+        attrs_fp = MemoryFootprint.from_values(*attr_mfp_vals)
+        satisfying_index = self._get_satisfying_index(attrs_fp)
+        child_res = self._generate_annotation_result(attrs_fp, satisfying_index)
+        satisfier = None if satisfying_index is None else orig_mfp_vals[satisfying_index].value
+        return AnnotationResult(None, self, value=satisfier, children=[child_res])
 
 
 class Attribute(Annotation):
@@ -502,4 +535,38 @@ class Attribute(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
-        return self.check(MemoryFootprint.from_values(other_value, 0)).satisfied
+        return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
+
+
+class ReturnValue(Value):
+    """
+    Annotation class for asserting that a value should be returned by a student-written function.
+
+    Indicates that a value passed to the constructor should be returned by a call to a student's
+    function. Values can be of any type that is pickleable by ``dill``. Values can specify a
+    list of :ref:`invariants<invariants>` that will allow objects to be considered "equal." For 
+    values that support arithmetic operators, absolute tolerances can be specified as well.
+
+    Numeric tolerances are computed as with ``numpy.allcose``, where the value is considered "equal 
+    enough" if it is within :math:`v \\pm (\\texttt{atol} + \\texttt{rtol} \\cdot |v|)`, where 
+    :math:`v` is the value of the annotation.
+
+    Args:
+        value (``object``): the value that should be observed
+        atol (``float`` or ``int``, optional): absolute tolerance for numeric values
+        rtol (``float`` or ``int``, optional): relative tolerance for numeric values
+        invariants (``list[invariant]``): invariants for 
+            this value
+        equivalence_fn (``callable[[object, object], bool]``): an optional function to check for
+            equivalence between two values, overriding the default provided by ``Value``
+        **kwargs: additional keyword arguments passed to the 
+            :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
+    """
+
+    _VALID_EVENTS = {Event.RETURN, Event.LINE_AND_RETURN}
+
+    def check(self, footprint: MemoryFootprint) -> AnnotationResult:
+        satisfier = self._get_satisfying_index(footprint)
+        if satisfier is not None and footprint.get_value(satisfier).event not in type(self)._VALID_EVENTS:
+            satisfier = None
+        return self._generate_annotation_result(footprint, satisfier)
