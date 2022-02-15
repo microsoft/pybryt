@@ -12,16 +12,16 @@ from pybryt.utils import *
 from .test_reference import generate_reference_notebook
 
 
-def test_filter_picklable_list():
+def test_filter_pickleable_list():
     """
     """
     l = [1, 2, 3]
-    filter_picklable_list(l)
+    filter_pickleable_list(l)
     assert len(l) == 3
 
     with mock.patch("dill.dumps") as mocked_dill:
         mocked_dill.side_effect = Exception()
-        filter_picklable_list(l)
+        filter_pickleable_list(l)
         assert len(l) == 0
 
 

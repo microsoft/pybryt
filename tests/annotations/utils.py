@@ -5,7 +5,7 @@ import numpy as np
 from functools import lru_cache
 from itertools import chain
 
-from pybryt.execution import MemoryFootprint
+from pybryt.execution import MemoryFootprint, MemoryFootprintValue
 
 
 def assert_object_attrs(obj, attrs):
@@ -44,4 +44,4 @@ def generate_memory_footprint() -> MemoryFootprint:
         4.0,
         "some CasE insenSITIve StrINg!",
     ]
-    return MemoryFootprint.from_values(*chain.from_iterable((o, i) for i, o in enumerate(objs)))
+    return MemoryFootprint.from_values(*[MemoryFootprintValue(o, i, None) for i, o in enumerate(objs)])

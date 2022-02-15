@@ -6,7 +6,7 @@ from itertools import chain
 from unittest import mock
 
 import pybryt
-from pybryt.execution.memory_footprint import MemoryFootprint
+from pybryt.execution.memory_footprint import Event, MemoryFootprint, MemoryFootprintValue
 
 from .utils import assert_object_attrs, generate_memory_footprint
 
@@ -18,13 +18,13 @@ def test_value_annotation():
     pybryt.Annotation.reset_tracked_annotations()
 
     seen = {}
-    for val, ts in footprint.values:
-        v = pybryt.Value(val)
+    for mfp_val in footprint:
+        v = pybryt.Value(mfp_val.value)
         res = v.check(footprint)
 
         assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
 
-        h = pybryt.utils.pickle_and_hash(val)
+        h = pybryt.utils.pickle_and_hash(mfp_val.value)
 
         # check attributes of BeforeAnnotation and AnnotationResult
         assert_object_attrs(v, {"children__len": 0})
@@ -33,12 +33,12 @@ def test_value_annotation():
             "satisfied": True,
             "_satisfied": True,
             "annotation": v,
-            "timestamp": seen[h] if h in seen else ts,
-            "value": val,
+            "timestamp": seen[h] if h in seen else mfp_val.timestamp,
+            "value": mfp_val.value,
         })
 
         if h not in seen:
-            seen[h] = ts
+            seen[h] = mfp_val.timestamp
 
     v = pybryt.Value(-1)  # does not occur in footprint
     res = v.check(footprint)
@@ -78,7 +78,7 @@ def test_value_annotation():
             v = pybryt.Value(-1)
 
     # test with invariants
-    s = footprint.get_value(-1)
+    s = footprint.get_value(-1).value
     v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
     res = v.check(footprint)
     assert res.satisfied
@@ -88,7 +88,7 @@ def test_value_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = True
         assert v.check_against(s.lower())
-        mocked_check.assert_called_with(MemoryFootprint.from_values(s.lower(), 0))
+        mocked_check.assert_called_with(MemoryFootprint.from_values(MemoryFootprintValue(s.lower(), 0, None)))
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
@@ -132,7 +132,7 @@ def test_attribute_annotation():
     """
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
-    val, ts = footprint.get_value(0), footprint.get_timestamp(0)
+    val, ts = footprint.get_value(0).value, footprint.get_value(0).timestamp
 
     v = pybryt.Attribute(val, "T")
     res = v.check(footprint)
@@ -183,13 +183,13 @@ def test_attribute_annotation():
         mocked_check.return_value = mock.MagicMock()
         mocked_check.return_value.satisfied = False
         assert not v.check_against(val)
-        mocked_check.assert_called_with(MemoryFootprint.from_values(val, 0))
+        mocked_check.assert_called_with(MemoryFootprint.from_values(MemoryFootprintValue(val, 0, None)))
 
     # check enforce type
     class Foo:
         T = val.T
 
-    footprint2 = pybryt.MemoryFootprint.from_values(Foo(), 1)
+    footprint2 = pybryt.MemoryFootprint.from_values(MemoryFootprintValue(Foo(), 1, None))
     res = v.check(footprint2)
     assert res.satisfied
 
@@ -197,7 +197,7 @@ def test_attribute_annotation():
     res = v.check(footprint2)
     assert not res.satisfied
 
-    footprint3 = MemoryFootprint.from_values(*chain.from_iterable(footprint.values + footprint2.values))
+    footprint3 = MemoryFootprint.from_values(*chain(footprint, footprint2))
     res = v.check(footprint3)
     assert res.satisfied
 
@@ -210,3 +210,54 @@ def test_attribute_annotation():
 
     with pytest.raises(AttributeError):
         pybryt.Attribute(val, "foo")
+
+
+def test_return_value():
+    """
+    Tests for the ``ReturnValue`` annotation.
+    """
+    rv = pybryt.ReturnValue(1)
+    footprint = MemoryFootprint.from_values(
+        MemoryFootprintValue(1, 0, Event.RETURN),
+        MemoryFootprintValue(2, 1, Event.LINE_AND_RETURN),
+    )
+
+    res = rv.check(footprint)
+    assert_object_attrs(res, {
+        "children": [],
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": rv,
+        "timestamp": 0,
+        "value": 1,
+    })
+
+    footprint = MemoryFootprint.from_values(
+        MemoryFootprintValue(1, 0, Event.LINE_AND_RETURN),
+        MemoryFootprintValue(2, 1, Event.RETURN),
+    )
+
+    res = rv.check(footprint)
+    assert_object_attrs(res, {
+        "children": [],
+        "satisfied": True,
+        "_satisfied": True,
+        "annotation": rv,
+        "timestamp": 0,
+        "value": 1,
+    })
+
+    footprint = MemoryFootprint.from_values(
+        MemoryFootprintValue(1, 0, Event.LINE),
+        MemoryFootprintValue(2, 1, Event.RETURN),
+    )
+
+    res = rv.check(footprint)
+    assert_object_attrs(res, {
+        "children": [],
+        "satisfied": False,
+        "_satisfied": False,
+        "annotation": rv,
+        "timestamp": -1,
+        "value": None,
+    })

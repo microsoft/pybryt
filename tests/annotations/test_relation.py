@@ -13,8 +13,8 @@ def test_before_annotation():
     footprint = generate_memory_footprint()
     pybryt.Annotation.reset_tracked_annotations()
 
-    val1 = footprint.get_value(0)
-    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
+    val1 = footprint.get_value(0).value
+    val2, ts2 = footprint.get_value(1).value, footprint.get_value(1).timestamp
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
@@ -102,8 +102,8 @@ def test_and_annotation():
     """
     footprint = generate_memory_footprint()
 
-    val1 = footprint.get_value(0)
-    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
+    val1 = footprint.get_value(0).value
+    val2, ts2 = footprint.get_value(1).value, footprint.get_value(1).timestamp
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
@@ -168,8 +168,8 @@ def test_or_annotation():
     """
     footprint = generate_memory_footprint()
 
-    val1, ts1 = footprint.get_value(0), footprint.get_timestamp(0)
-    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
+    val1, ts1 = footprint.get_value(0).value, footprint.get_value(0).timestamp
+    val2, ts2 = footprint.get_value(1).value, footprint.get_value(1).timestamp
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
@@ -234,8 +234,8 @@ def test_xor_annotation():
     """
     footprint = generate_memory_footprint()
 
-    val1, ts1 = footprint.get_value(0), footprint.get_timestamp(0)
-    val2, ts2 = footprint.get_value(1), footprint.get_timestamp(1)
+    val1, ts1 = footprint.get_value(0).value, footprint.get_value(0).timestamp
+    val2, ts2 = footprint.get_value(1).value, footprint.get_value(1).timestamp
 
     v1 = pybryt.Value(val1)
     v2 = pybryt.Value(val2)
@@ -300,7 +300,7 @@ def test_not_annotation():
     """
     footprint = generate_memory_footprint()
 
-    val1 = footprint.get_value(0)
+    val1 = footprint.get_value(0).value
 
     v1 = pybryt.Value(val1)
     v = ~v1

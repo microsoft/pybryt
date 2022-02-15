@@ -13,7 +13,7 @@ from copy import deepcopy
 from textwrap import dedent
 
 from pybryt import generate_report, MemoryFootprint, ReferenceImplementation, Value
-from pybryt.execution import execute_notebook
+from pybryt.execution import execute_notebook, MemoryFootprintValue
 
 
 def generate_footprint(nb) -> MemoryFootprint:
@@ -245,21 +245,22 @@ def test_run_and_results():
 
     # check message filtering (#145)
     ref = ReferenceImplementation("foo", [
+        Value(0, name="1", success_message="sm1"),
         Value(1, name="1", success_message="sm1"),
-        Value(2, name="1", success_message="sm1"),
+        Value(2, name="2", failure_message="fm2"),
         Value(3, name="2", failure_message="fm2"),
-        Value(4, name="2", failure_message="fm2"),
+        Value(4, name="3", success_message="sm3", failure_message="fm3"),
         Value(5, name="3", success_message="sm3", failure_message="fm3"),
-        Value(6, name="3", success_message="sm3", failure_message="fm3"),
     ])
 
-    res = ref.run(MemoryFootprint.from_values(1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6))
+    vals = [MemoryFootprintValue(i, i, None) for i in range(6)]
+    res = ref.run(MemoryFootprint.from_values(*vals))
     assert res.messages == ["sm1", "sm3"]
 
-    res = ref.run(MemoryFootprint.from_values(1, 1, 3, 3, 4, 4))
+    res = ref.run(MemoryFootprint.from_values(vals[0], vals[2], vals[3]))
     assert res.messages == ["fm3"]
 
-    res = ref.run(MemoryFootprint.from_values(1, 1, 2, 2, 5, 5))
+    res = ref.run(MemoryFootprint.from_values(vals[0], vals[1], vals[4]))
     assert res.messages == ["sm1", "fm2", "fm3"]
 
 
@@ -345,7 +346,7 @@ def test_generate_report():
     """).strip()
 
     # check empty messages
-    ref = ReferenceImplementation("foo", [Value(footprint.get_value(0))])
+    ref = ReferenceImplementation("foo", [Value(footprint.get_value(0).value)])
     res = ref.run(footprint)
     report = generate_report(res)
     assert report == dedent("""\

@@ -16,6 +16,7 @@ def create_references(student_impls: List["StudentImplementation"], frac=0.25, s
     if seed is not None:
         random.seed(seed)
 
+    # TODO: this doesn't work with the new MemoryFootprint API
     values = [[t[0] for t in stu.values if t[0] is not None] for stu in student_impls]
 
     k = int(min([len(v) for v in values]) * frac)
