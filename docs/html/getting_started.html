@@ -199,121 +199,748 @@
           </label>
         </div>
         <article role="main">
-          <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
-<section id="installing-pybryt">
-<h2>Installing PyBryt<a class="headerlink" href="#installing-pybryt" title="Permalink to this headline">#</a></h2>
-<p>We can install PyBryt inside a Python Virtual Environment, a Conda environment, or within a Jupyter Notebook.</p>
-<section id="installing-within-a-jupyter-notebook">
-<h3>Installing within a Jupyter Notebook<a class="headerlink" href="#installing-within-a-jupyter-notebook" title="Permalink to this headline">#</a></h3>
-<p>We can add a magic-line command to a Jupyter notebook to install the requirements for a pip environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
-</pre></div>
-</div>
-<p>or, similarly, for a conda environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">conda</span> <span class="n">install</span> <span class="n">pybryt</span>
-<span class="kn">import</span> <span class="nn">pybryt</span>
-</pre></div>
-</div>
-</section>
-<section id="installing-on-windows-powershell">
-<h3>Installing on Windows PowerShell<a class="headerlink" href="#installing-on-windows-powershell" title="Permalink to this headline">#</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">py -3 -m venv .venv</span>
-<span class="go">.\.venv\scripts\activate.ps1</span>
-<span class="go">pip install -U pip</span>
-<span class="go">pip install pybryt</span>
-</pre></div>
-</div>
-</section>
-<section id="installing-on-macos-or-linux-command-line">
-<h3>Installing on macOS or Linux command-line<a class="headerlink" href="#installing-on-macos-or-linux-command-line" title="Permalink to this headline">#</a></h3>
-<p>Before installing, make sure you have a recent version of <a class="reference external" href="https://python.org/downloads">Python 3 installed</a>. Next, create a virtual environment, update
-<code class="docutils literal notranslate"><span class="pre">pip</span></code>, and then install <code class="docutils literal notranslate"><span class="pre">pybryt</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3 -m venv .venv</span>
-<span class="go">source .venv/bin/activate</span>
-<span class="go">pip install -U pip</span>
-<span class="go">pip install pybryt</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="annotating-a-working-example">
-<h2>Annotating a working example<a class="headerlink" href="#annotating-a-working-example" title="Permalink to this headline">#</a></h2>
-<p>PyBryt works by observing working reference implementations and looking for
-annotated types and variables in other implementations. The first step after
-installing PyBryt would be to create a working example to serve as a reference
-implementation.</p>
-<p>Let us say we want students to complete a simple task of counting the number of
-words in a string. We send them the signature of the function and ask them to
-complete it inside a Jupyter notebook:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="k">pass</span>
-</pre></div>
-</div>
-<p>We could write this function by splitting the string using the builtin
-<code class="docutils literal notranslate"><span class="pre">str.split()</span></code> method, which will automatically remove empty strings, and then
-count the number of items in the resulting list:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+          
+<style>
+/* CSS for nbsphinx extension */
 
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
-</pre></div>
-</div>
-<p>To annotate this example and train PyBryt what values (variables) to look for in
-other implementations, we use the <code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> class from the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a>.
-<code class="docutils literal notranslate"><span class="pre">pybryt.Value</span></code> takes any Python value as an input for its constructor.</p>
-<p>The two key variables we want to observe in our example are:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">list</span></code> of words created by splitting the text (<code class="docutils literal notranslate"><span class="pre">fragments</span></code>)</p></li>
-<li><p>The count of words as a Python <code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">length</span></code>)</p></li>
-</ul>
-<p>Now, let us update the reference implementation and create a <code class="docutils literal notranslate"><span class="pre">pybryt.Value()</span></code>
-instance for both of these variables:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Given the input string, ``text``, return the number</span>
-<span class="sd">    of complete words.</span>
-<span class="sd">    """</span>
-    <span class="c1"># Split the text by spaces</span>
-    <span class="n">fragments</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
 
-    <span class="c1"># Count the number of items in the result</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
-    <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">length</span>
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<section id="Getting-Started">
+<h1>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this headline">#</a></h1>
+<p>This page will be a short guide to setting up a problem with PyBryt, including the process of designing reference implementations based on solutions, create scaffold code for students, and organizing and assessing student implementations. This guide assumes that you have already <a class="reference internal" href="installation.html"><span class="doc">installed PyBryt</span></a>.</p>
+<p>In this example, suppose that you want students to write a function that performs matrix exponentiation on nested Python lists. You will provide students with a matrix multiplication function that uses <a class="reference external" href="https://en.wikipedia.org/wiki/Strassen_algorithm">Strassen’s algorithm</a> for multipling matrices, and it will be their objective to use that matrix multiplication function to implement the logic for computing matrix powers.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<p>Next, we check our implementation with some text samples that we will also use to test the student implementations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Waltz, bad nymph, for quick jigs vex."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"The five boxing wizards-- </span><span class="se">\n</span><span class="s2">jump quickly!"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
-<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s2">"Sphinx of black quartz,          judge my vow."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pybryt</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">strassen</span> <span class="kn">import</span> <span class="n">matmul</span>  <span class="c1"># the matrix multiplication function</span>
+</pre></div>
+</div>
+</div>
+<section id="Step-1:-Writing-Solutions">
+<h2>Step 1: Writing Solutions<a class="headerlink" href="#Step-1:-Writing-Solutions" title="Permalink to this headline">#</a></h2>
+<p>Let’s first consider the possible solutions to this problem. The naive solution would be to iteratively or recursively multiply the matrix with itself the requisite number of times:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diag</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="p">[[</span><span class="n">x</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">matpow_naive</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Raise a matrix to a non-negative power.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    p : int</span>
+<span class="sd">        the power</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the exponentiated matrix</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">B</span>
+</pre></div>
+</div>
+</div>
+<p>However, there is more than one way to implement matrix exponentiation; a faster divide-and-conquer algorithm that can be used to perform matrix exponentiation in logarithmic time:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">matpow_dac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Raise a matrix to a non-negative power.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    p : int</span>
+<span class="sd">        the power</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the exponentiated matrix</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">A</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">matpow_dac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Step-2:-Testing-Implementations">
+<h2>Step 2: Testing Implementations<a class="headerlink" href="#Step-2:-Testing-Implementations" title="Permalink to this headline">#</a></h2>
+<p>Now that we have a couple of solutions, we need a way to test them so that PyBryt can generate the annotations. To create testing data, we’ll use Python’s built-in <code class="docutils literal notranslate"><span class="pre">random</span></code> library. The function <code class="docutils literal notranslate"><span class="pre">generate_rand_matrix</span></code> defined below creates a square matrix populated with random integers given the size of the matrix <code class="docutils literal notranslate"><span class="pre">n</span></code> and an RNG seed <code class="docutils literal notranslate"><span class="pre">seed</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">def</span> <span class="nf">generate_rand_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">dmin</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">dmax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Generate a square matrix populated with random data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n    : int</span>
+<span class="sd">        the size of the matrix</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        a seed to use for the RNG</span>
+<span class="sd">    dmin : int</span>
+<span class="sd">        the minimum value to allow when generating data</span>
+<span class="sd">    dmax : int</span>
+<span class="sd">        the maximum value to allow when generating data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    """</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">dmin</span><span class="p">,</span> <span class="n">dmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<p>To test the matrix power functions, we’ll compare the matrices returned by the functions on some randomly-generated matrices to the matrices that NumPy returns. The function <code class="docutils literal notranslate"><span class="pre">test_matpow</span></code> below implements this logic, and also checks some simple corner cases; it raises an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code> if any of the tests fail.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_matpow</span><span class="p">(</span><span class="n">matpow</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Tests an implementation of matrix exponentiation against NumPy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matpow : callable[[list[list[int]], int], list[list[int]]]</span>
+<span class="sd">        the matrix power function</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    AssertionError</span>
+<span class="sd">        if `matpow` returns an incorrect value</span>
+<span class="sd">    """</span>
+    <span class="n">simple_matrix_powers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">simple_matrix_powers</span><span class="p">:</span>
+        <span class="n">mat_pow</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">mat_pow</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">generate_rand_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dmin</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="n">dmax</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">mat_pow</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span>
+            <span class="n">mat_pow</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"int64"</span><span class="p">),</span> <span class="n">p</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Now that we have a way to test our solutions, let’s do so:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow_naive</span><span class="p">)</span>
+<span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow_dac</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Step-3:-Annotating-Solutions">
+<h2>Step 3: Annotating Solutions<a class="headerlink" href="#Step-3:-Annotating-Solutions" title="Permalink to this headline">#</a></h2>
+<p>Let’s now turn our tested solutions into reference implementations. We’ll start by annotating the naive solution. In the annotated version below, we create value annotations for the return values and append them to the <code class="docutils literal notranslate"><span class="pre">naive_annots</span></code> list. We also create a value annotation for each intermediate matrix we encounter in the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop and use <code class="docutils literal notranslate"><span class="pre">Annotation.before</span></code> to create temporal annotations asserting the order in which these matrices should appear in the memory footprint.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naive_annots</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span> <span class="nf">matpow_naive</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Raise a matrix to a non-negative power.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    p : int</span>
+<span class="sd">        the power</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the exponentiated matrix</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+        <span class="n">naive_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span>
+            <span class="n">d</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"identity"</span><span class="p">,</span>
+            <span class="n">success_message</span><span class="o">=</span><span class="s2">"Returned identity when p == 0"</span><span class="p">,</span>
+            <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Incorrect return value when p == 0"</span><span class="p">,</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="n">B</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">partial</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span>
+        <span class="n">B</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"partial-product"</span><span class="p">,</span>
+        <span class="n">success_message</span><span class="o">=</span><span class="s2">"Found correct partial products"</span><span class="p">,</span>
+        <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Incorrect partial products"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="n">next_partial</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span>
+            <span class="n">B</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"partial-product"</span><span class="p">,</span>
+            <span class="n">success_message</span><span class="o">=</span><span class="s2">"Found"</span><span class="p">,</span>
+            <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Incorrect return value when p == 0"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">naive_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">partial</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">next_partial</span><span class="p">))</span>
+        <span class="n">partial</span> <span class="o">=</span> <span class="n">next_partial</span>
+
+    <span class="k">return</span> <span class="n">B</span>
+</pre></div>
+</div>
+</div>
+<p>To annotate the divide-and-conquer solution, we again create values checking the return value and all intermediate matrices encountered. However, in this instance, we’re using a <code class="docutils literal notranslate"><span class="pre">Collection</span></code> with <code class="docutils literal notranslate"><span class="pre">enforce_order=True</span></code> to gather the annotations for the intermediate matrices and assert their ordering. (This method is slightly easier to conceptualize for the recursive algorithm used here since we can pass the collection to subsequent calls to <code class="docutils literal notranslate"><span class="pre">matpow_dac</span></code>, as opposed to the iterative algorithm
+used above.)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dac_annots</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span> <span class="nf">matpow_dac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Raise a matrix to a non-negative power.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A          : list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    p          : int</span>
+<span class="sd">        the power</span>
+<span class="sd">    collection : pybryt.Collection</span>
+<span class="sd">        a collection of annotations to which the intermediate matrices will be added</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the exponentiated matrix</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+        <span class="n">dac_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span>
+            <span class="n">d</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"identity"</span><span class="p">,</span>
+            <span class="n">success_message</span><span class="o">=</span><span class="s2">"Returned identity when p == 0"</span><span class="p">,</span>
+            <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Incorrect return value when p == 0"</span><span class="p">,</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">elif</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">A</span>
+        <span class="n">dac_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span>
+            <span class="n">ret</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"1st-power"</span><span class="p">,</span>
+            <span class="n">success_message</span><span class="o">=</span><span class="s2">"Returned unaltered matrix when p == 1"</span><span class="p">,</span>
+            <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Incorrect return value when p == 1"</span><span class="p">,</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="n">should_track</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">collection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">Collection</span><span class="p">(</span>
+            <span class="n">enforce_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">success_message</span><span class="o">=</span><span class="s2">"Found the correct sequence of partial powers"</span><span class="p">,</span>
+            <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Did not find the correct sequence of partial powers"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">dac_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+        <span class="n">should_track</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">matpow_dac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>
+    <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">P</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">p</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">should_track</span><span class="p">:</span>
+        <span class="n">dac_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span>
+            <span class="n">ret</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"return-value"</span><span class="p">,</span>
+            <span class="n">success_message</span><span class="o">=</span><span class="s2">"Returned correct value"</span><span class="p">,</span>
+            <span class="n">failure_message</span><span class="o">=</span><span class="s2">"Incorrect return value"</span><span class="p">,</span>
+        <span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Step-4:-Populating-and-Instantiating-Reference-Implementations">
+<h2>Step 4: Populating and Instantiating Reference Implementations<a class="headerlink" href="#Step-4:-Populating-and-Instantiating-Reference-Implementations" title="Permalink to this headline">#</a></h2>
+<p>With the annotated versions of our solutions ready to go, we’re now able to create our annotations. First, we’ll need to populate the lists of annotations by running our <code class="docutils literal notranslate"><span class="pre">test_matpow</span></code> function on each of the annotation solutions.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naive_annots</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow_naive</span><span class="p">)</span>
+
+<span class="n">dac_annots</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow_dac</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, we should add one more annotation to each reference to forbid the import of NumPy; this ensures that students aren’t taking the easy way out in their implementations by using NumPy’s matrix power implementation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naive_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">ForbidImport</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">))</span>
+<span class="n">dac_annots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pybryt</span><span class="o">.</span><span class="n">ForbidImport</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we can insantiate the <code class="docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> objects:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naive_ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"naive-matpow"</span><span class="p">,</span> <span class="n">naive_annots</span><span class="p">)</span>
+<span class="n">dac_ref</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"dac-matpow"</span><span class="p">,</span> <span class="n">dac_annots</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>It’s at this stage in the game that you’ll probably end up switching notebooks to start the next step in the process (writing the student scaffold), so it let’s save the references to files so that they can be used again later.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">naive_ref</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+<span class="n">dac_ref</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Step-5:-Writing-the-Assignment-Scaffold">
+<h2>Step 5: Writing the Assignment Scaffold<a class="headerlink" href="#Step-5:-Writing-the-Assignment-Scaffold" title="Permalink to this headline">#</a></h2>
+<p>Now we need to provide the students with some scaffold code that they can use to implement their own <code class="docutils literal notranslate"><span class="pre">matpow</span></code> function. The first step is to make some modifications to how we’re testing the solutions so that we don’t set of the annotations that forbid the use of NumPy. To do this, we’ll keep the same seed and overall structure of the test, but instead of comparing the function to NumPy’s implementation, we’ll convert each list to a string and compare the hash of the stringified list against
+the known hash of the stringified correct list. The cell below generates these hashes and saves them to the file <code class="docutils literal notranslate"><span class="pre">hashes.json</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hash_matrix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">matpow</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Raise a matrix to a non-negative power.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    p : int</span>
+<span class="sd">        the power</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the exponentiated matrix</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">A</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">))</span>
+
+<span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">simple_matrix_powers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">simple_matrix_powers</span><span class="p">:</span>
+    <span class="n">mat_pow</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hash_matrix</span><span class="p">(</span><span class="n">mat_pow</span><span class="p">))</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">generate_rand_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dmin</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="n">dmax</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">mat_pow</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hash_matrix</span><span class="p">(</span><span class="n">mat_pow</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"hashes.json"</span><span class="p">,</span> <span class="s2">"w+"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">hashes</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>With the hashes in place, we can rewrite our <code class="docutils literal notranslate"><span class="pre">test_matpow</span></code> function in a way that can be used in the students’ notebooks:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_matpow</span><span class="p">(</span><span class="n">matpow</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Tests an implementation of matrix exponentiation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matpow : callable[[list[list[int]], int], list[list[int]]]</span>
+<span class="sd">        the matrix power function</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    AssertionError</span>
+<span class="sd">        if `matpow` returns an incorrect value</span>
+<span class="sd">    """</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"hashes.json"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">hashes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">hashes</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+    <span class="n">simple_matrix_powers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">simple_matrix_powers</span><span class="p">:</span>
+        <span class="n">mat_pow</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">hash_matrix</span><span class="p">(</span><span class="n">mat_pow</span><span class="p">)</span> <span class="o">==</span> <span class="nb">next</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">generate_rand_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dmin</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="n">dmax</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">mat_pow</span> <span class="o">=</span> <span class="n">matpow</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">hash_matrix</span><span class="p">(</span><span class="n">mat_pow</span><span class="p">)</span> <span class="o">==</span> <span class="nb">next</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p><strong>A very important note:</strong> The function that we use to test the students’ implementations of the <code class="docutils literal notranslate"><span class="pre">matpow</span></code> function must call the function on the same inputs as were used to construct the reference implementation, as the one above does thanks to RNG seeding. Other inputs can be added, but all of the inputs used to construct annotations <strong>must be used</strong> in the student implementation. This is because PyBryt’s annotations, at their most basic level, work by checking for specific values being used
+in the students’ code, so if some inputs used to construct the reference are not used to test the students’ implementations, those values will not be present and the reference will never be satisfied.</p>
+<p>Let’s verify that this works against the <code class="docutils literal notranslate"><span class="pre">matpow</span></code> function from above:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, all that’s left to do is provide the students a place to put their code and connect all the pieces:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">matpow</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Raise a matrix to a non-negative power.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : list[list[int]]</span>
+<span class="sd">        the matrix</span>
+<span class="sd">    p : int</span>
+<span class="sd">        the power</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[list[int]]</span>
+<span class="sd">        the exponentiated matrix</span>
+<span class="sd">    """</span>
+    <span class="o">...</span> <span class="c1"># YOUR CODE HERE</span>
+
+<span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want students to be able to run their implementations against the references on their own, you can use the <code class="docutils literal notranslate"><span class="pre">pybryt.check</span></code> context manager:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">check</span><span class="p">([</span><span class="n">naive_ref</span><span class="p">,</span> <span class="n">dac_ref</span><span class="p">]):</span>
+    <span class="n">test_matpow</span><span class="p">(</span><span class="n">matpow</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
-<p>PyBryt can do much more beyond this simple example, such as automating the
-assessment of student implementations and detecting plagiarism. To learn more
-about pybryt, check out the following</p>
-<ul class="simple">
-<li><p>The example projects in the <a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/demo/">demos folder</a></p></li>
-<li><p>Read the <a class="reference internal" href="api_reference.html#api"><span class="std std-ref">API Reference</span></a> for details on the annotation types</p></li>
-</ul>
+<section id="Conclusion">
+<h2>Conclusion<a class="headerlink" href="#Conclusion" title="Permalink to this headline">#</a></h2>
+<p>And that’s all there is to it! Continue reading the documentation to learn more about the different kinds of annotations PyBryt supports, how to create and manage student implementations, and much more. If you’d like more examples on how to use PyBryt, check out the <a class="reference external" href="https://github.com/microsoft/pybryt/tree/main/demo/">demos folder</a> in the GitHub repo.</p>
 </section>
 </section>
 
@@ -375,14 +1002,12 @@ about pybryt, check out the following</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#installing-pybryt">Installing PyBryt</a><ul>
-<li><a class="reference internal" href="#installing-within-a-jupyter-notebook">Installing within a Jupyter Notebook</a></li>
-<li><a class="reference internal" href="#installing-on-windows-powershell">Installing on Windows PowerShell</a></li>
-<li><a class="reference internal" href="#installing-on-macos-or-linux-command-line">Installing on macOS or Linux command-line</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#annotating-a-working-example">Annotating a working example</a></li>
-<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li><a class="reference internal" href="#Step-1:-Writing-Solutions">Step 1: Writing Solutions</a></li>
+<li><a class="reference internal" href="#Step-2:-Testing-Implementations">Step 2: Testing Implementations</a></li>
+<li><a class="reference internal" href="#Step-3:-Annotating-Solutions">Step 3: Annotating Solutions</a></li>
+<li><a class="reference internal" href="#Step-4:-Populating-and-Instantiating-Reference-Implementations">Step 4: Populating and Instantiating Reference Implementations</a></li>
+<li><a class="reference internal" href="#Step-5:-Writing-the-Assignment-Scaffold">Step 5: Writing the Assignment Scaffold</a></li>
+<li><a class="reference internal" href="#Conclusion">Conclusion</a></li>
 </ul>
 </li>
 </ul>
@@ -400,5 +1025,7 @@ about pybryt, check out the following</p>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>
