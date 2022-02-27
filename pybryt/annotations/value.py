@@ -9,10 +9,10 @@ import pandas as pd
 
 from collections.abc import Iterable, Sized
 from copy import copy
-from itertools import chain
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from .annotation import Annotation, AnnotationResult
+from .initial_condition import InitialCondition
 from .invariants import invariant
 
 from ..debug import _debug_mode_enabled
@@ -44,14 +44,8 @@ class Value(Annotation):
             :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` constructor
     """
 
-    intial_value: Any
+    value: Any
     """a copy of the value passed to the constructor"""
-
-    _values: List[Any]
-    """
-    a list of values that resulted from passing the intial value through the series of invariants 
-    specified in the constructor
-    """
 
     atol: Optional[Union[float, int]]
     """absolute tolerance for numeric values"""
@@ -64,7 +58,7 @@ class Value(Annotation):
 
     equivalence_fn: Optional[Callable[[Any, Any], bool]]
     """
-    a function that compares two values and returns True if they're "equal enough\" and False
+    a function that compares two values and returns True if they're "equal enough" and False
     otherwise
     """
 
@@ -85,15 +79,15 @@ class Value(Annotation):
         if _debug_mode_enabled() and equivalence_fn is not None and (atol is not None or rtol is not None):
             raise ValueError("Absolute or relative tolerance specified with an equivalence function")
 
-        self.initial_value = copy(value)
-        self._values = [self.initial_value]
+        self.value = copy(value)
         self.atol = atol
         self.rtol = rtol
         self.invariants = invariants
         self.equivalence_fn = equivalence_fn
 
-        for inv in self.invariants:
-            self._values = inv(self._values)
+        # check that there aren't any issues applying the invariants
+        if not isinstance(value, InitialCondition):
+            self._apply_invariants(self.value)
 
         super().__init__(**kwargs)
 
@@ -121,6 +115,21 @@ class Value(Annotation):
         })
         return d
 
+    def _apply_invariants(self, value: Any) -> List[Any]:
+        """
+        Apply the invariants on this annotation to the provided value.
+
+        Args:
+            value (``object``): the initial value
+
+        Returns:
+            ``list[object]``: the values considered equal to the initial value under the invariants
+        """
+        values = [value]
+        for inv in self.invariants:
+            values = inv(values)
+        return values
+
     def check(self, footprint: MemoryFootprint) -> AnnotationResult:
         """
         Checks that the value tracked by this annotation occurs in the memory footprint.
@@ -146,7 +155,10 @@ class Value(Annotation):
         Returns:
             ``int | None``: the index, or ``None`` if no value satisfies this annotation.
         """
-        satisfied = [self._check_observed_value(mfp_val.value) for mfp_val in footprint]
+        expected_value = self.value
+        if isinstance(expected_value, InitialCondition):
+            expected_value = expected_value.supply_footprint(footprint)
+        satisfied = [self._check_observed_value(expected_value, mfp_val.value) for mfp_val in footprint]
         return satisfied.index(True) if any(satisfied) else None
 
     def _generate_annotation_result(
@@ -188,8 +200,9 @@ class Value(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
+         # TODO: handle initial condition
         return super().__eq__(other) and self.invariants == other.invariants and \
-            self.check_values_equal(self.initial_value, other.initial_value) and \
+            self.check_values_equal(self.value, other.value) and \
             self.atol == other.atol and self.rtol == other.rtol and \
             self.equivalence_fn == self.equivalence_fn
 
@@ -205,7 +218,7 @@ class Value(Annotation):
         """
         return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
 
-    def _check_observed_value(self, observed_value: Any) -> bool:
+    def _check_observed_value(self, expected_value: Any, observed_value: Any) -> bool:
         """
         Checks whether a single observed value tuple satisfies this value.
 
@@ -218,11 +231,9 @@ class Value(Annotation):
         Returns:
             ``bool``: whether the value matched
         """
-        other_values = [observed_value]
-        for inv in self.invariants:
-            other_values = inv(other_values)
-        
-        for value in self._values:
+        other_values = self._apply_invariants(observed_value)
+
+        for value in self._apply_invariants(expected_value):
             for other_value in other_values:
                 if self.check_values_equal(value, other_value, self.atol, self.rtol, self.equivalence_fn):
                     return True
@@ -450,6 +461,8 @@ class Attribute(Annotation):
             attrs = [attrs]
         if not isinstance(attrs, list) or not all(isinstance(a, str) for a in attrs):
             raise TypeError(f"Invalid type for argument 'attrs': {type(attrs)}")
+        if isinstance(obj, InitialCondition):
+            raise TypeError("Initial conditions are not compatible with attribute annotations")
 
         name = kwargs.pop("name", None)
         success_message = kwargs.pop("success_message", None)
@@ -466,8 +479,12 @@ class Attribute(Annotation):
 
         self.enforce_type = enforce_type
     
-        super().__init__(name=name, success_message=success_message, failure_message=failure_message,
-            **kwargs)
+        super().__init__(
+            name=name,
+            success_message=success_message,
+            failure_message=failure_message,
+            **kwargs,
+        )
 
     @property
     def children(self) -> List[Annotation]:
