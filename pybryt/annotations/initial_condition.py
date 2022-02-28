@@ -49,7 +49,6 @@ class InitialCondition:
         transforms.append(transform)
         return type(self)(self.name, transforms=transforms)
 
-    # TODO: handle nested initial conditions
     def supply_footprint(self, footprint: MemoryFootprint) -> Any:
         """
         Calculate the value of this initial condition with all transformations applied based on the
@@ -188,10 +187,10 @@ class InitialCondition:
         return self._apply_binary_operator(operator.mod, other, right=True)
 
     def __divmod__(self, other: Any) -> "InitialCondition":
-        return self._apply_binary_operator(operator.divmod, other)
+        return self._apply_binary_operator(divmod, other)
 
     def __rdivmod__(self, other: Any) -> "InitialCondition":
-        return self._apply_binary_operator(operator.divmod, other, right=True)
+        return self._apply_binary_operator(divmod, other, right=True)
 
     def __pow__(self, other: Any, modulo: Any = None) -> "InitialCondition":
         if modulo is not None:  # support ternary pow
