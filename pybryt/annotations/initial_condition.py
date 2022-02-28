@@ -131,6 +131,20 @@ class InitialCondition:
 
         return self.apply(fn)
 
+    def __eq__(self, other) -> bool:
+        """
+        Determine whether the other object is also an initial condition with the same name and
+        transforms.
+
+        Args:
+            other (``object``): the object to compare to
+
+        Returns:
+            ``bool``: whether the objects are equal
+        """
+        return isinstance(other, type(self)) and self.name == other.name and \
+            self.transforms == other.transforms
+
     def __add__(self, other: Any) -> "InitialCondition":
         return self._apply_binary_operator(operator.add, other)
 

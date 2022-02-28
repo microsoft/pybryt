@@ -86,7 +86,7 @@ class Value(Annotation):
         self.equivalence_fn = equivalence_fn
 
         # check that there aren't any issues applying the invariants
-        if not isinstance(value, InitialCondition):
+        if not self._tracking_initial_condition:
             self._apply_invariants(self.value)
 
         super().__init__(**kwargs)
@@ -94,6 +94,13 @@ class Value(Annotation):
     @property
     def children(self) -> List[Annotation]:
         return []
+
+    @property
+    def _tracking_initial_condition(self) -> bool:
+        """
+        Whether this value is tracking an initial condition.
+        """
+        return isinstance(self.value, InitialCondition)
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -200,9 +207,15 @@ class Value(Annotation):
         Returns:
             ``bool``: whether the objects are equal
         """
-         # TODO: handle initial condition
-        return super().__eq__(other) and self.invariants == other.invariants and \
-            self.check_values_equal(self.value, other.value) and \
+        if not super().__eq__(other):
+            return False
+
+        if self._tracking_initial_condition:
+            vals_equal = self.value == other.value
+        else:
+            vals_equal = self.check_values_equal(self.value, other.value)
+
+        return self.invariants == other.invariants and vals_equal and \
             self.atol == other.atol and self.rtol == other.rtol and \
             self.equivalence_fn == self.equivalence_fn
 
@@ -216,6 +229,9 @@ class Value(Annotation):
         Returns:
             ``bool``: whether this annotation is satisfied by the provided value
         """
+        if self._tracking_initial_condition:
+            raise ValueError("check_against cannot be used with initial conditions")
+
         return self.check(MemoryFootprint.from_values(MemoryFootprintValue(other_value, 0, None))).satisfied
 
     def _check_observed_value(self, expected_value: Any, observed_value: Any) -> bool:
