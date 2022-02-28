@@ -42,6 +42,7 @@ jobs:
       run: |
         $CONDA/bin/conda env update -f environment.yml -n base
         $CONDA/bin/pip install -r docs/requirements.txt
+        sudo apt-get install -y pandoc
         
     - name: Build documentation
       working-directory: ./docs
