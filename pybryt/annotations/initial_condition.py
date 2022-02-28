@@ -4,7 +4,7 @@ __all__ = ["InitialCondition"]
 
 import operator
 
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from ..execution import MemoryFootprint
 
@@ -22,7 +22,7 @@ class InitialCondition:
     name: str
     """the name of the initial condition"""
 
-    _transforms: List[Callable[[Any], Any]]
+    transforms: List[Callable[[Any], Any]]
     """transformations that should be applied to the value, in order"""
 
     def __init__(self, name: str, transforms: Optional[List[Callable[[Any], Any]]] = None):
@@ -30,7 +30,7 @@ class InitialCondition:
             raise TypeError("The name of an initial condition must be a string")
 
         self.name = name
-        self._transforms = [] if transforms is None else transforms
+        self.transforms = [] if transforms is None else transforms
 
     def apply(self, transform: Callable[[Any], Any]) -> "InitialCondition":
         """
@@ -45,10 +45,11 @@ class InitialCondition:
         Returns:
             :py:class:`InitialCondition`: the new initial condition instance
         """
-        transforms = self._transforms.copy()
+        transforms = self.transforms.copy()
         transforms.append(transform)
         return type(self)(self.name, transforms=transforms)
 
+    # TODO: handle nested initial conditions
     def supply_footprint(self, footprint: MemoryFootprint) -> Any:
         """
         Calculate the value of this initial condition with all transformations applied based on the
@@ -60,7 +61,31 @@ class InitialCondition:
         Returns:
             ``object``: the value after applying all transformations to it in sequence
         """
-        return self.supply_value(footprint.get_initial_condition(self.name))
+        return self.supply_values(footprint.get_initial_conditions())
+
+    def supply_values(self, vals: Dict[str, Any]) -> Any:
+        """
+        Calculate the value of this initial condition with all transformations applied using the
+        provided initial condition values.
+
+        Applies all transformations in this initial condition to the supplied value and returns the
+        result. If the result is itself an :py:class:`InitialCondition`, the values dictionary is
+        supplied to that initial condition.
+
+        Args:
+            vals (``dict[str, object]``): the values to use as the initial conditions by name
+
+        Returns:
+            ``object``: the value after applying all transformations to it in sequence
+        """
+        if self.name not in vals:
+            raise ValueError(f"The provided values do not have key '{self.name}'")
+
+        ret = self.supply_value(vals[self.name])
+        if isinstance(ret, type(self)):
+            ret = ret.supply_values(vals)
+
+        return ret
 
     def supply_value(self, val: Any) -> Any:
         """
@@ -75,7 +100,7 @@ class InitialCondition:
         Returns:
             ``object``: the value after applying all transformations to it in sequence
         """
-        for fn in self._transforms:
+        for fn in self.transforms:
             val = fn(val)
         return val
 

@@ -136,6 +136,7 @@ class MemoryFootprint:
         self.calls = []
         self.imports = set()
         self.executed_notebook = None
+        self.initial_conditions = {}
 
     @classmethod
     def from_values(cls, *values: MemoryFootprintValue) -> 'MemoryFootprint':
@@ -315,14 +316,14 @@ class MemoryFootprint:
         """
         self.initial_conditions.update(initial_conditions)
 
-    def get_initial_condition(self, name: str) -> Any:
+    def get_initial_conditions(self) -> Dict[str, Any]:
         """
-        Return the initial condition for the specified name.
+        Return the initial conditions dictionary.
 
         Returns:
-            ``object``: the initial condition
+            ``dict[str, object]``: the initial conditions dictionary
         """
-        return self.initial_conditions[name]
+        return self.initial_conditions
 
     @property
     def num_steps(self) -> int:
