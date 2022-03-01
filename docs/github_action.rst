@@ -49,7 +49,7 @@ Inside this file, define the following action configuration:
         runs-on: ubuntu-latest
         steps:
           - name: Run PyBryt
-            uses: microsoft/pybryt-action@v0.1
+            uses: microsoft/pybryt-action@v0.1.1
             with:
               submission-path: submission.ipynb
               references: |
@@ -88,7 +88,7 @@ configuration like this:
         steps:
           - name: Run PyBryt
             id: pybryt
-            uses: microsoft/pybryt-action@v0.1
+            uses: microsoft/pybryt-action@v0.1.1
             with:
               submission-path: submission.ipynb
               references: |
