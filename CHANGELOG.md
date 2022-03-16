@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.6.0 - 2022-03-16
 
 * Added student-set initial conditions per [#159](https://github.com/microsoft/pybryt/issues/159)
 
