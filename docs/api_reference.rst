@@ -80,6 +80,14 @@ Annotation Collections
    :undoc-members:
 
 
+Initial Conditions
+++++++++++++++++++
+
+.. automodule:: pybryt.annotations.initial_condition
+   :members:
+   :undoc-members:
+
+
 Annotation Results
 ++++++++++++++++++
 

@@ -5,8 +5,10 @@ import pytest
 from itertools import chain
 from unittest import mock
 
-import pybryt
+from pybryt import Annotation, Attribute, debug_mode, InitialCondition, ReturnValue, Value
+from pybryt import invariants as inv
 from pybryt.execution.memory_footprint import Event, MemoryFootprint, MemoryFootprintValue
+from pybryt.utils import pickle_and_hash
 
 from .utils import assert_object_attrs, generate_memory_footprint
 
@@ -14,17 +16,18 @@ from .utils import assert_object_attrs, generate_memory_footprint
 def test_value_annotation():
     """
     """
+    # TODO: create pytest fixtures that do these automatically
     footprint = generate_memory_footprint()
-    pybryt.Annotation.reset_tracked_annotations()
+    Annotation.reset_tracked_annotations()
 
     seen = {}
     for mfp_val in footprint:
-        v = pybryt.Value(mfp_val.value)
+        v = Value(mfp_val.value)
         res = v.check(footprint)
 
         assert repr(res) == "AnnotationResult(satisfied=True, annotation=pybryt.Value)"
 
-        h = pybryt.utils.pickle_and_hash(mfp_val.value)
+        h = pickle_and_hash(mfp_val.value)
 
         # check attributes of BeforeAnnotation and AnnotationResult
         assert_object_attrs(v, {"children__len": 0})
@@ -40,7 +43,7 @@ def test_value_annotation():
         if h not in seen:
             seen[h] = mfp_val.timestamp
 
-    v = pybryt.Value(-1)  # does not occur in footprint
+    v = Value(-1)  # does not occur in footprint
     res = v.check(footprint)
 
     assert v.to_dict() == {
@@ -75,11 +78,11 @@ def test_value_annotation():
     with mock.patch("dill.dumps") as mocked_dumps:
         mocked_dumps.side_effect = Exception()
         with pytest.raises(ValueError):
-            v = pybryt.Value(-1)
+            v = Value(-1)
 
     # test with invariants
     s = footprint.get_value(-1).value
-    v = pybryt.Value(s.upper(), invariants=[pybryt.invariants.string_capitalization])
+    v = Value(s.upper(), invariants=[inv.string_capitalization])
     res = v.check(footprint)
     assert res.satisfied
 
@@ -92,7 +95,7 @@ def test_value_annotation():
 
     # check custom equivalence function
     mocked_eq = mock.MagicMock()
-    v = pybryt.Value(s, equivalence_fn=mocked_eq)
+    v = Value(s, equivalence_fn=mocked_eq)
     mocked_eq.return_value = False
     assert not v.check_against("foo")
     mocked_eq.assert_called_with(s, "foo")
@@ -109,12 +112,12 @@ def test_value_annotation():
         v.check_against(1)
 
     # check debug mode errors
-    with pybryt.debug_mode():
+    with debug_mode():
         with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
-            pybryt.Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
+            Value(1, atol=1e-5, equivalence_fn=lambda x, y: True)
 
         with pytest.raises(ValueError, match="Absolute or relative tolerance specified with an equivalence function"):
-            pybryt.Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
+            Value(1, rtol=1e-5, equivalence_fn=lambda x, y: True)
 
         class FooError(Exception):
             pass
@@ -123,7 +126,7 @@ def test_value_annotation():
             def raise_foo(x, y):
                 raise FooError()
 
-            v = pybryt.Value(1, equivalence_fn=raise_foo)
+            v = Value(1, equivalence_fn=raise_foo)
             v.check_against(1)
 
 
@@ -131,10 +134,10 @@ def test_attribute_annotation():
     """
     """
     footprint = generate_memory_footprint()
-    pybryt.Annotation.reset_tracked_annotations()
+    Annotation.reset_tracked_annotations()
     val, ts = footprint.get_value(0).value, footprint.get_value(0).timestamp
 
-    v = pybryt.Attribute(val, "T")
+    v = Attribute(val, "T")
     res = v.check(footprint)
 
     # check attributes of BeforeAnnotation and AnnotationResult
@@ -189,11 +192,11 @@ def test_attribute_annotation():
     class Foo:
         T = val.T
 
-    footprint2 = pybryt.MemoryFootprint.from_values(MemoryFootprintValue(Foo(), 1, None))
+    footprint2 = MemoryFootprint.from_values(MemoryFootprintValue(Foo(), 1, None))
     res = v.check(footprint2)
     assert res.satisfied
 
-    v = pybryt.Attribute(val, "T", enforce_type=True)
+    v = Attribute(val, "T", enforce_type=True)
     res = v.check(footprint2)
     assert not res.satisfied
 
@@ -203,20 +206,20 @@ def test_attribute_annotation():
 
     # check error raising
     with pytest.raises(TypeError):
-        pybryt.Attribute(val, ["T", 1])
+        Attribute(val, ["T", 1])
     
     with pytest.raises(TypeError):
-        pybryt.Attribute(val, 1)
+        Attribute(val, 1)
 
     with pytest.raises(AttributeError):
-        pybryt.Attribute(val, "foo")
+        Attribute(val, "foo")
 
 
 def test_return_value():
     """
     Tests for the ``ReturnValue`` annotation.
     """
-    rv = pybryt.ReturnValue(1)
+    rv = ReturnValue(1)
     footprint = MemoryFootprint.from_values(
         MemoryFootprintValue(1, 0, Event.RETURN),
         MemoryFootprintValue(2, 1, Event.LINE_AND_RETURN),
@@ -261,3 +264,37 @@ def test_return_value():
         "timestamp": -1,
         "value": None,
     })
+
+
+def test_initial_conditions():
+    """
+    Tests for the use of initial conditions with value annotations.
+    """
+    name = "foo"
+    ic = InitialCondition(name)
+
+    val, offset = 2, 3
+    v = Value(ic + offset)
+
+    fp = MemoryFootprint.from_values(MemoryFootprintValue(val + offset, 0, None))
+    fp.set_initial_conditions({name: val})
+
+    res = v.check(fp)
+    assert res.satisfied
+    assert res.satisfied_at == 0
+    assert res.value == val + offset
+
+    ic2 = InitialCondition(name)
+    v1, v2 = Value(ic, name="baz"), Value(ic2, name="baz")
+    assert v1 == v2
+    
+    ic2 = InitialCondition("bar")
+    v2 = Value(ic2, name="baz")
+    assert v1 != v2
+
+    # test errors
+    with pytest.raises(ValueError, match="check_against cannot be used with initial conditions"):
+        v.check_against(val + offset)
+
+    with pytest.raises(TypeError, match="Initial conditions are not compatible with attribute annotations"):
+        Attribute(ic, "foo")

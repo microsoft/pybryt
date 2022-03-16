@@ -207,3 +207,20 @@ def test_misc_dunder_methods():
         assert e == a
 
 
+def test_initial_conditions():
+    """
+    Tests for initial conditions-related methods of ``MemoryFootprint``.
+    """
+    fp = MemoryFootprint()
+    ics = {"foo": 1, "bar": 2}
+
+    assert fp.get_initial_conditions() == {}
+
+    fp.set_initial_conditions(ics)
+    assert fp.get_initial_conditions() == ics
+
+    new_ics = {"bar": 3, "baz": 4}
+    ics.update(new_ics)
+
+    fp.set_initial_conditions(new_ics)
+    assert fp.get_initial_conditions() == ics
