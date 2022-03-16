@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Command-Line Interface" href="cli_reference.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>API Reference - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
     
@@ -20,16 +20,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -160,6 +162,7 @@
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations/initial_conditions.html">Initial Conditions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
@@ -185,6 +188,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -502,11 +511,6 @@ memory footprint to check against</p>
 otherwise</p>
 </dd></dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pybryt.annotations.value.ReturnValue.intial_value">
-<span class="sig-name descname"><span class="pre">intial_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#pybryt.annotations.value.ReturnValue.intial_value" title="Permalink to this definition">#</a></dt>
-<dd><p>a copy of the value passed to the constructor</p>
-</dd></dl>
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pybryt.annotations.value.ReturnValue.invariants">
 <span class="sig-name descname"><span class="pre">invariants</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><span class="pre">pybryt.annotations.invariants.invariant</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.value.ReturnValue.invariants" title="Permalink to this definition">#</a></dt>
 <dd><p>the invariants for this value</p>
@@ -515,6 +519,11 @@ otherwise</p>
 <dt class="sig sig-object py" id="pybryt.annotations.value.ReturnValue.rtol">
 <span class="sig-name descname"><span class="pre">rtol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.value.ReturnValue.rtol" title="Permalink to this definition">#</a></dt>
 <dd><p>relative tolerance for numeric values</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.value.ReturnValue.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#pybryt.annotations.value.ReturnValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>a copy of the value passed to the constructor</p>
 </dd></dl>
 </dd></dl>
 <dl class="py class">
@@ -622,11 +631,6 @@ children, an empty list.</p>
 otherwise</p>
 </dd></dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pybryt.annotations.value.Value.intial_value">
-<span class="sig-name descname"><span class="pre">intial_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#pybryt.annotations.value.Value.intial_value" title="Permalink to this definition">#</a></dt>
-<dd><p>a copy of the value passed to the constructor</p>
-</dd></dl>
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pybryt.annotations.value.Value.invariants">
 <span class="sig-name descname"><span class="pre">invariants</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><span class="pre">pybryt.annotations.invariants.invariant</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.value.Value.invariants" title="Permalink to this definition">#</a></dt>
 <dd><p>the invariants for this value</p>
@@ -652,6 +656,11 @@ dictionary does <em>not</em> contain the value being tracked.</p>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.value.Value.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#pybryt.annotations.value.Value.value" title="Permalink to this definition">#</a></dt>
+<dd><p>a copy of the value passed to the constructor</p>
 </dd></dl>
 </dd></dl>
 <section id="module-pybryt.annotations.invariants">
@@ -1537,6 +1546,107 @@ annotation to remove</p>
 </dd></dl>
 </dd></dl>
 </section>
+<section id="module-pybryt.annotations.initial_condition">
+<span id="initial-conditions"></span><h3>Initial Conditions<a class="headerlink" href="#module-pybryt.annotations.initial_condition" title="Permalink to this headline">#</a></h3>
+<p>Placeholders for student-set initial conditions</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.annotations.initial_condition.</span></span><span class="sig-name descname"><span class="pre">InitialCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition" title="Permalink to this definition">#</a></dt>
+<dd><p>A placeholder for initial conditions set in the submission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – the name of the initial condition</p></li>
+<li><p><strong>transforms</strong> (<code class="docutils literal notranslate"><span class="pre">list[callable[[object],</span> <span class="pre">object]]</span></code>, optional) – a list of transformations
+(single-argument functions) to apply to the value in sequence</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><span class="pre">pybryt.annotations.initial_condition.InitialCondition</span></a></span></span><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition.apply" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply an additional transformation to this initial condition, returning a new one.</p>
+<p>This instance is not modified; instead, a new initial condition instances is created with
+all transforms copied from this one but with the addition of the new transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>transform</strong> (<code class="docutils literal notranslate"><span class="pre">callable[[object],</span> <span class="pre">object]</span></code>) – the transformation to add</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the new initial condition instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition.name" title="Permalink to this definition">#</a></dt>
+<dd><p>the name of the initial condition</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition.supply_footprint">
+<span class="sig-name descname"><span class="pre">supply_footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">footprint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pybryt.execution.MemoryFootprint" title="pybryt.execution.memory_footprint.MemoryFootprint"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition.supply_footprint" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the value of this initial condition with all transformations applied based on the
+value stored in the provided memory footprint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>initial_conditions</strong> (<code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code>) – the initial conditions</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the value after applying all transformations to it in sequence</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition.supply_value">
+<span class="sig-name descname"><span class="pre">supply_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition.supply_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the value of this initial condition with all transformations applied.</p>
+<p>Applies all transformations in this initial condition to the supplied value and returns the
+result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<code class="docutils literal notranslate"><span class="pre">object</span></code>) – the value to use as the initial condition</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the value after applying all transformations to it in sequence</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition.supply_values">
+<span class="sig-name descname"><span class="pre">supply_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition.supply_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the value of this initial condition with all transformations applied using the
+provided initial condition values.</p>
+<p>Applies all transformations in this initial condition to the supplied value and returns the
+result. If the result is itself an <a class="reference internal" href="#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a>, the values dictionary is
+supplied to that initial condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vals</strong> (<code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code>) – the values to use as the initial conditions by name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the value after applying all transformations to it in sequence</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.annotations.initial_condition.InitialCondition.transforms">
+<span class="sig-name descname"><span class="pre">transforms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.annotations.initial_condition.InitialCondition.transforms" title="Permalink to this definition">#</a></dt>
+<dd><p>transformations that should be applied to the value, in order</p>
+</dd></dl>
+</dd></dl>
+</section>
 <section id="annotation-results">
 <h3>Annotation Results<a class="headerlink" href="#annotation-results" title="Permalink to this headline">#</a></h3>
 <dl class="py class">
@@ -2218,6 +2328,19 @@ footprints</p>
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="pybryt.execution.MemoryFootprint.get_initial_conditions">
+<span class="sig-name descname"><span class="pre">get_initial_conditions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pybryt.execution.MemoryFootprint.get_initial_conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the initial conditions dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the initial conditions dictionary</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="pybryt.execution.MemoryFootprint.get_value">
 <span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">pybryt.execution.memory_footprint.MemoryFootprintValue</span></span></span><a class="headerlink" href="#pybryt.execution.MemoryFootprint.get_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the value at the specified index.</p>
@@ -2242,6 +2365,11 @@ footprints</p>
 <dt class="sig sig-object py" id="pybryt.execution.MemoryFootprint.increment_counter">
 <span class="sig-name descname"><span class="pre">increment_counter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pybryt.execution.MemoryFootprint.increment_counter" title="Permalink to this definition">#</a></dt>
 <dd><p>Increment the step counter by one.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.execution.MemoryFootprint.initial_conditions">
+<span class="sig-name descname"><span class="pre">initial_conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.execution.MemoryFootprint.initial_conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>initial conditions set during execution</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pybryt.execution.MemoryFootprint.num_steps">
@@ -2270,6 +2398,16 @@ footprints</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>nb</strong> (<code class="docutils literal notranslate"><span class="pre">nbformat.NotebookNode</span></code>) – the notebook</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.execution.MemoryFootprint.set_initial_conditions">
+<span class="sig-name descname"><span class="pre">set_initial_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pybryt.execution.MemoryFootprint.set_initial_conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the initial conditions with a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>initial_conditions</strong> (<code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code>) – a dictionary of initial conditions</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2362,6 +2500,16 @@ If PyBryt is not tracing, no action is taken.</p>
 <span class="n">foo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pybryt.execution.set_initial_conditions">
+<span class="sig-prename descclassname"><span class="pre">pybryt.execution.</span></span><span class="sig-name descname"><span class="pre">set_initial_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pybryt.execution.set_initial_conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the initial conditions stored in the active memory footprint if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conditions</strong> (<code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">object]</span></code>) – a dictionary of initial conditions</p>
+</dd>
+</dl>
 </dd></dl>
 </section>
 </section>
@@ -2477,6 +2625,7 @@ corresponding to the best-matched complexity</p>
 <li><a class="reference internal" href="#module-pybryt.annotations.type_">Type Annotations</a></li>
 <li><a class="reference internal" href="#module-pybryt.annotations.import_">Import Annotations</a></li>
 <li><a class="reference internal" href="#module-pybryt.annotations.collection">Annotation Collections</a></li>
+<li><a class="reference internal" href="#module-pybryt.annotations.initial_condition">Initial Conditions</a></li>
 <li><a class="reference internal" href="#annotation-results">Annotation Results</a></li>
 </ul>
 </li>

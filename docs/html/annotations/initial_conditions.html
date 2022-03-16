@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reference Implementations" href="../reference_implementations/index.html" /><link rel="prev" title="Initial Conditions" href="initial_conditions.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Invariants" href="invariants.html" /><link rel="prev" title="Annotation Collections" href="collections.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Invariants - PyBryt documentation</title>
+        <title>Initial Conditions - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
@@ -162,8 +162,8 @@
 <li class="toctree-l2"><a class="reference internal" href="type_annotations.html">Type Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="collections.html">Annotation Collections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="initial_conditions.html">Initial Conditions</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Invariants</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Initial Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invariants.html">Invariants</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../reference_implementations/index.html">Reference Implementations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -208,31 +208,65 @@
           </label>
         </div>
         <article role="main">
-          <section id="invariants">
-<span id="id1"></span><h1>Invariants<a class="headerlink" href="#invariants" title="Permalink to this headline">#</a></h1>
-<p>Invariants provide logic for determining whether a value satisfies a value annotation. They can be
-used to ensure that annotations can still be satisfied independent of the different ways students
-format their answers.</p>
-<section id="invariant-structure">
-<h2>Invariant Structure<a class="headerlink" href="#invariant-structure" title="Permalink to this headline">#</a></h2>
-<p>Invariants are subclasses of the abstract base class
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><code class="xref py py-class docutils literal notranslate"><span class="pre">invariants.invariant</span></code></a>. All subclasses implement
-the static <a class="reference internal" href="../api_reference.html#pybryt.annotations.invariants.invariant.run" title="pybryt.annotations.invariants.invariant.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a> method, which takes in a list of
-objects and returns a transformed list of objects that contains all versions of every object in the
-input list which are considered equal.</p>
-<p>Consider an invariant for string capitalization. The <code class="docutils literal notranslate"><span class="pre">run</span></code> method of this invariant takes in a list
-of objects and returns the same list but with every string lowercased. For a matrix transposition
-invariant, the <code class="docutils literal notranslate"><span class="pre">run</span></code> method might return a list with every 2D array’s transpose included, as well
-as the original array.</p>
-<p>Invariants have a custom <code class="docutils literal notranslate"><span class="pre">__new__</span></code> method that calls the <code class="docutils literal notranslate"><span class="pre">run</span></code> method, so that they function as
-callables rather than classes.</p>
-<p>PyBryt supports custom invariants. To create your own invariant, subclass
-<a class="reference internal" href="../api_reference.html#pybryt.annotations.invariants.invariant" title="pybryt.annotations.invariants.invariant"><code class="xref py py-class docutils literal notranslate"><span class="pre">invariants.invariant</span></code></a> and implement the <code class="docutils literal notranslate"><span class="pre">run</span></code>
-method.</p>
+          <section id="initial-conditions">
+<h1>Initial Conditions<a class="headerlink" href="#initial-conditions" title="Permalink to this headline">#</a></h1>
+<p>For some problems, it is necessary for students to choose some configurations or initial conditions
+that can vary from student to student; handling all possible values of these initial conditions
+would require writing quite a few references. Instead, PyBryt offers the
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a> class to
+represent a value that will be set when the student’s submission is executed for use in writing
+annotations.</p>
+<section id="writing-a-reference-with-initial-conditions">
+<h2>Writing a Reference with Initial Conditions<a class="headerlink" href="#writing-a-reference-with-initial-conditions" title="Permalink to this headline">#</a></h2>
+<p>Using initial conditions in your references is pretty simple. Each
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a> has a name,
+the first argument to its constructor. This name is how the value in the student submission will be
+identified (but more on that later).</p>
+<p>Once you’ve instantiated an
+<a class="reference internal" href="../api_reference.html#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a>, you can use it
+as normal in value and other types of annotations (except attribute annotations).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ic</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">InitialCondition</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)</span>
+<span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Sometimes, however, you may want to look for a value derived from an initial condition. For this
+reason, <a class="reference internal" href="../api_reference.html#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a>
+supports all of Python’s arithmetic operators, and you can also apply transformations by writing
+functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">ic</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ic</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">))</span>
+<span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">pow</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">73</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Each statement inside the <a class="reference internal" href="../api_reference.html#pybryt.annotations.value.Value" title="pybryt.annotations.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> constructors above
+returns an <a class="reference internal" href="../api_reference.html#pybryt.annotations.initial_condition.InitialCondition" title="pybryt.annotations.initial_condition.InitialCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">InitialCondition</span></code></a>.
+Initial conditions maintain a list of transformations that need to be applied to reach the final
+value for the annotation, and when a value is supplied from the submission, the transformations
+are applied in sequence to determine the value that the value annotations should look for.</p>
 </section>
-<section id="built-in-invariants">
-<h2>Built-In Invariants<a class="headerlink" href="#built-in-invariants" title="Permalink to this headline">#</a></h2>
-<p>A list of built-in invariants can be found <a class="reference internal" href="../api_reference.html#invariants-ref"><span class="std std-ref">here</span></a>.</p>
+<section id="collecting-initial-conditions-in-submissions">
+<h2>Collecting Initial Conditions in Submissions<a class="headerlink" href="#collecting-initial-conditions-in-submissions" title="Permalink to this headline">#</a></h2>
+<p>In order to link the initial conditions in the reference implementation to the values in the
+submission, you must call
+<a class="reference internal" href="../api_reference.html#pybryt.execution.set_initial_conditions" title="pybryt.execution.set_initial_conditions"><code class="xref py py-func docutils literal notranslate"><span class="pre">pybryt.set_initial_conditions</span></code></a> in the
+submission. This function accepts a dictionary as its only argument mapping strings corresponding
+to the names of initial conditions to the values of those initial conditions. When PyBryt is not
+actively tracing, it has no effect; but, when called while PyBryt executes the submission, it tells
+PyBryt to store the initial conditions passed to it in the memory footprint for later use by the
+annotations.</p>
+<p>For example, continuing the example from above, you would need to call</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">set_initial_conditions</span><span class="p">({</span>
+    <span class="s2">"foo"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>to set the initial condition.</p>
+<p>This function can be called multiple times, but the memory footprint only retains a single store of
+initial conditions, so calling it multiple times with the same key will overwrite any old values
+of that key. (For example, calling it with <code class="docutils literal notranslate"><span class="pre">{"foo":</span> <span class="pre">1,</span> <span class="pre">"bar":</span> <span class="pre">3}</span></code> and then <code class="docutils literal notranslate"><span class="pre">{"foo":</span> <span class="pre">2}</span></code>
+will result in initial conditions <code class="docutils literal notranslate"><span class="pre">{"foo":</span> <span class="pre">2,</span> <span class="pre">"bar":</span> <span class="pre">3}</span></code>).</p>
 </section>
 </section>
 
@@ -241,23 +275,23 @@ method.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../reference_implementations/index.html">
+          <a class="next-page" href="invariants.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Reference Implementations</div>
+                <div class="title">Invariants</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="initial_conditions.html">
+          <a class="prev-page" href="collections.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Initial Conditions</div>
+                <div class="title">Annotation Collections</div>
                 
               </div>
             </a>
@@ -293,9 +327,9 @@ method.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Invariants</a><ul>
-<li><a class="reference internal" href="#invariant-structure">Invariant Structure</a></li>
-<li><a class="reference internal" href="#built-in-invariants">Built-In Invariants</a></li>
+<li><a class="reference internal" href="#">Initial Conditions</a><ul>
+<li><a class="reference internal" href="#writing-a-reference-with-initial-conditions">Writing a Reference with Initial Conditions</a></li>
+<li><a class="reference internal" href="#collecting-initial-conditions-in-submissions">Collecting Initial Conditions in Submissions</a></li>
 </ul>
 </li>
 </ul>
