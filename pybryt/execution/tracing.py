@@ -290,7 +290,7 @@ class FrameTracer:
         self.footprint = None
         self._tracing_already_enabled = False
 
-    def start_trace(self, **kwargs) -> None:
+    def start_trace(self, **kwargs) -> bool:
         """
         Create a collector and memory footprint and start tracing execution in the frame. Returns
         a boolean indicating whether tracing was enabled.
@@ -337,3 +337,15 @@ def get_active_footprint() -> Optional[MemoryFootprint]:
         :py:class:`pybryt.execution.memory_footprint.MemoryFootprint`: the memory footprint
     """
     return ACTIVE_FOOTPRINT
+
+
+def set_initial_conditions(conditions: Dict[str, Any]) -> None:
+    """
+    Update the initial conditions stored in the active memory footprint if it exists.
+
+    Args:
+        conditions (``dict[str, object]``): a dictionary of initial conditions
+    """
+    footprint = get_active_footprint()
+    if footprint is not None:
+        footprint.set_initial_conditions(conditions)

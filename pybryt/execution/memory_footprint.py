@@ -126,6 +126,9 @@ class MemoryFootprint:
     executed_notebook: Optional[nbformat.NotebookNode]
     """the final (pre-processed) notebook that was executed, with outputs"""
 
+    initial_conditions: Dict[str, Any]
+    """initial conditions set during execution"""
+
     def __init__(self, counter: Optional[Counter] = None):
         self.counter = counter if counter is not None else Counter()
         self._value_indices_by_hash = {}
@@ -133,6 +136,7 @@ class MemoryFootprint:
         self.calls = []
         self.imports = set()
         self.executed_notebook = None
+        self.initial_conditions = {}
 
     @classmethod
     def from_values(cls, *values: MemoryFootprintValue) -> 'MemoryFootprint':
@@ -302,6 +306,24 @@ class MemoryFootprint:
         """
         """
         self.values.clear()
+
+    def set_initial_conditions(self, initial_conditions: Dict[str, Any]) -> None:
+        """
+        Update the initial conditions with a dictionary.
+
+        Args:
+            initial_conditions (``dict[str, object]``): a dictionary of initial conditions
+        """
+        self.initial_conditions.update(initial_conditions)
+
+    def get_initial_conditions(self) -> Dict[str, Any]:
+        """
+        Return the initial conditions dictionary.
+
+        Returns:
+            ``dict[str, object]``: the initial conditions dictionary
+        """
+        return self.initial_conditions
 
     @property
     def num_steps(self) -> int:
