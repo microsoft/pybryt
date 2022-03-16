@@ -1,6 +1,12 @@
 """Submission execution internals for PyBryt"""
 
-__all__ = ["check_time_complexity", "MemoryFootprint", "no_tracing", "TimeComplexityResult"]
+__all__ = [
+    "check_time_complexity",
+    "MemoryFootprint",
+    "no_tracing",
+    "set_initial_conditions",
+    "TimeComplexityResult",
+]
 
 import os
 import dill
@@ -19,6 +25,7 @@ from .tracing import (
     FrameTracer,
     get_tracing_frame,
     no_tracing,
+    set_initial_conditions,
     tracing_off, 
     tracing_on,
 )

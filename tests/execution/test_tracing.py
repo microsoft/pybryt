@@ -5,7 +5,7 @@ import sys
 
 from unittest import mock
 
-from pybryt import MemoryFootprint, no_tracing
+from pybryt import MemoryFootprint, no_tracing, set_initial_conditions
 from pybryt.execution import create_collector, FrameTracer, tracing_off, tracing_on
 from pybryt.execution.memory_footprint import Event
 
@@ -232,3 +232,16 @@ def test_frame_tracer():
         assert not frame.f_globals["__PYBRYT_TRACING__"]
 
         assert isinstance(tracer.get_footprint(), MemoryFootprint)
+
+
+def test_set_initial_conditions():
+    """
+    Tests for ``pybryt.execution.tracing.set_initial_conditions``.
+    """
+    with mock.patch("pybryt.execution.tracing.get_active_footprint") as mocked_get:
+        ics = {"foo": 1, "bar": 2}
+        set_initial_conditions(ics)
+        mocked_get.return_value.set_initial_conditions.assert_called_with(ics)
+
+        mocked_get.return_value = None
+        set_initial_conditions(ics)

@@ -13,6 +13,7 @@ Annotations
     type_annotations
     import_annotations
     collections
+    initial_conditions
     invariants
 
 Annotations are the basic building blocks, out of which reference
