@@ -358,6 +358,19 @@ def test_generate_report():
           - SUCCESS: computed the correct median
     """).strip()
 
+    # check display name
+    ref = ReferenceImplementation.compile(nb, name="foo", display_name="bar")
+    res = ref.run(footprint)
+    report = generate_report(res)
+    assert report == dedent("""\
+        REFERENCE: bar
+        SATISFIED: True
+        MESSAGES:
+          - SUCCESS: Sorted the sample correctly
+          - SUCCESS: Computed the size of the sample
+          - SUCCESS: computed the correct median
+    """).strip()
+
     # check empty messages
     ref = ReferenceImplementation("foo", [Value(footprint.get_value(0).value)])
     res = ref.run(footprint)
