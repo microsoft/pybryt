@@ -331,6 +331,8 @@ def generate_report(
     report = ""
     for i, res in enumerate(filtered):
         report += f"REFERENCE: {res.name}\n"
+        if res.group is not None:
+            report += f"GROUP: {res.group}\n"
         report += f"SATISFIED: {res.correct}"
 
         if res.messages:
