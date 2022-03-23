@@ -356,7 +356,12 @@ class Value(Annotation):
                     res = value == other_value
 
             except (ValueError, TypeError) as e:
-                return False
+                try:
+                    res = value == other_value
+                except:
+                    if _debug_mode_enabled():
+                        raise
+                    return False
 
         if isinstance(res, Iterable):
             # handle NaN values in pandas objects

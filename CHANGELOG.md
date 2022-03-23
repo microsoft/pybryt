@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+* Fixed bug causing NumPy fixed-width integer overflows for large integers per [#142](https://github.com/microsoft/pybryt/issues/142)
+
 ## 0.6.0 - 2022-03-16
 
 * Added student-set initial conditions per [#159](https://github.com/microsoft/pybryt/issues/159)
