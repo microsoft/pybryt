@@ -148,6 +148,17 @@ sequence generator:
     ref1 = pybryt.ReferenceImplementation("ref1", first_ref)
     ref2 = pybryt.ReferenceImplementation("ref2", second_ref)
 
+For creating more readable reports, you can also set a display name for reference implementations
+that will be used when PyBryt generates a textual report of results. To do this, pass the
+``display_name`` argument to the constructor:
+
+.. code-block:: python
+
+    pybryt.ReferenceImplementation("ref1", first_ref, display_name="Reference 1")
+
+This argument is also accepted by
+:py:meth:`ReferenceImplementation.compile<pybryt.ReferenceImplementation.compile>`.
+
 
 Interacting with Reference Implementations
 ------------------------------------------
