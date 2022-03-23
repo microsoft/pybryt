@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file, and this pr
 
 ## Unreleased
 
+
 * Fixed bug causing NumPy fixed-width integer overflows for large integers per [#142](https://github.com/microsoft/pybryt/issues/142)
+* Added group name to the report created by `generate_report` per [#152](https://github.com/microsoft/pybryt/issues/152)
+* Added display name to reference implementations per [#141](https://github.com/microsoft/pybryt/issues/141)
 
 ## 0.6.0 - 2022-03-16
 
