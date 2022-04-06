@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.6.1 - 2022-03-23
+## 0.6.1 - 2022-04-06
 
 * Fixed bug causing NumPy fixed-width integer overflows for large integers per [#142](https://github.com/microsoft/pybryt/issues/142)
 * Added group name to the report created by `generate_report` per [#152](https://github.com/microsoft/pybryt/issues/152)
