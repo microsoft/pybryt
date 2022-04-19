@@ -59,25 +59,36 @@ class _StructuralPattern:
     .. code-block:: python
 
         pybryt.structural.mypackage.Foo(pi=pybryt.Value(np.pi, atol=1e-5))
+
+    For checking whether an object contains specific members (determined via the use of Python's
+    ``in`` operator), use the ``contains_`` method:
+
+    .. code-block:: python
+
+        pybryt.structural.mypackage.MyList().contains_(1, 2, 3)
     """
 
-    parents: List[str]
+    _parents: List[str]
     """the package hierarchy this module or class is in"""
 
-    curr: Optional[str]
+    _curr: Optional[str]
     """the name of this module or class"""
 
-    unnamed_attrs: List[Any]
+    _unnamed_attrs: List[Any]
     """a list of attributes the object described should have, ignoring the names of those attributes"""
 
-    named_attrs: Dict[str, Any]
+    _named_attrs: Dict[str, Any]
     """attributes the object described should have by their names"""
 
-    def __init__(self, parents=None, curr=None, unnamed_attrs=None, **named_attrs):
-        self.parents = [] if parents is None else parents
-        self.curr = curr
-        self.unnamed_attrs = [] if unnamed_attrs is None else unnamed_attrs
-        self.named_attrs = named_attrs
+    _elements: List[Any]
+    """elements expected to be contained by a matching object"""
+
+    def __init__(self, _parents=None, _curr=None, _unnamed_attrs=None, _elements=None, **named_attrs):
+        self._parents = [] if _parents is None else _parents
+        self._curr = _curr
+        self._unnamed_attrs = [] if _unnamed_attrs is None else _unnamed_attrs
+        self._elements = [] if _elements is None else _elements
+        self._named_attrs = named_attrs
 
     def _get_mod_cls(self) -> Tuple[str, str]:
         """
@@ -86,28 +97,29 @@ class _StructuralPattern:
         Returns:
             ``tuple[str, str]``: the module name and class name
         """
-        return ".".join(self.parents), self.curr
+        return ".".join(self._parents), self._curr
 
     def __repr__(self):
         mod, cls = self._get_mod_cls()
         mod = mod + "." if mod else mod
-        return f"pybryt.structural.{mod}{cls}({', '.join(f'{k}={v}' for k, v in self.named_attrs.items())})"
+        return f"pybryt.structural.{mod}{cls}({', '.join(f'{k}={v}' for k, v in self._named_attrs.items())})"
 
     def __getattr__(self, attr: str) -> "_StructuralPattern":
         if attr in {"__getstate__", "__slots__", "__setstate__"}:  # for dill
             raise AttributeError
 
-        parents = self.parents.copy()
-        if self.curr:
-            parents += [self.curr]
+        parents = self._parents.copy()
+        if self._curr:
+            parents += [self._curr]
 
-        return type(self)(parents=parents, curr=attr)
+        return type(self)(_parents=parents, _curr=attr)
 
     def __call__(self, *unnamed_attrs, **named_attrs) -> "_StructuralPattern":
         return type(self)(
-            parents=self.parents,
-            curr=self.curr,
-            unnamed_attrs=list(unnamed_attrs),
+            _parents=self._parents,
+            _curr=self._curr,
+            _unnamed_attrs=list(unnamed_attrs),
+            _elements=self._elements.copy(),
             **named_attrs,
         )
 
@@ -121,7 +133,7 @@ class _StructuralPattern:
         Returns:
             ``bool``: whether the object's attributes match
         """
-        for a, v in self.named_attrs.items():
+        for a, v in self._named_attrs.items():
             if isinstance(v, type(self)):
                 if v != getattr(obj, a):
                     return False
@@ -131,7 +143,7 @@ class _StructuralPattern:
                 if not v.check_against(getattr(obj, a)):
                     return False
 
-        for v in self.unnamed_attrs:
+        for v in self._unnamed_attrs:
             has_attr = False
             for a in dir(obj):
                 if getattr(obj, a) == v:
@@ -141,7 +153,33 @@ class _StructuralPattern:
             if not has_attr:
                 return False
 
+        for e in self._elements:
+            try:
+                if e not in obj:
+                    return False
+            except TypeError:
+                return False
+
         return True
+
+    def contains_(self, *elements: Any) -> "_StructuralPattern":
+        """
+        Add a clause to this structural pattern indicating that a matching object should contain
+        the specified elements.
+
+        Args:
+            *elements (``object``): the elements to check for
+
+        Returns:
+            a new structural pattern with the added condition
+        """
+        return type(self)(
+            _parents=self._parents,
+            _curr=self._curr,
+            _unnamed_attrs=self._unnamed_attrs.copy(),
+            _elements=list(elements),
+            **self._named_attrs,
+        )
 
     def __eq__(self, other: Any) -> bool:
         """
