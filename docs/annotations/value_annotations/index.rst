@@ -3,6 +3,14 @@
 Value Annotations
 =================
 
+.. toctree::
+    :maxdepth: 3
+    :hidden:
+
+    initial_conditions
+    structural_patterns
+    invariants
+
 Value annotations are the most basic type of annotation. They expect a specific
 value to appear while executing the student's code. To create a value
 annotation, create an instance of :py:class:`Value<pybryt.annotations.value.Value>` and pass to

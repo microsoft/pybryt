@@ -7,14 +7,12 @@ Annotations
     :maxdepth: 3
     :hidden:
 
-    value_annotations
+    value_annotations/index
     relational_annotations
     complexity_annotations
     type_annotations
     import_annotations
     collections
-    initial_conditions
-    invariants
 
 Annotations are the basic building blocks, out of which reference
 implementations are constructed. The annotations represent a single condition
@@ -28,7 +26,7 @@ boolean logic surrounding the presence or absence of those values.
 All annotations are created by instantiating subclasses of the abstract
 :py:class:`Annotation<pybryt.annotations.annotation.Annotation>` class. There 
 are five main types of annotations: 
- 
+
 * :ref:`value annotations<value>`
 * :ref:`relational annotations<relational>`
 * :ref:`complexity annotations<complexity>`
