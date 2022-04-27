@@ -134,6 +134,9 @@ class _StructuralPattern:
             ``bool``: whether the object's attributes match
         """
         for a, v in self._named_attrs.items():
+            if not hasattr(obj, a):
+                return False
+
             if isinstance(v, type(self)):
                 if v != getattr(obj, a):
                     return False
