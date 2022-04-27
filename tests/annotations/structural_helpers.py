@@ -17,12 +17,16 @@ class AttrContainer:
             self.attrs[name] = value
 
     def __getattr__(self, name: str) -> Any:
-        if name not in self.attrs:
+        if name in {"__getstate__", "__slots__", "__setstate__"} or name not in self.attrs:
             raise AttributeError
+
         return self.attrs[name]
 
     def __dir__(self) -> List[str]:
         return sorted(list(self.attrs.keys()) + ["attrs"])
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and self.attrs == other.attrs
 
 
 class Container(AttrContainer):
