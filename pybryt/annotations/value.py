@@ -14,6 +14,7 @@ from typing import Any, Callable, Dict, List, Optional, Union
 from .annotation import Annotation, AnnotationResult
 from .initial_condition import InitialCondition
 from .invariants import invariant
+from .structural import _StructuralPattern
 
 from ..debug import _debug_mode_enabled
 from ..execution import Event, MemoryFootprint, MemoryFootprintValue
@@ -291,6 +292,9 @@ class Value(Annotation):
                 raise TypeError(f"Custom equivalence function returned value of invalid type: {type(ret)}")
 
             return ret
+
+        if isinstance(value, _StructuralPattern):
+            return value == other_value
 
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
