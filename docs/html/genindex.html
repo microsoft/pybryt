@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/><title>Index - PyBryt documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/><title>Index - PyBryt documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -34,10 +34,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -154,17 +156,20 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="annotations/value_annotations/index.html">Value Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="annotations/value_annotations/initial_conditions.html">Initial Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations/value_annotations/structural_patterns.html">Structural Pattern Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations/value_annotations/invariants.html">Invariants</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="annotations/initial_conditions.html">Initial Conditions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="reference_implementations/index.html">Reference Implementations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference_implementations/index.html">Reference Implementations</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="reference_implementations/debugging.html">Debugging References</a></li>
 </ul>
 </li>
@@ -490,12 +495,18 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.debug.debug_mode">debug_mode() (in module pybryt.debug)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.complexity.TimeComplexityChecker.determine_complexity">determine_complexity() (pybryt.complexity.TimeComplexityChecker method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api_reference.html#pybryt.debug.disable_debug_mode">disable_debug_mode() (in module pybryt.debug)</a>
 </li>
+        <li><a href="api_reference.html#pybryt.reference.ReferenceImplementation.display_name">display_name (pybryt.reference.ReferenceImplementation attribute)</a>
+
+        <ul>
+          <li><a href="api_reference.html#pybryt.reference.ReferenceResult.display_name">(pybryt.reference.ReferenceResult property)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -578,10 +589,12 @@
 </li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.get_initial_conditions">get_initial_conditions() (pybryt.execution.MemoryFootprint method)</a>
 </li>
-        <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.get_tracked_annotations">get_tracked_annotations() (pybryt.annotations.annotation.Annotation static method)</a>
+        <li><a href="api_reference.html#pybryt.reference.ReferenceImplementation.get_name_for_report">get_name_for_report() (pybryt.reference.ReferenceImplementation method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.get_tracked_annotations">get_tracked_annotations() (pybryt.annotations.annotation.Annotation static method)</a>
+</li>
         <li><a href="api_reference.html#pybryt.execution.MemoryFootprint.get_value">get_value() (pybryt.execution.MemoryFootprint method)</a>
 </li>
         <li><a href="api_reference.html#pybryt.annotations.annotation.Annotation.group">group (pybryt.annotations.annotation.Annotation attribute)</a>
@@ -1020,6 +1033,8 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api_reference.html#pybryt.annotations.structural.structural">structural (in module pybryt.annotations.structural)</a>
+</li>
         <li>
     STU
 

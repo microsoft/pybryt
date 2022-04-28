@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Command-Line Interface" href="cli_reference.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
         <title>API Reference - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -156,17 +158,20 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="annotations/value_annotations.html">Value Annotations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="annotations/value_annotations/index.html">Value Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="annotations/value_annotations/initial_conditions.html">Initial Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations/value_annotations/structural_patterns.html">Structural Pattern Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations/value_annotations/invariants.html">Invariants</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/type_annotations.html">Type Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="annotations/collections.html">Annotation Collections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="annotations/initial_conditions.html">Initial Conditions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="reference_implementations/index.html">Reference Implementations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference_implementations/index.html">Reference Implementations</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="reference_implementations/debugging.html">Debugging References</a></li>
 </ul>
 </li>
@@ -462,7 +467,7 @@ the attributes being checked. This dictionary does <em>not</em> contain the valu
 <dd><p>Annotation class for asserting that a value should be returned by a student-written function.</p>
 <p>Indicates that a value passed to the constructor should be returned by a call to a student’s
 function. Values can be of any type that is pickleable by <code class="docutils literal notranslate"><span class="pre">dill</span></code>. Values can specify a
-list of <a class="reference internal" href="annotations/invariants.html#invariants"><span class="std std-ref">invariants</span></a> that will allow objects to be considered “equal.” For
+list of <a class="reference internal" href="annotations/value_annotations/invariants.html#invariants"><span class="std std-ref">invariants</span></a> that will allow objects to be considered “equal.” For
 values that support arithmetic operators, absolute tolerances can be specified as well.</p>
 <p>Numeric tolerances are computed as with <code class="docutils literal notranslate"><span class="pre">numpy.allcose</span></code>, where the value is considered “equal
 enough” if it is within <span class="math notranslate nohighlight">\(v \pm (\texttt{atol} + \texttt{rtol} \cdot |v|)\)</span>, where
@@ -532,7 +537,7 @@ otherwise</p>
 <dd><p>Annotation class for asserting that a value should be observed.</p>
 <p>Indicates that a value passed to the constructor should be observed while tracing through the
 students’ code. Values can be of any type that is pickleable by <code class="docutils literal notranslate"><span class="pre">dill</span></code>. Values can specify a
-list of <a class="reference internal" href="annotations/invariants.html#invariants"><span class="std std-ref">invariants</span></a> that will allow objects to be considered “equal.” For
+list of <a class="reference internal" href="annotations/value_annotations/invariants.html#invariants"><span class="std std-ref">invariants</span></a> that will allow objects to be considered “equal.” For
 values that support arithmetic operators, absolute tolerances can be specified as well.</p>
 <p>Numeric tolerances are computed as with <code class="docutils literal notranslate"><span class="pre">numpy.allcose</span></code>, where the value is considered “equal
 enough” if it is within <span class="math notranslate nohighlight">\(v \pm (\texttt{atol} + \texttt{rtol} \cdot |v|)\)</span>, where
@@ -663,6 +668,57 @@ dictionary does <em>not</em> contain the value being tracked.</p>
 <dd><p>a copy of the value passed to the constructor</p>
 </dd></dl>
 </dd></dl>
+<section id="structural-patterns">
+<h4>Structural Patterns<a class="headerlink" href="#structural-patterns" title="Permalink to this headline">#</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="pybryt.annotations.structural.structural">
+<span class="sig-prename descclassname"><span class="pre">pybryt.annotations.structural.</span></span><span class="sig-name descname"><span class="pre">structural</span></span><a class="headerlink" href="#pybryt.annotations.structural.structural" title="Permalink to this definition">#</a></dt>
+<dd><p>A singleton that can be used for structural pattern matching.</p>
+<p>Structural patterns can be created by accessing attributes of this singleton and calling them
+with attribute-value pairs as arguments. For example, if you’re matching an instance of
+<code class="docutils literal notranslate"><span class="pre">mypackage.Foo</span></code> with attribute <code class="docutils literal notranslate"><span class="pre">bar</span></code> set to <code class="docutils literal notranslate"><span class="pre">2</span></code>, a structural pattern for this could be
+created with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">structural</span><span class="o">.</span><span class="n">mypackage</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">bar</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If there are attributes you want to look for without a specific name, you can pass these as
+positional arguments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">structural</span><span class="o">.</span><span class="n">mypackage</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To determine whether an object matches the structural pattern, PyBryt imports the package and
+retrieves the specified class. In the examples above, this would look like</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">getattr</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"mypackage"</span><span class="p">),</span> <span class="s2">"Foo"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the provided object is an instance of this class and has the specified attributes, the object
+matches. You can determine if an object matches a structural pattern using an <code class="docutils literal notranslate"><span class="pre">==</span></code> comparison.</p>
+<p>If no package is specified for the class, the pattern just checks that the name of the class
+matches the name of the class in the structural pattern, without importing any modules. For
+example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_pattern</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">structural</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">df_pattern</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>  <span class="c1"># returns True</span>
+
+<span class="k">class</span> <span class="nc">DataFrame</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">df_pattern</span> <span class="o">==</span> <span class="n">DataFrame</span><span class="p">()</span>     <span class="c1"># returns True</span>
+</pre></div>
+</div>
+<p>Attribute values are matched using the same algorithm as
+<a class="reference internal" href="#pybryt.annotations.value.Value" title="pybryt.annotations.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> annotations. If you would like to make use of
+the options available to <a class="reference internal" href="#pybryt.annotations.value.Value" title="pybryt.annotations.value.Value"><code class="xref py py-class docutils literal notranslate"><span class="pre">Value</span></code></a> annotations, you can
+also pass an annotation as an attribute value:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">structural</span><span class="o">.</span><span class="n">mypackage</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="n">pybryt</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>For checking whether an object contains specific members (determined via the use of Python’s
+<code class="docutils literal notranslate"><span class="pre">in</span></code> operator), use the <code class="docutils literal notranslate"><span class="pre">contains_</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">structural</span><span class="o">.</span><span class="n">mypackage</span><span class="o">.</span><span class="n">MyList</span><span class="p">()</span><span class="o">.</span><span class="n">contains_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+</section>
 <section id="module-pybryt.annotations.invariants">
 <span id="invariants"></span><span id="invariants-ref"></span><h4>Invariants<a class="headerlink" href="#module-pybryt.annotations.invariants" title="Permalink to this headline">#</a></h4>
 <p>Invariants for value annotations</p>
@@ -1769,7 +1825,7 @@ and any child results.</p>
 <h2>Reference Implementations<a class="headerlink" href="#reference-implementations" title="Permalink to this headline">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pybryt.reference.ReferenceImplementation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.reference.</span></span><span class="sig-name descname"><span class="pre">ReferenceImplementation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pybryt.reference.</span></span><span class="sig-name descname"><span class="pre">ReferenceImplementation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.annotations.annotation.Annotation" title="pybryt.annotations.annotation.Annotation"><span class="pre">pybryt.annotations.annotation.Annotation</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation" title="Permalink to this definition">#</a></dt>
 <dd><p>A reference implementation class for managing collections of annotations. Defines methods for
 creating, running, and storing reference implementations.</p>
 <dl class="field-list simple">
@@ -1787,14 +1843,17 @@ creating, running, and storing reference implementations.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pybryt.reference.ReferenceImplementation.compile">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.compile" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_or_nb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">nbformat.notebooknode.NotebookNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pybryt.reference.ReferenceImplementation" title="pybryt.reference.ReferenceImplementation"><span class="pre">pybryt.reference.ReferenceImplementation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.compile" title="Permalink to this definition">#</a></dt>
 <dd><p>Compiles a notebook or Python script into a single or list of reference implementations.</p>
 <p>Creates a reference implementation by executing a Jupyter Notebook or Python script and
 collecting all <code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> objects
 created, if any, or all <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code> objects otherwise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path_or_nb</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">nbformat.NotebookNode</span></code>) – the file to be executed</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_or_nb</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">nbformat.NotebookNode</span></code>) – the file to be executed</p></li>
+<li><p><strong>**kwargs</strong> – additional keyword arguments passed to constructor</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the reference(s)
@@ -1804,6 +1863,11 @@ created by executing the file</p>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ReferenceImplementation</span></code> or <code class="docutils literal notranslate"><span class="pre">list[ReferenceImplementation]</span></code></p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybryt.reference.ReferenceImplementation.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>a name to use for this reference in text reports generated by PyBryt</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pybryt.reference.ReferenceImplementation.get">
@@ -1823,6 +1887,19 @@ a list of annotations with that name.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ValueError</strong> – if there are no annotations with that name</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybryt.reference.ReferenceImplementation.get_name_for_report">
+<span class="sig-name descname"><span class="pre">get_name_for_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pybryt.reference.ReferenceImplementation.get_name_for_report" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the name to use for the report in this reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1882,6 +1959,16 @@ reference implementation</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pybryt.reference.ReferenceResult.display_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pybryt.reference.ReferenceResult.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>the display name of the underlying reference implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2614,6 +2701,7 @@ corresponding to the best-matched complexity</p>
 <li><a class="reference internal" href="#">API Reference</a><ul>
 <li><a class="reference internal" href="#annotations">Annotations</a><ul>
 <li><a class="reference internal" href="#module-pybryt.annotations.value">Value Annotations</a><ul>
+<li><a class="reference internal" href="#structural-patterns">Structural Patterns</a></li>
 <li><a class="reference internal" href="#module-pybryt.annotations.invariants">Invariants</a></li>
 </ul>
 </li>

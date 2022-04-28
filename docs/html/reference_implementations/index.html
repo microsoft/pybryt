@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Debugging References" href="debugging.html" /><link rel="prev" title="Invariants" href="../annotations/invariants.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Debugging References" href="debugging.html" /><link rel="prev" title="Annotation Collections" href="../annotations/collections.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
         <title>Reference Implementations - PyBryt documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -156,17 +158,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../annotations/index.html">Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../annotations/value_annotations.html">Value Annotations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../annotations/value_annotations/index.html">Value Annotations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../annotations/value_annotations/initial_conditions.html">Initial Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../annotations/value_annotations/structural_patterns.html">Structural Pattern Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../annotations/value_annotations/invariants.html">Invariants</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../annotations/relational_annotations.html">Relational Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../annotations/complexity_annotations.html">Complexity Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../annotations/type_annotations.html">Type Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../annotations/import_annotations.html">Import Annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../annotations/collections.html">Annotation Collections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../annotations/initial_conditions.html">Initial Conditions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../annotations/invariants.html">Invariants</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Reference Implementations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Reference Implementations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging References</a></li>
 </ul>
 </li>
@@ -335,6 +340,14 @@ sequence generator:</p>
 <span class="n">ref2</span> <span class="o">=</span> <span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"ref2"</span><span class="p">,</span> <span class="n">second_ref</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>For creating more readable reports, you can also set a display name for reference implementations
+that will be used when PyBryt generates a textual report of results. To do this, pass the
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code> argument to the constructor:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pybryt</span><span class="o">.</span><span class="n">ReferenceImplementation</span><span class="p">(</span><span class="s2">"ref1"</span><span class="p">,</span> <span class="n">first_ref</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="s2">"Reference 1"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This argument is also accepted by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ReferenceImplementation.compile</span></code>.</p>
 </section>
 </section>
 <section id="interacting-with-reference-implementations">
@@ -375,14 +388,14 @@ implementation, or a list of reference implementations, from a file, use the sta
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../annotations/invariants.html">
+          <a class="prev-page" href="../annotations/collections.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Invariants</div>
+                <div class="title">Annotation Collections</div>
                 
               </div>
             </a>
