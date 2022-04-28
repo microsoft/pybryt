@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.7.0 - Unreleased
+## 0.7.0 - 2022-04-28
 
 * Added structural pattern matching
 
