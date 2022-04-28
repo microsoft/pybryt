@@ -14,6 +14,7 @@ from typing import Any, Callable, Dict, List, Optional, Union
 from .annotation import Annotation, AnnotationResult
 from .initial_condition import InitialCondition
 from .invariants import invariant
+from .structural import _StructuralPattern
 
 from ..debug import _debug_mode_enabled
 from ..execution import Event, MemoryFootprint, MemoryFootprintValue
@@ -292,6 +293,9 @@ class Value(Annotation):
 
             return ret
 
+        if isinstance(value, _StructuralPattern):
+            return value == other_value
+
         if isinstance(value, Iterable) ^ isinstance(other_value, Iterable):
             return False
 
@@ -356,7 +360,12 @@ class Value(Annotation):
                     res = value == other_value
 
             except (ValueError, TypeError) as e:
-                return False
+                try:
+                    res = value == other_value
+                except:
+                    if _debug_mode_enabled():
+                        raise
+                    return False
 
         if isinstance(res, Iterable):
             # handle NaN values in pandas objects

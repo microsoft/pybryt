@@ -26,6 +26,6 @@ authors:
   given-names: "Nelson"
   orcid: "https://orcid.org/0000-0003-2768-5735"
 title: "Pybryt - Python library for pedagogical auto-assessment"
-version: 0.6.0
-date-released: 2022-03-16
+version: 0.7.0
+date-released: 2022-04-28
 url: "https://github.com/microsoft/pybryt"
