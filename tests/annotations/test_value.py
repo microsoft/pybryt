@@ -5,11 +5,14 @@ import pytest
 from itertools import chain
 from unittest import mock
 
-from pybryt import Annotation, Attribute, debug_mode, InitialCondition, ReturnValue, Value
+from pybryt import Annotation, Attribute, debug_mode, InitialCondition, ReturnValue, structural, \
+    Value
 from pybryt import invariants as inv
+from pybryt.annotations.structural import _StructuralPattern
 from pybryt.execution.memory_footprint import Event, MemoryFootprint, MemoryFootprintValue
 from pybryt.utils import pickle_and_hash
 
+from .structural_helpers import AttrContainer
 from .utils import assert_object_attrs, generate_memory_footprint
 
 
@@ -298,3 +301,16 @@ def test_initial_conditions():
 
     with pytest.raises(TypeError, match="Initial conditions are not compatible with attribute annotations"):
         Attribute(ic, "foo")
+
+
+def test_structural_patterns():
+    """
+    Tests for the using structural patterns with value annotations.
+    """
+    expected_attrs = dict(a=1, b=2, c=3)
+    pat = structural.tests.annotations.structural_helpers.AttrContainer(**expected_attrs)
+    v = Value(pat)
+    with mock.patch.object(_StructuralPattern, "__eq__") as mocked_eq:
+        obj = AttrContainer(**expected_attrs)
+        v.check_against(obj)
+        mocked_eq.assert_called_with(obj)

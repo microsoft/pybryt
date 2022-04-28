@@ -20,6 +20,13 @@ Value Annotations
    :undoc-members:
 
 
+Structural Patterns
+???????????????????
+
+.. autodata:: pybryt.annotations.structural.structural
+   :annotation:
+
+
 .. _invariants_ref:
 
 Invariants
