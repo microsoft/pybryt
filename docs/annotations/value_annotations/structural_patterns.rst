@@ -59,3 +59,11 @@ For checking whether an object contains specific members (determined via the use
 .. code-block:: python
 
     pybryt.structural.mypackage.MyList().contains_(1, 2, 3)
+
+To use structural patterns, pass them as values to :py:class:`Value<pybryt.annotations.value.Value>`
+annotations. When a value annotation is checking for a structural pattern, it uses the pattern's
+``==`` check to determine whether any object in the memory footprint matches.
+
+.. code-block:: python
+
+    pybryt.Value(pybryt.structural.mypackage.MyList())
