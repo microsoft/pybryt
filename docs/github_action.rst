@@ -1,3 +1,5 @@
+.. _github_action:
+
 PyBryt GitHub Action
 ====================
 
