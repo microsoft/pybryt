@@ -1,5 +1,5 @@
-Command-Line Interface
-======================
+CLI Reference
+=============
 
 PyBryt includes a small command-line interface for performing quick tasks using its functionality.
 The main tasks that the CLI currently supports are:
