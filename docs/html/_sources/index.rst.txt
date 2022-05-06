@@ -19,6 +19,7 @@ PyBryt Documentation
    github_action
    cli_reference
    api_reference
+   resources
    Changelog <https://github.com/microsoft/pybryt/tree/main/CHANGELOG.md>
 
 PyBryt is an open source Python auto-assessment library for teaching and
