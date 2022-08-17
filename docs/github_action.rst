@@ -50,6 +50,9 @@ Inside this file, define the following action configuration:
       build:
         runs-on: ubuntu-latest
         steps:
+          - name: Checkout
+            uses: actions/checkout@v3
+            
           - name: Run PyBryt
             uses: microsoft/pybryt-action@v0.1.1
             with:
@@ -88,6 +91,9 @@ configuration like this:
       build:
         runs-on: ubuntu-latest
         steps:
+          - name: Checkout
+            uses: actions/checkout@v3
+          
           - name: Run PyBryt
             id: pybryt
             uses: microsoft/pybryt-action@v0.1.1
